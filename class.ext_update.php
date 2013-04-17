@@ -150,8 +150,8 @@ class ext_update extends t3lib_SCbase {
 
 		$cacheFilename = PATH_site . 'typo3temp/' . $this->extKey . '.' . md5($sphinxUrl) . '.html';
 		if (!file_exists($cacheFilename) || filemtime($cacheFilename) < (time() - 86400)) {
-			$html = \t3lib_div::getURL($sphinxUrl);
-			\t3lib_div::writeFile($cacheFilename, $html);
+			$html = t3lib_div::getURL($sphinxUrl);
+			t3lib_div::writeFile($cacheFilename, $html);
 		} else {
 			$html = file_get_contents($cacheFilename);
 		}

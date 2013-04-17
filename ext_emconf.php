@@ -1,9 +1,9 @@
 <?php
 
 /***************************************************************
- * Extension Manager/Repository config file for ext "restdoc".
+ * Extension Manager/Repository config file for ext "sphinx".
  *
- * Auto generated 04-04-2013 14:38
+ * Auto generated 17-04-2013 14:38
  *
  * Manual updates:
  * Only the data in the array - everything else is removed by next
@@ -33,6 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'typo3' => '4.5.0-6.1.99',
+			'php' => '5.3.0-',
 		),
 		'conflicts' => array(
 		),
