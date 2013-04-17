@@ -206,25 +206,6 @@ class ext_update extends t3lib_SCbase {
 		$sphinxSourcesPath = t3lib_extMgm::extPath($this->extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = t3lib_extMgm::extPath($this->extKey) . 'Resources/Private/sphinx/';
 
-		// TEST (begin)
-		/*
-		t3lib_div::rmdir($privateDirectory . 'tmp/test', TRUE);
-		t3lib_div::mkdir($privateDirectory . 'tmp/test');
-		$cmd = 'cd ' . escapeshellarg($privateDirectory . 'tmp/test/') . ' && ' .
-			'export PYTHONPATH=' . escapeshellarg($privateDirectory. 'sphinx/1.1.3/lib/python') . ' && ' .
-			$privateDirectory . 'sphinx/1.1.3/bin/sphinx-quickstart . 2>&1 &';
-		*/
-		/*
-		$cmd = 'cd ' . escapeshellarg($privateDirectory . 'tmp/test/') . ' && ' .
-			'export PYTHONPATH=' . escapeshellarg($privateDirectory. 'sphinx/1.1.3/lib/python') . ' && ' .
-			$privateDirectory . 'sphinx/1.1.3/bin/sphinx-build -b html -d _build/doctrees . _build/html 2>&1';
-		t3lib_utility_Debug::debug($cmd, 'cmd');
-		$output = array();
-		t3lib_utility_Command::exec($cmd, $output);
-		return $this->formatInformation(implode(LF, $output));
-		*/
-		// TEST (end)
-
 		$zipFilename = $tempPath . $version . 'zip';
 		$zipContent = t3lib_div::getUrl($url);
 		if ($zipContent && t3lib_div::writeFile($zipFilename, $zipContent)) {
