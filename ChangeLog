@@ -1,5 +1,6 @@
 2013-04-17  Xavier Perseguers  <xavier@causal.ch>
 
-	* [TASK] Add Sphinx-Builder service
+	* [TASK] Add support for JSON and check of links
+	* [TASK] Add Sphinx-Builder service (HTML)
 	* [TASK] Wizard to import Sphinx in EM
 	* [TASK] Prototyping

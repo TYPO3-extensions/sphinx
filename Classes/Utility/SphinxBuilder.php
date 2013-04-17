@@ -71,6 +71,91 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 		if ($ret !== 0) {
 			throw new RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
+
+		$output .= LF;
+		$output .= 'Build finished. The HTML pages are in ' . $buildDirectory . '/html.';
+
+		return $output;
+	}
+
+	/**
+	 * Builds a Sphinx project as JSON.
+	 *
+	 * @param string $basePath
+	 * @param string $sourceDirectory
+	 * @param string $buildDirectory
+	 * @return string Output of the build process (if succeeded)
+	 * @throws RuntimeException if build process failed
+	 */
+	public static function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build') {
+		$sphinxBuilder = self::getSphinxBuilder();
+
+		$basePath = rtrim($basePath, '/') . '/';
+		$sourceDirectory = rtrim($sourceDirectory);
+		$buildDirectory = rtrim($buildDirectory);
+
+		if (!(is_dir($basePath) && is_file($basePath . $sourceDirectory . '/conf.py'))) {
+			throw new RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
+		}
+
+		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
+			$sphinxBuilder . ' -b json' .								// output format
+			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
+			' ' . escapeshellarg($sourceDirectory) .					// source directory
+			' ' . escapeshellarg($buildDirectory . '/json') .			// build directory
+			' 2>&1';													// redirect errors to STDOUT
+
+		$output = array();
+		t3lib_utility_Command::exec($cmd, $output, $ret);
+		$output = implode(LF, $output);
+		if ($ret !== 0) {
+			throw new RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+		}
+
+		$output .= LF;
+		$output .= 'Build finished; now you can process the JSON files.';
+
+		return $output;
+	}
+
+	/**
+	 * Checks links of a Sphinx project.
+	 *
+	 * @param string $basePath
+	 * @param string $sourceDirectory
+	 * @param string $buildDirectory
+	 * @return string Output of the check process (if succeeded)
+	 * @throws RuntimeException if check process failed
+	 */
+	public static function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build') {
+		$sphinxBuilder = self::getSphinxBuilder();
+
+		$basePath = rtrim($basePath, '/') . '/';
+		$sourceDirectory = rtrim($sourceDirectory);
+		$buildDirectory = rtrim($buildDirectory);
+
+		if (!(is_dir($basePath) && is_file($basePath . $sourceDirectory . '/conf.py'))) {
+			throw new RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
+		}
+
+		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
+			$sphinxBuilder . ' -b linkcheck' .							// output format
+			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
+			' ' . escapeshellarg($sourceDirectory) .					// source directory
+			' ' . escapeshellarg($buildDirectory . '/linkcheck') .		// build directory
+			' 2>&1';													// redirect errors to STDOUT
+
+		$output = array();
+		t3lib_utility_Command::exec($cmd, $output, $ret);
+		$output = implode(LF, $output);
+		if ($ret !== 0) {
+			throw new RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+		}
+
+		$output .= LF;
+		$output .= 'Link check complete; look for any errors in the above output ';
+		$output .= 'or in ' . $buildDirectory . '/linkcheck/output.txt.';
+
 		return $output;
 	}
 
