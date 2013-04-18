@@ -47,8 +47,6 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	/* @var \TYPO3\CMS\Core\Messaging\FlashMessage $errorMessage */
 	protected $errorMessage;
 
-	protected $pageinfo;
-
 	/** @var array */
 	protected $project;
 
@@ -110,11 +108,6 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * @return void
 	 */
 	public function main() {
-		// Access check!
-		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
-		$access = is_array($this->pageinfo) ? TRUE : FALSE;
-
 		// Initialize doc
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sphinx') . 'Resources/Private/Layouts/ModuleSphinx.html');
@@ -149,18 +142,12 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$markers['CSH'] = '';
 		$docHeaderButtons['save'] = '';
 
-		if (($this->id && $access) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id)) {
+		// Draw the form
+		$this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
 
-			// Draw the form
-			$this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
-
-			// Render content:
-			$this->initializeSphinxProject();
-			$this->moduleContent();
-		} else {
-			// If no access or if ID == zero
-			$this->content .= $this->doc->spacer(10);
-		}
+		// Render content:
+		$this->initializeSphinxProject();
+		$this->moduleContent();
 
 		// Compile document
 		$markers['CONTENT'] = $this->content;
