@@ -169,8 +169,14 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 		$this->content .= $this->doc->section('Project Properties', implode(LF, $content), 0, 1);
 
 		// Build properties
+		$sphinxVersion = Tx_Sphinx_Utility_SphinxBuilder::getSphinxVersion();
+
 		$content = array();
 		$content[] = '<table>';
+		$content[] = '<tr>';
+		$content[] = '	<th>Sphinx</td>';
+		$content[] = '	<td>' . ($sphinxVersion ?: 'n/a') . '</td>';
+		$content[] = '</tr>';
 		$content[] = '<tr>';
 		$content[] = '	<th>Base Directory</td>';
 		$content[] = '	<td>' . substr($this->project['basePath'], strlen(PATH_site)) . '</td>';
@@ -187,9 +193,10 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 
 		$content[] = $this->doc->spacer(10);
 
-		$content[] = '<button type="submit" name="build_html">Build HTML</button>';
-		$content[] = '<button type="submit" name="build_json">Build JSON</button>';
-		$content[] = '<button type="submit" name="check_links">Check Links</button>';
+		$disabled = empty($sphinxVersion) ? ' disabled="disabled"' : '';
+		$content[] = '<button type="submit" name="build_html"' . $disabled . '>Build HTML</button>';
+		$content[] = '<button type="submit" name="build_json"' . $disabled . '>Build JSON</button>';
+		$content[] = '<button type="submit" name="check_links"' . $disabled . '>Check Links</button>';
 
 		$this->content .= $this->doc->section('Build Properties', implode(LF, $content), 0, 1);
 

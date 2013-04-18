@@ -39,6 +39,16 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	protected static $extKey = 'sphinx';
 
 	/**
+	 * Returns the version of Sphinx used for building documentation.
+	 *
+	 * @return string
+	 */
+	public static function getSphinxVersion() {
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+		return $configuration['version'];
+	}
+
+	/**
 	 * Builds a Sphinx project as HTML.
 	 *
 	 * @param string $basePath
@@ -166,12 +176,14 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @throws RuntimeException
 	 */
 	protected static function getSphinxBuilder() {
-		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
-		$sphinxPath = t3lib_extMgm::extPath(self::$extKey) . 'Resources/Private/sphinx/' . $configuration['version'] . '/';
+		$sphinxVersion = self::getSphinxVersion();
+		$sphinxPath = t3lib_extMgm::extPath(self::$extKey) . 'Resources/Private/sphinx/' . $sphinxVersion . '/';
 		$sphinxBuilder = $sphinxPath . 'bin/sphinx-build';
 
-		if (empty($configuration['version']) || !is_executable($sphinxBuilder)) {
-			throw new RuntimeException('Sphinx is not available', 1366210198);
+		if (empty($sphinxVersion)) {
+			throw new RuntimeException('Sphinx is not configured. Please use Extension Manager.', 1366210198);
+		} elseif (!is_executable($sphinxBuilder)) {
+			throw new RuntimeException('Sphinx ' . $sphinxVersion . ' cannot be executed.', 1366280021);
 		}
 
 		$cmd = 'export PYTHONPATH=' . escapeshellarg($sphinxPath . 'lib/python') . ' && ' . $sphinxBuilder;
