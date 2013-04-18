@@ -206,7 +206,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/sphinx/';
 
-		$zipFilename = $tempPath . $version . 'zip';
+		$zipFilename = $tempPath . $version . '.zip';
 		$zipContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
 		if ($zipContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($zipFilename, $zipContent)) {
 			$out[] = $this->formatInformation('Sphinx ' . $version . ' has been downloaded.');
