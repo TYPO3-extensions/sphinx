@@ -1,5 +1,6 @@
 2013-04-18  Xavier Perseguers  <xavier@causal.ch>
 
+	* [!!!][TASK] FAL-compatibility: extension requires TYPO3 6.x
 	* [TASK] Backend module (File > Sphinx Console) to compile documentation
 
 2013-04-17  Xavier Perseguers  <xavier@causal.ch>

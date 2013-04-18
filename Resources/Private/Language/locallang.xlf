@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-04-18T14:34:34Z" product-name="sphinx">
+		<header/>
+		<body>
+			<trans-unit id="title" xml:space="preserve">
+				<source>Sphinx Python Documentation Generator</source>
+			</trans-unit>
+			<trans-unit id="folderNotFoundTitle" xml:space="preserve">
+				<source>Folder not found.</source>
+			</trans-unit>
+			<trans-unit id="folderNotFoundMessage" xml:space="preserve">
+				<source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

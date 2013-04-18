@@ -42,16 +42,16 @@ class Tx_Sphinx_EM_Configuration {
 	 * Returns an Extension Manager field for selecting the Sphinx version to use.
 	 *
 	 * @param array $params
-	 * @param t3lib_tsStyleConfig|\TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
+	 * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
 	 * @return string
 	 */
-	public function getVersions(array $params, $pObj) {
+	public function getVersions(array $params, \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj) {
 		$out = array();
 
-		$sphinxPath = t3lib_extMgm::extPath($this->extKey) . 'Resources/Private/sphinx';
+		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/sphinx';
 		$versions = array();
 		if (is_dir($sphinxPath)) {
-			$versions = t3lib_div::get_dirs($sphinxPath);
+			$versions = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($sphinxPath);
 		}
 
 		if (!$versions) {

@@ -22,8 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-$GLOBALS['LANG']->includeLLFile('EXT:sphinx/Resources/Private/Language/locallang.xml');
-require_once($GLOBALS['BACK_PATH'] . 'class.file_list.inc');
+$GLOBALS['LANG']->includeLLFile('EXT:sphinx/Resources/Private/Language/locallang.xlf');
 $GLOBALS['BE_USER']->modAccess($MCONF, 1);    // This checks permissions and exits if the users has no permission for entry.
 
 /**
@@ -37,10 +36,16 @@ $GLOBALS['BE_USER']->modAccess($MCONF, 1);    // This checks permissions and exi
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
+class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
-	/** @var t3lib_basicFileFunctions */
+	/** @var \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
 	public $basicFF;
+
+	/* @var \TYPO3\CMS\Core\Resource\Folder $folderObject */
+	protected $folderObject;
+
+	/* @var \TYPO3\CMS\Core\Messaging\FlashMessage $errorMessage */
+	protected $errorMessage;
 
 	protected $pageinfo;
 
@@ -51,14 +56,50 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 	 * Initializes the module.
 	 *
 	 * @return void
+	 * @throws \RuntimeException
 	 */
 	public function init() {
 		parent::init();
 
-		$this->id = t3lib_div::_GP('id');
+		$this->id = ($combinedIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+
+		try {
+			if ($combinedIdentifier) {
+				/** @var $fileFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
+				$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
+				// Disallow the rendering of the processing folder (e.g. could be called manually)
+				// and all folders without any defined storage
+				if ($this->folderObject && ($this->folderObject->getStorage()->getUid() == 0 || trim($this->folderObject->getStorage()->getProcessingFolder()->getIdentifier(), '/') === trim($this->folderObject->getIdentifier(), '/'))) {
+					$storage = $fileFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
+					$this->folderObject = $storage->getRootLevelFolder();
+				}
+			} else {
+				// Take the first object of the first storage
+				$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
+				$fileStorage = reset($fileStorages);
+				if ($fileStorage) {
+					// Validating the input "id" (the path, directory!) and
+					// checking it against the mounts of the user. - now done in the controller
+					$this->folderObject = $fileStorage->getRootLevelFolder();
+				} else {
+					throw new \RuntimeException('Could not find any folder to be displayed.', 1349276894);
+				}
+			}
+		} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $fileException) {
+			// Set folder object to null and throw a message later on
+			$this->folderObject = NULL;
+			$this->errorMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				sprintf($GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE),
+					htmlspecialchars($this->id)
+				),
+				$GLOBALS['LANG']->getLL('folderNotFoundTitle', TRUE),
+				\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE
+			);
+		}
 
 		// File operation object:
-		$this->basicFF = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->basicFF = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
 		$this->basicFF->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 	}
 
@@ -71,25 +112,33 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 	public function main() {
 		// Access check!
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
+		$this->pageinfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? TRUE : FALSE;
 
 		// Initialize doc
-		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('sphinx') . 'Resources/Private/Layouts/ModuleSphinx.html');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sphinx') . 'Resources/Private/Layouts/ModuleSphinx.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
-		/** @var fileList $filelist */
-		$filelist = t3lib_div::makeInstance('fileList');
+		/** @var \TYPO3\CMS\Filelist\FileList $filelist */
+		$filelist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Filelist\FileList');
 		$filelist->backPath = $GLOBALS['BACK_PATH'];
 
-		$filelist->start($this->id, 0, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
+		if (!isset($this->MOD_SETTINGS['sort'])) {
+			// Set default sorting
+			$this->MOD_SETTINGS['sort'] = 'file';
+			$this->MOD_SETTINGS['reverse'] = 0;
+		}
+
+		$filelist->start($this->folderObject, 0, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
 
 		// Generate the list
 		$filelist->generateList();
+		// Write the footer
+		$filelist->writeBottom();
 
 		// Setting up the buttons and markers for docheader
-		list($buttons, $markers) = $filelist->getButtonsAndOtherMarkers($this->id);
+		list($buttons, $markers) = $filelist->getButtonsAndOtherMarkers($this->folderObject);
 
 		// Add the folder info to the marker array
 		$markers['FOLDER_INFO'] = $filelist->getFolderInfo();
@@ -210,7 +259,7 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/')
 					);
-				} catch (RuntimeException $e) {
+				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
 				break;
@@ -221,7 +270,7 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/')
 					);
-				} catch (RuntimeException $e) {
+				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
 				break;
@@ -232,7 +281,7 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/')
 					);
-				} catch (RuntimeException $e) {
+				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
 				break;
@@ -253,19 +302,27 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 	 * @return void
 	 */
 	protected function initializeSphinxProject() {
-		if (is_file($this->id . 'conf.py')) {
+		$storageRecord = $this->folderObject->getStorage()->getStorageRecord();
+		if ($storageRecord['driver'] === 'Local') {
+			$basePath = PATH_site . $this->folderObject->getPublicUrl();
+		} else {
+			// Not supported
+			$basePath = '';
+		}
+
+		if (is_file($basePath . 'conf.py')) {
 			$this->project['singleDirectory'] = TRUE;
-			$this->project['basePath'] = $this->id;
+			$this->project['basePath'] = $basePath;
 			$this->project['source'] = './';
 			$this->project['build'] = '_build/';
-			$this->project['conf.py'] = $this->id . 'conf.py';
+			$this->project['conf.py'] = $basePath . 'conf.py';
 			$this->project['initialized'] = TRUE;
-		} elseif (is_file($this->id . 'source/conf.py')) {
+		} elseif (is_file($basePath . 'source/conf.py')) {
 			$this->project['singleDirectory'] = FALSE;
-			$this->project['basePath'] = $this->id;
+			$this->project['basePath'] = $basePath;
 			$this->project['source'] = 'source/';
 			$this->project['build'] = 'build/';
-			$this->project['conf.py'] = $this->id . 'source/conf.py';
+			$this->project['conf.py'] = $basePath . 'source/conf.py';
 			$this->project['initialized'] = TRUE;
 		} else {
 			$this->project['initialized'] = FALSE;
@@ -298,10 +355,10 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 		);
 
 		// CSH
-		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
 		// SAVE button
-		$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
+		$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
 
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut())    {
@@ -315,7 +372,7 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 
 // Make instance:
 /** @var $SOBE Tx_Sphinx_Controller_Mod1 */
-$SOBE = t3lib_div::makeInstance('Tx_Sphinx_Controller_Mod1');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Sphinx_Controller_Mod1');
 $SOBE->init();
 
 // Include files?

@@ -4,9 +4,9 @@ if (!defined('TYPO3_MODE')) {
 }
 
 if (TYPO3_MODE === 'BE') {
-	t3lib_extMgm::addModulePath('file_txsphinxM1', t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Controller/mod1');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('file_txsphinxM1', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Controller/mod1');
 
-	t3lib_extMgm::addModule('file', 'txsphinxM1', '', t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Controller/mod1/');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('file', 'txsphinxM1', '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Controller/mod1/');
 }
 
 ?>
