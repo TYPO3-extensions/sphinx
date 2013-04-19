@@ -44,6 +44,9 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	/* @var \TYPO3\CMS\Core\Resource\Folder $folderObject */
 	protected $folderObject;
 
+	/** @var string */
+	protected $basePath;
+
 	/* @var \TYPO3\CMS\Core\Messaging\FlashMessage $errorMessage */
 	protected $errorMessage;
 
@@ -146,6 +149,22 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// Draw the form
 		$this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
 
+		$storageRecord = $this->folderObject->getStorage()->getStorageRecord();
+		if ($storageRecord['driver'] === 'Local') {
+			$this->basePath = PATH_site . $this->folderObject->getPublicUrl();
+
+			if ($_POST['project']) {
+				\Tx_Sphinx_Utility_SphinxQuickstart::createProject(
+					$this->basePath,
+					$_POST['project'],
+					$_POST['author']
+				);
+			}
+		} else {
+			// Not supported
+			$this->basePath = '';
+		}
+
 		// Render content:
 		$this->initializeSphinxProject();
 		$this->moduleContent();
@@ -190,7 +209,57 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * @return void
 	 */
 	protected function generateKickstartForm() {
-		$this->content = 'Please select a folder with a Sphinx project.';
+		$content = array();
+		$content[] = '<div class="sphinx-area">';
+		$content[] = '<div class="no-sphinx-image">&nbsp;</div>';
+		$content[] = '<p>A valid project directory structure is one of these:</p>';
+		$content[] = '<ul>';
+		$content[] = '<li><strong>Single directory</strong>';
+		$content[] = <<<HTML
+<pre>
+.
+├── _build
+├── conf.py
+└── <em>other files</em>
+</pre>
+HTML;
+		$content[] = '</li>';
+		$content[] = '<li><strong>Separate source/build directories</strong>';
+		$content[] = <<<HTML
+<pre>
+.
+├── build
+└── source
+    ├── conf.py
+    └── <em>other files</em>
+</pre>
+HTML;
+		$content[] = '</li>';
+		$content[] = '</ul>';
+		$content[] = '</div>';
+
+		$this->content .= $this->doc->section('No Sphinx project found in current directory', implode(LF, $content), 0, 1);
+
+		$content = array();
+		$content[] = '<div class="sphinx-area">';
+		$content[] = '<div class="sphinx-image">&nbsp;</div>';
+		$content[] = '<p>This form lets you kickstart a new Sphinx project in current directory.</p>';
+		$content[] = $this->doc->spacer(10);
+		$content[] = <<<HTML
+<div class="sphinx-project">
+	<label for="tx-sphinx-project">Project</label>
+	<input type="text" id="tx-sphinx-project" name="project" /><br />
+
+	<label for="tx-sphinx-author">Author</label>
+	<input type="text" id="tx-sphinx-author" name="author" /><br />
+
+	<button type="submit">Create Project</button>
+</div>
+HTML;
+
+		$content[] = '</div>';
+
+		$this->content .= $this->doc->section('Create Sphinx Project', implode(LF, $content), 0, 1);
 	}
 
 	/**
@@ -308,27 +377,19 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * @return void
 	 */
 	protected function initializeSphinxProject() {
-		$storageRecord = $this->folderObject->getStorage()->getStorageRecord();
-		if ($storageRecord['driver'] === 'Local') {
-			$basePath = PATH_site . $this->folderObject->getPublicUrl();
-		} else {
-			// Not supported
-			$basePath = '';
-		}
-
-		if (is_file($basePath . 'conf.py')) {
+		if (is_file($this->basePath . 'conf.py')) {
 			$this->project['singleDirectory'] = TRUE;
-			$this->project['basePath'] = $basePath;
+			$this->project['basePath'] = $this->basePath;
 			$this->project['source'] = './';
 			$this->project['build'] = '_build/';
-			$this->project['conf.py'] = $basePath . 'conf.py';
+			$this->project['conf.py'] = $this->basePath . 'conf.py';
 			$this->project['initialized'] = TRUE;
-		} elseif (is_file($basePath . 'source/conf.py')) {
+		} elseif (is_file($this->basePath . 'source/conf.py')) {
 			$this->project['singleDirectory'] = FALSE;
-			$this->project['basePath'] = $basePath;
+			$this->project['basePath'] = $this->basePath;
 			$this->project['source'] = 'source/';
 			$this->project['build'] = 'build/';
-			$this->project['conf.py'] = $basePath . 'source/conf.py';
+			$this->project['conf.py'] = $this->basePath . 'source/conf.py';
 			$this->project['initialized'] = TRUE;
 		} else {
 			$this->project['initialized'] = FALSE;
