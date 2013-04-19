@@ -1,5 +1,6 @@
 2013-04-19  Xavier Perseguers  <xavier@causal.ch>
 
+	* [FEATURE] #47378: Support official documentation (thanks to Philipp Gampe)
 	* [BUGFIX] #47376: Wrong usage of t3lib_div::mkdir_deep() (thanks to Francois Suter)
 	* [TASK] Wizard to kickstart a new Sphinx project
 	* [TASK] Install official TYPO3 ReStructuredText Tools provided by the Documentation Team

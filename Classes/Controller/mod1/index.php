@@ -313,6 +313,10 @@ HTML;
 		$content[] = '	<th>Build Directory</td>';
 		$content[] = '	<td>' . $this->project['build'] . '</td>';
 		$content[] = '</tr>';
+		$content[] = '<tr>';
+		$content[] = '	<th>Configuration File</td>';
+		$content[] = '	<td>' . $this->project['conf.py'] . '</td>';
+		$content[] = '</tr>';
 		$content[] = '</table>';
 
 		$content[] = $this->doc->spacer(10);
@@ -332,7 +336,8 @@ HTML;
 					$output = Tx_Sphinx_Utility_SphinxBuilder::buildHtml(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
-						rtrim($this->project['build'], '/')
+						rtrim($this->project['build'], '/'),
+						$this->project['conf.py']
 					);
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
@@ -343,7 +348,8 @@ HTML;
 					$output = Tx_Sphinx_Utility_SphinxBuilder::buildJson(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
-						rtrim($this->project['build'], '/')
+						rtrim($this->project['build'], '/'),
+						$this->project['conf.py']
 					);
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
@@ -354,7 +360,8 @@ HTML;
 					$output = Tx_Sphinx_Utility_SphinxBuilder::checkLinks(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
-						rtrim($this->project['build'], '/')
+						rtrim($this->project['build'], '/'),
+						$this->project['conf.py']
 					);
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
@@ -382,21 +389,28 @@ HTML;
 			$this->project['basePath'] = $this->basePath;
 			$this->project['source'] = './';
 			$this->project['build'] = '_build/';
-			$this->project['conf.py'] = $this->basePath . 'conf.py';
+			$this->project['conf.py'] = './conf.py';
 			$this->project['initialized'] = TRUE;
 		} elseif (is_file($this->basePath . 'source/conf.py')) {
 			$this->project['singleDirectory'] = FALSE;
 			$this->project['basePath'] = $this->basePath;
 			$this->project['source'] = 'source/';
 			$this->project['build'] = 'build/';
-			$this->project['conf.py'] = $this->basePath . 'source/conf.py';
+			$this->project['conf.py'] = 'source/conf.py';
+			$this->project['initialized'] = TRUE;
+		} elseif (is_file($this->basePath . '_make/conf.py')) {
+			$this->project['singleDirectory'] = FALSE;
+			$this->project['basePath'] = $this->basePath;
+			$this->project['source'] = './';
+			$this->project['build'] = '_make/build/';
+			$this->project['conf.py'] = '_make/conf.py';
 			$this->project['initialized'] = TRUE;
 		} else {
 			$this->project['initialized'] = FALSE;
 		}
 
 		if ($this->project['initialized']) {
-			$conf = file_get_contents($this->project['conf.py']);
+			$conf = file_get_contents($this->basePath . $this->project['conf.py']);
 			$properties = array();
 			preg_replace_callback(
 				'/^\s*([^#].*?)\s*=\s*u?\'(.*)\'/m',

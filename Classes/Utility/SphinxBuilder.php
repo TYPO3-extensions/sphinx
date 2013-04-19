@@ -54,23 +54,25 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @param string $basePath
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
+	 * @param string $conf
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build') {
+	public static function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 
-		if (!(is_dir($basePath) && is_file($basePath . $sourceDirectory . '/conf.py'))) {
+		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
 		}
 
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b html' .									// output format
-				' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .					// directory with configuration file conf.py
+			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .		// references
 				' ' . escapeshellarg($sourceDirectory) .					// source directory
 				' ' . escapeshellarg($buildDirectory . '/html') .			// build directory
 				' 2>&1';													// redirect errors to STDOUT
@@ -94,22 +96,24 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @param string $basePath
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
+	 * @param string $conf
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build') {
+	public static function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 
-		if (!(is_dir($basePath) && is_file($basePath . $sourceDirectory . '/conf.py'))) {
+		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
 		}
 
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b json' .								// output format
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .				// directory with configuration file conf.py
 			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
 			' ' . escapeshellarg($sourceDirectory) .					// source directory
 			' ' . escapeshellarg($buildDirectory . '/json') .			// build directory
@@ -134,22 +138,24 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @param string $basePath
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
+	 * @param string $conf
 	 * @return string Output of the check process (if succeeded)
 	 * @throws \RuntimeException if check process failed
 	 */
-	public static function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build') {
+	public static function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 
-		if (!(is_dir($basePath) && is_file($basePath . $sourceDirectory . '/conf.py'))) {
+		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
 		}
 
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b linkcheck' .							// output format
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .				// directory with configuration file conf.py
 			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
 			' ' . escapeshellarg($sourceDirectory) .					// source directory
 			' ' . escapeshellarg($buildDirectory . '/linkcheck') .		// build directory
