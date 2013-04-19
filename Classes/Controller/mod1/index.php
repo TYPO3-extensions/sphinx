@@ -22,8 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-$GLOBALS['LANG']->includeLLFile('EXT:sphinx/Resources/Private/Language/locallang.xml');
-require_once($GLOBALS['BACK_PATH'] . 'class.file_list.inc');
+$GLOBALS['LANG']->includeLLFile('EXT:sphinx/Resources/Private/Language/locallang.xlf');
 $GLOBALS['BE_USER']->modAccess($MCONF, 1);    // This checks permissions and exits if the users has no permission for entry.
 
 /**
@@ -37,12 +36,19 @@ $GLOBALS['BE_USER']->modAccess($MCONF, 1);    // This checks permissions and exi
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
+class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
-	/** @var t3lib_basicFileFunctions */
+	/** @var \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
 	public $basicFF;
 
-	protected $pageinfo;
+	/* @var \TYPO3\CMS\Core\Resource\Folder $folderObject */
+	protected $folderObject;
+
+	/** @var string */
+	protected $basePath;
+
+	/* @var \TYPO3\CMS\Core\Messaging\FlashMessage $errorMessage */
+	protected $errorMessage;
 
 	/** @var array */
 	protected $project;
@@ -51,14 +57,50 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 	 * Initializes the module.
 	 *
 	 * @return void
+	 * @throws \RuntimeException
 	 */
 	public function init() {
 		parent::init();
 
-		$this->id = t3lib_div::_GP('id');
+		$this->id = ($combinedIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+
+		try {
+			if ($combinedIdentifier) {
+				/** @var $fileFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
+				$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
+				// Disallow the rendering of the processing folder (e.g. could be called manually)
+				// and all folders without any defined storage
+				if ($this->folderObject && ($this->folderObject->getStorage()->getUid() == 0 || trim($this->folderObject->getStorage()->getProcessingFolder()->getIdentifier(), '/') === trim($this->folderObject->getIdentifier(), '/'))) {
+					$storage = $fileFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
+					$this->folderObject = $storage->getRootLevelFolder();
+				}
+			} else {
+				// Take the first object of the first storage
+				$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
+				$fileStorage = reset($fileStorages);
+				if ($fileStorage) {
+					// Validating the input "id" (the path, directory!) and
+					// checking it against the mounts of the user. - now done in the controller
+					$this->folderObject = $fileStorage->getRootLevelFolder();
+				} else {
+					throw new \RuntimeException('Could not find any folder to be displayed.', 1349276894);
+				}
+			}
+		} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $fileException) {
+			// Set folder object to null and throw a message later on
+			$this->folderObject = NULL;
+			$this->errorMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				sprintf($GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE),
+					htmlspecialchars($this->id)
+				),
+				$GLOBALS['LANG']->getLL('folderNotFoundTitle', TRUE),
+				\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE
+			);
+		}
 
 		// File operation object:
-		$this->basicFF = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+		$this->basicFF = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
 		$this->basicFF->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 	}
 
@@ -69,27 +111,31 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 	 * @return void
 	 */
 	public function main() {
-		// Access check!
-		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
-		$access = is_array($this->pageinfo) ? TRUE : FALSE;
-
 		// Initialize doc
-		$this->doc = t3lib_div::makeInstance('template');
-		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('sphinx') . 'Resources/Private/Layouts/ModuleSphinx.html');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sphinx') . 'Resources/Private/Layouts/ModuleSphinx.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sphinx') . 'Resources/Public/Css/Backend.css';
 
-		/** @var fileList $filelist */
-		$filelist = t3lib_div::makeInstance('fileList');
+		/** @var \TYPO3\CMS\Filelist\FileList $filelist */
+		$filelist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Filelist\FileList');
 		$filelist->backPath = $GLOBALS['BACK_PATH'];
 
-		$filelist->start($this->id, 0, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
+		if (!isset($this->MOD_SETTINGS['sort'])) {
+			// Set default sorting
+			$this->MOD_SETTINGS['sort'] = 'file';
+			$this->MOD_SETTINGS['reverse'] = 0;
+		}
+
+		$filelist->start($this->folderObject, 0, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
 
 		// Generate the list
 		$filelist->generateList();
+		// Write the footer
+		$filelist->writeBottom();
 
 		// Setting up the buttons and markers for docheader
-		list($buttons, $markers) = $filelist->getButtonsAndOtherMarkers($this->id);
+		list($buttons, $markers) = $filelist->getButtonsAndOtherMarkers($this->folderObject);
 
 		// Add the folder info to the marker array
 		$markers['FOLDER_INFO'] = $filelist->getFolderInfo();
@@ -100,18 +146,28 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 		$markers['CSH'] = '';
 		$docHeaderButtons['save'] = '';
 
-		if (($this->id && $access) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id)) {
+		// Draw the form
+		$this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
 
-			// Draw the form
-			$this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
+		$storageRecord = $this->folderObject->getStorage()->getStorageRecord();
+		if ($storageRecord['driver'] === 'Local') {
+			$this->basePath = PATH_site . $this->folderObject->getPublicUrl();
 
-			// Render content:
-			$this->initializeSphinxProject();
-			$this->moduleContent();
+			if ($_POST['project']) {
+				\Tx_Sphinx_Utility_SphinxQuickstart::createProject(
+					$this->basePath,
+					$_POST['project'],
+					$_POST['author']
+				);
+			}
 		} else {
-			// If no access or if ID == zero
-			$this->content .= $this->doc->spacer(10);
+			// Not supported
+			$this->basePath = '';
 		}
+
+		// Render content:
+		$this->initializeSphinxProject();
+		$this->moduleContent();
 
 		// Compile document
 		$markers['CONTENT'] = $this->content;
@@ -141,9 +197,77 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 	 */
 	protected function moduleContent() {
 		if (!$this->project['initialized']) {
-			$this->content = 'Please select a folder with a Sphinx project.';
-			return;
+			$this->generateKickstartForm();
+		} else {
+			$this->generateBuildForm();
 		}
+	}
+
+	/**
+	 * Generates a form to kickstart a Sphinx project.
+	 *
+	 * @return void
+	 */
+	protected function generateKickstartForm() {
+		$content = array();
+		$content[] = '<div class="sphinx-area">';
+		$content[] = '<div class="no-sphinx-image">&nbsp;</div>';
+		$content[] = '<p>A valid project directory structure is one of these:</p>';
+		$content[] = '<ul>';
+		$content[] = '<li><strong>Single directory</strong>';
+		$content[] = <<<HTML
+<pre>
+.
+├── _build
+├── conf.py
+└── <em>other files</em>
+</pre>
+HTML;
+		$content[] = '</li>';
+		$content[] = '<li><strong>Separate source/build directories</strong>';
+		$content[] = <<<HTML
+<pre>
+.
+├── build
+└── source
+    ├── conf.py
+    └── <em>other files</em>
+</pre>
+HTML;
+		$content[] = '</li>';
+		$content[] = '</ul>';
+		$content[] = '</div>';
+
+		$this->content .= $this->doc->section('No Sphinx project found in current directory', implode(LF, $content), 0, 1);
+
+		$content = array();
+		$content[] = '<div class="sphinx-area">';
+		$content[] = '<div class="sphinx-image">&nbsp;</div>';
+		$content[] = '<p>This form lets you kickstart a new Sphinx project in current directory.</p>';
+		$content[] = $this->doc->spacer(10);
+		$content[] = <<<HTML
+<div class="sphinx-project">
+	<label for="tx-sphinx-project">Project</label>
+	<input type="text" id="tx-sphinx-project" name="project" /><br />
+
+	<label for="tx-sphinx-author">Author</label>
+	<input type="text" id="tx-sphinx-author" name="author" /><br />
+
+	<button type="submit">Create Project</button>
+</div>
+HTML;
+
+		$content[] = '</div>';
+
+		$this->content .= $this->doc->section('Create Sphinx Project', implode(LF, $content), 0, 1);
+	}
+
+	/**
+	 * Generates a form to build Sphinx projects.
+	 *
+	 * @return void
+	 */
+	protected function generateBuildForm() {
 
 		// Project properties
 		$content = array();
@@ -189,6 +313,10 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 		$content[] = '	<th>Build Directory</td>';
 		$content[] = '	<td>' . $this->project['build'] . '</td>';
 		$content[] = '</tr>';
+		$content[] = '<tr>';
+		$content[] = '	<th>Configuration File</td>';
+		$content[] = '	<td>' . $this->project['conf.py'] . '</td>';
+		$content[] = '</tr>';
 		$content[] = '</table>';
 
 		$content[] = $this->doc->spacer(10);
@@ -208,9 +336,10 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 					$output = Tx_Sphinx_Utility_SphinxBuilder::buildHtml(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
-						rtrim($this->project['build'], '/')
+						rtrim($this->project['build'], '/'),
+						$this->project['conf.py']
 					);
-				} catch (RuntimeException $e) {
+				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
 				break;
@@ -219,9 +348,10 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 					$output = Tx_Sphinx_Utility_SphinxBuilder::buildJson(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
-						rtrim($this->project['build'], '/')
+						rtrim($this->project['build'], '/'),
+						$this->project['conf.py']
 					);
-				} catch (RuntimeException $e) {
+				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
 				break;
@@ -230,9 +360,10 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 					$output = Tx_Sphinx_Utility_SphinxBuilder::checkLinks(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
-						rtrim($this->project['build'], '/')
+						rtrim($this->project['build'], '/'),
+						$this->project['conf.py']
 					);
-				} catch (RuntimeException $e) {
+				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
 				break;
@@ -242,7 +373,7 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 		}
 
 		$content = array();
-		$content[] = '<textarea style="background-color:#000; color:#fff; height:50em; width:100%;">' . $output . '</textarea>';
+		$content[] = '<textarea id="sphinx-console">' . $output . '</textarea>';
 
 		$this->content .= $this->doc->section('Console', implode(LF, $content), 0, 1);
 	}
@@ -253,26 +384,33 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 	 * @return void
 	 */
 	protected function initializeSphinxProject() {
-		if (is_file($this->id . 'conf.py')) {
+		if (is_file($this->basePath . 'conf.py')) {
 			$this->project['singleDirectory'] = TRUE;
-			$this->project['basePath'] = $this->id;
+			$this->project['basePath'] = $this->basePath;
 			$this->project['source'] = './';
 			$this->project['build'] = '_build/';
-			$this->project['conf.py'] = $this->id . 'conf.py';
+			$this->project['conf.py'] = './conf.py';
 			$this->project['initialized'] = TRUE;
-		} elseif (is_file($this->id . 'source/conf.py')) {
+		} elseif (is_file($this->basePath . 'source/conf.py')) {
 			$this->project['singleDirectory'] = FALSE;
-			$this->project['basePath'] = $this->id;
+			$this->project['basePath'] = $this->basePath;
 			$this->project['source'] = 'source/';
 			$this->project['build'] = 'build/';
-			$this->project['conf.py'] = $this->id . 'source/conf.py';
+			$this->project['conf.py'] = 'source/conf.py';
+			$this->project['initialized'] = TRUE;
+		} elseif (is_file($this->basePath . '_make/conf.py')) {
+			$this->project['singleDirectory'] = FALSE;
+			$this->project['basePath'] = $this->basePath;
+			$this->project['source'] = './';
+			$this->project['build'] = '_make/build/';
+			$this->project['conf.py'] = '_make/conf.py';
 			$this->project['initialized'] = TRUE;
 		} else {
 			$this->project['initialized'] = FALSE;
 		}
 
 		if ($this->project['initialized']) {
-			$conf = file_get_contents($this->project['conf.py']);
+			$conf = file_get_contents($this->basePath . $this->project['conf.py']);
 			$properties = array();
 			preg_replace_callback(
 				'/^\s*([^#].*?)\s*=\s*u?\'(.*)\'/m',
@@ -298,10 +436,10 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 		);
 
 		// CSH
-		$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
+		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
 		// SAVE button
-		$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
+		$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
 
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut())    {
@@ -315,7 +453,7 @@ class Tx_Sphinx_Controller_Mod1 extends t3lib_SCbase {
 
 // Make instance:
 /** @var $SOBE Tx_Sphinx_Controller_Mod1 */
-$SOBE = t3lib_div::makeInstance('Tx_Sphinx_Controller_Mod1');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Sphinx_Controller_Mod1');
 $SOBE->init();
 
 // Include files?

@@ -54,32 +54,34 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @param string $basePath
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
+	 * @param string $conf
 	 * @return string Output of the build process (if succeeded)
-	 * @throws RuntimeException if build process failed
+	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build') {
+	public static function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 
-		if (!(is_dir($basePath) && is_file($basePath . $sourceDirectory . '/conf.py'))) {
-			throw new RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
+		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
+			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
 		}
 
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b html' .									// output format
-				' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .					// directory with configuration file conf.py
+			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .		// references
 				' ' . escapeshellarg($sourceDirectory) .					// source directory
 				' ' . escapeshellarg($buildDirectory . '/html') .			// build directory
 				' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
-		t3lib_utility_Command::exec($cmd, $output, $ret);
+		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 		$output = implode(LF, $output);
 		if ($ret !== 0) {
-			throw new RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
 
 		$output .= LF;
@@ -94,32 +96,34 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @param string $basePath
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
+	 * @param string $conf
 	 * @return string Output of the build process (if succeeded)
-	 * @throws RuntimeException if build process failed
+	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build') {
+	public static function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 
-		if (!(is_dir($basePath) && is_file($basePath . $sourceDirectory . '/conf.py'))) {
-			throw new RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
+		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
+			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
 		}
 
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b json' .								// output format
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .				// directory with configuration file conf.py
 			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
 			' ' . escapeshellarg($sourceDirectory) .					// source directory
 			' ' . escapeshellarg($buildDirectory . '/json') .			// build directory
 			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
-		t3lib_utility_Command::exec($cmd, $output, $ret);
+		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 		$output = implode(LF, $output);
 		if ($ret !== 0) {
-			throw new RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
 
 		$output .= LF;
@@ -134,32 +138,34 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @param string $basePath
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
+	 * @param string $conf
 	 * @return string Output of the check process (if succeeded)
-	 * @throws RuntimeException if check process failed
+	 * @throws \RuntimeException if check process failed
 	 */
-	public static function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build') {
+	public static function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 
-		if (!(is_dir($basePath) && is_file($basePath . $sourceDirectory . '/conf.py'))) {
-			throw new RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
+		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
+			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
 		}
 
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b linkcheck' .							// output format
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .				// directory with configuration file conf.py
 			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
 			' ' . escapeshellarg($sourceDirectory) .					// source directory
 			' ' . escapeshellarg($buildDirectory . '/linkcheck') .		// build directory
 			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
-		t3lib_utility_Command::exec($cmd, $output, $ret);
+		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 		$output = implode(LF, $output);
 		if ($ret !== 0) {
-			throw new RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
 
 		$output .= LF;
@@ -173,17 +179,17 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * Returns the SphinxBuilder command.
 	 *
 	 * @return string
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected static function getSphinxBuilder() {
 		$sphinxVersion = self::getSphinxVersion();
-		$sphinxPath = t3lib_extMgm::extPath(self::$extKey) . 'Resources/Private/sphinx/' . $sphinxVersion . '/';
+		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/' . $sphinxVersion . '/';
 		$sphinxBuilder = $sphinxPath . 'bin/sphinx-build';
 
 		if (empty($sphinxVersion)) {
-			throw new RuntimeException('Sphinx is not configured. Please use Extension Manager.', 1366210198);
+			throw new \RuntimeException('Sphinx is not configured. Please use Extension Manager.', 1366210198);
 		} elseif (!is_executable($sphinxBuilder)) {
-			throw new RuntimeException('Sphinx ' . $sphinxVersion . ' cannot be executed.', 1366280021);
+			throw new \RuntimeException('Sphinx ' . $sphinxVersion . ' cannot be executed.', 1366280021);
 		}
 
 		$cmd = 'export PYTHONPATH=' . escapeshellarg($sphinxPath . 'lib/python') . ' && ' . $sphinxBuilder;

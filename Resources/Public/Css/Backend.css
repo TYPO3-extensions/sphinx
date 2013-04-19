@@ -1,0 +1,71 @@
+#sphinx-console {
+	background-color : #000;
+	color            : #fff;
+	height           : 50em;
+	width            : 100%;
+}
+
+p {
+	margin-top       : 1em;
+}
+
+ul {
+	margin-top       : .5em;
+	list-style       : square inside none;
+}
+
+pre {
+	font-family      : Consolas, monospace;
+	margin-left      : 2em;
+}
+
+table th {
+	width            : 15em;
+}
+
+.sphinx-area {
+	margin-left      : 105px;
+}
+
+.sphinx-image, .no-sphinx-image {
+	float            : left;
+	width            : 94px;
+	height           : 98px;
+	margin-left      : -105px;
+}
+
+.sphinx-image {
+	background       : url(../Images/sphinx.png) no-repeat;
+
+}
+
+.no-sphinx-image {
+	background       : url(../Images/no-sphinx.png) no-repeat;
+}
+
+.sphinx-project label {
+	display          : block;
+	font-weight      : bold;
+	text-align       : right;
+	width            : 140px;
+	float            : left;
+	margin-top       : 8px;
+}
+
+.sphinx-project input {
+	font-size        : 12px;
+	padding          : 4px 2px;
+	border           : solid 1px #aacfe4;
+	width            : 200px;
+	margin           : 2px 0 10px 10px;
+}
+
+.sphinx-project button {
+	margin-left      : 150px;
+	min-width        : 125px;
+	height           : 31px;
+	text-align       : center;
+	line-height      : 28px;
+	font-size        : 11px;
+	font-weight      : bold;
+}
