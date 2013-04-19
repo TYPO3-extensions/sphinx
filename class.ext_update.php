@@ -121,7 +121,6 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$directories = array(
 			'Resources/Private/sphinx',
 			'Resources/Private/sphinx-sources',
-			'Resources/Private/tmp',
 		);
 		foreach ($directories as $directory) {
 			$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . $directory;
@@ -202,7 +201,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$version = $data['name'];
 		$url = 'https://bitbucket.org' . $data['url'];
 
-		$tempPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/tmp/';
+		$tempPath = PATH_site . '/typo3temp/';
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/sphinx/';
 
@@ -226,6 +225,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/');
 					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath . '/' . $directories[0], TRUE);
+
+					// Remove zip file as we don't need it anymore
+					@unlink($zipFilename);
 				}
 			} else {
 				$out[] = $this->formatError('Could not extract Sphinx ' . $version . ':' . LF . $cmd);
