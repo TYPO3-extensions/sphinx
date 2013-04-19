@@ -61,7 +61,7 @@ class Tx_Sphinx_EM_Configuration {
 		$i = 0;
 		$selectedVersion = $params['fieldValue'];
 		foreach ($versions as $version) {
-			$out[] = '<div style="margin-bottom:1ex">';
+			$out[] = '<div style="margin-top:1ex">';
 			$checked = $version === $selectedVersion ? ' checked="checked"' : '';
 			$out[] = '<input type="radio" id="sphinx_version_' . $i . '" name="sphinx_version" value="' . $version . '"' . $checked . ' onclick="toggleSphinxVersion();" />';
 			$out[] = '<label for="sphinx_version_' . $i . '">' . $version . '</label>';

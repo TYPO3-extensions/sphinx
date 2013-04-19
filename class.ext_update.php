@@ -79,10 +79,11 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		$out[] = '<form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '" method="post">';
 		$out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
+		$out[] = '<div style="-moz-column-count:3;-webkit-column-count:3;column-count:3;margin-top:1ex;">';
 
 		$i = 0;
 		foreach ($availableVersions as $version) {
-			$out[] = '<div style="margin-top:1ex">';
+			$out[] = '<div style="margin-bottom:1ex">';
 			$disabled = \TYPO3\CMS\Core\Utility\GeneralUtility::inArray($localVersions, $version['name']) ? ' disabled="disabled"' : '';
 			$out[] = '<input type="radio" id="sphinx_version_' . $i . '" name="sphinx_version" value="' . htmlspecialchars($version['name']) . '"' . $disabled . ' />';
 			$label = '<label for="sphinx_version_' . $i . '">';
@@ -97,7 +98,8 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$i++;
 		}
 
-		$out[] = '<button type="submit">Import</button>';
+		$out[] = '</div>';
+		$out[] = '<button type="submit" style="margin-top:1ex">Import selected version of Sphinx</button>';
 		$out[] = '</form>';
 
 		return implode(LF, $out);
@@ -205,6 +207,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/sphinx/';
 
+		//
+		// STEP 1a: Download Sphinx archive as zip
+		//
 		$zipFilename = $tempPath . $version . '.zip';
 		$zipContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
 		if ($zipContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($zipFilename, $zipContent)) {
@@ -213,6 +218,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
 
+			//
+			// STEP 1b: Unzip Sphinx archive
+			//
 			$unzip = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('unzip');
 			$cmd = $unzip . ' -qq ' . escapeshellarg($zipFilename) . ' -d ' . escapeshellarg($targetPath);
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $_, $ret);
@@ -236,6 +244,11 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$out[] = $this->formatError('Cannot fetch file ' . $url . '.');
 		}
 
+		//
+		// STEP 2: Build Sphinx locally
+		//
+		$pythonHome = NULL;
+		$pythonLib = NULL;
 		$setupFile = $sphinxSourcesPath . $version . '/setup.py';
 		if (is_file($setupFile)) {
 			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
@@ -244,22 +257,98 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$output = array();
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 			if ($ret === 0) {
-				$targetPath = $sphinxPath . $version;
-				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($targetPath . '/lib/python');
+				$pythonHome = $sphinxPath . $version;
+				$pythonLib = $pythonHome . '/lib/python';
+				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($pythonHome, TRUE);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pythonLib);
 
 				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-					'export PYTHONPATH=' . escapeshellarg($targetPath . '/lib/python') . ' && ' .
-					$python . ' setup.py install --home=' . escapeshellarg($targetPath) . ' 2>&1';
+					'export PYTHONPATH=' . escapeshellarg($pythonLib) . ' && ' .
+					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 				$output = array();
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 				if ($ret === 0) {
 					$out[] = $this->formatInformation('Sphinx ' . $version . ' has successfully been installed.');
 				} else {
 					$out[] = $this->formatError('Could not install Sphinx ' . $version . ':' . LF . LF . implode($output, LF));
+					// Cannot go further
+					return;
 				}
 			} else {
 				$out[] = $this->formatError('Could not build Sphinx ' . $version . ':' . LF . LF . implode($output, LF));
+				// Cannot go further
+				return;
+			}
+		}
+
+		//
+		// STEP 3a: Download TYPO3 ReST Tools as tar.gz
+		//
+		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
+			$out[] = $this->formatWarning('Could not find command tar. TYPO3-related commands were not be installed.');
+		} else {
+			$output = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl('https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3');
+			if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">snapshot</a>#', $output, $matches)) {
+				$commit = $matches[1];
+				$url = 'https://git.typo3.org/Documentation/RestTools.git/snapshot/' . $commit . '.tar.gz';
+				$archiveFilename = $tempPath . 'RestTools.tar.gz';
+				$archiveContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
+				if ($archiveContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+					$out[] = $this->formatInformation('TYPO3 ReStructuredText Tools (' . $commit . ') have been downloaded.');
+
+					$targetPath = $sphinxSourcesPath . 'RestTools';
+					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
+
+					//
+					// STEP 3b: Unpack TYPO3 ReST Tools archive
+					//
+					$tar = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar');
+					$cmd = $tar . ' xzf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath);
+					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+					if ($ret === 0) {
+						$out[] = $this->formatInformation('TYPO3 ReStructuredText Tools have been unpacked.');
+						// When unpacking the sources, content is located under a directory "RestTools-<shortcommit>"
+						$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
+						if ($directories[0] === 'RestTools-' . substr($commit, 0, 7)) {
+							$fromDirectory = escapeshellarg($targetPath . '/' . $directories[0]);
+							$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/');
+							\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
+							\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath . '/' . $directories[0], TRUE);
+
+							// Remove tar.gz archive as we don't need it anymore
+							@unlink($archiveFilename);
+						}
+					} else {
+						$out[] = $this->formatError('Could not extract TYPO3 ReStructuredText Tools:' . LF . LF . implode($output, LF));
+					}
+				}
+			}
+		}
+
+		//
+		// STEP 4: Build TYPO3 ReST Tools locally
+		//
+		$setupFile = $sphinxSourcesPath . 'RestTools/setup.py';
+		if (is_file($setupFile)) {
+			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
+			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+				$python . ' setup.py build';
+			$output = array();
+			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+			if ($ret === 0) {
+				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+					'export PYTHONPATH=' . escapeshellarg($pythonLib) . ' && ' .
+					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
+				$output = array();
+				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+				if ($ret === 0) {
+					$out[] = $this->formatInformation('TYPO3 RestructuredText Tools have successfully been installed.');
+				} else {
+					$out[] = $this->formatError('Could not install TYPO3 RestructuredText Tools:' . LF . LF . implode($output, LF));
+				}
+			} else {
+				$out[] = $this->formatError('Could not build TYPO3 RestructuredText Tools:' . LF . LF . implode($output, LF));
 			}
 		}
 	}
@@ -272,6 +361,20 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function formatError($message) {
 		$output = '<div style="border: solid 2px black;	background-color: #f00; color: #fff; padding: 10px; font-weight: bold; margin: 10px 0px 10px 0px;">';
+		$output .= nl2br(htmlspecialchars($message));
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * Creates a warning message for backend output.
+	 *
+	 * @param string $message
+	 * @return string
+	 */
+	protected function formatWarning($message) {
+		$output = '<div style="border: solid 2px black;	background-color: yellow; padding: 10px; font-weight: bold; margin: 10px 0px 10px 0px;">';
 		$output .= nl2br(htmlspecialchars($message));
 		$output .= '</div>';
 

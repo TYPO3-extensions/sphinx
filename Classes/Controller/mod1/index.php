@@ -112,6 +112,7 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sphinx') . 'Resources/Private/Layouts/ModuleSphinx.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
+		$this->doc->styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sphinx') . 'Resources/Public/Css/Backend.css';
 
 		/** @var \TYPO3\CMS\Filelist\FileList $filelist */
 		$filelist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Filelist\FileList');
@@ -177,9 +178,27 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 */
 	protected function moduleContent() {
 		if (!$this->project['initialized']) {
-			$this->content = 'Please select a folder with a Sphinx project.';
-			return;
+			$this->generateKickstartForm();
+		} else {
+			$this->generateBuildForm();
 		}
+	}
+
+	/**
+	 * Generates a form to kickstart a Sphinx project.
+	 *
+	 * @return void
+	 */
+	protected function generateKickstartForm() {
+		$this->content = 'Please select a folder with a Sphinx project.';
+	}
+
+	/**
+	 * Generates a form to build Sphinx projects.
+	 *
+	 * @return void
+	 */
+	protected function generateBuildForm() {
 
 		// Project properties
 		$content = array();
@@ -278,7 +297,7 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 
 		$content = array();
-		$content[] = '<textarea style="background-color:#000; color:#fff; height:50em; width:100%;">' . $output . '</textarea>';
+		$content[] = '<textarea id="sphinx-console">' . $output . '</textarea>';
 
 		$this->content .= $this->doc->section('Console', implode(LF, $content), 0, 1);
 	}
