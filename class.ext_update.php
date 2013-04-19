@@ -287,12 +287,17 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
 			$out[] = $this->formatWarning('Could not find command tar. TYPO3-related commands were not be installed.');
 		} else {
-			$output = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl('https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3');
+			/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
+			$http = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				'\\TYPO3\\CMS\\Core\\Http\HttpRequest',
+				'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3'
+			);
+			$output = $http->send()->getBody();
 			if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">snapshot</a>#', $output, $matches)) {
 				$commit = $matches[1];
 				$url = 'https://git.typo3.org/Documentation/RestTools.git/snapshot/' . $commit . '.tar.gz';
 				$archiveFilename = $tempPath . 'RestTools.tar.gz';
-				$archiveContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
+				$archiveContent = $http->setUrl($url)->send()->getBody();
 				if ($archiveContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 					$out[] = $this->formatInformation('TYPO3 ReStructuredText Tools (' . $commit . ') have been downloaded.');
 
@@ -322,7 +327,14 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					} else {
 						$out[] = $this->formatError('Could not extract TYPO3 ReStructuredText Tools:' . LF . LF . implode($output, LF));
 					}
+				} else {
+					$out[] = $this->formatError('Could not download ' . htmlspecialchars($url));
 				}
+			} else {
+				$out[] = $this->formatError(
+					'Could not download' .
+					htmlspecialchars('https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3')
+				);
 			}
 		}
 
