@@ -1,5 +1,6 @@
 2013-04-19  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Raise version to 0.1.0
 	* [TASK] Use external template files for blank project
 	* [BUGFIX] #47380: Downloading RestTools fails with curl (thanks to Philipp Gampe)
 	* [FEATURE] #47378: Support official documentation (thanks to Philipp Gampe)
