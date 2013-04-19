@@ -80,9 +80,9 @@ class Tx_Sphinx_Utility_SphinxQuickstart {
 
 		if ($separateSourceBuild) {
 			$directories = array(
-				'source/' . $namePrefixTemplatesStatic . 'static',
-				'source/' . $namePrefixTemplatesStatic . 'templates',
-				'build',
+				'source/' . $namePrefixTemplatesStatic . 'static/',
+				'source/' . $namePrefixTemplatesStatic . 'templates/',
+				'build/',
 			);
 			$files = array(
 				'conf.py' => 'source/conf.py',
@@ -90,9 +90,9 @@ class Tx_Sphinx_Utility_SphinxQuickstart {
 			);
 		} else {
 			$directories = array(
-				$namePrefixTemplatesStatic . 'static',
-				$namePrefixTemplatesStatic . 'templates',
-				'_build',
+				$namePrefixTemplatesStatic . 'static/',
+				$namePrefixTemplatesStatic . 'templates/',
+				'_build/',
 			);
 			$files = array(
 				'conf.py' => 'conf.py',

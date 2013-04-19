@@ -121,20 +121,20 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		$directories = array(
-			'Resources/Private/sphinx',
-			'Resources/Private/sphinx-sources',
+			'Resources/Private/sphinx/',
+			'Resources/Private/sphinx-sources/',
 		);
+		$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey);
 		foreach ($directories as $directory) {
-			$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . $directory;
-			if (!is_dir($path)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
+			if (!is_dir($basePath . $directory)) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($basePath, $directory);
 			}
-			if (is_dir($path)) {
-				if (!is_writable($path)) {
-					$errors[] = 'Directory ' . $directory . ' is read-only.';
+			if (is_dir($basePath . $directory)) {
+				if (!is_writable($basePath . $directory)) {
+					$errors[] = 'Directory ' . $basePath . $directory . ' is read-only.';
 				}
 			} else {
-				$errors[] = 'Cannot create directory ' . $directory . '.';
+				$errors[] = 'Cannot create directory ' . $basePath . $directory . '.';
 			}
 		}
 
@@ -260,7 +260,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$pythonHome = $sphinxPath . $version;
 				$pythonLib = $pythonHome . '/lib/python';
 				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($pythonHome, TRUE);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pythonLib);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pythonLib . '/');
 
 				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 					'export PYTHONPATH=' . escapeshellarg($pythonLib) . ' && ' .
