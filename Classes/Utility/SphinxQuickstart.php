@@ -108,6 +108,7 @@ class Tx_Sphinx_Utility_SphinxQuickstart {
 		$contentObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
 		$markers = array(
+			'PROJECT'            => str_replace(' ', '', $projectName),
 			'PROJECT_NAME'       => $projectName,
 			'AUTHOR'             => $author,
 			'VERSION'            => $version,

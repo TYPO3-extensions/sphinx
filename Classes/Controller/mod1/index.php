@@ -324,6 +324,7 @@ HTML;
 		$disabled = empty($sphinxVersion) ? ' disabled="disabled"' : '';
 		$content[] = '<button type="submit" name="build_html"' . $disabled . '>Build HTML</button>';
 		$content[] = '<button type="submit" name="build_json"' . $disabled . '>Build JSON</button>';
+		$content[] = '<button type="submit" name="build_latex"' . $disabled . '>Build LaTeX</button>';
 		$content[] = '<button type="submit" name="check_links"' . $disabled . '>Check Links</button>';
 
 		$this->content .= $this->doc->section('Build Properties', implode(LF, $content), 0, 1);
@@ -346,6 +347,18 @@ HTML;
 			case isset($_POST['build_json']):
 				try {
 					$output = Tx_Sphinx_Utility_SphinxBuilder::buildJson(
+						$this->project['basePath'],
+						rtrim($this->project['source'], '/'),
+						rtrim($this->project['build'], '/'),
+						$this->project['conf.py']
+					);
+				} catch (\RuntimeException $e) {
+					$output = $e->getMessage();
+				}
+				break;
+			case isset($_POST['build_latex']):
+				try {
+					$output = Tx_Sphinx_Utility_SphinxBuilder::buildLatex(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),

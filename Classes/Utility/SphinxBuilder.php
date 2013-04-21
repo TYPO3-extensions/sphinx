@@ -133,6 +133,51 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	}
 
 	/**
+	 * Builds a Sphinx project as LaTeX.
+	 *
+	 * @param string $basePath
+	 * @param string $sourceDirectory
+	 * @param string $buildDirectory
+	 * @param string $conf
+	 * @return string Output of the build process (if succeeded)
+	 * @throws \RuntimeException if build process failed
+	 */
+	public static function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
+		$sphinxBuilder = self::getSphinxBuilder();
+
+		$basePath = rtrim($basePath, '/') . '/';
+		$sourceDirectory = rtrim($sourceDirectory);
+		$buildDirectory = rtrim($buildDirectory);
+		$paperSize = 'a4';
+
+		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
+			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
+		}
+
+		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
+			$sphinxBuilder . ' -b latex' .								// output format
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .				// directory with configuration file conf.py
+			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
+			' -D latex_paper_size=' . $paperSize .						// paper size for LaTeX output
+			' ' . escapeshellarg($sourceDirectory) .					// source directory
+			' ' . escapeshellarg($buildDirectory . '/latex') .			// build directory
+			' 2>&1';													// redirect errors to STDOUT
+
+		$output = array();
+		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+		$output = implode(LF, $output);
+		if ($ret !== 0) {
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+		}
+
+		$output .= LF;
+		$output .= 'Build finished; the LaTeX files are in ' . $buildDirectory . '/latex.' . LF;
+        $output .= 'Run `make\' in that directory to run these through (pdf)latex.';
+
+		return $output;
+	}
+
+	/**
 	 * Checks links of a Sphinx project.
 	 *
 	 * @param string $basePath
