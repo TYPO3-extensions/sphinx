@@ -14,6 +14,10 @@ ul {
 	list-style       : square inside none;
 }
 
+ul li {
+	margin-top       : .5em;
+}
+
 pre {
 	font-family      : Consolas, monospace;
 	margin-left      : 2em;
@@ -52,7 +56,7 @@ table th {
 	margin-top       : 8px;
 }
 
-.sphinx-project input {
+.sphinx-project input, .sphinx-project select {
 	font-size        : 12px;
 	padding          : 4px 2px;
 	border           : solid 1px #aacfe4;

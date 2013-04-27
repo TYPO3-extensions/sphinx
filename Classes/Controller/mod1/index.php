@@ -157,7 +157,9 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				\Tx_Sphinx_Utility_SphinxQuickstart::createProject(
 					$this->basePath,
 					$_POST['project'],
-					$_POST['author']
+					$_POST['author'],
+					FALSE,
+					$_POST['template']
 				);
 			}
 		} else {
@@ -235,6 +237,18 @@ HTML;
 </pre>
 HTML;
 		$content[] = '</li>';
+		$content[] = '</li>';
+		$content[] = '<li><strong>TYPO3 documentation</strong>';
+		$content[] = <<<HTML
+<pre>
+.
+├── _make
+|   ├── conf.py
+|   └── build
+└── <em>other files</em>
+</pre>
+HTML;
+		$content[] = '</li>';
 		$content[] = '</ul>';
 		$content[] = '</div>';
 
@@ -252,6 +266,12 @@ HTML;
 
 	<label for="tx-sphinx-author">Author</label>
 	<input type="text" id="tx-sphinx-author" name="author" /><br />
+
+	<label for="tx-sphinx-template">Template</label>
+	<select id="tx-sphinx-template" name="template">
+		<option value="BlankProject">Blank</option>
+		<option value="TYPO3DocProject">TYPO3 Documentation</option>
+	</select><br />
 
 	<button type="submit">Create Project</button>
 </div>

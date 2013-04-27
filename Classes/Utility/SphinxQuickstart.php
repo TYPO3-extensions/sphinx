@@ -45,9 +45,10 @@ class Tx_Sphinx_Utility_SphinxQuickstart {
 	 * @param string $projectName
 	 * @param string $author
 	 * @param boolean $separateSourceBuild
+	 * @param string $template
 	 * @return boolean
 	 */
-	public function createProject($pathRoot, $projectName, $author, $separateSourceBuild = FALSE) {
+	public static function createProject($pathRoot, $projectName, $author, $separateSourceBuild = FALSE, $template = 'BlankProject') {
 		$projectName = str_replace("'", ' ', $projectName);
 		$author = str_replace("'", ' ', $author);
 
@@ -74,38 +75,38 @@ class Tx_Sphinx_Utility_SphinxQuickstart {
 		// document is a custom template, you can also set this to another filename.
 		$masterDocument = 'index';
 
-		$pathRoot = rtrim($pathRoot, '/') . '/';
+		$pathRoot = rtrim($pathRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pathRoot);
 
-		if ($separateSourceBuild) {
+		$isTypo3Documentation = is_dir(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/Templates/' . $template . '/_make');
+
+		if ($isTypo3Documentation) {
+			$separateSourceBuild = FALSE;
+			$masterDocument = 'Index';
 			$directories = array(
-				'source/' . $namePrefixTemplatesStatic . 'static/',
-				'source/' . $namePrefixTemplatesStatic . 'templates/',
-				'build/',
+				$namePrefixTemplatesStatic . 'static' . DIRECTORY_SEPARATOR,
+				$namePrefixTemplatesStatic . 'templates' . DIRECTORY_SEPARATOR,
+				'_make/build/',
 			);
-			$files = array(
-				'conf.py' => 'source/conf.py',
-				'master'  => 'source/' . $masterDocument . $sourceFileSuffix,
+			$excludePattern = '_make';
+		} elseif ($separateSourceBuild) {
+			$directories = array(
+				'source/' . $namePrefixTemplatesStatic . 'static' . DIRECTORY_SEPARATOR,
+				'source/' . $namePrefixTemplatesStatic . 'templates' . DIRECTORY_SEPARATOR,
+				'build/',
 			);
 			$excludePattern = '';
 		} else {
 			$directories = array(
-				$namePrefixTemplatesStatic . 'static/',
-				$namePrefixTemplatesStatic . 'templates/',
+				$namePrefixTemplatesStatic . 'static' . DIRECTORY_SEPARATOR,
+				$namePrefixTemplatesStatic . 'templates' . DIRECTORY_SEPARATOR,
 				'_build/',
-			);
-			$files = array(
-				'conf.py' => 'conf.py',
-				'master'  => $masterDocument . $sourceFileSuffix,
 			);
 			$excludePattern = '_build';
 		}
 		foreach ($directories as $directory) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pathRoot . $directory);
 		}
-
-		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
-		$contentObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
 		$markers = array(
 			'PROJECT'            => str_replace(' ', '', $projectName),
@@ -116,21 +117,64 @@ class Tx_Sphinx_Utility_SphinxQuickstart {
 			'CURRENT_DATE'       => date('r'),
 			'YEAR'               => date('Y'),
 			'MASTER_DOCUMENT'    => $masterDocument,
-			'PATH_TEMPLATES'     => $namePrefixTemplatesStatic . 'templates',
-			'PATH_STATIC'        => $namePrefixTemplatesStatic . 'static',
+			'PATH_TEMPLATES'     => ($isTypo3Documentation ? '../' : '') . $namePrefixTemplatesStatic . 'templates',
+			'PATH_STATIC'        => ($isTypo3Documentation ? '../' : '') . $namePrefixTemplatesStatic . 'static',
 			'SOURCE_FILE_SUFFIX' => $sourceFileSuffix,
 			'EXCLUDE_PATTERN'    => $excludePattern,
 		);
 
-		$templateMaster = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/Templates/BlankProject/MasterDocument.rst.tmpl';
-		$template = file_get_contents($templateMaster);
-		$master = $contentObj->substituteMarkerArray($template, $markers, '###|###');
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($pathRoot . $files['master'], $master);
+		$config = array(
+			'template'         => $template,
+			'path'             => $separateSourceBuild ? $pathRoot . 'source' . DIRECTORY_SEPARATOR : $pathRoot,
+			'masterDocument'   => $masterDocument,
+			'sourceFileSuffix' => $sourceFileSuffix,
+			'markers'          => $markers,
+		);
 
-		$templateConfPy = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/Templates/BlankProject/conf.py.tmpl';
-		$template = file_get_contents($templateConfPy);
-		$conf = $contentObj->substituteMarkerArray($template, $markers, '###|###');
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($pathRoot . $files['conf.py'], $conf);
+		return self::createFromTemplate($config);
+	}
+
+	/**
+	 * Instantiates a documentation template.
+	 *
+	 * @param array $config
+	 * @return boolean
+	 * @throws RuntimeException
+	 */
+	protected static function createFromTemplate(array $config) {
+		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
+		$contentObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+
+		// Recursively instantiate template files
+		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/Templates/' . $config['template'] . '/';
+		if (!is_dir($source)) {
+			throw new \RuntimeException('Template directory was not found: ' . $source, 1367044890);
+		}
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($source,
+			RecursiveDirectoryIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::SELF_FIRST
+		);
+		foreach ($iterator as $item) {
+			if ($item->isDir()) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($config['path'] . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+			} else {
+				if (substr($item, -5) === '.tmpl') {
+					$targetSubPathName = substr($iterator->getSubPathName(), 0, -5);
+					if (substr($targetSubPathName, -18) === 'MasterDocument.rst') {
+						$targetSubPathName = substr($targetSubPathName, 0, -18) . $config['masterDocument'] . $config['sourceFileSuffix'];
+					}
+					$contents = file_get_contents($item);
+					$contents = $contentObj->substituteMarkerArray($contents, $config['markers'], '###|###');
+					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($config['path'] . DIRECTORY_SEPARATOR . $targetSubPathName, $contents);
+				} elseif (substr($item, -4) === '.rst') {
+					$targetSubPathName = substr($iterator->getSubPathName(), 0, -4) . $config['sourceFileSuffix'];
+					copy($item, $config['path'] . DIRECTORY_SEPARATOR . $targetSubPathName);
+				} else {
+					copy($item, $config['path'] . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+				}
+			}
+		}
 
 		return TRUE;
 	}

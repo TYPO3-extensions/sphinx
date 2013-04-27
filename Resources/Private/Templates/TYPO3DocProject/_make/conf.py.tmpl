@@ -25,7 +25,7 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = []
+extensions = ['sphinx.ext.intersphinx']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['###PATH_TEMPLATES###']
@@ -65,6 +65,7 @@ release = '###RELEASE###'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = ['###EXCLUDE_PATTERN###']
+exclude_trees = ['###EXCLUDE_PATTERN###']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -100,6 +101,13 @@ html_theme = 'default'
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
+
+try:
+    import t3sphinx
+    html_theme_path.insert(0, t3sphinx.themes_dir)
+    html_theme = 'typo3sphinx'
+except:
+    html_theme = 'default'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -242,3 +250,27 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+
+# Example configuration for intersphinx: refer to the TYPO3 standard documentation.
+intersphinx_mapping = {
+    't3extbasebook': ('http://docs.typo3.org/typo3cms/ExtbaseFluidBook/', None),
+    't3l10n':        ('http://docs.typo3.org/typo3cms/FrontendLocalizationGuide/', None),
+    't3install':     ('http://docs.typo3.org/typo3cms/InstallationGuide/', None),
+    't3maintenance': ('http://docs.typo3.org/typo3cms/MaintenanceGuide/', None),
+    't3security':    ('http://docs.typo3.org/typo3cms/SecurityGuide/', None),
+    't3cgl':         ('http://docs.typo3.org/typo3cms/CodingGuidelinesReference/', None),
+    't3api':         ('http://docs.typo3.org/typo3cms/CoreApiReference/', None),
+    't3fal':         ('http://docs.typo3.org/typo3cms/FileAbstractionLayerReference/', None),
+    't3inside':      ('http://docs.typo3.org/typo3cms/InsideTypo3Reference/', None),
+    't3skinning':    ('http://docs.typo3.org/typo3cms/SkinningReference/', None),
+    't3tca':         ('http://docs.typo3.org/typo3cms/TCAReference/', None),
+    't3tsconfig':    ('http://docs.typo3.org/typo3cms/TSconfigReference/', None),
+    't3tsref':       ('http://docs.typo3.org/typo3cms/TyposcriptReference/', None),
+    't3tssyntax':    ('http://docs.typo3.org/typo3cms/TyposcriptSyntaxReference/', None),
+    't3services':    ('http://docs.typo3.org/typo3cms/Typo3ServicesReference/', None),
+    't3editors':     ('http://docs.typo3.org/typo3cms/EditorsTutorial/', None),
+    't3start':       ('http://docs.typo3.org/typo3cms/GettingStartedTutorial/', None),
+    't3templating':  ('http://docs.typo3.org/typo3cms/TemplatingTutorial/', None),
+    't3ts45':        ('http://docs.typo3.org/typo3cms/TyposcriptIn45MinutesTutorial/', None)
+}
