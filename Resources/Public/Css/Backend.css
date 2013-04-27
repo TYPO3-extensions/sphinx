@@ -10,6 +10,14 @@
 	overflow         : scroll;
 }
 
+#sphinx-console a {
+	color            : #f29226;
+}
+
+#sphinx-console a:hover {
+	text-decoration  : underline;
+}
+
 p {
 	margin-top       : 1em;
 }

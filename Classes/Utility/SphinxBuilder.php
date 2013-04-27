@@ -95,11 +95,15 @@ class SphinxBuilder {
 		}
 
 		$output .= LF;
+		$link = $buildPath;
 		if (self::$htmlConsole) {
-			$output .= 'Build finished. The HTML pages are in ' . $buildPath . '.';
-		} else {
-			$output .= 'Build finished. The HTML pages are in ' . $buildPath . '.';
+			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
+			if ($properties['master_doc']) {
+				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/html/' . $properties['master_doc'] . '.html';
+				$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
+			}
 		}
+		$output .= 'Build finished. The HTML pages are in ' . $link . '.';
 
 		return $output;
 	}
@@ -146,7 +150,15 @@ class SphinxBuilder {
 		}
 
 		$output .= LF;
-		$output .= 'Build finished; now you can process the JSON files.';
+		$link = $buildPath;
+		if (self::$htmlConsole) {
+			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
+			if ($properties['master_doc']) {
+				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/json/';
+				$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
+			}
+		}
+		$output .= 'Build finished; now you can process the JSON files in ' . $link . '.';
 
 		return $output;
 	}
@@ -195,8 +207,16 @@ class SphinxBuilder {
 		}
 
 		$output .= LF;
-		$output .= 'Build finished; the LaTeX files are in ' . $buildPath . '.' . LF;
-        $output .= 'Run `make\' in that directory to run these through (pdf)latex.';
+		$link = $buildPath;
+		if (self::$htmlConsole) {
+			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
+			if ($properties['master_doc']) {
+				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/latex/';
+				$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
+			}
+		}
+		$output .= 'Build finished; the LaTeX files are in ' . $link . '.' . LF;
+		$output .= 'Run `make\' in that directory to run these through (pdf)latex.';
 
 		return $output;
 	}
@@ -243,8 +263,16 @@ class SphinxBuilder {
 		}
 
 		$output .= LF;
+		$link = $buildPath . '/output.txt';
+		if (self::$htmlConsole) {
+			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
+			if ($properties['master_doc']) {
+				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/linkcheck/output.txt';
+				$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '/output.txt</a>';
+			}
+		}
 		$output .= 'Link check complete; look for any errors in the above output ';
-		$output .= 'or in ' . $buildPath . DIRECTORY_SEPARATOR . 'output.txt.';
+		$output .= 'or in ' . $link . '.';
 
 		return $output;
 	}
