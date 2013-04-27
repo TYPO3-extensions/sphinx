@@ -2,7 +2,12 @@
 	background-color : #000;
 	color            : #fff;
 	height           : 50em;
-	width            : 100%;
+	width            : 98%;
+	padding          : 5px;
+	white-space      : pre;
+	font-family      : Consolas, monospace;
+	font-size        : 105%;
+	overflow         : scroll;
 }
 
 p {

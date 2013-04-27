@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Sphinx\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,7 @@
  ***************************************************************/
 
 $GLOBALS['LANG']->includeLLFile('EXT:sphinx/Resources/Private/Language/locallang.xlf');
-$GLOBALS['BE_USER']->modAccess($MCONF, 1);    // This checks permissions and exits if the users has no permission for entry.
+$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissions and exits if the users has no permission for entry.
 
 /**
  * Module 'Sphinx Console' for the 'sphinx' extension.
@@ -36,7 +38,7 @@ $GLOBALS['BE_USER']->modAccess($MCONF, 1);    // This checks permissions and exi
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/** @var \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
 	public $basicFF;
@@ -154,7 +156,7 @@ class Tx_Sphinx_Controller_Mod1 extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$this->basePath = PATH_site . $this->folderObject->getPublicUrl();
 
 			if ($_POST['project']) {
-				\Tx_Sphinx_Utility_SphinxQuickstart::createProject(
+				\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
 					$this->basePath,
 					$_POST['project'],
 					$_POST['author'],
@@ -313,7 +315,7 @@ HTML;
 		$this->content .= $this->doc->section('Project Properties', implode(LF, $content), 0, 1);
 
 		// Build properties
-		$sphinxVersion = Tx_Sphinx_Utility_SphinxBuilder::getSphinxVersion();
+		$sphinxVersion = \Causal\Sphinx\Utility\SphinxBuilder::getSphinxVersion();
 
 		$content = array();
 		$content[] = '<table>';
@@ -354,7 +356,7 @@ HTML;
 		switch (TRUE) {
 			case isset($_POST['build_html']):
 				try {
-					$output = Tx_Sphinx_Utility_SphinxBuilder::buildHtml(
+					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildHtml(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
@@ -366,7 +368,7 @@ HTML;
 				break;
 			case isset($_POST['build_json']):
 				try {
-					$output = Tx_Sphinx_Utility_SphinxBuilder::buildJson(
+					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildJson(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
@@ -378,7 +380,7 @@ HTML;
 				break;
 			case isset($_POST['build_latex']):
 				try {
-					$output = Tx_Sphinx_Utility_SphinxBuilder::buildLatex(
+					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildLatex(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
@@ -390,7 +392,7 @@ HTML;
 				break;
 			case isset($_POST['check_links']):
 				try {
-					$output = Tx_Sphinx_Utility_SphinxBuilder::checkLinks(
+					$output = \Causal\Sphinx\Utility\SphinxBuilder::checkLinks(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
@@ -406,7 +408,7 @@ HTML;
 		}
 
 		$content = array();
-		$content[] = '<textarea id="sphinx-console">' . $output . '</textarea>';
+		$content[] = '<div id="sphinx-console">' . $output . '</div>';
 
 		$this->content .= $this->doc->section('Console', implode(LF, $content), 0, 1);
 	}
@@ -443,15 +445,7 @@ HTML;
 		}
 
 		if ($this->project['initialized']) {
-			$conf = file_get_contents($this->basePath . $this->project['conf.py']);
-			$properties = array();
-			preg_replace_callback(
-				'/^\s*([^#].*?)\s*=\s*u?\'(.*)\'/m',
-				function ($matches) use (&$properties) {
-					$properties[$matches[1]] = $matches[2];
-				},
-				$conf
-			);
+			$properties = \Causal\Sphinx\Utility\Configuration::load($this->basePath . $this->project['conf.py']);
 			$this->project['properties'] = $properties;
 		}
 	}
@@ -485,8 +479,8 @@ HTML;
 }
 
 // Make instance:
-/** @var $SOBE Tx_Sphinx_Controller_Mod1 */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Sphinx_Controller_Mod1');
+/** @var $SOBE \Causal\Sphinx\Controller\ConsoleController */
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\\Sphinx\\Controller\\ConsoleController');
 $SOBE->init();
 
 // Include files?

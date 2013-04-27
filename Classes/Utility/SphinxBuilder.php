@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Sphinx\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,10 +35,13 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class Tx_Sphinx_Utility_SphinxBuilder {
+class SphinxBuilder {
 
 	/** @var string */
 	protected static $extKey = 'sphinx';
+
+	/** @var boolean */
+	public static $htmlConsole = TRUE;
 
 	/**
 	 * Returns the version of Sphinx used for building documentation.
@@ -90,7 +95,11 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 		}
 
 		$output .= LF;
-		$output .= 'Build finished. The HTML pages are in ' . $buildPath . '.';
+		if (self::$htmlConsole) {
+			$output .= 'Build finished. The HTML pages are in ' . $buildPath . '.';
+		} else {
+			$output .= 'Build finished. The HTML pages are in ' . $buildPath . '.';
+		}
 
 		return $output;
 	}

@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Sphinx\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class Tx_Sphinx_Utility_SphinxQuickstart {
+class SphinxQuickstart {
 
 	/** @var string */
 	protected static $extKey = 'sphinx';
@@ -139,7 +141,7 @@ class Tx_Sphinx_Utility_SphinxQuickstart {
 	 *
 	 * @param array $config
 	 * @return boolean
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected static function createFromTemplate(array $config) {
 		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
@@ -150,10 +152,10 @@ class Tx_Sphinx_Utility_SphinxQuickstart {
 		if (!is_dir($source)) {
 			throw new \RuntimeException('Template directory was not found: ' . $source, 1367044890);
 		}
-		$iterator = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator($source,
-			RecursiveDirectoryIterator::SKIP_DOTS),
-			RecursiveIteratorIterator::SELF_FIRST
+		$iterator = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator($source,
+			\RecursiveDirectoryIterator::SKIP_DOTS),
+			\RecursiveIteratorIterator::SELF_FIRST
 		);
 		foreach ($iterator as $item) {
 			if ($item->isDir()) {

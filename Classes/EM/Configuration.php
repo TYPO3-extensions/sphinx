@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Sphinx\EM;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,7 +35,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html
  * @version     SVN: $Id$
  */
-class Tx_Sphinx_EM_Configuration {
+class Configuration {
 
 	/** @var string */
 	protected $extKey = 'sphinx';
@@ -64,7 +66,7 @@ class Tx_Sphinx_EM_Configuration {
 			$out[] = '<div style="margin-top:1ex">';
 			$checked = $version === $selectedVersion ? ' checked="checked"' : '';
 			$out[] = '<input type="radio" id="sphinx_version_' . $i . '" name="sphinx_version" value="' . $version . '"' . $checked . ' onclick="toggleSphinxVersion();" />';
-			$out[] = '<label for="sphinx_version_' . $i . '">' . $version . '</label>';
+			$out[] = '<label for="sphinx_version_' . $i . '" style="display:inline">' . $version . '</label>';
 			$out[] = '</div>';
 			$i++;
 		}
