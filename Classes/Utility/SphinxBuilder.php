@@ -58,24 +58,29 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
+	public static function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
-		$basePath = rtrim($basePath, '/') . '/';
+		if (empty($conf)) {
+			$conf = '.' . DIRECTORY_SEPARATOR . 'conf.py';
+		}
+		$basePath = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 
 		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
-			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
+			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
 		}
 
+		$referencesPath = $buildDirectory . DIRECTORY_SEPARATOR . 'doctrees';
+		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'html';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			$sphinxBuilder . ' -b html' .									// output format
-			' -c ' . escapeshellarg(substr($conf, 0, -7)) .					// directory with configuration file conf.py
-			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .		// references
-				' ' . escapeshellarg($sourceDirectory) .					// source directory
-				' ' . escapeshellarg($buildDirectory . '/html') .			// build directory
-				' 2>&1';													// redirect errors to STDOUT
+			$sphinxBuilder . ' -b html' .					// output format
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . escapeshellarg($referencesPath) .		// references
+				' ' . escapeshellarg($sourceDirectory) .	// source directory
+				' ' . escapeshellarg($buildPath) .			// build directory
+				' 2>&1';									// redirect errors to STDOUT
 
 		$output = array();
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
@@ -85,7 +90,7 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 		}
 
 		$output .= LF;
-		$output .= 'Build finished. The HTML pages are in ' . $buildDirectory . '/html.';
+		$output .= 'Build finished. The HTML pages are in ' . $buildPath . '.';
 
 		return $output;
 	}
@@ -100,24 +105,29 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
+	public static function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
-		$basePath = rtrim($basePath, '/') . '/';
+		if (empty($conf)) {
+			$conf = '.' . DIRECTORY_SEPARATOR . 'conf.py';
+		}
+		$basePath = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 
 		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
-			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
+			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
 		}
 
+		$referencesPath = $buildDirectory . DIRECTORY_SEPARATOR . 'doctrees';
+		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'json';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			$sphinxBuilder . ' -b json' .								// output format
-			' -c ' . escapeshellarg(substr($conf, 0, -7)) .				// directory with configuration file conf.py
-			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
-			' ' . escapeshellarg($sourceDirectory) .					// source directory
-			' ' . escapeshellarg($buildDirectory . '/json') .			// build directory
-			' 2>&1';													// redirect errors to STDOUT
+			$sphinxBuilder . ' -b json' .					// output format
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . escapeshellarg($referencesPath) .		// references
+			' ' . escapeshellarg($sourceDirectory) .		// source directory
+			' ' . escapeshellarg($buildPath) .				// build directory
+			' 2>&1';										// redirect errors to STDOUT
 
 		$output = array();
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
@@ -142,26 +152,31 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
+	public static function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
-		$basePath = rtrim($basePath, '/') . '/';
+		if (empty($conf)) {
+			$conf = '.' . DIRECTORY_SEPARATOR . 'conf.py';
+		}
+		$basePath = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 		$paperSize = 'a4';
 
 		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
-			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
+			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
 		}
 
+		$referencesPath = $buildDirectory . DIRECTORY_SEPARATOR . 'doctrees';
+		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			$sphinxBuilder . ' -b latex' .								// output format
-			' -c ' . escapeshellarg(substr($conf, 0, -7)) .				// directory with configuration file conf.py
-			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
-			' -D latex_paper_size=' . $paperSize .						// paper size for LaTeX output
-			' ' . escapeshellarg($sourceDirectory) .					// source directory
-			' ' . escapeshellarg($buildDirectory . '/latex') .			// build directory
-			' 2>&1';													// redirect errors to STDOUT
+			$sphinxBuilder . ' -b latex' .					// output format
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . escapeshellarg($referencesPath) .		// references
+			' -D latex_paper_size=' . $paperSize .			// paper size for LaTeX output
+			' ' . escapeshellarg($sourceDirectory) .		// source directory
+			' ' . escapeshellarg($buildPath) .				// build directory
+			' 2>&1';										// redirect errors to STDOUT
 
 		$output = array();
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
@@ -171,7 +186,7 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 		}
 
 		$output .= LF;
-		$output .= 'Build finished; the LaTeX files are in ' . $buildDirectory . '/latex.' . LF;
+		$output .= 'Build finished; the LaTeX files are in ' . $buildPath . '.' . LF;
         $output .= 'Run `make\' in that directory to run these through (pdf)latex.';
 
 		return $output;
@@ -187,24 +202,29 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 	 * @return string Output of the check process (if succeeded)
 	 * @throws \RuntimeException if check process failed
 	 */
-	public static function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = './conf.py') {
+	public static function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
-		$basePath = rtrim($basePath, '/') . '/';
+		if (empty($conf)) {
+			$conf = '.' . DIRECTORY_SEPARATOR . 'conf.py';
+		}
+		$basePath = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 
 		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
-			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . '/', 1366210585);
+			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
 		}
 
+		$referencesPath = $buildDirectory . DIRECTORY_SEPARATOR . 'doctrees';
+		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'linkcheck';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			$sphinxBuilder . ' -b linkcheck' .							// output format
-			' -c ' . escapeshellarg(substr($conf, 0, -7)) .				// directory with configuration file conf.py
-			' -d ' . escapeshellarg($buildDirectory . '/doctrees') .	// references
-			' ' . escapeshellarg($sourceDirectory) .					// source directory
-			' ' . escapeshellarg($buildDirectory . '/linkcheck') .		// build directory
-			' 2>&1';													// redirect errors to STDOUT
+			$sphinxBuilder . ' -b linkcheck' .				// output format
+			' -c ' . escapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . escapeshellarg($referencesPath) .		// references
+			' ' . escapeshellarg($sourceDirectory) .		// source directory
+			' ' . escapeshellarg($buildPath) .				// build directory
+			' 2>&1';										// redirect errors to STDOUT
 
 		$output = array();
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
@@ -215,7 +235,7 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 
 		$output .= LF;
 		$output .= 'Link check complete; look for any errors in the above output ';
-		$output .= 'or in ' . $buildDirectory . '/linkcheck/output.txt.';
+		$output .= 'or in ' . $buildPath . DIRECTORY_SEPARATOR . 'output.txt.';
 
 		return $output;
 	}
@@ -237,7 +257,8 @@ class Tx_Sphinx_Utility_SphinxBuilder {
 			throw new \RuntimeException('Sphinx ' . $sphinxVersion . ' cannot be executed.', 1366280021);
 		}
 
-		$cmd = 'export PYTHONPATH=' . escapeshellarg($sphinxPath . 'lib/python') . ' && ' . $sphinxBuilder;
+		$pythonPath = $sphinxPath . 'lib' . DIRECTORY_SEPARATOR . 'python';
+		$cmd = 'export PYTHONPATH=' . escapeshellarg($pythonPath) . ' && ' . $sphinxBuilder;
 		return $cmd;
 	}
 
