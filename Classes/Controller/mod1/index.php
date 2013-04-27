@@ -270,7 +270,7 @@ HTML;
 	<label for="tx-sphinx-template">Template</label>
 	<select id="tx-sphinx-template" name="template">
 		<option value="BlankProject">Blank</option>
-		<option value="TYPO3DocProject">TYPO3 Documentation</option>
+		<option value="TYPO3DocProject" selected="selected">TYPO3 Documentation</option>
 	</select><br />
 
 	<button type="submit">Create Project</button>

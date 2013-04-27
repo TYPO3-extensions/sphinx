@@ -1,5 +1,6 @@
 2013-04-27  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Add samples of cross-link references
 	* [FEATURE] Allow TYPO3 documentation to be created with proper directory structure
 	* [TASK] Use platform-dependent directory separator
 
