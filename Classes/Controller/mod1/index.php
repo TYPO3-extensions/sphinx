@@ -243,8 +243,8 @@ HTML;
 <pre>
 .
 ├── _make
-|   ├── conf.py
-|   └── build
+|   ├── build
+|   └── conf.py
 └── <em>other files</em>
 </pre>
 HTML;
