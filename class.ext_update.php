@@ -268,7 +268,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$output = array();
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 				if ($ret === 0) {
-					$out[] = $this->formatInformation('Sphinx ' . $version . ' has successfully been installed.');
+					$out[] = $this->formatInformation('Sphinx ' . $version . ' has been successfully installed.');
 				} else {
 					$out[] = $this->formatError('Could not install Sphinx ' . $version . ':' . LF . LF . implode($output, LF));
 					// Cannot go further
@@ -285,7 +285,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// STEP 3a: Download TYPO3 ReST Tools as tar.gz
 		//
 		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
-			$out[] = $this->formatWarning('Could not find command tar. TYPO3-related commands were not be installed.');
+			$out[] = $this->formatWarning('Could not find command tar. TYPO3-related commands were not installed.');
 		} else {
 			/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
 			$http = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
@@ -355,7 +355,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$output = array();
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 				if ($ret === 0) {
-					$out[] = $this->formatInformation('TYPO3 RestructuredText Tools have successfully been installed.');
+					$out[] = $this->formatInformation('TYPO3 RestructuredText Tools have been successfully installed.');
 				} else {
 					$out[] = $this->formatError('Could not install TYPO3 RestructuredText Tools:' . LF . LF . implode($output, LF));
 				}
@@ -363,6 +363,74 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$out[] = $this->formatError('Could not build TYPO3 RestructuredText Tools:' . LF . LF . implode($output, LF));
 			}
 		}
+
+		// Step 5a: Download PyYAML
+		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
+			$out[] = $this->formatWarning('Could not find command tar. PyYAML was not installed.');
+		} else {
+			$url = 'http://pyyaml.org/download/pyyaml/PyYAML-3.10.tar.gz';
+			$archiveFilename = $tempPath . 'PyYAML-3.10.tar.gz';
+			$archiveContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
+			if ($archiveContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+				$out[] = $this->formatInformation('PyYAML 3.10 has been downloaded.');
+
+				$targetPath = $sphinxSourcesPath . 'PyYAML';
+				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
+
+				//
+				// STEP 5b: Unpack PyYAML archive
+				//
+				$tar = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar');
+				$cmd = $tar . ' xzf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath);
+				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+				if ($ret === 0) {
+					$out[] = $this->formatInformation('PyYAML has been unpacked.');
+					// When unpacking the sources, content is located under a directory "PyYAML-3.10"
+					$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
+					if ($directories[0] === 'PyYAML-3.10') {
+						$fromDirectory = escapeshellarg($targetPath . '/' . $directories[0]);
+						$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/');
+						\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath . '/' . $directories[0], TRUE);
+
+						// Remove tar.gz archive as we don't need it anymore
+						@unlink($archiveFilename);
+					}
+				} else {
+					$out[] = $this->formatError('Could not extract TYPO3 ReStructuredText Tools:' . LF . LF . implode($output, LF));
+				}
+			} else {
+				$out[] = $this->formatError('Could not download ' . htmlspecialchars($url));
+			}
+		}
+
+		//
+		// STEP 6: Build PyYAML locally
+		//
+		$setupFile = $sphinxSourcesPath . 'PyYAML/setup.py';
+		if (is_file($setupFile)) {
+			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
+			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+				$python . ' setup.py build';
+			$output = array();
+			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+			if ($ret === 0) {
+				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+					'export PYTHONPATH=' . escapeshellarg($pythonLib) . ' && ' .
+					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
+				$output = array();
+				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+				if ($ret === 0) {
+					$out[] = $this->formatInformation('PyYAML has been successfully installed.');
+				} else {
+					$out[] = $this->formatError('Could not install PyYAML:' . LF . LF . implode($output, LF));
+				}
+			} else {
+				$out[] = $this->formatError('Could not build PyYAML:' . LF . LF . implode($output, LF));
+			}
+		}
+
 	}
 
 	/**
