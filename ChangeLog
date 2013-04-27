@@ -1,5 +1,6 @@
 2013-04-27  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] #47655: Hide obsolete versions of Sphinx
 	* [TASK] Wrap long lines in console output
 	* [TASK] Let build output be linked in a new browser window
 	* [!!!][TASK] Use namespaces
