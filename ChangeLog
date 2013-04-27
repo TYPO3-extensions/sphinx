@@ -1,5 +1,6 @@
 2013-04-27  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Raise version to 0.2.0
 	* [TASK] Install PyYAML to compile TYPO3 documentation
 	* [TASK] Add samples of cross-link references
 	* [FEATURE] Allow TYPO3 documentation to be created with proper directory structure
