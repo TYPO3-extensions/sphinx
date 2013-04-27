@@ -97,6 +97,7 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath;
 		if (self::$htmlConsole) {
+			$output = self::colorize($output);
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['master_doc']) {
 				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/html/' . $properties['master_doc'] . '.html';
@@ -152,6 +153,7 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath;
 		if (self::$htmlConsole) {
+			$output = self::colorize($output);
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['master_doc']) {
 				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/json/';
@@ -209,6 +211,7 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath;
 		if (self::$htmlConsole) {
+			$output = self::colorize($output);
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['master_doc']) {
 				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/latex/';
@@ -265,6 +268,7 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath . '/output.txt';
 		if (self::$htmlConsole) {
+			$output = self::colorize($output);
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['master_doc']) {
 				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/linkcheck/output.txt';
@@ -295,8 +299,52 @@ class SphinxBuilder {
 		}
 
 		$pythonPath = $sphinxPath . 'lib' . DIRECTORY_SEPARATOR . 'python';
-		$cmd = 'export PYTHONPATH=' . escapeshellarg($pythonPath) . ' && ' . $sphinxBuilder;
+		$exports = array(
+			'export PYTHONPATH=' . escapeshellarg($pythonPath)
+		);
+		if (self::$htmlConsole) {
+			$exports[] = 'export COLORTERM=1';
+		}
+		$cmd = implode(' && ', $exports) . ' && ' . $sphinxBuilder;
 		return $cmd;
+	}
+
+	/**
+	 * Colorizes a shell output using HTML markers.
+	 *
+	 * @param string $output
+	 * @return string
+	 */
+	protected function colorize($output) {
+		# Colors
+		$ESC_SEQ     = '/[\x00-\x1F\x7F]\[';
+		$COL_RESET   = $ESC_SEQ . '39;49;00m/';
+		$COL_BLACK   = $ESC_SEQ . '30(;01)?m/';
+		$COL_RED     = $ESC_SEQ . '31(;01)?m/';
+		$COL_GREEN   = $ESC_SEQ . '32(;01)?m/';
+		$COL_YELLOW  = $ESC_SEQ . '33(;01)?m/';
+		$COL_BLUE    = $ESC_SEQ . '34(;01)?m/';
+		$COL_MAGENTA = $ESC_SEQ . '35(;01)?m/';
+		$COL_CYAN    = $ESC_SEQ . '36(;01)?m/';
+		$COL_GRAY    = $ESC_SEQ . '37(;01)?m/';
+
+		$mapping = array(
+			$COL_BLACK   => 'color:#000000',
+			$COL_RED     => 'color:#dc143c',
+			$COL_GREEN   => 'color:#228B22',
+			$COL_YELLOW  => 'color:#ffd700',
+			$COL_BLUE    => 'color:#6495ed',
+			$COL_MAGENTA => 'color:#ba55d3',
+			$COL_CYAN    => 'color:#00ffff',
+			$COL_GRAY    => 'color:#a9a9a9',
+		);
+		$output = preg_replace($ESC_SEQ . '01m/', '', $output);
+		foreach ($mapping as $code => $css) {
+			$output = preg_replace($code, '<span style="' . $css . '">', $output);
+		}
+		$output = preg_replace($COL_RESET, '</span>', $output);
+
+		return $output;
 	}
 
 }

@@ -236,6 +236,20 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 					// Remove zip file as we don't need it anymore
 					@unlink($zipFilename);
+
+					//
+					// STEP 1c: Patch Sphinx to let us get colored output
+					//
+					$sourceFilename = $targetPath . '/sphinx/util/console.py';
+					if (file_exists($sourceFilename)) {
+						$contents = file_get_contents($sourceFilename);
+						$contents = str_replace(
+							'def color_terminal():',
+							"def color_terminal():\n    if 'COLORTERM' in os.environ:\n        return True",
+							$contents
+						);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($sourceFilename, $contents);
+					}
 				}
 			} else {
 				$out[] = $this->formatError('Could not extract Sphinx ' . $version . ':' . LF . $cmd);
