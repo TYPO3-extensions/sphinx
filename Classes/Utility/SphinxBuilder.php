@@ -90,6 +90,9 @@ class SphinxBuilder {
 		$output = array();
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 		$output = implode(LF, $output);
+		if (self::$htmlConsole) {
+			$output = self::colorize($output);
+		}
 		if ($ret !== 0) {
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
@@ -97,7 +100,6 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath;
 		if (self::$htmlConsole) {
-			$output = self::colorize($output);
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['master_doc']) {
 				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/html/' . $properties['master_doc'] . '.html';
@@ -146,6 +148,9 @@ class SphinxBuilder {
 		$output = array();
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 		$output = implode(LF, $output);
+		if (self::$htmlConsole) {
+			$output = self::colorize($output);
+		}
 		if ($ret !== 0) {
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
@@ -153,7 +158,6 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath;
 		if (self::$htmlConsole) {
-			$output = self::colorize($output);
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['master_doc']) {
 				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/json/';
@@ -204,6 +208,9 @@ class SphinxBuilder {
 		$output = array();
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 		$output = implode(LF, $output);
+		if (self::$htmlConsole) {
+			$output = self::colorize($output);
+		}
 		if ($ret !== 0) {
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
@@ -211,7 +218,6 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath;
 		if (self::$htmlConsole) {
-			$output = self::colorize($output);
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['master_doc']) {
 				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/latex/';
@@ -261,6 +267,9 @@ class SphinxBuilder {
 		$output = array();
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
 		$output = implode(LF, $output);
+		if (self::$htmlConsole) {
+			$output = self::colorize($output);
+		}
 		if ($ret !== 0) {
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
@@ -268,7 +277,6 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath . '/output.txt';
 		if (self::$htmlConsole) {
-			$output = self::colorize($output);
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['master_doc']) {
 				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/linkcheck/output.txt';
@@ -316,9 +324,8 @@ class SphinxBuilder {
 	 * @return string
 	 */
 	protected function colorize($output) {
-		# Colors
+		# Shell colors
 		$ESC_SEQ     = '/[\x00-\x1F\x7F]\[';
-		$COL_RESET   = $ESC_SEQ . '39;49;00m/';
 		$COL_BLACK   = $ESC_SEQ . '30(;01)?m/';
 		$COL_RED     = $ESC_SEQ . '31(;01)?m/';
 		$COL_GREEN   = $ESC_SEQ . '32(;01)?m/';
@@ -327,22 +334,23 @@ class SphinxBuilder {
 		$COL_MAGENTA = $ESC_SEQ . '35(;01)?m/';
 		$COL_CYAN    = $ESC_SEQ . '36(;01)?m/';
 		$COL_GRAY    = $ESC_SEQ . '37(;01)?m/';
+		$COL_RESET   = $ESC_SEQ . '39;49;00m/';
 
 		$mapping = array(
-			$COL_BLACK   => 'color:#000000',
-			$COL_RED     => 'color:#dc143c',
-			$COL_GREEN   => 'color:#228B22',
-			$COL_YELLOW  => 'color:#ffd700',
-			$COL_BLUE    => 'color:#6495ed',
-			$COL_MAGENTA => 'color:#ba55d3',
-			$COL_CYAN    => 'color:#00ffff',
-			$COL_GRAY    => 'color:#a9a9a9',
+			$COL_BLACK   => '<span style="color:#000000">',
+			$COL_RED     => '<span style="color:#dc143c">',
+			$COL_GREEN   => '<span style="color:#228B22">',
+			$COL_YELLOW  => '<span style="color:#ffd700">',
+			$COL_BLUE    => '<span style="color:#6495ed">',
+			$COL_MAGENTA => '<span style="color:#ba55d3">',
+			$COL_CYAN    => '<span style="color:#00ffff">',
+			$COL_GRAY    => '<span style="color:#a9a9a9">',
+			$COL_RESET   => '</span>',
 		);
 		$output = preg_replace($ESC_SEQ . '01m/', '', $output);
-		foreach ($mapping as $code => $css) {
-			$output = preg_replace($code, '<span style="' . $css . '">', $output);
+		foreach ($mapping as $pattern => $html) {
+			$output = preg_replace($pattern, $html, $output);
 		}
-		$output = preg_replace($COL_RESET, '</span>', $output);
 
 		return $output;
 	}
