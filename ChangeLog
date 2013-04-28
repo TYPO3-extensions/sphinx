@@ -1,5 +1,6 @@
 2013-04-28  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] #47659: Create a Makefile
 	* [FEATURE] #47647: Colorize console output
 
 2013-04-27  Xavier Perseguers  <xavier@causal.ch>
