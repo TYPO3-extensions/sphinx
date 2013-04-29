@@ -98,6 +98,7 @@ table th {
 .sphinx-build button.sphinx-html,
 .sphinx-build button.sphinx-json,
 .sphinx-build button.sphinx-latex,
+.sphinx-build button.sphinx-pdf,
 .sphinx-build button.sphinx-links {
 	background-repeat: no-repeat;
 	background-position: 36px 2px;
@@ -115,6 +116,10 @@ table th {
 
 .sphinx-build button.sphinx-latex {
 	background-image : url(../Images/file_extension_tex.png);
+}
+
+.sphinx-build button.sphinx-pdf {
+	background-image : url(../Images/file_extension_pdf.png);
 }
 
 .sphinx-build button.sphinx-links {

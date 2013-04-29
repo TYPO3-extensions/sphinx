@@ -348,6 +348,9 @@ HTML;
 		$content[] = '<button type="submit" name="build_html" class="sphinx-html"' . $disabled . '>Build HTML</button>';
 		$content[] = '<button type="submit" name="build_json" class="sphinx-json"' . $disabled . '>Build JSON</button>';
 		$content[] = '<button type="submit" name="build_latex" class="sphinx-latex"' . $disabled . '>Build LaTeX</button>';
+		if (\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex')) {
+			$content[] = '<button type="submit" name="build_pdf" class="sphinx-pdf"' . $disabled . '>Build PDF</button>';
+		}
 		$content[] = '<button type="submit" name="check_links" class="sphinx-links"' . $disabled . '>Check Links</button>';
 		$content[] = '</div>';
 
@@ -383,6 +386,18 @@ HTML;
 			case isset($_POST['build_latex']):
 				try {
 					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildLatex(
+						$this->project['basePath'],
+						rtrim($this->project['source'], '/'),
+						rtrim($this->project['build'], '/'),
+						$this->project['conf.py']
+					);
+				} catch (\RuntimeException $e) {
+					$output = $e->getMessage();
+				}
+				break;
+			case isset($_POST['build_pdf']):
+				try {
+					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildPdf(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),

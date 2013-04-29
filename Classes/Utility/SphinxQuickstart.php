@@ -85,6 +85,7 @@ class SphinxQuickstart {
 		if ($isTypo3Documentation) {
 			$separateSourceBuild = FALSE;
 			$masterDocument = 'Index';
+			$buildDirectory = 'build';
 			$directories = array(
 				$namePrefixTemplatesStatic . 'static' . DIRECTORY_SEPARATOR,
 				$namePrefixTemplatesStatic . 'templates' . DIRECTORY_SEPARATOR,
@@ -92,6 +93,7 @@ class SphinxQuickstart {
 			);
 			$excludePattern = '_make';
 		} elseif ($separateSourceBuild) {
+			$buildDirectory = 'build';
 			$directories = array(
 				'source/' . $namePrefixTemplatesStatic . 'static' . DIRECTORY_SEPARATOR,
 				'source/' . $namePrefixTemplatesStatic . 'templates' . DIRECTORY_SEPARATOR,
@@ -99,6 +101,7 @@ class SphinxQuickstart {
 			);
 			$excludePattern = '';
 		} else {
+			$buildDirectory = '_build';
 			$directories = array(
 				$namePrefixTemplatesStatic . 'static' . DIRECTORY_SEPARATOR,
 				$namePrefixTemplatesStatic . 'templates' . DIRECTORY_SEPARATOR,
@@ -123,6 +126,7 @@ class SphinxQuickstart {
 			'PATH_STATIC'        => ($isTypo3Documentation ? '../' : '') . $namePrefixTemplatesStatic . 'static',
 			'SOURCE_FILE_SUFFIX' => $sourceFileSuffix,
 			'EXCLUDE_PATTERN'    => $excludePattern,
+			'BUILD_DIRECTORY'    => $buildDirectory,
 		);
 
 		$config = array(

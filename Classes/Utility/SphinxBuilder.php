@@ -23,6 +23,7 @@ namespace Causal\Sphinx\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\CommandUtility;
 
 /**
  * SphinxBuilder Wrapper.
@@ -158,11 +159,8 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath;
 		if (self::$htmlConsole) {
-			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
-			if ($properties['master_doc']) {
-				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/json/';
-				$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
-			}
+			$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/json/';
+			$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
 		}
 		$output .= 'Build finished; now you can process the JSON files in ' . $link . '.';
 
@@ -218,14 +216,78 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath;
 		if (self::$htmlConsole) {
-			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
-			if ($properties['master_doc']) {
-				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/latex/';
-				$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
-			}
+			$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/latex/';
+			$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
 		}
 		$output .= 'Build finished; the LaTeX files are in ' . $link . '.' . LF;
 		$output .= 'Run `make\' in that directory to run these through (pdf)latex.';
+
+		return $output;
+	}
+
+	/**
+	 * Builds a Sphinx project as PDF using pdflatex on a LaTeX project.
+	 *
+	 * @param string $basePath
+	 * @param string $sourceDirectory
+	 * @param string $buildDirectory
+	 * @param string $conf
+	 * @return string Output of the build process (if succeeded)
+	 * @throws \RuntimeException if build process failed
+	 */
+	public static function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+		$make = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make');
+		$pdflatex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex');
+
+		if (empty($make)) {
+			throw new \RuntimeException('Command `make\' was not found.', 1367239044);
+		}
+		if (empty($pdflatex)) {
+			throw new \RuntimeException('Command `pdflatex\' was not found.', 1367239067);
+		}
+
+		if (empty($conf)) {
+			$conf = '.' . DIRECTORY_SEPARATOR . 'conf.py';
+		}
+		$basePath = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+		$sourceDirectory = rtrim($sourceDirectory);
+		$buildDirectory = rtrim($buildDirectory);
+
+		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
+			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
+		}
+
+		$outputLaTeX = self::buildLatex($basePath, $sourceDirectory, $buildDirectory, $conf);
+
+		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
+		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
+			'export PATH="$PATH' . PATH_SEPARATOR . dirname($pdflatex) . '" && ' .
+			$make . ' -C ' . escapeshellarg($buildDirectory . '/latex') . ' all-pdf' .
+			' 2>&1';	// redirect errors to STDOUT
+
+		$output = array('Running LaTeX files through pdflatex...');
+		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+		$output = implode(LF, $output);
+		if (self::$htmlConsole) {
+			$output = self::colorize($output);
+		}
+		// Prepend previous command output
+		$output = $outputLaTeX . $output;
+		if ($ret !== 0) {
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+		}
+
+		$output .= LF;
+		$link = $buildPath;
+		if (self::$htmlConsole) {
+			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
+			if ($properties['project']) {
+				$latexProject = str_replace(' ', '', $properties['project']);
+				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/latex/' . $latexProject . '.pdf';
+				$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
+			}
+		}
+		$output .= 'pdflatex finished; the PDF files are in ' . $link . '.' . LF;
 
 		return $output;
 	}
@@ -277,11 +339,8 @@ class SphinxBuilder {
 		$output .= LF;
 		$link = $buildPath . '/output.txt';
 		if (self::$htmlConsole) {
-			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
-			if ($properties['master_doc']) {
-				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/linkcheck/output.txt';
-				$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '/output.txt</a>';
-			}
+			$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/linkcheck/output.txt';
+			$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '/output.txt</a>';
 		}
 		$output .= 'Link check complete; look for any errors in the above output ';
 		$output .= 'or in ' . $link . '.';

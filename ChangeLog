@@ -1,5 +1,6 @@
 2013-04-29  Xavier Perseguers  <xavier@causal.ch>
 
+	* [FEATURE] #47696: Compile to PDF if pdflatex is available
 	* [TASK] Prettier build buttons
 	* [TASK] #47886: Log everything during install
 
