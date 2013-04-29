@@ -344,10 +344,12 @@ HTML;
 		$content[] = $this->doc->spacer(10);
 
 		$disabled = empty($sphinxVersion) ? ' disabled="disabled"' : '';
-		$content[] = '<button type="submit" name="build_html"' . $disabled . '>Build HTML</button>';
-		$content[] = '<button type="submit" name="build_json"' . $disabled . '>Build JSON</button>';
-		$content[] = '<button type="submit" name="build_latex"' . $disabled . '>Build LaTeX</button>';
-		$content[] = '<button type="submit" name="check_links"' . $disabled . '>Check Links</button>';
+		$content[] = '<div class="sphinx-build">';
+		$content[] = '<button type="submit" name="build_html" class="sphinx-html"' . $disabled . '>Build HTML</button>';
+		$content[] = '<button type="submit" name="build_json" class="sphinx-json"' . $disabled . '>Build JSON</button>';
+		$content[] = '<button type="submit" name="build_latex" class="sphinx-latex"' . $disabled . '>Build LaTeX</button>';
+		$content[] = '<button type="submit" name="check_links" class="sphinx-links"' . $disabled . '>Check Links</button>';
+		$content[] = '</div>';
 
 		$this->content .= $this->doc->section('Build Properties', implode(LF, $content), 0, 1);
 
