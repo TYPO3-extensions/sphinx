@@ -42,6 +42,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/** @var string */
 	protected $extKey = 'sphinx';
 
+	/** @var array */
+	protected $log = array();
+
 	/**
 	 * Checks whether the "UPDATE!" menu item should be
 	 * shown.
@@ -211,10 +214,12 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// STEP 1a: Download Sphinx archive as zip
 		//
 		$zipFilename = $tempPath . $version . '.zip';
+		$this->log[] = '[INFO] Fetching ' . $url;
 		$zipContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
 		if ($zipContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($zipFilename, $zipContent)) {
 			$out[] = $this->formatInformation('Sphinx ' . $version . ' has been downloaded.');
 			$targetPath = $sphinxSourcesPath . $version;
+			$this->log[] = '[INFO] Recreating directory ' . $targetPath;
 			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
 
@@ -222,16 +227,16 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			// STEP 1b: Unzip Sphinx archive
 			//
 			$unzip = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('unzip');
-			$cmd = $unzip . ' -qq ' . escapeshellarg($zipFilename) . ' -d ' . escapeshellarg($targetPath);
-			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $_, $ret);
+			$cmd = $unzip . ' ' . escapeshellarg($zipFilename) . ' -d ' . escapeshellarg($targetPath) . ' 2>&1';
+			$this->exec($cmd, $_, $ret);
 			if ($ret === 0) {
 				$out[] = $this->formatInformation('Sphinx ' . $version . ' has been unpacked.');
 				// When unzipping the sources, content is located under a directory "birkenfeld-sphinx-<hash>"
 				$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($directories[0], 'birkenfeld-sphinx-')) {
 					$fromDirectory = escapeshellarg($targetPath . '/' . $directories[0]);
-					$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/');
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
+					$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/') . ' 2>&1';
+					$this->exec($cmd);
 					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath . '/' . $directories[0], TRUE);
 
 					// Remove zip file as we don't need it anymore
@@ -242,6 +247,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					//
 					$sourceFilename = $targetPath . '/sphinx/util/console.py';
 					if (file_exists($sourceFilename)) {
+						$this->log[] = '[INFO] Patching file ' . $sourceFilename;
 						$contents = file_get_contents($sourceFilename);
 						$contents = str_replace(
 							'def color_terminal():',
@@ -267,12 +273,13 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (is_file($setupFile)) {
 			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-				$python . ' setup.py build';
+				$python . ' setup.py build 2>&1';
 			$output = array();
-			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+			$this->exec($cmd, $output, $ret);
 			if ($ret === 0) {
 				$pythonHome = $sphinxPath . $version;
 				$pythonLib = $pythonHome . '/lib/python';
+				$this->log[] = '[INFO] Recreating directory ' . $pythonHome;
 				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($pythonHome, TRUE);
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pythonLib . '/');
 
@@ -280,17 +287,19 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					'export PYTHONPATH=' . escapeshellarg($pythonLib) . ' && ' .
 					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 				$output = array();
-				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+				$this->exec($cmd, $output, $ret);
 				if ($ret === 0) {
 					$out[] = $this->formatInformation('Sphinx ' . $version . ' has been successfully installed.');
 				} else {
 					$out[] = $this->formatError('Could not install Sphinx ' . $version . ':' . LF . LF . implode($output, LF));
 					// Cannot go further
+					$this->dumpLog();
 					return;
 				}
 			} else {
 				$out[] = $this->formatError('Could not build Sphinx ' . $version . ':' . LF . LF . implode($output, LF));
 				// Cannot go further
+				$this->dumpLog();
 				return;
 			}
 		}
@@ -301,21 +310,25 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
 			$out[] = $this->formatWarning('Could not find command tar. TYPO3-related commands were not installed.');
 		} else {
+			$url = 'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3';
 			/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
 			$http = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
 				'\\TYPO3\\CMS\\Core\\Http\HttpRequest',
-				'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3'
+				$url
 			);
+			$this->log[] = '[INFO] Fetching ' . $url;
 			$output = $http->send()->getBody();
 			if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">snapshot</a>#', $output, $matches)) {
 				$commit = $matches[1];
 				$url = 'https://git.typo3.org/Documentation/RestTools.git/snapshot/' . $commit . '.tar.gz';
 				$archiveFilename = $tempPath . 'RestTools.tar.gz';
+				$this->log[] = '[INFO] Fetching ' . $url;
 				$archiveContent = $http->setUrl($url)->send()->getBody();
 				if ($archiveContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 					$out[] = $this->formatInformation('TYPO3 ReStructuredText Tools (' . $commit . ') have been downloaded.');
 
 					$targetPath = $sphinxSourcesPath . 'RestTools';
+					$this->log[] = '[INFO] Recreating directory ' . $targetPath;
 					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
 					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
 
@@ -323,16 +336,16 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					// STEP 3b: Unpack TYPO3 ReST Tools archive
 					//
 					$tar = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar');
-					$cmd = $tar . ' xzf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath);
-					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+					$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath) . ' 2>&1';
+					$this->exec($cmd, $output, $ret);
 					if ($ret === 0) {
 						$out[] = $this->formatInformation('TYPO3 ReStructuredText Tools have been unpacked.');
 						// When unpacking the sources, content is located under a directory "RestTools-<shortcommit>"
 						$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
 						if ($directories[0] === 'RestTools-' . substr($commit, 0, 7)) {
 							$fromDirectory = escapeshellarg($targetPath . '/' . $directories[0]);
-							$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/');
-							\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
+							$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/') . ' 2>&1';
+							$this->exec($cmd);
 							\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath . '/' . $directories[0], TRUE);
 
 							// Remove tar.gz archive as we don't need it anymore
@@ -359,15 +372,15 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (is_file($setupFile)) {
 			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-				$python . ' setup.py build';
+				$python . ' setup.py build 2>&1';
 			$output = array();
-			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+			$this->exec($cmd, $output, $ret);
 			if ($ret === 0) {
 				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 					'export PYTHONPATH=' . escapeshellarg($pythonLib) . ' && ' .
 					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 				$output = array();
-				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+				$this->exec($cmd, $output, $ret);
 				if ($ret === 0) {
 					$out[] = $this->formatInformation('TYPO3 RestructuredText Tools have been successfully installed.');
 				} else {
@@ -389,6 +402,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$out[] = $this->formatInformation('PyYAML 3.10 has been downloaded.');
 
 				$targetPath = $sphinxSourcesPath . 'PyYAML';
+				$this->log[] = '[INFO] Recreating directory ' . $targetPath;
 				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
 
@@ -396,8 +410,8 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				// STEP 5b: Unpack PyYAML archive
 				//
 				$tar = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar');
-				$cmd = $tar . ' xzf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath);
-				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+				$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath) . ' 2>&1';
+				$this->exec($cmd, $output, $ret);
 				if ($ret === 0) {
 					$out[] = $this->formatInformation('PyYAML has been unpacked.');
 					// When unpacking the sources, content is located under a directory "PyYAML-3.10"
@@ -405,7 +419,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					if ($directories[0] === 'PyYAML-3.10') {
 						$fromDirectory = escapeshellarg($targetPath . '/' . $directories[0]);
 						$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/');
-						\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
+						$this->exec($cmd);
 						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath . '/' . $directories[0], TRUE);
 
 						// Remove tar.gz archive as we don't need it anymore
@@ -426,15 +440,15 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (is_file($setupFile)) {
 			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-				$python . ' setup.py build';
+				$python . ' setup.py build 2>&1';
 			$output = array();
-			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+			$this->exec($cmd, $output, $ret);
 			if ($ret === 0) {
 				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 					'export PYTHONPATH=' . escapeshellarg($pythonLib) . ' && ' .
 					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 				$output = array();
-				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+				$this->exec($cmd, $output, $ret);
 				if ($ret === 0) {
 					$out[] = $this->formatInformation('PyYAML has been successfully installed.');
 				} else {
@@ -445,6 +459,33 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			}
 		}
 
+		$this->dumpLog();
+	}
+
+	/**
+	 * Dumps the log into an external file.
+	 *
+	 * @return void
+	 */
+	protected function dumpLog() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . 'typo3temp/sphinx-import.' . date('YmdHis') . '.log', implode(LF, $this->log));
+		$this->log = array();
+	}
+
+	/**
+	 * Logs and executes a command.
+	 *
+	 * @param string $cmd
+	 * @param NULL|array $output
+	 * @param integer $returnValue
+	 * @return NULL|array
+	 */
+	protected function exec($cmd, &$output = NULL, &$returnValue = 0) {
+		$this->log[] = '[CMD] ' . $cmd;
+		$lastLine = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $out, $returnValue);
+		$this->log = array_merge($this->log, $out);
+		$output = $out;
+		return $lastLine;
 	}
 
 	/**
