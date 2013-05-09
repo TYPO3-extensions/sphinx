@@ -35,7 +35,6 @@ $BACK_PATH = $GLOBALS['BACK_PATH'] . TYPO3_mainDir;
  * @copyright   2013 Causal Sàrl
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id$
  */
 class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

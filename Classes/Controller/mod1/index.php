@@ -36,7 +36,6 @@ $GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissi
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id$
  */
 class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

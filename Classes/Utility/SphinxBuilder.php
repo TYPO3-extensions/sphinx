@@ -34,7 +34,6 @@ use TYPO3\CMS\Core\Utility\CommandUtility;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @version     SVN: $Id$
  */
 class SphinxBuilder {
 
