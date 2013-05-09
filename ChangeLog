@@ -1,3 +1,7 @@
+2013-05-09  Xavier Perseguers  <xavier@causal.ch>
+
+	* [WIP] #48094: Allow sphinx and ReST tools to be manually updated
+
 2013-04-29  Xavier Perseguers  <xavier@causal.ch>
 
 	* [FEATURE] #47696: Compile to PDF if pdflatex is available
