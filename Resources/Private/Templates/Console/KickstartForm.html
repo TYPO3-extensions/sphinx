@@ -1,0 +1,59 @@
+<h2 class="uppercase">No Sphinx project found in current directory</h2>
+
+<div class="sphinx-area">
+	<div class="no-sphinx-image">&nbsp;</div>
+	<p>A valid project directory structure is one of these:</p>
+	<ul>
+		<li>
+			<strong>Single directory</strong>
+<pre>.
+├── _build
+├── conf.py
+└── <em>other files</em>
+</pre>
+		</li>
+		<li>
+			<strong>Separate source/build directories</strong>
+<pre>.
+├── build
+└── source
+    ├── conf.py
+    └── <em>other files</em>
+</pre>
+		</li>
+		<li>
+			<strong>TYPO3 documentation</strong>
+<pre>.
+├── _make
+│   ├── build
+│   └── conf.py
+└── <em>other files</em>
+</pre>
+		</li>
+	</ul>
+</div>
+
+<h2 class="uppercase">Create Sphinx Project</h2>
+
+<div class="sphinx-area">
+	<div class="sphinx-image">&nbsp;</div>
+	<p>This form lets you kickstart a new Sphinx project in current directory.</p>
+
+	<div style="padding-top: 10px;"></div>
+
+	<div class="sphinx-project">
+		<label for="tx-sphinx-project">Project</label>
+		<input type="text" name="project" id="tx-sphinx-project"><br>
+
+		<label for="tx-sphinx-author">Author</label>
+		<input type="text" name="author" id="tx-sphinx-author"><br>
+
+		<label for="tx-sphinx-template">Template</label>
+		<select name="template" id="tx-sphinx-template">
+			<option value="BlankProject">Blank</option>
+			<option selected="selected" value="TYPO3DocProject">TYPO3 Documentation</option>
+		</select><br>
+
+		<button type="submit">Create Project</button>
+	</div>
+</div>

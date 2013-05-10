@@ -151,7 +151,7 @@ class SphinxQuickstart {
 		$contentObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
 		// Recursively instantiate template files
-		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/Templates/' . $config['template'] . '/';
+		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/Templates/Projects/' . $config['template'] . '/';
 		if (!is_dir($source)) {
 			throw new \RuntimeException('Template directory was not found: ' . $source, 1367044890);
 		}

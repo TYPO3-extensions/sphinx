@@ -39,6 +39,9 @@ $GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissi
  */
 class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
+	/** @var string */
+	protected $extKey = 'sphinx';
+
 	/** @var \TYPO3\CMS\Core\Utility\File\BasicFileUtility */
 	public $basicFF;
 
@@ -50,6 +53,9 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/* @var \TYPO3\CMS\Core\Messaging\FlashMessage $errorMessage */
 	protected $errorMessage;
+
+	/** @var \TYPO3\CMS\Extbase\Object\ObjectManager */
+	protected $objectManager;
 
 	/** @var array */
 	protected $project;
@@ -64,6 +70,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		parent::init();
 
 		$this->id = ($combinedIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
 		try {
 			if ($combinedIdentifier) {
@@ -200,9 +207,9 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function moduleContent() {
 		if (!$this->project['initialized']) {
-			$this->generateKickstartForm();
+			$this->kickstartFormAction();
 		} else {
-			$this->generateBuildForm();
+			$this->buildFormAction();
 		}
 	}
 
@@ -211,76 +218,12 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 *
 	 * @return void
 	 */
-	protected function generateKickstartForm() {
-		$content = array();
-		$content[] = '<div class="sphinx-area">';
-		$content[] = '<div class="no-sphinx-image">&nbsp;</div>';
-		$content[] = '<p>A valid project directory structure is one of these:</p>';
-		$content[] = '<ul>';
-		$content[] = '<li><strong>Single directory</strong>';
-		$content[] = <<<HTML
-<pre>
-.
-├── _build
-├── conf.py
-└── <em>other files</em>
-</pre>
-HTML;
-		$content[] = '</li>';
-		$content[] = '<li><strong>Separate source/build directories</strong>';
-		$content[] = <<<HTML
-<pre>
-.
-├── build
-└── source
-    ├── conf.py
-    └── <em>other files</em>
-</pre>
-HTML;
-		$content[] = '</li>';
-		$content[] = '</li>';
-		$content[] = '<li><strong>TYPO3 documentation</strong>';
-		$content[] = <<<HTML
-<pre>
-.
-├── _make
-│   ├── build
-│   └── conf.py
-└── <em>other files</em>
-</pre>
-HTML;
-		$content[] = '</li>';
-		$content[] = '</ul>';
-		$content[] = '</div>';
-
-		$this->content .= $this->doc->section('No Sphinx project found in current directory', implode(LF, $content), 0, 1);
-
-		$content = array();
-		$content[] = '<div class="sphinx-area">';
-		$content[] = '<div class="sphinx-image">&nbsp;</div>';
-		$content[] = '<p>This form lets you kickstart a new Sphinx project in current directory.</p>';
-		$content[] = $this->doc->spacer(10);
-		$content[] = <<<HTML
-<div class="sphinx-project">
-	<label for="tx-sphinx-project">Project</label>
-	<input type="text" id="tx-sphinx-project" name="project" /><br />
-
-	<label for="tx-sphinx-author">Author</label>
-	<input type="text" id="tx-sphinx-author" name="author" /><br />
-
-	<label for="tx-sphinx-template">Template</label>
-	<select id="tx-sphinx-template" name="template">
-		<option value="BlankProject">Blank</option>
-		<option value="TYPO3DocProject" selected="selected">TYPO3 Documentation</option>
-	</select><br />
-
-	<button type="submit">Create Project</button>
-</div>
-HTML;
-
-		$content[] = '</div>';
-
-		$this->content .= $this->doc->section('Create Sphinx Project', implode(LF, $content), 0, 1);
+	protected function kickstartFormAction() {
+		/** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
+		$view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$template = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Templates/Console/KickstartForm.html';
+		$view->setTemplatePathAndFilename($template);
+		$this->content .= $view->render();
 	}
 
 	/**
@@ -288,131 +231,97 @@ HTML;
 	 *
 	 * @return void
 	 */
-	protected function generateBuildForm() {
-
-		// Project properties
-		$content = array();
-		$content[] = '<table>';
-		$content[] = '<tr>';
-		$content[] = '	<th>Project</td>';
-		$content[] = '	<td>' . $this->project['properties']['project'] . '</td>';
-		$content[] = '</tr>';
-		$content[] = '<tr>';
-		$content[] = '	<th>Copyright</td>';
-		$content[] = '	<td>' . $this->project['properties']['copyright'] . '</td>';
-		$content[] = '</tr>';
-		$content[] = '<tr>';
-		$content[] = '	<th>Version</td>';
-		$content[] = '	<td>' . $this->project['properties']['version'] . '</td>';
-		$content[] = '</tr>';
-		$content[] = '<tr>';
-		$content[] = '	<th>Release</td>';
-		$content[] = '	<td>' . $this->project['properties']['release'] . '</td>';
-		$content[] = '</tr>';
-		$content[] = '</table>';
-
-		$this->content .= $this->doc->section('Project Properties', implode(LF, $content), 0, 1);
-
-		// Build properties
-		$sphinxVersion = \Causal\Sphinx\Utility\SphinxBuilder::getSphinxVersion();
-
-		$content = array();
-		$content[] = '<table>';
-		$content[] = '<tr>';
-		$content[] = '	<th>Sphinx</td>';
-		$content[] = '	<td>' . ($sphinxVersion ?: 'n/a') . '</td>';
-		$content[] = '</tr>';
-		$content[] = '<tr>';
-		$content[] = '	<th>Base Directory</td>';
-		$content[] = '	<td>' . substr($this->project['basePath'], strlen(PATH_site)) . '</td>';
-		$content[] = '</tr>';
-		$content[] = '<tr>';
-		$content[] = '	<th>Source Directory</td>';
-		$content[] = '	<td>' . $this->project['source'] . '</td>';
-		$content[] = '</tr>';
-		$content[] = '<tr>';
-		$content[] = '	<th>Build Directory</td>';
-		$content[] = '	<td>' . $this->project['build'] . '</td>';
-		$content[] = '</tr>';
-		$content[] = '<tr>';
-		$content[] = '	<th>Configuration File</td>';
-		$content[] = '	<td>' . $this->project['conf.py'] . '</td>';
-		$content[] = '</tr>';
-		$content[] = '</table>';
-
-		$content[] = $this->doc->spacer(10);
-
-		$disabled = empty($sphinxVersion) ? ' disabled="disabled"' : '';
-		$content[] = '<div class="sphinx-build">';
-		$content[] = '<button type="submit" name="build_html" class="sphinx-html"' . $disabled . '>Build HTML</button>';
-		$content[] = '<button type="submit" name="build_json" class="sphinx-json"' . $disabled . '>Build JSON</button>';
-		$content[] = '<button type="submit" name="build_latex" class="sphinx-latex"' . $disabled . '>Build LaTeX</button>';
-		if (\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex')) {
-			$content[] = '<button type="submit" name="build_pdf" class="sphinx-pdf"' . $disabled . '>Build PDF</button>';
+	protected function buildFormAction() {
+		// Handle compilation, if needed
+		$output = '';
+		$operation = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('operation');
+		if ($operation) {
+			$output = $this->handleCompilation($operation);
 		}
-		$content[] = '<button type="submit" name="check_links" class="sphinx-links"' . $disabled . '>Check Links</button>';
-		$content[] = '</div>';
 
-		$this->content .= $this->doc->section('Build Properties', implode(LF, $content), 0, 1);
+		$sphinxVersion = \Causal\Sphinx\Utility\SphinxBuilder::getSphinxVersion();
+		$values = array(
+			'project' => $this->project,
+			'build' => array(
+				'sphinxVersion'  => ($sphinxVersion ?: 'n/a'),
+				'baseDirectory' => substr($this->project['basePath'], strlen(PATH_site)),
+			),
+			'disableCompile' => empty($sphinxVersion),
+			'hasPdflatex' => \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '',
+			'consoleOutput' => $output,
+		);
 
-		// Console
+		/** @var $view \TYPO3\CMS\Fluid\View\StandaloneView */
+		$view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$template = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Templates/Console/BuildForm.html';
+		$view->setTemplatePathAndFilename($template);
+		$view->assignMultiple($values);
+		$this->content .= $view->render();
+	}
 
-		switch (TRUE) {
-			case isset($_POST['build_html']):
+	/**
+	 * Handles the compilation of a Sphinx project.
+	 *
+	 * @param string $operation
+	 * @return string
+	 */
+	protected function handleCompilation($operation) {
+		switch ($operation) {
+			case 'build_html':
 				try {
 					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildHtml(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
-						$this->project['conf.py']
+						$this->project['conf_py']
 					);
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
 				break;
-			case isset($_POST['build_json']):
+			case 'build_json':
 				try {
 					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildJson(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
-						$this->project['conf.py']
+						$this->project['conf_py']
 					);
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
 				break;
-			case isset($_POST['build_latex']):
+			case 'build_latex':
 				try {
 					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildLatex(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
-						$this->project['conf.py']
+						$this->project['conf_py']
 					);
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
 				break;
-			case isset($_POST['build_pdf']):
+			case 'build_pdf':
 				try {
 					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildPdf(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
-						$this->project['conf.py']
+						$this->project['conf_py']
 					);
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
 				break;
-			case isset($_POST['check_links']):
+			case 'check_links':
 				try {
 					$output = \Causal\Sphinx\Utility\SphinxBuilder::checkLinks(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
-						$this->project['conf.py']
+						$this->project['conf_py']
 					);
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
@@ -423,10 +332,7 @@ HTML;
 				break;
 		}
 
-		$content = array();
-		$content[] = '<div id="sphinx-console">' . nl2br($output) . '<br />&nbsp;</div>';
-
-		$this->content .= $this->doc->section('Console', implode(LF, $content), 0, 1);
+		return $output;
 	}
 
 	/**
@@ -440,28 +346,28 @@ HTML;
 			$this->project['basePath'] = $this->basePath;
 			$this->project['source'] = './';
 			$this->project['build'] = '_build/';
-			$this->project['conf.py'] = './conf.py';
+			$this->project['conf_py'] = './conf.py';
 			$this->project['initialized'] = TRUE;
 		} elseif (is_file($this->basePath . 'source/conf.py')) {
 			$this->project['singleDirectory'] = FALSE;
 			$this->project['basePath'] = $this->basePath;
 			$this->project['source'] = 'source/';
 			$this->project['build'] = 'build/';
-			$this->project['conf.py'] = 'source/conf.py';
+			$this->project['conf_py'] = 'source/conf.py';
 			$this->project['initialized'] = TRUE;
 		} elseif (is_file($this->basePath . '_make/conf.py')) {
 			$this->project['singleDirectory'] = FALSE;
 			$this->project['basePath'] = $this->basePath;
 			$this->project['source'] = './';
 			$this->project['build'] = '_make/build/';
-			$this->project['conf.py'] = '_make/conf.py';
+			$this->project['conf_py'] = '_make/conf.py';
 			$this->project['initialized'] = TRUE;
 		} else {
 			$this->project['initialized'] = FALSE;
 		}
 
 		if ($this->project['initialized']) {
-			$properties = \Causal\Sphinx\Utility\Configuration::load($this->basePath . $this->project['conf.py']);
+			$properties = \Causal\Sphinx\Utility\Configuration::load($this->basePath . $this->project['conf_py']);
 			$this->project['properties'] = $properties;
 		}
 	}

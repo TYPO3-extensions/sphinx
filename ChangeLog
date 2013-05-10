@@ -1,3 +1,7 @@
+2013-05-11  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] Use Fluid's StandaloneView instead of inline HTML
+
 2013-05-10  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Raise version to 0.3.0
