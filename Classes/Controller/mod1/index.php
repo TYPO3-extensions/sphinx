@@ -424,7 +424,7 @@ HTML;
 		}
 
 		$content = array();
-		$content[] = '<div id="sphinx-console">' . nl2br($output) . '</div>';
+		$content[] = '<div id="sphinx-console">' . nl2br($output) . '<br />&nbsp;</div>';
 
 		$this->content .= $this->doc->section('Console', implode(LF, $content), 0, 1);
 	}
