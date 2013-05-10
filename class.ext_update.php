@@ -70,121 +70,134 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		$availableVersions = \Causal\Sphinx\Utility\Setup::getSphinxAvailableVersions();
 		$localVersions = \Causal\Sphinx\Utility\Setup::getSphinxLocalVersions();
-		$importVersion = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('sphinx_version');
-		if ($importVersion && isset($availableVersions[$importVersion]) && !\TYPO3\CMS\Core\Utility\GeneralUtility::inArray($localVersions, $importVersion)) {
-			$messages = array();
-			$this->importSphinx($availableVersions[$importVersion], $messages);
-			foreach ($messages as $message) {
-				switch (TRUE) {
-					case \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($message, '[INFO] '):
-						$out[] = $this->formatInformation(substr($message, 7));
+		$operation = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('operation');
+		if ($operation) {
+			list($action, $version) = explode('-', $operation, 2);
+
+			if (isset($availableVersions[$version])) {
+				$messages = array();
+
+				switch ($action) {
+					case 'DOWNLOAD':
+						$this->downloadSphinx($availableVersions[$version], $messages);
 						break;
-					case \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($message, '[WARNING] '):
-						$out[] = $this->formatWarning(substr($message, 10));
+					case 'BUILD':
+						$this->buildSphinx($availableVersions[$version], $messages);
 						break;
-					case \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($message, '[ERROR] '):
-						$out[] = $this->formatError(substr($message, 8));
-						break;
-					default:
-						$out[] = $message;
+					case 'IMPORT':
+						if ($this->downloadSphinx($availableVersions[$version], $messages)) {
+							$this->buildSphinx($availableVersions[$version], $messages);
+						}
 						break;
 				}
+
+				$logFilename = PATH_site . 'typo3temp/tx_sphinx-' . $action . '-' . date('YmdHis') . '.log';
+				\Causal\Sphinx\Utility\Setup::dumpLog($logFilename);
+
+				$localVersions = \Causal\Sphinx\Utility\Setup::getSphinxLocalVersions();
+
+				foreach ($messages as $message) {
+					switch (TRUE) {
+						case \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($message, '[INFO] '):
+							$out[] = $this->formatInformation(substr($message, 7));
+							break;
+						case \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($message, '[WARNING] '):
+							$out[] = $this->formatWarning(substr($message, 10));
+							break;
+						case \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($message, '[ERROR] '):
+							$out[] = $this->formatError(substr($message, 8));
+							break;
+						default:
+							$out[] = $message;
+							break;
+					}
+				}
 			}
-			$localVersions = \Causal\Sphinx\Utility\Setup::getSphinxLocalVersions();
 		}
 
 		$out[] = '<form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '" method="post">';
 		$out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
-		$out[] = '<div style="-moz-column-count:3;-webkit-column-count:3;column-count:3;margin-top:1ex;">';
+
+		$out[] = '<table class="t3-table">';
+		$out[] = '<tr class="t3-row-header">';
+		$out[] = '<td colspan="2">&nbsp;</td>';
+		$out[] = '<td>1-click Process</td>';
+		$out[] = '<td>Manual Process</td>';
+		$out[] = '</tr>';
 
 		$i = 0;
 		foreach ($availableVersions as $version) {
-			$out[] = '<div style="margin-bottom:1ex">';
-			$disabled = \TYPO3\CMS\Core\Utility\GeneralUtility::inArray($localVersions, $version['name']) ? ' disabled="disabled"' : '';
-			$out[] = '<input type="radio" id="sphinx_version_' . $i . '" name="sphinx_version" value="' . htmlspecialchars($version['name']) . '"' . $disabled . ' />';
-			$label = '<label for="sphinx_version_' . $i . '">';
-			if ($disabled) {
-				$label .= '<strong>' . htmlspecialchars($version['name']) . '</strong> (available locally)';
-			} else {
-				$label .= htmlspecialchars($version['name']);
-			}
-			$label .= '</label>';
-			$out[] = $label;
-			$out[] = '</div>';
-			$i++;
-		}
+			$isInstalled = \TYPO3\CMS\Core\Utility\GeneralUtility::inArray($localVersions, $version['name']);
+			$hasSources = \Causal\Sphinx\Utility\Setup::hasSphinxSources($version['name']);
 
-		$out[] = '</div>';
-		$out[] = '<button type="submit" style="margin-top:1ex">Import selected version of Sphinx</button>';
+			$out[] = '<tr class="' . (++$i % 2 == 0 ? 't3-row-even' : 't3-row-odd') . '" style="padding:5px">';
+			$out[] = '<td>' . ($isInstalled ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '</td>';
+			$out[] = '<td>';
+			$out[] = 'Sphinx ' . htmlspecialchars($version['name']);
+			$out[] = '</td>';
+
+			$out[] = '<td><button name="operation" value="IMPORT-' . htmlspecialchars($version['name']) . '"' . ($isInstalled ? ' disabled="disabled"' : '') . '>import</button></td>';
+			$out[] = '<td>';
+			$out[] = '<button name="operation" value="DOWNLOAD-' . htmlspecialchars($version['name']) . '"' . ($hasSources ? ' disabled="disabled"' : '') . '>download</button>';
+			$out[] = '<button name="operation" value="BUILD-' . htmlspecialchars($version['name']) . '"' . (!$hasSources ? ' disabled="disabled"' : '') . '>build</button>';
+			$out[] = '</td>';
+			$out[] = '</tr>';
+		}
+		$out[] = '</table>';
 		$out[] = '</form>';
 
 		return implode(LF, $out);
 	}
 
 	/**
-	 * Imports a given version from Sphinx.
+	 * Downloads Sphinx and associated libraries.
 	 *
 	 * @param array $data
 	 * @param array &$output
-	 * @return void
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 */
-	protected function importSphinx(array $data, array &$output) {
+	protected function downloadSphinx(array $data, array &$output) {
+		$success = TRUE;
 		$version = $data['name'];
 		$url = 'https://bitbucket.org' . $data['url'];
 
 		if (!\Causal\Sphinx\Utility\Setup::hasSphinxSources($version)) {
-			//
-			// STEP 1: Download Sphinx archive as zip
-			//
-			$success = \Causal\Sphinx\Utility\Setup::downloadSphinxSources($version, $url, $output);
-		} else {
-			// Sphinx sources are already available locally, go on!
-			$success = TRUE;
+			$success &= \Causal\Sphinx\Utility\Setup::downloadSphinxSources($version, $url, $output);
+		}
+		if (!\Causal\Sphinx\Utility\Setup::hasRestTools()) {
+			$success &= \Causal\Sphinx\Utility\Setup::downloadRestTools($output);
+		}
+		if (!\Causal\Sphinx\Utility\Setup::hasPyYaml()) {
+			$success &= \Causal\Sphinx\Utility\Setup::downloadPyYaml($output);
 		}
 
-		if ($success) {
-			//
-			// STEP 2: Build Sphinx
-			//
+		return $success;
+	}
+
+	/**
+	 * Builds Sphinx associated libraries.
+	 *
+	 * @param array $data
+	 * @param array &$output
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 */
+	protected function buildSphinx(array $data, array &$output) {
+		$success = FALSE;
+		$version = $data['name'];
+
+		if (\Causal\Sphinx\Utility\Setup::hasSphinxSources($version)) {
 			$success = \Causal\Sphinx\Utility\Setup::buildSphinx($version, $output);
-
 			if ($success) {
-				if (!\Causal\Sphinx\Utility\Setup::hasRestTools()) {
-					//
-					// STEP 3: Download TYPO3 ReST Tools
-					//
-					$buildRestTools = \Causal\Sphinx\Utility\Setup::downloadRestTools($output);
-				} else {
-					// TYPO3 ReST Tools are already available locally, go on!
-					$buildRestTools = TRUE;
+				if (\Causal\Sphinx\Utility\Setup::hasRestTools()) {
+					$success &= \Causal\Sphinx\Utility\Setup::buildRestTools($version, $output);
 				}
-				if ($buildRestTools) {
-					//
-					// STEP 4: Build TYPO3 ReST Tools
-					//
-					\Causal\Sphinx\Utility\Setup::buildRestTools($version, $output);
-				}
-
-				if (!\Causal\Sphinx\Utility\Setup::hasPyYaml()) {
-					//
-					// STEP 5: Download PyYAML
-					//
-					$buildPyYaml = \Causal\Sphinx\Utility\Setup::downloadPyYaml($output);
-				} else {
-					// PyYAML is already available locally, go on!
-					$buildPyYaml = TRUE;
-				}
-				if ($buildPyYaml) {
-					//
-					// STEP 6: Build PyYAML
-					//
-					\Causal\Sphinx\Utility\Setup::buildPyYaml($version, $output);
+				if (\Causal\Sphinx\Utility\Setup::hasPyYaml()) {
+					$success &= \Causal\Sphinx\Utility\Setup::buildPyYaml($version, $output);
 				}
 			}
 		}
 
-		$logFilename = PATH_site . 'typo3temp/sphinx-import.' . date('YmdHis') . '.log';
-		\Causal\Sphinx\Utility\Setup::dumpLog($logFilename);
+		return $success;
 	}
 
 	/**
