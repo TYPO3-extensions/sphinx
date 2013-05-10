@@ -1,2 +1,2 @@
-# cat=basic//10; type=user[EXT:sphinx/Classes/EM/Configuration.php:Causal\Sphinx\EM\Configuration->getVersions]; label=Sphinx version: Please select the Sphinx version to be used.
+# cat=basic//10; type=user[EXT:sphinx/Classes/EM/Configuration.php:Causal\Sphinx\EM\Configuration->getVersions]; label=Sphinx version: Please select the Sphinx version to be used:
 version =

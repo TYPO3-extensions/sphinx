@@ -1,5 +1,6 @@
 2013-05-10  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Add button to remove a version of Sphinx
 	* [TASK] Click event for the output link may be tricky to trigger
 	* [TASK] #48094: Allow sphinx and ReST tools to be manually updated
 	* [TASK] Do not download Sphinx/ReST Tools/PyYAML sources if available locally (relates #48094)

@@ -93,6 +93,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							$this->buildSphinx($availableVersions[$version], $messages);
 						}
 						break;
+					case 'REMOVE':
+						$this->removeSphinx($availableVersions[$version], $messages);
+						break;
 				}
 
 				foreach ($messages as $message) {
@@ -147,6 +150,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$out[] = '<td>';
 			$out[] = '<button name="operation" value="DOWNLOAD-' . htmlspecialchars($version['name']) . '"' . ($hasSources ? ' disabled="disabled"' : '') . '>download</button>';
 			$out[] = '<button name="operation" value="BUILD-' . htmlspecialchars($version['name']) . '"' . (!$hasSources ? ' disabled="disabled"' : '') . '>build</button>';
+			$out[] = '<button name="operation" value="REMOVE-' . htmlspecialchars($version['name']) . '"' . (!($hasSources || $isInstalled) ? ' disabled="disabled"' : '') . '>remove</button>';
 			$out[] = '</td>';
 			$out[] = '</tr>';
 		}
@@ -205,6 +209,18 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Removes Sphinx (but not associated libraries).
+	 *
+	 * @param array $data
+	 * @param array &$output
+	 * @return void
+	 */
+	protected function removeSphinx(array $data, array &$output) {
+		$version = $data['name'];
+		\Causal\Sphinx\Utility\Setup::removeSphinx($version, $output);
 	}
 
 	/**

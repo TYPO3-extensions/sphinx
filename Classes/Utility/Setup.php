@@ -182,6 +182,7 @@ class Setup {
 		if (is_file($setupFile)) {
 			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+				$python . ' setup.py clean 2>&1 && ' .
 				$python . ' setup.py build 2>&1';
 			$out = array();
 			self::exec($cmd, $out, $ret);
@@ -213,6 +214,33 @@ class Setup {
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Removes a local version of Sphinx (sources + build).
+	 *
+	 * @param string $version
+	 * @param NULL|array $output
+	 * @return void
+	 */
+	public static function removeSphinx($version, array &$output = NULL) {
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+
+		if (is_dir($sphinxSourcesPath . $version)) {
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($sphinxSourcesPath . $version, TRUE)) {
+				$output[] = '[INFO] Sources of Sphinx ' . $version . ' have been deleted.';
+			} else {
+				$output[] = '[ERROR] Could not delete sources of Sphinx ' . $version . '.';
+			}
+		}
+		if (is_dir($sphinxPath . $version)) {
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($sphinxPath . $version, TRUE)) {
+				$output[] = '[INFO] Sphinx ' . $version . ' has been deleted.';
+			} else {
+				$output[] = '[ERROR] Could not delete Sphinx ' . $version . '.';
+			}
+		}
 	}
 
 	/**
@@ -328,6 +356,7 @@ class Setup {
 		if (is_file($setupFile)) {
 			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+				$python . ' setup.py clean 2>&1 && ' .
 				$python . ' setup.py build 2>&1';
 			$out = array();
 			self::exec($cmd, $out, $ret);
@@ -454,6 +483,7 @@ class Setup {
 		if (is_file($setupFile)) {
 			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+				$python . ' setup.py clean 2>&1 && ' .
 				$python . ' setup.py build 2>&1';
 			$out = array();
 			self::exec($cmd, $out, $ret);
