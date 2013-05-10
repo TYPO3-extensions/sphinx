@@ -68,8 +68,12 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			return implode(LF, $out);
 		}
 
+		// Fetch the list of official versions of Sphinx
 		$availableVersions = \Causal\Sphinx\Utility\Setup::getSphinxAvailableVersions();
+		// Load the list of locally available versions of Sphinx
 		$localVersions = \Causal\Sphinx\Utility\Setup::getSphinxLocalVersions();
+
+		// Handle form operation, if needed
 		$operation = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('operation');
 		if ($operation) {
 			list($action, $version) = explode('-', $operation, 2);
@@ -91,11 +95,6 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						break;
 				}
 
-				$logFilename = PATH_site . 'typo3temp/tx_sphinx-' . $action . '-' . date('YmdHis') . '.log';
-				\Causal\Sphinx\Utility\Setup::dumpLog($logFilename);
-
-				$localVersions = \Causal\Sphinx\Utility\Setup::getSphinxLocalVersions();
-
 				foreach ($messages as $message) {
 					switch (TRUE) {
 						case \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($message, '[INFO] '):
@@ -112,6 +111,14 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							break;
 					}
 				}
+
+				$logFilename = PATH_site . 'typo3temp/tx_sphinx-' . $action . '-' . date('YmdHis') . '.log';
+				\Causal\Sphinx\Utility\Setup::dumpLog($logFilename);
+
+				$out[] = '<p><a href="../' . substr($logFilename, strlen(PATH_site)) . '" target="_blank">Click here</a> to show the complete log.</p>';
+
+				// Reload the list of locally available versions of Sphinx
+				$localVersions = \Causal\Sphinx\Utility\Setup::getSphinxLocalVersions();
 			}
 		}
 
