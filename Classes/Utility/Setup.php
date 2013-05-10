@@ -81,6 +81,18 @@ class Setup {
 	}
 
 	/**
+	 * Returns TRUE if the source files of Sphinx are available locally.
+	 *
+	 * @param string $version Version name (e.g., 1.0.0)
+	 * @return boolean
+	 */
+	public static function hasSphinxSources($version) {
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$setupFile = $sphinxSourcesPath . $version . '/setup.py';
+		return is_file($setupFile);
+	}
+
+	/**
 	 * Downloads the source files of Sphinx.
 	 *
 	 * @param string $version Version name (e.g., 1.0.0)
@@ -201,6 +213,17 @@ class Setup {
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Returns TRUE if the source files of the TYPO3 ReST tools are available locally.
+	 *
+	 * @return boolean
+	 */
+	public static function hasRestTools() {
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
+		return is_file($setupFile);
 	}
 
 	/**
@@ -330,6 +353,17 @@ class Setup {
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Returns TRUE if the source files of PyYAML are available locally.
+	 *
+	 * @return boolean
+	 */
+	public static function hasPyYaml() {
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$setupFile = $sphinxSourcesPath . 'PyYAML/setup.py';
+		return is_file($setupFile);
 	}
 
 	/**

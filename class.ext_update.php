@@ -132,23 +132,52 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$version = $data['name'];
 		$url = 'https://bitbucket.org' . $data['url'];
 
-		// STEP 1: Download Sphinx archive as zip
-		$success = \Causal\Sphinx\Utility\Setup::downloadSphinxSources($version, $url, $output);
+		if (!\Causal\Sphinx\Utility\Setup::hasSphinxSources($version)) {
+			//
+			// STEP 1: Download Sphinx archive as zip
+			//
+			$success = \Causal\Sphinx\Utility\Setup::downloadSphinxSources($version, $url, $output);
+		} else {
+			// Sphinx sources are already available locally, go on!
+			$success = TRUE;
+		}
 
 		if ($success) {
+			//
 			// STEP 2: Build Sphinx
+			//
 			$success = \Causal\Sphinx\Utility\Setup::buildSphinx($version, $output);
 
 			if ($success) {
-				// STEP 3: Download TYPO3 ReST Tools
-				if (\Causal\Sphinx\Utility\Setup::downloadRestTools($output)) {
+				if (!\Causal\Sphinx\Utility\Setup::hasRestTools()) {
+					//
+					// STEP 3: Download TYPO3 ReST Tools
+					//
+					$buildRestTools = \Causal\Sphinx\Utility\Setup::downloadRestTools($output);
+				} else {
+					// TYPO3 ReST Tools are already available locally, go on!
+					$buildRestTools = TRUE;
+				}
+				if ($buildRestTools) {
+					//
 					// STEP 4: Build TYPO3 ReST Tools
+					//
 					\Causal\Sphinx\Utility\Setup::buildRestTools($version, $output);
 				}
 
-				// STEP 5: Download PyYAML
-				if (\Causal\Sphinx\Utility\Setup::downloadPyYaml($output)) {
+				if (!\Causal\Sphinx\Utility\Setup::hasPyYaml()) {
+					//
+					// STEP 5: Download PyYAML
+					//
+					$buildPyYaml = \Causal\Sphinx\Utility\Setup::downloadPyYaml($output);
+				} else {
+					// PyYAML is already available locally, go on!
+					$buildPyYaml = TRUE;
+				}
+				if ($buildPyYaml) {
+					//
 					// STEP 6: Build PyYAML
+					//
 					\Causal\Sphinx\Utility\Setup::buildPyYaml($version, $output);
 				}
 			}
