@@ -61,6 +61,7 @@ class Setup {
 
 		$directories = array(
 			'Resources/Private/sphinx/',
+			'Resources/Private/sphinx/bin/',
 			'Resources/Private/sphinx-sources/',
 		);
 		$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey);
@@ -213,6 +214,29 @@ class Setup {
 			$output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
 		}
 
+		if ($success) {
+			$shortcutScripts = array(
+				'sphinx-build',
+				'sphinx-quickstart',
+			);
+			$pythonPath = escapeshellarg($sphinxPath . $version . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'python');
+			foreach ($shortcutScripts as $shortcutScript) {
+				$shortcutFilename = $sphinxPath . 'bin' . DIRECTORY_SEPARATOR . $shortcutScript . '-' . $version;
+				$scriptFilename = $sphinxPath . $version . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . $shortcutScript;
+
+				$script = <<<EOT
+#!/bin/bash
+
+export PYTHONPATH=$pythonPath
+
+$scriptFilename "\$@"
+EOT;
+
+				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($shortcutFilename, $script);
+				chmod($shortcutFilename, 0755);
+			}
+		}
+
 		return $success;
 	}
 
@@ -239,6 +263,17 @@ class Setup {
 				$output[] = '[INFO] Sphinx ' . $version . ' has been deleted.';
 			} else {
 				$output[] = '[ERROR] Could not delete Sphinx ' . $version . '.';
+			}
+		}
+
+		$shortcutScripts = array(
+			'sphinx-build-' . $version,
+			'sphinx-quickstart-' . $version,
+		);
+		foreach ($shortcutScripts as $shortcutScript) {
+			$shortcutFilename = $sphinxPath . 'bin' . DIRECTORY_SEPARATOR . $shortcutScript;
+			if (is_file($shortcutFilename)) {
+				@unlink($shortcutFilename);
 			}
 		}
 	}

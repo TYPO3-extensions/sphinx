@@ -54,13 +54,29 @@ class Configuration {
 		if (is_dir($sphinxPath)) {
 			$versions = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($sphinxPath);
 		}
+		$versions = array_diff($versions, array('bin'));
 
 		if (!$versions) {
 			$out[] = 'No versions of Sphinx available. Please run Update script first.';
 		}
 
-		$i = 0;
 		$selectedVersion = $params['fieldValue'];
+
+		if ($selectedVersion) {
+			// Recreate the shortcut links to selected version
+			// /path/to/sphinx/sphinx-build -> /path/to/sphinx/sphinx-build-1.2b1
+			$scripts = array(
+				'sphinx-build',
+				'sphinx-quickstart',
+			);
+			chdir($sphinxPath . '/bin');
+			foreach ($scripts as $script) {
+				@unlink($sphinxPath . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . $script);
+				symlink($script . '-' . $selectedVersion, $script);
+			}
+		}
+
+		$i = 0;
 		foreach ($versions as $version) {
 			$out[] = '<div style="margin-top:1ex">';
 			$checked = $version === $selectedVersion ? ' checked="checked"' : '';

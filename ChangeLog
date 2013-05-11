@@ -1,5 +1,6 @@
 2013-05-11  Xavier Perseguers  <xavier@causal.ch>
 
+	* [FEATURE] #48110: Add command line utilities
 	* [TASK] Use Fluid's StandaloneView instead of inline HTML
 
 2013-05-10  Xavier Perseguers  <xavier@causal.ch>
