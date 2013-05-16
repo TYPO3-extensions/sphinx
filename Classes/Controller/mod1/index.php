@@ -280,7 +280,17 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				}
 				break;
 			case 'build_json':
+				$configurationFilename = $this->project['basePath'] . $this->project['conf_py'];
+				$backupConfigurationFilename = $configurationFilename . '.bak';
+
 				try {
+					if ($this->project['properties']['t3sphinx']) {
+						if (file_exists($configurationFilename)) {
+							if (copy($configurationFilename, $backupConfigurationFilename)) {
+								$this->overrideThemeT3Sphinx();
+							}
+						}
+					}
 					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildJson(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
@@ -289,6 +299,12 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					);
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
+				}
+				if ($this->project['properties']['t3sphinx']) {
+					if (file_exists($backupConfigurationFilename)) {
+						// Replace special-crafted conf.py by the backup version
+						rename($backupConfigurationFilename, $configurationFilename);
+					}
 				}
 				break;
 			case 'build_latex':
@@ -333,6 +349,30 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Creates a special-crafted conf.py for JSON output when using
+	 * t3sphinx as HTML theme.
+	 *
+	 * @return void
+	 * @see http://forge.typo3.org/issues/48311
+	 */
+	protected function overrideThemeT3Sphinx() {
+		$configuration = file_get_contents($this->project['basePath'] . $this->project['conf_py']);
+		$t3sphinxImportPattern = '/^(\s*)import\s+t3sphinx\s*$/m';
+
+		if (preg_match($t3sphinxImportPattern, $configuration, $matches)) {
+			$imports = array(
+				'from docutils.parsers.rst import directives',
+				'from t3sphinx import fieldlisttable',
+				'directives.register_directive(\'t3-field-list-table\', fieldlisttable.FieldListTable)',
+			);
+			$replacement = $matches[1] . implode(LF . $matches[1], $imports);
+			$newConfiguration = preg_replace($t3sphinxImportPattern, $replacement, $configuration);
+
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($this->project['basePath'] . $this->project['conf_py'], $newConfiguration);
+		}
 	}
 
 	/**

@@ -1,3 +1,7 @@
+2013-05-16  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] #48311: Official TYPO3 manuals cannot be compiled as JSON
+
 2013-05-11  Xavier Perseguers  <xavier@causal.ch>
 
 	* [FEATURE] #48110: Add command line utilities
