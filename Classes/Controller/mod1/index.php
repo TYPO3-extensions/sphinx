@@ -371,6 +371,18 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$replacement = $matches[1] . implode(LF . $matches[1], $imports);
 			$newConfiguration = preg_replace($t3sphinxImportPattern, $replacement, $configuration);
 
+			$message = sprintf(
+				'Configuration file %s has been temporarily modified to switch off theme "t3sphinx" which is ' .
+				'not compatible with JSON output.',
+				$this->project['conf_py']
+			);
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, 'Sphinx', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+			$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+			$defaultFlashMessageQueue->enqueue($flashMessage);
+
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($this->project['basePath'] . $this->project['conf_py'], $newConfiguration);
 		}
 	}
