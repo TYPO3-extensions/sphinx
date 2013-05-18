@@ -240,6 +240,9 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		$sphinxVersion = \Causal\Sphinx\Utility\SphinxBuilder::getSphinxVersion();
+		if (\Causal\Sphinx\Utility\SphinxBuilder::isSystemVersion()) {
+			$sphinxVersion .= ' (system)';
+		}
 		$values = array(
 			'project' => $this->project,
 			'build' => array(

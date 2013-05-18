@@ -43,13 +43,34 @@ class SphinxBuilder {
 	public static $htmlConsole = TRUE;
 
 	/**
+	 * Returns TRUE if the version of Sphinx used for building documentation is system.
+	 *
+	 * @return boolean
+	 */
+	public static function isSystemVersion() {
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+		return $configuration['version'] === 'SYSTEM';
+	}
+
+	/**
 	 * Returns the version of Sphinx used for building documentation.
 	 *
 	 * @return string
 	 */
 	public static function getSphinxVersion() {
-		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
-		return $configuration['version'];
+		$version = NULL;
+		if (self::isSystemVersion()) {
+			$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
+			if ($sphinxBuilder) {
+				$versionLine = \TYPO3\CMS\Core\Utility\CommandUtility::exec($sphinxBuilder . ' --version');
+				$versionParts = explode(' ', $versionLine);
+				$version = end($versionParts);
+			}
+		} else {
+			$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+			$version = $configuration['version'];
+		}
+		return $version;
 	}
 
 	/**
@@ -354,8 +375,16 @@ class SphinxBuilder {
 	 */
 	protected static function getSphinxBuilder() {
 		$sphinxVersion = self::getSphinxVersion();
-		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/' . $sphinxVersion . '/';
-		$sphinxBuilder = $sphinxPath . 'bin/sphinx-build';
+		if (self::isSystemVersion()) {
+			$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
+			while (is_link($sphinxBuilder)) {
+				$sphinxBuilder = readlink($sphinxBuilder);
+			}
+			$sphinxPath = substr($sphinxBuilder, 0, strrpos($sphinxBuilder, '/bin/') + 1);
+		} else {
+			$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/' . $sphinxVersion . '/';
+			$sphinxBuilder = $sphinxPath . 'bin/sphinx-build';
+		}
 
 		if (empty($sphinxVersion)) {
 			throw new \RuntimeException('Sphinx is not configured. Please use Extension Manager.', 1366210198);

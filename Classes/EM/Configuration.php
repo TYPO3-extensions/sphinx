@@ -56,13 +56,23 @@ class Configuration {
 		}
 		$versions = array_diff($versions, array('bin'));
 
+		// Maybe a global install of Sphinx is available
+		$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
+		// Do not resolve symbolic link here, no need if after all one wants to link to a local version of sphinx-build
+		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($$sphinxBuilder, $sphinxPath)) {
+			$versionLine = \TYPO3\CMS\Core\Utility\CommandUtility::exec($sphinxBuilder . ' --version');
+			$versionParts = explode(' ', $versionLine);
+			$globalVersion = end($versionParts);
+			array_unshift($versions, 'SYSTEM');
+		}
+
 		if (!$versions) {
 			$out[] = 'No versions of Sphinx available. Please run Update script first.';
 		}
 
 		$selectedVersion = $params['fieldValue'];
 
-		if ($selectedVersion) {
+		if ($selectedVersion && $selectedVersion !== 'SYSTEM') {
 			// Recreate the shortcut links to selected version
 			// /path/to/sphinx/sphinx-build -> /path/to/sphinx/sphinx-build-1.2b1
 			$scripts = array(
@@ -79,9 +89,10 @@ class Configuration {
 		$i = 0;
 		foreach ($versions as $version) {
 			$out[] = '<div style="margin-top:1ex">';
+			$label = $version !== 'SYSTEM' ? $version : $globalVersion . ' (system)';
 			$checked = $version === $selectedVersion ? ' checked="checked"' : '';
 			$out[] = '<input type="radio" id="sphinx_version_' . $i . '" name="sphinx_version" value="' . $version . '"' . $checked . ' onclick="toggleSphinxVersion();" />';
-			$out[] = '<label for="sphinx_version_' . $i . '" style="display:inline">' . $version . '</label>';
+			$out[] = '<label for="sphinx_version_' . $i . '" style="display:inline">' . $label . '</label>';
 			$out[] = '</div>';
 			$i++;
 		}
