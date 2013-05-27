@@ -73,8 +73,8 @@ HTML;
 			$this->content = <<<HTML
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Frameset//EN" "http://www.w3.org/TR/REC-html40/frameset.dtd">
 <html>
-<frameset rows="25,*" frameborder="no" framespacing="0" border="0">
-	<frame src="$menuUrl" frameborder="0" noresize="noresize" />
+<frameset rows="30,*" frameborder="no" framespacing="0" border="0">
+	<frame src="$menuUrl" frameborder="0" noresize="noresize" scrolling="no" />
 	<frame name="viewer" src="about::blank" frameborder="0" noresize="noresize" />
 </frameset>
 </html>
@@ -101,10 +101,17 @@ HTML;
 
 		$options = '';
 		$extensions = $this->getExtensionsWithSphinxDocumentation();
-		foreach ($extensions as $e) {
-			$options .= LF . TAB . TAB . '<option value="' . htmlspecialchars($e) . '">' . htmlspecialchars($e) . '</option>';
+		$format = LF . TAB . TAB . '<option value="%s">%s (%s)</option>';
+		foreach ($extensions as $extensionKey => $name) {
+			$options .= sprintf(
+				$format,
+				htmlspecialchars($extensionKey),
+				htmlspecialchars($name),
+				htmlspecialchars($extensionKey)
+			);
 		}
 
+		$label = $GLOBALS['LANG']->getLL('showExtensionDocumentation', TRUE);
 		$this->content = <<<HTML
 <html>
 <head>
@@ -113,8 +120,8 @@ HTML;
 <body>
 <form action="mod.php" method="get" target="viewer">
 	<input type="hidden" name="M" value="help_txsphinxM2" />
-	Documentation:
-	<select name="extension" onchange="this.form.submit();">
+	<label for="extension">{$label}</label>
+	<select id="extension" name="extension" onchange="this.form.submit();">
 		<option value=""></option>
 		$options
 	</select>
@@ -142,12 +149,13 @@ HTML;
 			return $documentationUrl;
 		}
 
+		$metadata = $this->getExtensionMetaData($extensionKey);
 		$basePath = PATH_site . 'typo3temp/tx-' . $this->extKey . '/' . $extensionKey;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
 		\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
 			$basePath,
 			$extensionKey,
-			'Unknown Author',
+			$metadata['author'],
 			FALSE,
 			'TYPO3DocEmptyProject'
 		);
@@ -202,19 +210,6 @@ HTML;
 	}
 
 	/**
-	 * Generates the module content.
-	 *
-	 * @return void
-	 */
-	protected function moduleContent() {
-		$extensions = $this->getExtensionsWithSphinxDocumentation();
-
-		$this->content .= '<iframe style="height:100%" src="../typo3conf/deprecation_d2cd4e1595.log" />';
-
-		$this->content .= var_export($extensions, TRUE);
-	}
-
-	/**
 	 * Returns the list of loaded extensions with Sphinx documentation.
 	 *
 	 * @return array
@@ -225,10 +220,27 @@ HTML;
 		foreach ($loadedExtensions as $loadedExtension) {
 			$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($loadedExtension);
 			if (is_dir($extPath . 'Documentation') && is_file($extPath . 'Documentation/Index.rst')) {
-				$extensions[] = $loadedExtension;
+				$metadata = $this->getExtensionMetaData($loadedExtension);
+				$extensions[$loadedExtension] = $metadata['title'];
 			}
 		}
+		asort($extensions);
+
 		return $extensions;
+	}
+
+	/**
+	 * Returns meta-data for a given extension.
+	 *
+	 * @param string $extensionKey
+	 * @return array
+	 */
+	protected function getExtensionMetaData($extensionKey) {
+		$_EXTKEY = $extensionKey;
+		$EM_CONF = array();
+		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+		include($extPath . 'ext_emconf.php');
+		return $EM_CONF[$_EXTKEY];
 	}
 
 	/**

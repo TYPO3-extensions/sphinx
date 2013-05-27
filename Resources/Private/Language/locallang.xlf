@@ -15,6 +15,9 @@
 			<trans-unit id="mod2Title" xml:space="preserve">
 				<source>Sphinx Documentation Viewer</source>
 			</trans-unit>
+			<trans-unit id="showExtensionDocumentation" xml:space="preserve">
+				<source>Show documentation of extension:</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
