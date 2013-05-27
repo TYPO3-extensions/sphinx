@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\Controller;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +21,8 @@ namespace Causal\Sphinx\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+namespace Causal\Sphinx\Controller;
 
 $GLOBALS['LANG']->includeLLFile('EXT:sphinx/Resources/Private/Language/locallang.xlf');
 $GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissions and exits if the users has no permission for entry.
@@ -121,9 +121,9 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function main() {
 		// Initialize doc
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
-		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sphinx') . 'Resources/Private/Layouts/ModuleSphinx.html');
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Layouts/ModuleSphinx.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sphinx') . 'Resources/Public/Css/Backend.css';
+		$this->doc->styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/Css/Backend.css';
 
 		/** @var \TYPO3\CMS\Filelist\FileList $filelist */
 		$filelist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Filelist\FileList');
@@ -446,7 +446,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
 
 		// Shortcut
-		if ($GLOBALS['BE_USER']->mayMakeShortcut())    {
+		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
 		}
 

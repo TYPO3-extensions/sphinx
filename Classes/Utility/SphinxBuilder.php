@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\Utility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +21,8 @@ namespace Causal\Sphinx\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+namespace Causal\Sphinx\Utility;
 
 /**
  * SphinxBuilder Wrapper.

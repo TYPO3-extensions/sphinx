@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\EM;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,6 +21,8 @@ namespace Causal\Sphinx\EM;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+namespace Causal\Sphinx\EM;
 
 /**
  * Configuration class for the TYPO3 Extension Manager.
