@@ -1,5 +1,6 @@
 2013-05-27  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK][DOC] Kickstart documentation as Sphinx project :)
 	* [FEATURE] #48581: Allow extension's documentation to be rendered locally
 
 2013-05-18  Xavier Perseguers  <xavier@causal.ch>
