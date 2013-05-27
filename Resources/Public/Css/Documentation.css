@@ -4,3 +4,8 @@ body {
 	font-family: verdana,"Arial","Myriad Pro","Myriad Web","Tahoma","Helvetica",sans-serif;
 	font-size: 10px;
 }
+
+#book {
+	text-align: center;
+	margin-top: 10%;
+}

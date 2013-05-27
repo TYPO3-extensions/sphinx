@@ -49,12 +49,14 @@ class DocumentationController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 	 * @return void
 	 */
 	public function main() {
+		$blankUrl = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/Html/Mod2Blank.html';
+
 		if (isset($_GET['extension'])) {
 			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('extension');
 			if ($extensionKey) {
 				$documentationUrl = $this->generateDocumentation($extensionKey);
 			} else {
-				$documentationUrl = 'about::blank';
+				$documentationUrl = $blankUrl;
 			}
 
 			$this->content = <<<HTML
@@ -75,7 +77,7 @@ HTML;
 <html>
 <frameset rows="30,*" frameborder="no" framespacing="0" border="0">
 	<frame src="$menuUrl" frameborder="0" noresize="noresize" scrolling="no" />
-	<frame name="viewer" src="about::blank" frameborder="0" noresize="noresize" />
+	<frame name="viewer" src="$blankUrl" frameborder="0" noresize="noresize" />
 </frameset>
 </html>
 HTML;
