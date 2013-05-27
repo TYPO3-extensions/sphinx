@@ -159,7 +159,9 @@ HTML;
 			$extensionKey,
 			$metadata['author'],
 			FALSE,
-			'TYPO3DocEmptyProject'
+			'TYPO3DocEmptyProject',
+			$metadata['version'],
+			$metadata['release']
 		);
 
 		// Recursively instantiate template files
@@ -242,6 +244,16 @@ HTML;
 		$EM_CONF = array();
 		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 		include($extPath . 'ext_emconf.php');
+
+		$release = $EM_CONF[$_EXTKEY]['version'];
+		list($major, $minor, $remaining) = explode('.', $release, 3);
+		if (($pos = strpos($minor, '-')) !== FALSE) {
+			// $minor ~ '2-dev'
+			$minor = substr($minor, 0, $pos);
+		}
+		$EM_CONF[$_EXTKEY]['version'] = $major . '.' . $minor;
+		$EM_CONF[$_EXTKEY]['release'] = $release;
+
 		return $EM_CONF[$_EXTKEY];
 	}
 

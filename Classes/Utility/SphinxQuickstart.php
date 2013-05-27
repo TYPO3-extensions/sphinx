@@ -47,9 +47,11 @@ class SphinxQuickstart {
 	 * @param string $author
 	 * @param boolean $separateSourceBuild
 	 * @param string $template
+	 * @param string $version
+	 * @param string $release
 	 * @return boolean
 	 */
-	public static function createProject($pathRoot, $projectName, $author, $separateSourceBuild = FALSE, $template = 'BlankProject') {
+	public static function createProject($pathRoot, $projectName, $author, $separateSourceBuild = FALSE, $template = 'BlankProject', $version = '1.0', $release = '1.0.0') {
 		$projectName = str_replace("'", ' ', $projectName);
 		$author = str_replace("'", ' ', $author);
 
@@ -63,8 +65,8 @@ class SphinxQuickstart {
 		// Python the version is something like 2.5 or 3.0, while the release is
 		// something like 2.5.1 or 3.0a1.  If you don't need this dual structure,
 		// just set both to the same value.
-		$version = '1.0';
-		$release = '1.0.0';
+		//$version = '1.0';
+		//$release = '1.0.0';
 
 		// The file name suffix for source files. Commonly, this is either ".txt"
 		// or ".rst".  Only files with this suffix are considered documents.
