@@ -79,7 +79,7 @@ class SphinxQuickstart {
 		$pathRoot = rtrim($pathRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pathRoot);
 
-		$isTypo3Documentation = is_dir(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/Templates/' . $template . '/_make');
+		$isTypo3Documentation = is_dir(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/Templates/Projects/' . $template . '/_make');
 
 		if ($isTypo3Documentation) {
 			$separateSourceBuild = FALSE;
