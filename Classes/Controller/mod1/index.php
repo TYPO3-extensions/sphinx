@@ -184,7 +184,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// Build the <body> for the module
 		$this->content = '';
-		$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
+		$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('mod1Title'));
 		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content .= $this->doc->endPage();
 
