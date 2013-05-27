@@ -18,6 +18,12 @@
 			<trans-unit id="showExtensionDocumentation" xml:space="preserve">
 				<source>Show documentation of extension:</source>
 			</trans-unit>
+			<trans-unit id="loadDocumentation" xml:space="preserve">
+				<source>Go</source>
+			</trans-unit>
+			<trans-unit id="alwaysRender" xml:space="preserve">
+				<source>Always render documentation</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

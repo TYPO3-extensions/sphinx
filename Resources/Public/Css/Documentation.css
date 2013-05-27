@@ -9,3 +9,7 @@ body {
 	text-align: center;
 	margin-top: 10%;
 }
+
+.right {
+	float: right;
+}

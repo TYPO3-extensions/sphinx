@@ -54,7 +54,8 @@ class DocumentationController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		if (isset($_GET['extension'])) {
 			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('extension');
 			if ($extensionKey) {
-				$documentationUrl = $this->generateDocumentation($extensionKey);
+				$force = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('force') === '1';
+				$documentationUrl = $this->generateDocumentation($extensionKey, $force);
 			} else {
 				$documentationUrl = $blankUrl;
 			}
@@ -114,6 +115,8 @@ HTML;
 		}
 
 		$label = $GLOBALS['LANG']->getLL('showExtensionDocumentation', TRUE);
+		$submit = $GLOBALS['LANG']->getLL('loadDocumentation', TRUE);
+		$labelForce = $GLOBALS['LANG']->getLL('alwaysRender', TRUE);
 		$this->content = <<<HTML
 <html>
 <head>
@@ -127,6 +130,11 @@ HTML;
 		<option value=""></option>
 		$options
 	</select>
+	<input type="submit" value="{$submit}" />
+	<div class="right">
+		<input type="checkbox" id="force" name="force" value="1" />
+		<label for="force">{$labelForce}</label>
+	</div>
 </form>
 </body>
 </html>
@@ -138,15 +146,14 @@ HTML;
 	 * Generates the documentation for a given extension.
 	 *
 	 * @param string $extensionKey
+	 * @param boolean $force
 	 * @return string
 	 * @todo Cleanup and output error message in the frame
 	 */
-	protected function generateDocumentation($extensionKey) {
+	protected function generateDocumentation($extensionKey, $force = FALSE) {
 		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/html';
-		if (is_file($outputDirectory . '/Index.html')) {
+		if (!$force && is_file($outputDirectory . '/Index.html')) {
 			// Do not render the documentation again
-			// TODO: detect if it is needed anyway
-
 			$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/Index.html';
 			return $documentationUrl;
 		}
