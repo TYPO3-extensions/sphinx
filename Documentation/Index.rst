@@ -52,3 +52,4 @@ The content of this document is related to TYPO3
 	:glob:
 
 	Introduction/Index
+	UserManual/Index
