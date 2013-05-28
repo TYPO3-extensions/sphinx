@@ -1,6 +1,6 @@
 2013-05-28  Xavier Perseguers  <xavier@causal.ch>
 
-	* [BUGFIX] #48599: Fatal error with TYPO3 6.2
+	* [BUGFIX] #48599: Fatal error with TYPO3 6.2: Clipboard is not initialized
 
 2013-05-28  Xavier Perseguers  <xavier@causal.ch>
 
