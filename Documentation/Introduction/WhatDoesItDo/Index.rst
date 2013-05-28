@@ -26,7 +26,7 @@ Sphinx was originally created for the Python documentation and a few features ar
 And this extension?
 """""""""""""""""""
 
-Setting up a Sphinx environment to build documentation may be complicated for some users. This extension takes for granted that Python interpreter is available on your web server and will install and configure Sphinx locally (thus in your website) in a few clicks.
+Setting up a Sphinx environment to build documentation may be complicated for some users. This extension takes for granted that Python interpreter is available on your web server and will install and configure Sphinx **locally** (thus in your website) in a few clicks.
 
 What can I do with a Sphinx project?
 """"""""""""""""""""""""""""""""""""

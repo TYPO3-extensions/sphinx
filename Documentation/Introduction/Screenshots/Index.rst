@@ -24,3 +24,8 @@ Build PDF with pdflatex
 """""""""""""""""""""""
 
 |build_buttons|
+
+Render and browse other extension manuals locally
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+|viewer|

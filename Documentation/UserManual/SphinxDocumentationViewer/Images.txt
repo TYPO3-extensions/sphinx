@@ -1,0 +1,9 @@
+.. |section_help| image:: ../../Images/section_help.png
+	:alt: Sphinx documentation viewer
+
+.. |viewer_choose_extension| image:: ../../Images/viewer_choose_extension.png
+	:alt: Selector to show an extension manual locally
+	:width: 500
+
+.. |checkbox| image:: ../../Images/checkbox.png
+	:alt: Checkbox to force an extension manual to be rendered

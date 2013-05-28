@@ -9,3 +9,7 @@
 .. |build_buttons| image:: ../../Images/build_buttons.png
 	:alt: Toolbar buttons
 	:width: 500
+
+.. |viewer| image:: ../../Images/viewer.png
+	:alt: Integrated Backend viewer for extension manuals
+	:width: 500
