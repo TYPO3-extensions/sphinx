@@ -129,6 +129,10 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$filelist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Filelist\FileList');
 		$filelist->backPath = $GLOBALS['BACK_PATH'];
 
+		$filelist->clipObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$filelist->clipObj->fileMode = 1;
+		$filelist->clipObj->initializeClipboard();
+
 		if (!isset($this->MOD_SETTINGS['sort'])) {
 			// Set default sorting
 			$this->MOD_SETTINGS['sort'] = 'file';
