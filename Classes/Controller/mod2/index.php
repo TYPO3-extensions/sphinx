@@ -258,7 +258,7 @@ HTML;
 		include($extPath . 'ext_emconf.php');
 
 		$release = $EM_CONF[$_EXTKEY]['version'];
-		list($major, $minor, $remaining) = explode('.', $release, 3);
+		list($major, $minor, $_) = explode('.', $release, 3);
 		if (($pos = strpos($minor, '-')) !== FALSE) {
 			// $minor ~ '2-dev'
 			$minor = substr($minor, 0, $pos);
