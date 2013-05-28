@@ -29,7 +29,7 @@ When selecting an extension manual to be shown from the drop-down menu the follo
 
 - Otherwise:
 
-	1. An empty Sphinx project is instantiated within ``typo3temp/tx-sphinx/<extension-key>`` and all files from ``EXT:<extension-key>/Documentation`` are copied in this directory
+	1. An empty Sphinx project is instantiated within ``typo3temp/tx_sphinx/<extension-key>`` and all files from ``EXT:<extension-key>/Documentation`` are copied in this directory
 
 	2. The Sphinx project is built as HTML
 

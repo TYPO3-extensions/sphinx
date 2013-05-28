@@ -633,6 +633,8 @@ EOT;
 	public static function dumpLog($filename = '') {
 		$content = implode(LF, self::$log);
 		if ($filename) {
+			$directory = dirname($filename);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($directory);
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $content);
 		} else {
 			return $content;

@@ -115,7 +115,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					}
 				}
 
-				$logFilename = PATH_site . 'typo3temp/tx_sphinx-' . $action . '-' . date('YmdHis') . '.log';
+				$logFilename = PATH_site . 'typo3temp/tx_sphinx/' . $action . '-' . date('YmdHis') . '.log';
 				\Causal\Sphinx\Utility\Setup::dumpLog($logFilename);
 
 				$out[] = '<p><a href="../' . substr($logFilename, strlen(PATH_site)) . '" target="_blank">Click here</a> to show the complete log.</p>';

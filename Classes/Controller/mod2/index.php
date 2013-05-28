@@ -148,7 +148,6 @@ HTML;
 	 * @param string $extensionKey
 	 * @param boolean $force
 	 * @return string
-	 * @todo Cleanup and output error message in the frame
 	 */
 	protected function generateDocumentation($extensionKey, $force = FALSE) {
 		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/html';
@@ -159,7 +158,7 @@ HTML;
 		}
 
 		$metadata = $this->getExtensionMetaData($extensionKey);
-		$basePath = PATH_site . 'typo3temp/tx-' . $this->extKey . '/' . $extensionKey;
+		$basePath = PATH_site . 'typo3temp/tx_' . $this->extKey . '/' . $extensionKey;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
 		\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
 			$basePath,
@@ -174,7 +173,10 @@ HTML;
 		// Recursively instantiate template files
 		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
 		if (!is_dir($source)) {
-			throw new \RuntimeException('Documentation directory was not found: ' . $source, 1369679343);
+			$filename = 'typo3temp/tx_' . $this->extKey . '/1369679343.log';
+			$content = 'ERROR 1369679343: Documentation directory was not found: ' . $source;
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
+			return '../' . $filename;
 		}
 		$this->recursiveCopy($source, $basePath);
 
@@ -186,7 +188,10 @@ HTML;
 				'_make/conf.py'
 			);
 		} catch (\RuntimeException $e) {
-			$output = $e->getMessage();
+			$filename = 'typo3temp/tx_' . $this->extKey . '/' . $e->getCode() . '.log';
+			$content = $e->getMessage();
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
+			return '../' . $filename;
 		}
 
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($outputDirectory, TRUE);
