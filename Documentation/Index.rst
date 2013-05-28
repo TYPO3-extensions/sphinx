@@ -24,7 +24,7 @@ Sphinx Python Documentation Generator
 	documentation (format of official TYPO3 manuals).
 
 :Keywords:
-	reStructured Text, sphinx, documentation
+	reStructuredText, reST, sphinx, documentation
 
 :Copyright:
 	2013
@@ -53,3 +53,7 @@ The content of this document is related to TYPO3
 
 	Introduction/Index
 	UserManual/Index
+	Administration/Index
+	KnownProblems/Index
+	ToDoList/Index
+	ChangeLog/Index

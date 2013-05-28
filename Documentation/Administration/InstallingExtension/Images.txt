@@ -1,0 +1,13 @@
+.. |em_update| image:: ../../Images/em_update.png
+	:alt: Launching the update script within Extension Manager
+	:width: 500
+
+.. |em_configure| image:: ../../Images/em_configure.png
+	:alt: Configuring the extension within Extension Manager
+	:width: 500
+
+.. |import_sphinx| image:: ../../Images/import_sphinx.png
+	:alt: Importing Sphinx to the local environment
+
+.. |sphinx_version| image:: ../../Images/sphinx_version.png
+	:alt: Configuring the version of Sphinx to be used by default

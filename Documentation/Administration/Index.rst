@@ -6,16 +6,15 @@
 .. include:: ../Includes.txt
 
 
-User Manual
------------
+Administration
+--------------
 
-This chapter describes how to use the extension from a user point of view.
+This chapter describes how to manage the extension from a superuser point of view.
 
 .. toctree::
 	:maxdepth: 5
 	:titlesonly:
 	:glob:
 
-	Requirements/Index
-	CreatingSphinxDocumentationProject/Index
-	BuildingSphinxDocumentationProject/Index
+	InstallingExtension/Index
+	UsingSphinxCommandLine/Index

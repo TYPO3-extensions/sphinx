@@ -13,7 +13,7 @@ This extension requires the Python interpreter to be available on your web serve
 
 If you plan to build PDF, you will need additionally commands "make" and "pdflatex".
 
-And of course, you need a documentation written in reStructuredText and as a Sphinx project. Please visit `http://wiki.typo3.org/ReST <http://wiki.typo3.org/ReST>`_ for further information.
+And of course, you need a documentation written in reStructuredText and as a Sphinx project. Please visit http://wiki.typo3.org/ReST for further information.
 
 The extension supports single directory projects:
 
