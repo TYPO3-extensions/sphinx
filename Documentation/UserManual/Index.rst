@@ -15,3 +15,5 @@ User Manual
 	:glob:
 
 	Requirements/Index
+	CreatingSphinxDocumentationProject/Index
+	BuildingSphinxDocumentationProject/Index
