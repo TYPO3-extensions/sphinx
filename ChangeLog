@@ -1,3 +1,7 @@
+2013-05-29  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] Rewrite Documentation Viewer in Extbase
+
 2013-05-28  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Unify error reporting as log files

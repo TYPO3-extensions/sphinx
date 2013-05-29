@@ -24,9 +24,6 @@
 
 namespace Causal\Sphinx\Controller;
 
-$GLOBALS['LANG']->includeLLFile('EXT:sphinx/Resources/Private/Language/locallang.xlf');
-$GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissions and exits if the users has no permission for entry.
-
 /**
  * Module 'Sphinx Documentation' for the 'sphinx' extension.
  *
@@ -37,109 +34,53 @@ $GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissi
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class DocumentationController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
-
-	/** @var string */
-	protected $extKey = 'sphinx';
+class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-	 * Main function of the module. Write the content to $this->content
-	 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
+	 * Main action.
 	 *
 	 * @return void
 	 */
-	public function main() {
-		$blankUrl = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/Html/Mod2Blank.html';
-
-		if (isset($_GET['extension'])) {
-			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('extension');
-			if ($extensionKey) {
-				$force = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('force') === '1';
-				$documentationUrl = $this->generateDocumentation($extensionKey, $force);
-			} else {
-				$documentationUrl = $blankUrl;
-			}
-
-			$this->content = <<<HTML
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Frameset//EN" "http://www.w3.org/TR/REC-html40/frameset.dtd">
-<html>
-<frameset rows="*">
-	<frame src="$documentationUrl" />
-</frameset>
-</html>
-HTML;
-		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('mode') === 'menu') {
-			$this->generateMenu();
-		} else {
-			$menuUrl = 'mod.php?M=help_txsphinxM2&amp;mode=menu';
-
-			$this->content = <<<HTML
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Frameset//EN" "http://www.w3.org/TR/REC-html40/frameset.dtd">
-<html>
-<frameset rows="30,*" frameborder="no" framespacing="0" border="0">
-	<frame src="$menuUrl" frameborder="0" noresize="noresize" scrolling="no" />
-	<frame name="viewer" src="$blankUrl" frameborder="0" noresize="noresize" />
-</frameset>
-</html>
-HTML;
-		}
+	protected function indexAction() {
+		// Nothing to do
 	}
 
 	/**
-	 * Prints out the module HTML.
+	 * Blank action.
 	 *
 	 * @return void
 	 */
-	public function printContent() {
-		echo $this->content;
+	protected function blankAction() {
+		// Nothing to do
 	}
 
 	/**
-	 * Generates the menu of documentation.
+	 * Menu action.
 	 *
 	 * @return void
 	 */
-	protected function generateMenu() {
-		$cssPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/Css/';
-
-		$options = '';
+	protected function menuAction() {
 		$extensions = $this->getExtensionsWithSphinxDocumentation();
-		$format = LF . TAB . TAB . '<option value="%s">%s (%s)</option>';
+		$options = array('' => '');
 		foreach ($extensions as $extensionKey => $name) {
-			$options .= sprintf(
-				$format,
-				htmlspecialchars($extensionKey),
-				htmlspecialchars($name),
-				htmlspecialchars($extensionKey)
-			);
+			$options[$extensionKey] = sprintf('%s (%s)', $name, $extensionKey);
 		}
+		$this->view->assign('extensions', $options);
+	}
 
-		$label = $GLOBALS['LANG']->getLL('showExtensionDocumentation', TRUE);
-		$submit = $GLOBALS['LANG']->getLL('loadDocumentation', TRUE);
-		$labelForce = $GLOBALS['LANG']->getLL('alwaysRender', TRUE);
-		$this->content = <<<HTML
-<html>
-<head>
-	<link rel="stylesheet" type="text/css" href="$cssPath/Documentation.css" />
-</head>
-<body>
-<form action="mod.php" method="get" target="viewer">
-	<input type="hidden" name="M" value="help_txsphinxM2" />
-	<label for="extension">{$label}</label>
-	<select id="extension" name="extension" onchange="this.form.submit();">
-		<option value=""></option>
-		$options
-	</select>
-	<input type="submit" value="{$submit}" />
-	<div class="right">
-		<input type="checkbox" id="force" name="force" value="1" />
-		<label for="force">{$labelForce}</label>
-	</div>
-</form>
-</body>
-</html>
-HTML;
-
+	/**
+	 * Render action.
+	 *
+	 * @param string $extension
+	 * @param boolean $force
+	 * @return string
+	 */
+	protected function renderAction($extension, $force = FALSE) {
+		if ($extension === '') {
+			$this->redirect('blank');
+		}
+		$documentationUrl = $this->generateDocumentation($extension, $force);
+		$this->view->assign('documentationUrl', $documentationUrl);
 	}
 
 	/**
@@ -173,7 +114,7 @@ HTML;
 		// Recursively instantiate template files
 		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
 		if (!is_dir($source)) {
-			$filename = 'typo3temp/tx_' . $this->extKey . '/1369679343.log';
+			$filename = 'typo3temp/tx_' . $this->request->getControllerExtensionKey() . '/1369679343.log';
 			$content = 'ERROR 1369679343: Documentation directory was not found: ' . $source;
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
 			return '../' . $filename;
@@ -188,7 +129,7 @@ HTML;
 				'_make/conf.py'
 			);
 		} catch (\RuntimeException $e) {
-			$filename = 'typo3temp/tx_' . $this->extKey . '/' . $e->getCode() . '.log';
+			$filename = 'typo3temp/tx_' . $this->request->getControllerExtensionKey() . '/' . $e->getCode() . '.log';
 			$content = $e->getMessage();
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
 			return '../' . $filename;
@@ -269,45 +210,6 @@ HTML;
 		return $EM_CONF[$_EXTKEY];
 	}
 
-	/**
-	 * Creates the panel of buttons for submitting the form or otherwise perform operations.
-	 *
-	 * @return array All available buttons as an assoc.
-	 */
-	protected function getButtons() {
-		$buttons = array(
-			'csh' => '',
-			'shortcut' => '',
-			'save' => ''
-		);
-
-		// CSH
-		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
-
-		// SAVE button
-		$buttons['save'] = '';
-
-		// Shortcut
-		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
-		}
-
-		return $buttons;
-	}
-
 }
-
-// Make instance:
-/** @var $SOBE \Causal\Sphinx\Controller\DocumentationController */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\\Sphinx\\Controller\\DocumentationController');
-$SOBE->init();
-
-// Include files?
-foreach ($SOBE->include_once as $INC_FILE) {
-	include_once($INC_FILE);
-}
-
-$SOBE->main();
-$SOBE->printContent();
 
 ?>
