@@ -6,18 +6,16 @@
 </head>
 <body>
 
-<s:form action="render" target="viewer">
+<s:form action="render" target="tx-sphinx-documentation-content">
 	<label for="extension">
 		<f:translate key="showExtensionDocumentation">Show documentation of extension:</f:translate>
 	</label>
 	<s:form.select id="extension" name="extension" prependOptionLabel="" options="{extensions}" onchange="this.form.submit();" />
 
-	<f:if condition="{showLayouts}">
-		<label for="layout">
-			<f:translate key="documentationFormat">Layout:</f:translate>
-		</label>
-		<s:form.select id="layout" name="layout" options="{layouts}" onchange="this.form.submit();" />
-	</f:if>
+	<label for="layout">
+		<f:translate key="documentationFormat">Layout:</f:translate>
+	</label>
+	<s:form.select id="layout" name="layout" options="{layouts}" onchange="this.form.submit();" />
 
 	<f:form.submit value="{f:translate(key:'loadDocumentation')}" />
 

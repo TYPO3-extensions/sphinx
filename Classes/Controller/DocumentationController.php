@@ -67,7 +67,6 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 		}
 		$this->view->assign('extensions', $options);
 
-		$this->view->assign('showLayouts', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc'));
 		$layouts = array(
 			'html' => $this->translate('documentationLayout_typo3'),
 			'json' => $this->translate('documentationLayout_interactive'),
@@ -88,6 +87,10 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 			$this->redirect('blank');
 		}
 		$documentationUrl = $this->generateDocumentation($extension, $layout, $force);
+
+		if ($layout === 'json' && substr($documentationUrl, -6) === '.fjson') {
+			$this->forward('render', 'InteractiveViewer', NULL, array('extension' => $extension));
+		}
 		$this->view->assign('documentationUrl', $documentationUrl);
 	}
 

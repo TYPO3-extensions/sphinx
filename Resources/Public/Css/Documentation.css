@@ -6,8 +6,11 @@ body {
 }
 
 #book {
-	text-align: center;
 	margin-top: 10%;
+}
+
+.center {
+	text-align: center;
 }
 
 .right {
