@@ -12,14 +12,20 @@
 			<trans-unit id="folderNotFoundMessage" xml:space="preserve">
 				<source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
 			</trans-unit>
-			<trans-unit id="mod2Title" xml:space="preserve">
-				<source>Sphinx Documentation Viewer</source>
-			</trans-unit>
 			<trans-unit id="showExtensionDocumentation" xml:space="preserve">
 				<source>Show documentation of extension:</source>
 			</trans-unit>
 			<trans-unit id="loadDocumentation" xml:space="preserve">
 				<source>Go</source>
+			</trans-unit>
+			<trans-unit id="documentationLayout" xml:space="preserve">
+				<source>Layout:</source>
+			</trans-unit>
+			<trans-unit id="documentationLayout_typo3" xml:space="preserve">
+				<source>TYPO3</source>
+			</trans-unit>
+			<trans-unit id="documentationLayout_interactive" xml:space="preserve">
+				<source>Interactive</source>
 			</trans-unit>
 			<trans-unit id="alwaysRender" xml:space="preserve">
 				<source>Always render documentation</source>

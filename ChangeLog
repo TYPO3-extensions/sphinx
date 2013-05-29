@@ -1,5 +1,6 @@
 2013-05-29  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Add option to change format of the generated documentation
 	* [TASK] Rewrite Documentation Viewer in Extbase
 
 2013-05-28  Xavier Perseguers  <xavier@causal.ch>

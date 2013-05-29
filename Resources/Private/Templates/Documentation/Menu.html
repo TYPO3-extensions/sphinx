@@ -10,10 +10,17 @@
 	<label for="extension">
 		<f:translate key="showExtensionDocumentation">Show documentation of extension:</f:translate>
 	</label>
-	<s:form.select id="extension" name="extension" options="{extensions}" onchange="this.form.submit();">
-		<option value=""></option>
-	</s:form.select>
+	<s:form.select id="extension" name="extension" prependOptionLabel="" options="{extensions}" onchange="this.form.submit();" />
+
+	<f:if condition="{showLayouts}">
+		<label for="layout">
+			<f:translate key="documentationFormat">Layout:</f:translate>
+		</label>
+		<s:form.select id="layout" name="layout" options="{layouts}" onchange="this.form.submit();" />
+	</f:if>
+
 	<f:form.submit value="{f:translate(key:'loadDocumentation')}" />
+
 	<div class="right">
 		<f:form.checkbox id="force" name="force" value="1" />
 		<label for="force"><f:translate key="alwaysRender">Always render documentation</f:translate></label>

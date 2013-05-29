@@ -61,45 +61,76 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 */
 	protected function menuAction() {
 		$extensions = $this->getExtensionsWithSphinxDocumentation();
-		$options = array('' => '');
+		$options = array();
 		foreach ($extensions as $extensionKey => $name) {
 			$options[$extensionKey] = sprintf('%s (%s)', $name, $extensionKey);
 		}
 		$this->view->assign('extensions', $options);
+
+		$this->view->assign('showLayouts', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc'));
+		$layouts = array(
+			'html' => $this->translate('documentationLayout_typo3'),
+			'json' => $this->translate('documentationLayout_interactive'),
+		);
+		$this->view->assign('layouts', $layouts);
 	}
 
 	/**
 	 * Render action.
 	 *
 	 * @param string $extension
+	 * @param string $layout
 	 * @param boolean $force
 	 * @return string
 	 */
-	protected function renderAction($extension, $force = FALSE) {
+	protected function renderAction($extension, $layout = 'html', $force = FALSE) {
 		if ($extension === '') {
 			$this->redirect('blank');
 		}
-		$documentationUrl = $this->generateDocumentation($extension, $force);
+		$documentationUrl = $this->generateDocumentation($extension, $layout, $force);
 		$this->view->assign('documentationUrl', $documentationUrl);
+	}
+
+	/**
+	 * Returns the localized label of a given key.
+	 *
+	 * @param string $key
+	 * @return string
+	 */
+	protected function translate($key) {
+		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->request->getControllerExtensionKey());
 	}
 
 	/**
 	 * Generates the documentation for a given extension.
 	 *
 	 * @param string $extensionKey
+	 * @param string $format
 	 * @param boolean $force
 	 * @return string
 	 */
-	protected function generateDocumentation($extensionKey, $force = FALSE) {
-		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/html';
-		if (!$force && is_file($outputDirectory . '/Index.html')) {
+	protected function generateDocumentation($extensionKey, $format = 'html', $force = FALSE) {
+		switch ($format) {
+			case 'json':
+				$documentationType = 'json';
+				$masterDocument = 'Index.fjson';
+				break;
+			case 'html':
+			default:
+				$documentationType = 'html';
+				$masterDocument = 'Index.html';
+				break;
+		}
+
+		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/' . $documentationType;
+		if (!$force && is_file($outputDirectory . '/' . $masterDocument)) {
 			// Do not render the documentation again
-			$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/Index.html';
+			$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
 			return $documentationUrl;
 		}
 
 		$metadata = $this->getExtensionMetaData($extensionKey);
-		$basePath = PATH_site . 'typo3temp/tx_' . $this->extKey . '/' . $extensionKey;
+		$basePath = PATH_site . 'typo3temp/tx_' . $this->request->getControllerExtensionKey() . '/' . $extensionKey;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
 		\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
 			$basePath,
@@ -122,12 +153,11 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 		$this->recursiveCopy($source, $basePath);
 
 		try {
-			\Causal\Sphinx\Utility\SphinxBuilder::buildHtml(
-				$basePath,
-				'.',
-				'_make/build',
-				'_make/conf.py'
-			);
+			if ($format === 'json') {
+				\Causal\Sphinx\Utility\SphinxBuilder::buildJson($basePath, '.', '_make/build', '_make/conf.py');
+			} else {
+				\Causal\Sphinx\Utility\SphinxBuilder::buildHtml($basePath, '.', '_make/build', '_make/conf.py');
+			}
 		} catch (\RuntimeException $e) {
 			$filename = 'typo3temp/tx_' . $this->request->getControllerExtensionKey() . '/' . $e->getCode() . '.log';
 			$content = $e->getMessage();
@@ -137,9 +167,9 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($outputDirectory, TRUE);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($outputDirectory . '/');
-		$this->recursiveCopy($basePath . '/_make/build/html', $outputDirectory);
+		$this->recursiveCopy($basePath . '/_make/build/' . $documentationType, $outputDirectory);
 
-		$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/Index.html';
+		$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
 		return $documentationUrl;
 	}
 
