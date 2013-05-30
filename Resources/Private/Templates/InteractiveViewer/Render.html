@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Users manual</title>
+	<title>{documentation.title}</title>
 	<link rel="stylesheet" href="http://docs.typo3.org/t3extras/css/share.css" media="all"/>
 	<link rel="stylesheet" href="http://docs.typo3.org/t3extras/css/reset.css" media="all"/>
 	<link rel="stylesheet" href="http://docs.typo3.org/t3extras/css/grid.css" media="all"/>
@@ -34,7 +34,6 @@
 	<script src="http://docs.typo3.org/t3extras/js/jcookies.js"></script>
 	<script src="http://docs.typo3.org/t3extras/js/main.js"></script>
 	<script src="http://docs.typo3.org/t3extras/js/dip.js"></script>
-	<script src="http://docs.typo3.org/js/styleswitcher.js"></script>
 	<script src="http://docs.typo3.org/js/docstypo3org-2.js"></script>
 
 </head>
@@ -43,11 +42,12 @@
 <div class="p doc" id="page">
 	<div class="c cl" id="content">
 		<div id="aside" class="a">
-			<h3><a href="../../Index.html">{extension.title} {extension.release}</a></h3>
-			<div class="flyOutToc container" id="flyOutToc">
-				<p>within this page:</p>
-				<f:format.raw>{documentation.tableOfContents}</f:format.raw>
-			</div>
+			<f:if condition="{documentation.hasTableOfContents}">
+				<div class="flyOutToc container" id="flyOutToc">
+					<p>within this page:</p>
+					<f:format.raw>{documentation.tableOfContents}</f:format.raw>
+				</div>
+			</f:if>
 			<f:format.raw>{documentation.masterTableOfContents}</f:format.raw>
 		</div>
 
@@ -60,7 +60,7 @@
 						</li>
 						<li>
 							<a href="../../_sources/Main/UsersManual/Index.txt" rel="nofollow">
-								Show Source
+								Edit Source
 							</a>
 						</li>
 						<li>
@@ -95,7 +95,7 @@
 						</li>
 						<li>
 							<a href="../../_sources/Main/UsersManual/Index.txt" rel="nofollow">
-								Show Source
+								Edit Source
 							</a>
 						</li>
 						<li>
@@ -133,8 +133,10 @@
 	</div>
 </div>
 <!-- /#page -->
-<div id="naviwest">
-	<div id="naviwestpayload"></div>
-</div>
+<f:if condition="{documentation.hasTableOfContents}">
+	<div id="naviwest">
+		<div id="naviwestpayload"></div>
+	</div>
+</f:if>
 </body>
 </html>

@@ -80,11 +80,13 @@ class Documentation {
 	 * @return string
 	 */
 	public function getMasterTableOfContents() {
-		$masterToc = $this->sphinxReader->getMasterTableOfContents($this->callbackLinks);
-		$data = $masterToc ? \Tx_Restdoc_Utility_Helper::getMenuData(\Tx_Restdoc_Utility_Helper::xmlstr_to_array($masterToc)) : array();
-		$this->markActiveAndCurrentEntries($data, $this->sphinxReader->getDocument());
-		$masterToc = $this->createMasterMenu($data);
-
+		static $masterToc = NULL;
+		if ($masterToc === NULL) {
+			$masterToc = $this->sphinxReader->getMasterTableOfContents($this->callbackLinks);
+			$data = $masterToc ? \Tx_Restdoc_Utility_Helper::getMenuData(\Tx_Restdoc_Utility_Helper::xmlstr_to_array($masterToc)) : array();
+			$this->markActiveAndCurrentEntries($data, $this->sphinxReader->getDocument());
+			$masterToc = $this->createMasterMenu($data);
+		}
 		return $masterToc;
 	}
 
@@ -94,8 +96,16 @@ class Documentation {
 	 * @return string
 	 */
 	public function getTableOfContents() {
-		$toc = $this->sphinxReader->getTableOfContents($this->callbackLinks);
+		static $toc = NULL;
+		if ($toc === NULL) {
+			$toc = $this->sphinxReader->getTableOfContents($this->callbackLinks);
+		}
 		return $toc;
+	}
+
+	public function getHasTableOfContents() {
+		// Must have an inner <ul> after the first one
+		return strpos($this->getTableOfContents(), '<ul>', 4) !== FALSE;
 	}
 
 	/**
@@ -104,7 +114,10 @@ class Documentation {
 	 * @return string
 	 */
 	public function getBody() {
-		$body = $this->sphinxReader->getBody($this->callbackLinks, $this->callbackImages);
+		static $body = NULL;
+		if ($body === NULL) {
+			$body = $this->sphinxReader->getBody($this->callbackLinks, $this->callbackImages);
+		}
 		return $body;
 	}
 
