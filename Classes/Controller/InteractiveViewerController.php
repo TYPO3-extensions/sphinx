@@ -73,9 +73,7 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 * @return void
 	 */
 	protected function renderAction($extension, $document = '') {
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc')) {
-			$this->forward('missingRestdoc');
-		}
+		$this->checkExtensionRestdoc();
 
 		$this->extension = $extension;
 
@@ -104,6 +102,40 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 */
 	protected function missingRestdocAction() {
 		// Nothing to do
+	}
+
+	/**
+	 * Outdated EXT:restdoc action.
+	 *
+	 * @return void
+	 */
+	protected function outdatedRestdocAction() {
+		// Nothing to do
+	}
+
+	/**
+	 * Checks that EXT:restdoc is properly available.
+	 *
+	 * @return void
+	 */
+	protected function checkExtensionRestdoc() {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc')) {
+			$this->forward('missingRestdoc');
+		}
+		$restdocVersion = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('restdoc');
+		// Removes -dev -alpha -beta -RC states from a version number
+		// and replaces them by .0
+		if (stripos($restdocVersion, '-dev') || stripos($restdocVersion, '-alpha') || stripos($restdocVersion, '-beta') || stripos($restdocVersion, '-RC')) {
+			// Find the last occurence of "-" and replace that part with a ".0"
+			$restdocVersion = substr($restdocVersion, 0, strrpos($restdocVersion, '-')) . '.0';
+		}
+
+		$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($this->request->getControllerExtensionKey());
+		list($minVersion, $maxVersion) = explode('-', $metadata['constraints']['suggests']['restdoc']);
+
+		if (version_compare($restdocVersion, $minVersion, '<')) {
+			$this->forward('outdatedRestdoc');
+		}
 	}
 
 	/**

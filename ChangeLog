@@ -1,5 +1,6 @@
 2013-05-30  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Detect outdated EXT:restdoc
 	* [FEATURE] Basic use of EXT:restdoc to render documentation using JSON output
 
 2013-05-29  Xavier Perseguers  <xavier@causal.ch>

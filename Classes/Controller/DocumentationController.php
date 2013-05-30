@@ -132,7 +132,7 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 			return $documentationUrl;
 		}
 
-		$metadata = $this->getExtensionMetaData($extensionKey);
+		$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
 		$basePath = PATH_site . 'typo3temp/tx_' . $this->request->getControllerExtensionKey() . '/' . $extensionKey;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
 		\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
@@ -210,37 +210,13 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 		foreach ($loadedExtensions as $loadedExtension) {
 			$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($loadedExtension);
 			if (is_dir($extPath . 'Documentation') && is_file($extPath . 'Documentation/Index.rst')) {
-				$metadata = $this->getExtensionMetaData($loadedExtension);
+				$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($loadedExtension);
 				$extensions[$loadedExtension] = $metadata['title'];
 			}
 		}
 		asort($extensions);
 
 		return $extensions;
-	}
-
-	/**
-	 * Returns meta-data for a given extension.
-	 *
-	 * @param string $extensionKey
-	 * @return array
-	 */
-	protected function getExtensionMetaData($extensionKey) {
-		$_EXTKEY = $extensionKey;
-		$EM_CONF = array();
-		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
-		include($extPath . 'ext_emconf.php');
-
-		$release = $EM_CONF[$_EXTKEY]['version'];
-		list($major, $minor, $_) = explode('.', $release, 3);
-		if (($pos = strpos($minor, '-')) !== FALSE) {
-			// $minor ~ '2-dev'
-			$minor = substr($minor, 0, $pos);
-		}
-		$EM_CONF[$_EXTKEY]['version'] = $major . '.' . $minor;
-		$EM_CONF[$_EXTKEY]['release'] = $release;
-
-		return $EM_CONF[$_EXTKEY];
 	}
 
 }
