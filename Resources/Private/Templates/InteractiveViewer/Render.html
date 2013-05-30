@@ -43,12 +43,12 @@
 <div class="p doc" id="page">
 	<div class="c cl" id="content">
 		<div id="aside" class="a">
-			<h3><a href="../../Index.html">Title 0.0.0 documentation</a></h3>
+			<h3><a href="../../Index.html">{extension.title} {extension.release}</a></h3>
 			<div class="flyOutToc container" id="flyOutToc">
 				<p>within this page:</p>
-				<f:format.raw>{toc}</f:format.raw>
+				<f:format.raw>{documentation.tableOfContents}</f:format.raw>
 			</div>
-			<f:format.raw>{masterToc}</f:format.raw>
+			<f:format.raw>{documentation.masterTableOfContents}</f:format.raw>
 		</div>
 
 		<div class="s d">
@@ -56,7 +56,7 @@
 				<div class="hnav-related">
 					<ul>
 						<li>
-							<a href="../../Index.html" title="Title 0.0.0 documentation">Docstart</a>
+							<a href="../../Index.html" title="{extension.title} {extension.release}">Docstart</a>
 						</li>
 						<li>
 							<a href="../../_sources/Main/UsersManual/Index.txt" rel="nofollow">
@@ -66,28 +66,32 @@
 						<li>
 							<a href="../../genindex.html" title="General Index" accesskey="I">index</a>
 						</li>
-						<li>
-							<a href="../Introduction/NeedHelp/Index.html" title="Need help?" accesskey="P">Previous</a>
-						</li>
-						<li>
+						<f:if condition="{documentation.nextDocument}">
+							<li>
+								<a href="{documentation.previousDocument.url}" title="{documentation.previousDocument.title}" accesskey="P">Previous</a>
+							</li>
+						</f:if>
+						<li>{documentation.parentDocument}
 							<a href="../Index.html" title="News: Versatile news system" accesskey="U">Up</a>
 						</li>
-						<li>
-							<a href="AboutNewsCategoryRecords/Index.html" title="About News &amp; category records"
-							   accesskey="N">Next</a>
-						</li>
+						<f:if condition="{documentation.nextDocument}">
+							<li>
+								<a href="{documentation.nextDocument.url}" title="{documentation.nextDocument.title}" accesskey="N">Next</a>
+							</li>
+						</f:if>
 					</ul>
 				</div>
 			</div>
+
 			<div class="section" id="users-manual">
-				<f:format.raw>{content}</f:format.raw>
+				<f:format.raw>{documentation.body}</f:format.raw>
 			</div>
 
 			<div class="hnav-related-container">
 				<div class="hnav-related">
 					<ul>
 						<li>
-							<a href="../../Index.html" title="Title 0.0.0 documentation">Docstart</a>
+							<a href="../../Index.html" title="{extension.title} {extension.release}">Docstart</a>
 						</li>
 						<li>
 							<a href="../../_sources/Main/UsersManual/Index.txt" rel="nofollow">
@@ -97,16 +101,19 @@
 						<li>
 							<a href="../../genindex.html" title="General Index">index</a>
 						</li>
-						<li>
-							<a href="../Introduction/NeedHelp/Index.html" title="Need help?">Previous</a>
-						</li>
+						<f:if condition="{documentation.nextDocument}">
+							<li>
+								<a href="{documentation.previousDocument.url}" title="{documentation.previousDocument.title}">Previous</a>
+							</li>
+						</f:if>
 						<li>
 							<a href="../Index.html" title="News: Versatile news system">Up</a>
 						</li>
-						<li>
-							<a href="AboutNewsCategoryRecords/Index.html"
-							   title="About News &amp; category records">Next</a>
-						</li>
+						<f:if condition="{documentation.nextDocument}">
+							<li>
+								<a href="{documentation.nextDocument.url}" title="{documentation.nextDocument.title}">Next</a>
+							</li>
+						</f:if>
 					</ul>
 				</div>
 			</div>

@@ -82,25 +82,13 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 			->setDocument($document ?: $this->sphinxReader->getDefaultFile() . '/')
 			->load();
 
-		$masterToc = $this->sphinxReader->getMasterTableOfContents(
-			array($this, 'getLink')
-		);
-		$data = $masterToc ? \Tx_Restdoc_Utility_Helper::getMenuData(\Tx_Restdoc_Utility_Helper::xmlstr_to_array($masterToc)) : array();
-		$this->markActiveAndCurrentEntries($data, $document);
-		$masterToc = $this->createMasterMenu($data);
+		/** @var \Causal\Sphinx\Domain\Model\Documentation $documentation */
+		$documentation = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\Sphinx\Domain\Model\Documentation', $this->sphinxReader);
+		$documentation->setCallbackLinks(array($this, 'getLink'));
+		$documentation->setCallbackImages(array($this, 'processImage'));
 
-		$toc = $this->sphinxReader->getTableOfContents(
-			array($this, 'getLink')
-		);
-
-		$content = $this->sphinxReader->getBody(
-			array($this, 'getLink'),
-			array($this, 'processImage')
-		);
-
-		$this->view->assign('masterToc', $masterToc);
-		$this->view->assign('toc', $toc);
-		$this->view->assign('content', $content);
+		$this->view->assign('documentation', $documentation);
+		$this->view->assign('extension', \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extension));
 	}
 
 	/**
@@ -144,79 +132,6 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		if (version_compare($restdocVersion, $minVersion, '<')) {
 			$this->forward('outdatedRestdoc');
 		}
-	}
-
-	/**
-	 * Marks menu entries as ACTIVE or CURRENT.
-	 *
-	 * @param array &$data
-	 * @param string $currentDocument
-	 * @return boolean
-	 * @see \Tx_Restdoc_Utility_Helper::markActiveAndCurrentEntries()
-	 */
-	protected function markActiveAndCurrentEntries(array &$data, $currentDocument) {
-		$hasCurrent = FALSE;
-
-		foreach ($data as &$menuEntry) {
-			$link = urldecode($menuEntry['_OVERRIDE_HREF']);
-			if (preg_match('/[?&]tx_sphinx_help_sphinxdocumentation\[document\]=([^&#]+)/', $link, $matches)) {
-				$link = $matches[1];
-				if ($link === $currentDocument) {
-					$hasCurrent = TRUE;
-					$menuEntry['ITEM_STATE'] = 'CUR';
-				}
-			}
-			if (isset($menuEntry['_SUB_MENU'])) {
-				$hasChildCurrent = $this->markActiveAndCurrentEntries($menuEntry['_SUB_MENU'], $currentDocument);
-				if ($hasChildCurrent) {
-					$menuEntry['ITEM_STATE'] = 'ACT';
-				}
-			}
-		}
-
-		return $hasCurrent;
-	}
-
-	/**
-	 * Creates a master menu compatible with the interactive design.
-	 *
-	 * @param array $data
-	 * @param integer $level
-	 * @return array
-	 */
-	protected function createMasterMenu(array $data, $level = 1) {
-		$menu = array();
-		if ($level == 1) {
-			$menu[] = '<ul id="nav-aside" class="current cur">';
-			$wrapTitle = '%s';
-		} else {
-			$menu[] = '<ul class="nav-aside-lvl' . $level . '">';
-			$wrapTitle = '<span>%s</span>';
-		}
-
-		foreach ($data as $menuEntry) {
-			if (isset($menuEntry['ITEM_STATE']) && $menuEntry['ITEM_STATE'] === 'CUR') {
-				$currentClass = ' current cur';
-			} else {
-				$currentClass = '';
-			}
-
-			$menu[] = '<li class="toctree-l' . $level . $currentClass . ' nav-aside-lvl' . $level . '">';
-			$menu[] = '<a href="' . str_replace('&', '&amp;', $menuEntry['_OVERRIDE_HREF']) . '" class="nav-aside-lvl' . $level . $currentClass . '">' . sprintf($wrapTitle, htmlspecialchars($menuEntry['title'])) . '</a>';
-
-			$generateSubMenu = $level == 1;
-			$generateSubMenu |= isset($menuEntry['ITEM_STATE']) && ($menuEntry['ITEM_STATE'] === 'CUR' || $menuEntry['ITEM_STATE'] === 'ACT');
-			$generateSubMenu &= isset($menuEntry['_SUB_MENU']);
-
-			if ($generateSubMenu) {
-				$menu[] = $this->createMasterMenu($menuEntry['_SUB_MENU'], $level + 1);
-			}
-			$menu[] = '</li>';
-		}
-
-		$menu[] = '</ul>';
-
-		return implode('', $menu);
 	}
 
 	/**
