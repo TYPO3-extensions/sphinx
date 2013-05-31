@@ -1,3 +1,7 @@
+2013-06-01  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] Remove doctype warnings in frames
+
 2013-05-31  Xavier Perseguers  <xavier@causal.ch>
 
 	* [BUGFIX] Cannot open image sources
