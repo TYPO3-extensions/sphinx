@@ -22,43 +22,39 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-namespace Causal\Sphinx\Utility;
+namespace Causal\Sphinx\ViewHelpers;
 
 /**
- * General utility.
+ * ReStructuredText Editor.
  *
- * @category    Utility
- * @package     TYPO3
- * @subpackage  tx_sphinx
+ * @category    ViewHelpers
+ * @package     tx_sphinx
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class GeneralUtility {
+class RestEditorViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * Returns meta-data for a given extension.
+	 * Renders the editor.
 	 *
-	 * @param string $extensionKey
-	 * @return array
+	 * @param string $filename
+	 * @return string
 	 */
-	public static function getExtensionMetaData($extensionKey) {
-		$_EXTKEY = $extensionKey;
-		$EM_CONF = array();
-		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
-		include($extPath . 'ext_emconf.php');
+	public function render($filename) {
+		$content = file_get_contents($filename);
+		return <<<HTML
+<div id="toolbar">... toolbar goes here...</div>
+<div id="editor">$content</div>
 
-		$release = $EM_CONF[$_EXTKEY]['version'];
-		list($major, $minor, $_) = explode('.', $release, 3);
-		if (($pos = strpos($minor, '-')) !== FALSE) {
-			// $minor ~ '2-dev'
-			$minor = substr($minor, 0, $pos);
-		}
-		$EM_CONF[$_EXTKEY]['version'] = $major . '.' . $minor;
-		$EM_CONF[$_EXTKEY]['release'] = $release;
-		$EM_CONF[$_EXTKEY]['extensionKey'] = $extensionKey;
+<script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	var editor = ace.edit("editor");
+	editor.setTheme("ace/theme/monokai");
+	//editor.getSession().setMode("ace/mode/javascript");
+</script>
+HTML;
 
-		return $EM_CONF[$_EXTKEY];
 	}
 
 }

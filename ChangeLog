@@ -1,5 +1,6 @@
 2013-05-31  Xavier Perseguers  <xavier@causal.ch>
 
+	* [WIP] #48597: Integrate a ReST editor
 	* [TASK][DOC] Add a few indices
 	* [TASK] Add support for general index
 

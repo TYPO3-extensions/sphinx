@@ -89,6 +89,21 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 
 		$this->view->assign('documentation', $documentation);
 		$this->view->assign('extension', \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extension));
+		$this->view->assign('document', $document);
+	}
+
+	/**
+	 * Edit action.
+	 *
+	 * @param string $extension
+	 * @param string $document
+	 * @return string
+	 */
+	protected function editAction($extension, $document = '') {
+		$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extension) . 'Documentation/';
+		$filename = $path . ($document ? substr($document, 0, -1) : $this->sphinxReader->getDefaultFile()) . '.rst';
+
+		$this->view->assign('filename', $filename);
 	}
 
 	/**
