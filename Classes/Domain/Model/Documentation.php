@@ -112,11 +112,39 @@ class Documentation {
 	 * Returns the body.
 	 *
 	 * @return string
+	 * @see \tx_restdoc_pi1::generateIndex()
 	 */
 	public function getBody() {
 		static $body = NULL;
 		if ($body === NULL) {
-			$body = $this->sphinxReader->getBody($this->callbackLinks, $this->callbackImages);
+			if ($this->sphinxReader->getDocument() !== 'genindex/') {
+				$body = $this->sphinxReader->getBody($this->callbackLinks, $this->callbackImages);
+			} else {
+				$linksCategories = array();
+				$contentCategories = array();
+				$indexEntries = $this->sphinxReader->getIndexEntries();
+
+				foreach ($indexEntries as $indexGroup) {
+					$category = $indexGroup[0];
+					$anchor = 'tx-sphinx-index-' . htmlspecialchars($category);
+
+					$link = call_user_func($this->callbackLinks, 'genindex/');
+					$link .= '#' . $anchor;
+
+					$linksCategories[] = '<a href="' . $link . '"><strong>' . htmlspecialchars($category) . '</strong></a>';
+
+					$contentCategory = '<h2 id="' . $anchor . '">' . htmlspecialchars($category) . '</h2>' . LF;
+					$contentCategory .= '<div class="tx-sphinx-genindextable">' . LF;
+					$contentCategory .= \Tx_Restdoc_Utility_Helper::getIndexDefinitionList($this->sphinxReader->getPath(), $indexGroup[1], $this->callbackLinks);
+					$contentCategory .= '</div>' . LF;
+
+					$contentCategories[] = $contentCategory;
+				}
+
+				$body = '<h1>Index</h1>' . LF;	// TODO: translate
+				$body .= '<div class="tx-sphinx-genindex-jumpbox">' . implode(' | ', $linksCategories) . '</div>' . LF;
+				$body .= implode(LF, $contentCategories);
+			}
 		}
 		return $body;
 	}
@@ -162,6 +190,18 @@ class Documentation {
 			);
 		}
 		return NULL;
+	}
+
+	/**
+	 * Returns the title and url of the general index.
+	 *
+	 * @return array
+	 */
+	public function getGeneralIndex() {
+		return array(
+			'title' => 'General Index',	// TODO: translate!
+			'url' => call_user_func($this->callbackLinks, 'genindex/'),
+		);
 	}
 
 	/**
