@@ -42,38 +42,74 @@ class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @param string $extension
 	 * @param string $document
 	 * @return void
+	 * @throws \RuntimeException
 	 */
 	protected function editAction($extension, $document) {
-		// TODO: security check for the document to be loaded
-		$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extension) . 'Documentation/';
-		$filename = $path . ($document ? substr($document, 0, -1) : 'Index') . '.rst';
+		$filename = $this->getFilename($extension, $document);
+		$contents = file_get_contents($filename);
 
 		$this->view->assign('extension', $extension);
 		$this->view->assign('document', $document);
-		$this->view->assign('content', file_get_contents($filename));
+		$this->view->assign('contents', $contents);
 	}
 
 	/**
-	 * Saves the content.
+	 * Saves the contents and recompiles the whole documentation if needed.
 	 *
 	 * @param string $extension
 	 * @param string $document
 	 * @param string $contents
 	 * @param boolean $compile
-	 * @return string
+	 * @return void
 	 */
 	protected function saveAction($extension, $document, $contents, $compile = FALSE) {
-		// TODO: security check for the document to be written
+		$response = array();
+		try {
+			$filename = $this->getFilename($extension, $document);
+
+			$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $contents);
+			if (!$success) {
+				throw new \RuntimeException('File could not be written: ' . $filename, 1370011487);
+			}
+
+			if ($compile) {
+				$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extension, 'json', TRUE);
+				if (substr($outputFilename, -4) === '.log') {
+					throw new \RuntimeException('Could not compile documentation', 1370011537);
+				}
+			}
+
+			$response['status'] = 'success';
+		} catch (\RuntimeException $e) {
+			$response['status'] = 'error';
+			$response['statusText'] = 'Error ' . $e->getCode() . ': ' . $e->getMessage();
+		}
+
+		header('Content-type: application/json');
+		echo json_encode($response);
+		exit;
+	}
+
+	/**
+	 * Returns the ReST filename corresponding to a given document.
+	 *
+	 * @param string $extension
+	 * @param string $document
+	 * @return string
+	 * @throws \RuntimeException
+	 */
+	protected function getFilename($extension, $document) {
 		$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extension) . 'Documentation/';
 		$filename = $path . ($document ? substr($document, 0, -1) : 'Index') . '.rst';
 
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $contents)) {
-			if ($compile) {
-				\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extension, 'json', TRUE);
-			}
+		// Security check
+		$path = realpath($path);
+		$filename = realpath($filename);
+		if (substr($filename, 0, strlen($path)) !== $path) {
+			throw new \RuntimeException('Security notice: attempted to access a file outside of extension "' . $extension . '"', 1370011326);
 		}
 
-		return 'OK';
+		return $filename;
 	}
 
 }

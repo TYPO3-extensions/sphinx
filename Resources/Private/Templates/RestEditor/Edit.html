@@ -18,11 +18,12 @@
 <body>
 
 <div id="toolbar">
+	<button onclick="closeEditor()">close</button>
 	<button onclick="save()">save</button>
 	<button onclick="saveAndClose()">save and close</button>
 </div>
 
-<div id="editor">{content}</div>
+<div id="editor">{contents}</div>
 
 <script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
@@ -32,6 +33,12 @@ editor.getSession().setMode("ace/mode/markdown");
 
 var extension = "{extension}";
 var doc = "{document}";
+var redirectUrl = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{extension:extension, document:document})}";
+
+function closeEditor() {
+	// TODO: check if file was modified
+	document.location.href = redirectUrl;
+}
 
 function save() {
 	var contents = editor.getSession().getValue();
@@ -44,9 +51,12 @@ function save() {
 				'tx_sphinx_help_sphinxdocumentation[contents]': contents,
 				'tx_sphinx_help_sphinxdocumentation[compile]': 0
 			},
-			function() {
-				// add error checking
-				alert('successful save');
+			function(data) {
+				if (data.status == 'success') {
+					alert('successful save');
+				} else {
+					alert(data.statusText);
+				}
 			}
 	);
 }
@@ -54,7 +64,6 @@ function save() {
 function saveAndClose() {
 	var contents = editor.getSession().getValue();
 	var saveUrl = "{f:uri.action(action:'save')}";
-	var redirectUrl = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{extension:extension, document:document})}";
 
 	$.post(saveUrl,
 			{
@@ -63,9 +72,12 @@ function saveAndClose() {
 				'tx_sphinx_help_sphinxdocumentation[contents]': contents,
 				'tx_sphinx_help_sphinxdocumentation[compile]': 1
 			},
-			function() {
-				// add error checking
-				document.location.href = redirectUrl;
+			function(data) {
+				if (data.status == 'success') {
+					document.location.href = redirectUrl;
+				} else {
+					alert(data.statusText);
+				}
 			}
 	);
 }
