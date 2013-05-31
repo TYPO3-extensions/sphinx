@@ -7,16 +7,16 @@
 </head>
 <body>
 
-<s:form action="render" target="tx-sphinx-documentation-content">
+<s:form action="render" id="tx-sphinx-form-render" target="tx-sphinx-documentation-content">
 	<label for="extension">
 		<f:translate key="showExtensionDocumentation">Show documentation of extension:</f:translate>
 	</label>
-	<s:form.select id="extension" name="extension" prependOptionLabel="" options="{extensions}" onchange="this.form.submit();" />
+	<s:form.select id="extension" name="extension" prependOptionLabel="" options="{extensions}" value="{currentExtension}" onchange="this.form.submit();" />
 
 	<label for="layout">
 		<f:translate key="documentationFormat">Layout:</f:translate>
 	</label>
-	<s:form.select id="layout" name="layout" options="{layouts}" onchange="this.form.submit();" />
+	<s:form.select id="layout" name="layout" options="{layouts}" value="{currentLayout}" onchange="this.form.submit();" />
 
 	<f:form.submit value="{f:translate(key:'loadDocumentation')}" />
 
@@ -25,6 +25,12 @@
 		<label for="force"><f:translate key="alwaysRender">Always render documentation</f:translate></label>
 	</div>
 </s:form>
+
+<script type="text/javascript">
+if ("{currentExtension}" != "") {
+	document.getElementById("tx-sphinx-form-render").submit();
+}
+</script>
 
 </body>
 </html>

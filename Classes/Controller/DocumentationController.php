@@ -72,6 +72,11 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 			'json' => $this->translate('documentationLayout_interactive'),
 		);
 		$this->view->assign('layouts', $layouts);
+
+		$currentExtension = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/extension');
+		$currentLayout = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/layout');
+		$this->view->assign('currentExtension', $currentExtension);
+		$this->view->assign('currentLayout', $currentLayout);
 	}
 
 	/**
@@ -83,6 +88,10 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 * @return string
 	 */
 	protected function renderAction($extension, $layout = 'html', $force = FALSE) {
+		// Store preferences
+		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/extension', $extension);
+		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/layout', $layout);
+
 		if ($extension === '') {
 			$this->redirect('blank');
 		}

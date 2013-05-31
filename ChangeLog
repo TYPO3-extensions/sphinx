@@ -1,5 +1,6 @@
 2013-06-01  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Keep track of preferences and current chapter
 	* [BUGFIX] Direct links to _downloads/ are broken
 	* [BUGFIX] Remove doctype warnings in frames
 

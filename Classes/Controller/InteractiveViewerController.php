@@ -74,13 +74,22 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 */
 	protected function renderAction($extension, $document = '') {
 		$this->checkExtensionRestdoc();
-
 		$this->extension = $extension;
+
+		if (empty($document)) {
+			$document = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/extension-' . $extension);
+		}
+		if (empty($document)) {
+			$document = $this->sphinxReader->getDefaultFile() . '/';
+		}
 
 		$this->sphinxReader
 			->setPath(PATH_site . 'typo3conf/Documentation/' . $extension . '/json')
-			->setDocument($document ?: $this->sphinxReader->getDefaultFile() . '/')
+			->setDocument($document)
 			->load();
+
+		// Store preferences
+		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/extension-' . $extension, $document);
 
 		/** @var \Causal\Sphinx\Domain\Model\Documentation $documentation */
 		$documentation = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\Sphinx\Domain\Model\Documentation', $this->sphinxReader);
