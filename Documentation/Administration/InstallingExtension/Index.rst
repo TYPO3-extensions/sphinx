@@ -28,6 +28,11 @@ Select a version of Sphinx you would like to use and start the import process wi
 
 |import_sphinx|
 
+.. index::
+	single: Install; Log
+	single: Install; PyYAML
+	single: Install; TYPO3 ReST Tools
+
 Everything should work out-of-the-box. Possible problems will be reported as Flash messages and a log of all operations is stored as ``typo3temp/tx_sphinx/IMPORT-<date>.log``. The general process of importing Sphinx is as follows:
 
 1. Fetch the version as a zip archive from https://bitbucket.org/birkenfeld/sphinx/downloads ("Tags") into ``typo3temp/``

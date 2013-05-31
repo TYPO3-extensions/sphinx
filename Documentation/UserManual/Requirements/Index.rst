@@ -9,6 +9,9 @@
 Requirements
 ^^^^^^^^^^^^
 
+.. index::
+	pair: Directory; Structure
+
 This extension requires the Python interpreter to be available on your web server.
 
 If you plan to build PDF, you will need additionally commands "make" and "pdflatex".
