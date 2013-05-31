@@ -82,9 +82,9 @@ class Documentation {
 	public function getMasterTableOfContents() {
 		static $masterToc = NULL;
 		if ($masterToc === NULL) {
-			$masterToc = $this->sphinxReader->getMasterTableOfContents($this->callbackLinks);
+			$masterToc = $this->sphinxReader->getMasterTableOfContents($this->callbackLinks, TRUE);
 			$data = $masterToc ? \Tx_Restdoc_Utility_Helper::getMenuData(\Tx_Restdoc_Utility_Helper::xmlstr_to_array($masterToc)) : array();
-			$this->markActiveAndCurrentEntries($data, $this->sphinxReader->getDocument());
+			\Tx_Restdoc_Utility_Helper::processMasterTableOfContents($data, $this->sphinxReader->getDocument(), $this->callbackLinks);
 			$masterToc = $this->createMasterMenu($data);
 		}
 		return $masterToc;
@@ -202,37 +202,6 @@ class Documentation {
 			'title' => 'General Index',	// TODO: translate!
 			'url' => call_user_func($this->callbackLinks, 'genindex/'),
 		);
-	}
-
-	/**
-	 * Marks menu entries as ACTIVE or CURRENT.
-	 *
-	 * @param array &$data
-	 * @param string $currentDocument
-	 * @return boolean
-	 * @see \Tx_Restdoc_Utility_Helper::markActiveAndCurrentEntries()
-	 */
-	protected function markActiveAndCurrentEntries(array &$data, $currentDocument) {
-		$hasCurrent = FALSE;
-
-		foreach ($data as &$menuEntry) {
-			$link = urldecode($menuEntry['_OVERRIDE_HREF']);
-			if (preg_match('/[?&]tx_sphinx_help_sphinxdocumentation\[document\]=([^&#]+)/', $link, $matches)) {
-				$link = $matches[1];
-				if ($link === $currentDocument) {
-					$hasCurrent = TRUE;
-					$menuEntry['ITEM_STATE'] = 'CUR';
-				}
-			}
-			if (isset($menuEntry['_SUB_MENU'])) {
-				$hasChildCurrent = $this->markActiveAndCurrentEntries($menuEntry['_SUB_MENU'], $currentDocument);
-				if ($hasChildCurrent) {
-					$menuEntry['ITEM_STATE'] = 'ACT';
-				}
-			}
-		}
-
-		return $hasCurrent;
 	}
 
 	/**

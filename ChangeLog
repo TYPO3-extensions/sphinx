@@ -1,5 +1,6 @@
 2013-05-31  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Rework of master TOC with recent changes in EXT:restdoc
 	* [TASK] Add security checks (relates: #48597)
 	* [WIP] #48597: Integrate a ReST editor
 	* [TASK][DOC] Add a few indices
