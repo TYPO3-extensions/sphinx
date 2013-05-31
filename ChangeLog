@@ -1,5 +1,6 @@
 2013-06-01  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Direct links to _downloads/ are broken
 	* [BUGFIX] Remove doctype warnings in frames
 
 2013-05-31  Xavier Perseguers  <xavier@causal.ch>
