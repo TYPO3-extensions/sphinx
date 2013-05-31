@@ -36,6 +36,9 @@ namespace Causal\Sphinx\Utility;
  */
 class GeneralUtility {
 
+	/** @var string */
+	protected static $extKey = 'sphinx';
+
 	/**
 	 * Returns meta-data for a given extension.
 	 *
@@ -59,6 +62,101 @@ class GeneralUtility {
 		$EM_CONF[$_EXTKEY]['extensionKey'] = $extensionKey;
 
 		return $EM_CONF[$_EXTKEY];
+	}
+
+	/**
+	 * Generates the documentation for a given extension.
+	 *
+	 * @param string $extensionKey
+	 * @param string $format
+	 * @param boolean $force
+	 * @return string
+	 */
+	public static function generateDocumentation($extensionKey, $format = 'html', $force = FALSE) {
+		switch ($format) {
+			case 'json':
+				$documentationType = 'json';
+				$masterDocument = 'Index.fjson';
+				break;
+			case 'html':
+			default:
+				$documentationType = 'html';
+				$masterDocument = 'Index.html';
+				break;
+		}
+
+		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/' . $documentationType;
+		if (!$force && is_file($outputDirectory . '/' . $masterDocument)) {
+			// Do not render the documentation again
+			$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
+			return $documentationUrl;
+		}
+
+		$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
+		$basePath = PATH_site . 'typo3temp/tx_' . self::$extKey . '/' . $extensionKey;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
+		\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
+			$basePath,
+			$extensionKey,
+			$metadata['author'],
+			FALSE,
+			'TYPO3DocEmptyProject',
+			$metadata['version'],
+			$metadata['release']
+		);
+
+		// Recursively instantiate template files
+		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
+		if (!is_dir($source)) {
+			$filename = 'typo3temp/tx_' . self::$extKey . '/1369679343.log';
+			$content = 'ERROR 1369679343: Documentation directory was not found: ' . $source;
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
+			return '../' . $filename;
+		}
+		self::recursiveCopy($source, $basePath);
+
+		try {
+			if ($format === 'json') {
+				\Causal\Sphinx\Utility\SphinxBuilder::buildJson($basePath, '.', '_make/build', '_make/conf.py');
+			} else {
+				\Causal\Sphinx\Utility\SphinxBuilder::buildHtml($basePath, '.', '_make/build', '_make/conf.py');
+			}
+		} catch (\RuntimeException $e) {
+			$filename = 'typo3temp/tx_' . self::$extKey . '/' . $e->getCode() . '.log';
+			$content = $e->getMessage();
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
+			return '../' . $filename;
+		}
+
+		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($outputDirectory, TRUE);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($outputDirectory . '/');
+		self::recursiveCopy($basePath . '/_make/build/' . $documentationType, $outputDirectory);
+
+		$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
+		return $documentationUrl;
+	}
+
+	/**
+	 * Recursively copy content from one directory to another.
+	 *
+	 * @param string $source
+	 * @param string $target
+	 * @return void
+	 */
+	protected static function recursiveCopy($source, $target) {
+		$target = rtrim($target, '/');
+		$iterator = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator($source,
+				\RecursiveDirectoryIterator::SKIP_DOTS),
+			\RecursiveIteratorIterator::SELF_FIRST
+		);
+		foreach ($iterator as $item) {
+			if ($item->isDir()) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($target . '/' . $iterator->getSubPathName());
+			} else {
+				copy($item, $target . '/' . $iterator->getSubPathName());
+			}
+		}
 	}
 
 }

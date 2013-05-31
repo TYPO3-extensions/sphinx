@@ -86,7 +86,7 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 		if ($extension === '') {
 			$this->redirect('blank');
 		}
-		$documentationUrl = $this->generateDocumentation($extension, $layout, $force);
+		$documentationUrl = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extension, $layout, $force);
 
 		if ($layout === 'json' && substr($documentationUrl, -6) === '.fjson') {
 			$this->forward('render', 'InteractiveViewer', NULL, array('extension' => $extension));
@@ -102,101 +102,6 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 */
 	protected function translate($key) {
 		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->request->getControllerExtensionKey());
-	}
-
-	/**
-	 * Generates the documentation for a given extension.
-	 *
-	 * @param string $extensionKey
-	 * @param string $format
-	 * @param boolean $force
-	 * @return string
-	 */
-	protected function generateDocumentation($extensionKey, $format = 'html', $force = FALSE) {
-		switch ($format) {
-			case 'json':
-				$documentationType = 'json';
-				$masterDocument = 'Index.fjson';
-				break;
-			case 'html':
-			default:
-				$documentationType = 'html';
-				$masterDocument = 'Index.html';
-				break;
-		}
-
-		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/' . $documentationType;
-		if (!$force && is_file($outputDirectory . '/' . $masterDocument)) {
-			// Do not render the documentation again
-			$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
-			return $documentationUrl;
-		}
-
-		$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
-		$basePath = PATH_site . 'typo3temp/tx_' . $this->request->getControllerExtensionKey() . '/' . $extensionKey;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
-		\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
-			$basePath,
-			$extensionKey,
-			$metadata['author'],
-			FALSE,
-			'TYPO3DocEmptyProject',
-			$metadata['version'],
-			$metadata['release']
-		);
-
-		// Recursively instantiate template files
-		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
-		if (!is_dir($source)) {
-			$filename = 'typo3temp/tx_' . $this->request->getControllerExtensionKey() . '/1369679343.log';
-			$content = 'ERROR 1369679343: Documentation directory was not found: ' . $source;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
-			return '../' . $filename;
-		}
-		$this->recursiveCopy($source, $basePath);
-
-		try {
-			if ($format === 'json') {
-				\Causal\Sphinx\Utility\SphinxBuilder::buildJson($basePath, '.', '_make/build', '_make/conf.py');
-			} else {
-				\Causal\Sphinx\Utility\SphinxBuilder::buildHtml($basePath, '.', '_make/build', '_make/conf.py');
-			}
-		} catch (\RuntimeException $e) {
-			$filename = 'typo3temp/tx_' . $this->request->getControllerExtensionKey() . '/' . $e->getCode() . '.log';
-			$content = $e->getMessage();
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
-			return '../' . $filename;
-		}
-
-		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($outputDirectory, TRUE);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($outputDirectory . '/');
-		$this->recursiveCopy($basePath . '/_make/build/' . $documentationType, $outputDirectory);
-
-		$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
-		return $documentationUrl;
-	}
-
-	/**
-	 * Recursively copy content from one directory to another.
-	 *
-	 * @param string $source
-	 * @param string $target
-	 * @return void
-	 */
-	protected function recursiveCopy($source, $target) {
-		$target = rtrim($target, '/');
-		$iterator = new \RecursiveIteratorIterator(
-			new \RecursiveDirectoryIterator($source,
-				\RecursiveDirectoryIterator::SKIP_DOTS),
-			\RecursiveIteratorIterator::SELF_FIRST
-		);
-		foreach ($iterator as $item) {
-			if ($item->isDir()) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($target . '/' . $iterator->getSubPathName());
-			} else {
-				copy($item, $target . '/' . $iterator->getSubPathName());
-			}
-		}
 	}
 
 	/**

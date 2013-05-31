@@ -14,7 +14,8 @@ if (TYPO3_MODE === 'BE') {
 		'top',
 		array(
 			'Documentation' => 'index,menu,blank,render',
-			'InteractiveViewer' => 'render,edit,missingRestdoc,outdatedRestdoc',
+			'InteractiveViewer' => 'render,missingRestdoc,outdatedRestdoc',
+			'RestEditor' => 'edit,save',
 		),
 		array(
 			'access' => 'user,group',

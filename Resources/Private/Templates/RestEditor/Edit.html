@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ACE in Action</title>
+	<style type="text/css" media="screen">
+		#editor {
+			position: absolute;
+			top: 30px;
+			right: 0;
+			bottom: 0;
+			left: 0;
+		}
+	</style>
+
+	<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+</head>
+<body>
+
+<div id="toolbar">
+	<button onclick="save()">save</button>
+	<button onclick="saveAndClose()">save and close</button>
+</div>
+
+<div id="editor">{content}</div>
+
+<script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/github");
+editor.getSession().setMode("ace/mode/markdown");
+
+var extension = "{extension}";
+var doc = "{document}";
+
+function save() {
+	var contents = editor.getSession().getValue();
+	var saveUrl = "{f:uri.action(action:'save')}";
+
+	$.post(saveUrl,
+			{
+				'tx_sphinx_help_sphinxdocumentation[extension]': extension,
+				'tx_sphinx_help_sphinxdocumentation[document]': doc,
+				'tx_sphinx_help_sphinxdocumentation[contents]': contents,
+				'tx_sphinx_help_sphinxdocumentation[compile]': 0
+			},
+			function() {
+				// add error checking
+				alert('successful save');
+			}
+	);
+}
+
+function saveAndClose() {
+	var contents = editor.getSession().getValue();
+	var saveUrl = "{f:uri.action(action:'save')}";
+	var redirectUrl = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{extension:extension, document:document})}";
+
+	$.post(saveUrl,
+			{
+				'tx_sphinx_help_sphinxdocumentation[extension]': extension,
+				'tx_sphinx_help_sphinxdocumentation[document]': doc,
+				'tx_sphinx_help_sphinxdocumentation[contents]': contents,
+				'tx_sphinx_help_sphinxdocumentation[compile]': 1
+			},
+			function() {
+				// add error checking
+				document.location.href = redirectUrl;
+			}
+	);
+}
+</script>
+
+</body>
+</html>
