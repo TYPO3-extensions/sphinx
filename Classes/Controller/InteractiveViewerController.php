@@ -161,9 +161,11 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		);
 		if ($anchor !== '') {
 			$link .= '#' . $anchor;
-		} /*elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($document, '_sources/')) {
+		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($document, '_images/')) {
 			$link = '../typo3conf/Documentation/' . $this->extension . '/json/' . $document;
-		} */
+		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($document, '_sources/')) {
+			$link = '../typo3conf/Documentation/' . $this->extension . '/json/' . $document;
+		}
 		return $link;
 	}
 

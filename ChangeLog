@@ -1,5 +1,6 @@
 2013-05-31  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] Cannot open image sources
 	* [TASK] Rework of master TOC with recent changes in EXT:restdoc
 	* [TASK] Add security checks (relates: #48597)
 	* [WIP] #48597: Integrate a ReST editor
