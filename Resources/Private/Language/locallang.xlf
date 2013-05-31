@@ -24,6 +24,9 @@
 			<trans-unit id="documentationLayout_typo3" xml:space="preserve">
 				<source>TYPO3</source>
 			</trans-unit>
+			<trans-unit id="documentationLayout_pdf" xml:space="preserve">
+				<source>PDF</source>
+			</trans-unit>
 			<trans-unit id="documentationLayout_interactive" xml:space="preserve">
 				<source>Interactive</source>
 			</trans-unit>

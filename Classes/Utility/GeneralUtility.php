@@ -78,6 +78,10 @@ class GeneralUtility {
 				$documentationType = 'json';
 				$masterDocument = 'Index.fjson';
 				break;
+			case 'pdf':
+				$documentationType = 'pdf';
+				$masterDocument = $extensionKey . '.pdf';
+				break;
 			case 'html':
 			default:
 				$documentationType = 'html';
@@ -118,6 +122,8 @@ class GeneralUtility {
 		try {
 			if ($format === 'json') {
 				\Causal\Sphinx\Utility\SphinxBuilder::buildJson($basePath, '.', '_make/build', '_make/conf.py');
+			} elseif ($format === 'pdf') {
+				\Causal\Sphinx\Utility\SphinxBuilder::buildPdf($basePath, '.', '_make/build', '_make/conf.py');
 			} else {
 				\Causal\Sphinx\Utility\SphinxBuilder::buildHtml($basePath, '.', '_make/build', '_make/conf.py');
 			}
@@ -130,7 +136,12 @@ class GeneralUtility {
 
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($outputDirectory, TRUE);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($outputDirectory . '/');
-		self::recursiveCopy($basePath . '/_make/build/' . $documentationType, $outputDirectory);
+		if ($format !== 'pdf') {
+			self::recursiveCopy($basePath . '/_make/build/' . $documentationType, $outputDirectory);
+		} else {
+			// Only copy PDF output
+			copy($basePath . '/_make/build/latex/' . $extensionKey . '.pdf', $outputDirectory . '/' . $extensionKey . '.pdf');
+		}
 
 		$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
 		return $documentationUrl;
