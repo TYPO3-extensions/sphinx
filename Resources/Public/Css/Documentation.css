@@ -1,8 +1,10 @@
 body {
-	padding: 0;
-	margin: 5px;
-	font-family: verdana,"Arial","Myriad Pro","Myriad Web","Tahoma","Helvetica",sans-serif;
+	padding: 4px 24px;
+	margin: 0;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
 	font-size: 10px;
+	background-color: #585858;
+	color: #DADADA;
 }
 
 #book {
