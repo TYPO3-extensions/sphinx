@@ -150,6 +150,28 @@ class Documentation {
 	}
 
 	/**
+	 * Returns the title and url of the main document.
+	 *
+	 * @return array
+	 */
+	public function getMainDocument() {
+		static $data = NULL;
+		if ($data === NULL) {
+			// Temporarily load the master document
+			$filename = $this->sphinxReader->getPath() . $this->sphinxReader->getDefaultFile() . '.fjson';
+			$content = file_get_contents($filename);
+			$masterData = json_decode($content, TRUE);
+
+			$link = call_user_func($this->callbackLinks, $this->sphinxReader->getDefaultFile() . '/');
+			$data = array(
+				'title' => $masterData['title'],
+				'url' => $link,
+			);
+		}
+		return $data;
+	}
+
+	/**
 	 * Returns the title and url of the previous document.
 	 *
 	 * @return array|NULL
@@ -209,16 +231,7 @@ class Documentation {
 			$parentDocuments = $this->sphinxReader->getParentDocuments();
 			if (empty($parentDocuments)) {
 				if ($this->sphinxReader->getDocument() !== $this->sphinxReader->getDefaultFile() . '/') {
-					// Temporarily load the master document
-					$filename = $this->sphinxReader->getPath() . $this->sphinxReader->getDefaultFile() . '.fjson';
-					$content = file_get_contents($filename);
-					$masterData = json_decode($content, TRUE);
-
-					$link = call_user_func($this->callbackLinks, $this->sphinxReader->getDefaultFile() . '/');
-					$data = array(
-						'title' => $masterData['title'],
-						'url' => $link,
-					);
+					$data = $this->getMainDocument();
 				}
 			} else {
 				$parentDocument = end($parentDocuments);
