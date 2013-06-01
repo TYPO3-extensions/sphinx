@@ -155,17 +155,20 @@ class Documentation {
 	 * @return array|NULL
 	 */
 	public function getPreviousDocument() {
-		$previousDocument = $this->sphinxReader->getPreviousDocument();
-		if ($previousDocument !== NULL) {
-			$absolute = \Tx_Restdoc_Utility_Helper::relativeToAbsolute($this->sphinxReader->getPath() . $this->sphinxReader->getDocument(), '../' . $previousDocument['link']);
-			$link = call_user_func($this->callbackLinks, substr($absolute, strlen($this->sphinxReader->getPath())));
+		static $data = NULL;
+		if ($data === NULL) {
+			$previousDocument = $this->sphinxReader->getPreviousDocument();
+			if ($previousDocument !== NULL) {
+				$absolute = \Tx_Restdoc_Utility_Helper::relativeToAbsolute($this->sphinxReader->getPath() . $this->sphinxReader->getDocument(), '../' . $previousDocument['link']);
+				$link = call_user_func($this->callbackLinks, substr($absolute, strlen($this->sphinxReader->getPath())));
 
-			return array(
-				'title' => $previousDocument['title'],
-				'url' => $link,
-			);
+				$data = array(
+					'title' => $previousDocument['title'],
+					'url' => $link,
+				);
+			}
 		}
-		return NULL;
+		return $data;
 	}
 
 	/**
@@ -174,22 +177,63 @@ class Documentation {
 	 * @return array|NULL
 	 */
 	public function getNextDocument() {
-		$nextDocument = $this->sphinxReader->getNextDocument();
-		if ($nextDocument !== NULL) {
-			if ($this->sphinxReader->getDocument() === $this->sphinxReader->getDefaultFile() . '/' && substr($nextDocument['link'], 0, 3) !== '../') {
-				$nextDocumentPath = $this->sphinxReader->getPath();
-			} else {
-				$nextDocumentPath = $this->sphinxReader->getPath() . $this->sphinxReader->getDocument();
-			}
-			$absolute = \Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
-			$link = call_user_func($this->callbackLinks, substr($absolute, strlen($this->sphinxReader->getPath())));
+		static $data = NULL;
+		if ($data === NULL) {
+			$nextDocument = $this->sphinxReader->getNextDocument();
+			if ($nextDocument !== NULL) {
+				if ($this->sphinxReader->getDocument() === $this->sphinxReader->getDefaultFile() . '/' && substr($nextDocument['link'], 0, 3) !== '../') {
+					$nextDocumentPath = $this->sphinxReader->getPath();
+				} else {
+					$nextDocumentPath = $this->sphinxReader->getPath() . $this->sphinxReader->getDocument();
+				}
+				$absolute = \Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
+				$link = call_user_func($this->callbackLinks, substr($absolute, strlen($this->sphinxReader->getPath())));
 
-			return array(
-				'title' => $nextDocument['title'],
-				'url' => $link,
-			);
+				$data = array(
+					'title' => $nextDocument['title'],
+					'url' => $link,
+				);
+			}
 		}
-		return NULL;
+		return $data;
+	}
+
+	/**
+	 * Returns the title and url of the parent document.
+	 *
+	 * @return array|NULL
+	 */
+	public function getParentDocument() {
+		static $data = NULL;
+		if ($data === NULL) {
+			$parentDocuments = $this->sphinxReader->getParentDocuments();
+			if (empty($parentDocuments)) {
+				if ($this->sphinxReader->getDocument() !== $this->sphinxReader->getDefaultFile() . '/') {
+					// Temporarily load the master document
+					$filename = $this->sphinxReader->getPath() . $this->sphinxReader->getDefaultFile() . '.fjson';
+					$content = file_get_contents($filename);
+					$masterData = json_decode($content, TRUE);
+
+					$link = call_user_func($this->callbackLinks, $this->sphinxReader->getDefaultFile() . '/');
+					$data = array(
+						'title' => $masterData['title'],
+						'url' => $link,
+					);
+				}
+			} else {
+				$parentDocument = end($parentDocuments);
+				$parentDocumentPath = $this->sphinxReader->getPath() . $this->sphinxReader->getDocument();
+
+				$absolute = \Tx_Restdoc_Utility_Helper::relativeToAbsolute($parentDocumentPath, '../' . $parentDocument['link']);
+				$link = call_user_func($this->callbackLinks, substr($absolute, strlen($this->sphinxReader->getPath())));
+
+				$data = array(
+					'title' => $parentDocument['title'],
+					'url' => $link,
+				);
+			}
+		}
+		return $data;
 	}
 
 	/**

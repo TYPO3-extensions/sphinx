@@ -96,9 +96,11 @@
 								<a href="{documentation.previousDocument.url}" title="{documentation.previousDocument.title}" accesskey="P">Previous</a>
 							</li>
 						</f:if>
-						<li>{documentation.parentDocument}
-							<a href="../Index.html" title="News: Versatile news system" accesskey="U">Up</a>
-						</li>
+						<f:if condition="{documentation.parentDocument}">
+							<li>
+								<a href="{documentation.parentDocument.url}" title="{documentation.parentDocument.title}" accesskey="U">Up</a>
+							</li>
+						</f:if>
 						<f:if condition="{documentation.nextDocument}">
 							<li>
 								<a href="{documentation.nextDocument.url}" title="{documentation.nextDocument.title}" accesskey="N">Next</a>
@@ -126,9 +128,11 @@
 								<a href="{documentation.previousDocument.url}" title="{documentation.previousDocument.title}">Previous</a>
 							</li>
 						</f:if>
-						<li>
-							<a href="../Index.html" title="News: Versatile news system">Up</a>
-						</li>
+						<f:if condition="{documentation.parentDocument}">
+							<li>
+								<a href="{documentation.parentDocument.url}" title="{documentation.parentDocument.title}">Up</a>
+							</li>
+						</f:if>
 						<f:if condition="{documentation.nextDocument}">
 							<li>
 								<a href="{documentation.nextDocument.url}" title="{documentation.nextDocument.title}">Next</a>
