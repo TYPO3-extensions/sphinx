@@ -91,7 +91,7 @@
 						<li>
 							<a href="{documentation.generalIndex.url}" title="{documentation.generalIndex.title}" accesskey="I">Index</a>
 						</li>
-						<f:if condition="{documentation.nextDocument}">
+						<f:if condition="{documentation.previousDocument}">
 							<li>
 								<a href="{documentation.previousDocument.url}" title="{documentation.previousDocument.title}" accesskey="P">Previous</a>
 							</li>
@@ -123,7 +123,7 @@
 						<li>
 							<a href="{documentation.generalIndex.url}" title="{documentation.generalIndex.title}">Index</a>
 						</li>
-						<f:if condition="{documentation.nextDocument}">
+						<f:if condition="{documentation.previousDocument}">
 							<li>
 								<a href="{documentation.previousDocument.url}" title="{documentation.previousDocument.title}">Previous</a>
 							</li>
