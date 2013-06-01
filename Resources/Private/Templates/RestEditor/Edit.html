@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>ACE in Action</title>
+	<title>{document}</title>
+
+	<link rel="stylesheet" type="text/css" href="stylesheets/visual/main_content.css" />
+	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/structure/element_docheader.css" />
+	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/visual/element_docheader.css" />
+	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
+
 	<style type="text/css" media="screen">
+		body {
+			margin: 0;
+			padding: 0;
+		}
 		#editor {
 			position: absolute;
-			top: 30px;
+			top: 23px;
 			right: 0;
 			bottom: 0;
 			left: 0;
@@ -17,10 +27,19 @@
 </head>
 <body>
 
-<div id="toolbar">
-	<button onclick="closeEditor()">close</button>
-	<button onclick="save()">save</button>
-	<button onclick="saveAndClose()">save and close</button>
+<div id="typo3-docheader">
+	<div class="typo3-docheader-buttons">
+		<div class="left">
+			<div class="buttongroup">
+				<a title="Close document" onclick="closeEditor();" href="#"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-close">&nbsp;</span></a>
+			</div>
+			<div class="buttongroup">
+				<a title="Save document" onclick="save()" href="#"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save">&nbsp;</span></a><!--
+				--><a title="Save document" onclick="saveAndClose()" href="#"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close">&nbsp;</span></a>
+			</div>
+		</div>
+		<div class="right"></div>
+	</div>
 </div>
 
 <div id="editor">{contents}</div>

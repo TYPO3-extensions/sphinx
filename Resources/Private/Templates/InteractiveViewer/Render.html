@@ -3,12 +3,26 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>{documentation.title}</title>
+
+	<!-- Styles for the toolbar -->
+	<link rel="stylesheet" type="text/css" href="stylesheets/visual/main_content.css" />
+	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/structure/element_docheader.css" />
+	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/visual/element_docheader.css" />
+	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
+
+	<style>
+		#typo3-docheader {
+			position: fixed;
+			width: 100%;
+			z-index: 99;
+		}
+	</style>
+
 	<link rel="stylesheet" href="http://docs.typo3.org/t3extras/css/share.css" media="all"/>
 	<link rel="stylesheet" href="http://docs.typo3.org/t3extras/css/reset.css" media="all"/>
 	<link rel="stylesheet" href="http://docs.typo3.org/t3extras/css/grid.css" media="all"/>
 	<link rel="stylesheet" href="http://docs.typo3.org/t3extras/css/main.css" media="all"/>
 	<link rel="stylesheet" href="http://docs.typo3.org/t3extras/css/dip.css" media="all"/>
-	<link rel="stylesheet" href="http://docs.typo3.org/t3extras/css/print.css" media="print"/>
 
 	<!--[if IE]>
 	<link rel="stylesheet" href="http://docs.typo3.org/t3extras/css/ie.css" media="all"/><![endif]-->
@@ -39,6 +53,22 @@
 </head>
 
 <body class="js-off">
+
+<div id="typo3-docheader">
+	<div class="typo3-docheader-buttons">
+		<div class="left">
+			<div class="buttongroup">
+				<f:if condition="{canEdit}">
+					<f:link.action title="Edit source" action="edit" controller="RestEditor" arguments="{extension: extension.extensionKey, document: document}"><!--
+					--><span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open">&nbsp;</span><!--
+				--></f:link.action>
+				</f:if>
+			</div>
+		</div>
+		<div class="right"></div>
+	</div>
+</div>
+
 <div class="p doc" id="page">
 	<div class="c cl" id="content">
 		<div id="aside" class="a">
@@ -59,10 +89,7 @@
 							<a href="../../Index.html" title="{extension.title} {extension.release}">Docstart</a>
 						</li>
 						<li>
-							<f:link.action action="edit" controller="RestEditor" arguments="{extension: extension.extensionKey, document: document}">Edit Source</f:link.action>
-						</li>
-						<li>
-							<a href="{documentation.generalIndex.url}" title="{documentation.generalIndex.url}" accesskey="I">index</a>
+							<a href="{documentation.generalIndex.url}" title="{documentation.generalIndex.url}" accesskey="I">Index</a>
 						</li>
 						<f:if condition="{documentation.nextDocument}">
 							<li>
@@ -92,10 +119,7 @@
 							<a href="../../Index.html" title="{extension.title} {extension.release}">Docstart</a>
 						</li>
 						<li>
-							<f:link.action action="edit" controller="RestEditor" arguments="{extension: extension.extensionKey, document: document}">Edit Source</f:link.action>
-						</li>
-						<li>
-							<a href="{documentation.generalIndex.url}" title="{documentation.generalIndex.url}">index</a>
+							<a href="{documentation.generalIndex.url}" title="{documentation.generalIndex.url}">Index</a>
 						</li>
 						<f:if condition="{documentation.nextDocument}">
 							<li>

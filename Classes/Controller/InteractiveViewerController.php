@@ -96,9 +96,15 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		$documentation->setCallbackLinks(array($this, 'getLink'));
 		$documentation->setCallbackImages(array($this, 'processImage'));
 
+		$canEdit = TRUE;
+		if ($document === 'genindex/') {
+			$canEdit = FALSE;
+		}
+
 		$this->view->assign('documentation', $documentation);
 		$this->view->assign('extension', \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extension));
 		$this->view->assign('document', $document);
+		$this->view->assign('canEdit', $canEdit);
 	}
 
 	/**
