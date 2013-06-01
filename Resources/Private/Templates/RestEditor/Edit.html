@@ -47,8 +47,13 @@
 <script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
 var editor = ace.edit("editor");
+var session = editor.getSession()
+
 editor.setTheme("ace/theme/github");
-editor.getSession().setMode("ace/mode/markdown");
+session.setMode("ace/mode/markdown");
+editor.setPrintMarginColumn(120);
+session.setUseWrapMode(true);
+session.setWrapLimitRange(120, 120);
 
 var extension = "{extension}";
 var doc = "{document}";

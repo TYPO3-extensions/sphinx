@@ -1,5 +1,6 @@
 2013-06-01  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Soft wrap + margin in editor
 	* [TASK] Visually simulate TYPO3 docheader
 	* [FEATURE] Add PDF "layout" if pdflatex is available
 	* [TASK] Keep track of preferences and current chapter
