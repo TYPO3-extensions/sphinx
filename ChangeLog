@@ -1,5 +1,6 @@
 2013-06-02  Xavier Perseguers  <xavier@causal.ch>
 
+	* [BUGFIX] #48772: Cannot browse documentation offline
 	* [TASK] #48771: Render property tables as on docs.typo3.org
 	* [TASK] #48768: Makefile should use local Sphinx
 

@@ -1,0 +1,142 @@
+.ext-info *,
+.b-comment-body,
+.tab-panes *,
+.d .b-pager * {
+	zoom: 1;
+}
+
+.nav .f-r .ico {
+	top: 0;
+	margin: 0;
+}
+.i-arr-down {
+	left: -5px;
+}
+.nav-aside ul span {
+	cursor: pointer;
+}
+
+.ext-info .left {
+	padding-right: 1px;
+}
+
+.ext-header dd,
+.d .b-pager li {
+	display: inline;
+}
+
+#small-slider .slider-content {
+	position: relative;
+}
+#small-slider .slider-nav {
+	width: 54px;
+	padding: 18px 0 0 10px;
+	margin: 0;
+}
+#small-slider .slider-nav li {
+	display: inline;
+}
+
+.b-drop-h .ico {
+	margin-top: -9px;
+}
+
+.ico,
+.h-bar-nav > li,
+.quick-search-input {
+	display: inline;
+}
+
+.b-404-description	{ filter: alpha(opacity=50); /* IE6-7 */ }
+
+button {
+	border: 0 none !important;
+	position: relative;
+	background-position: 0 1px;
+}
+button div {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 21px;
+	height: 21px;
+	border: 1px solid #e87c0c;
+}
+
+.lite-tabs {
+	position: relative;
+	zoom: 1;
+	z-index: 100;
+}
+.lite-tab-panes,
+.lite-tab-panes-black {
+	position: relative;
+	zoom: 1;
+	z-index: 50;
+}
+
+blockquote {
+	zoom: 1;
+}
+
+#top-slider .slides {
+	width: 982px;
+	height: 282px;
+}
+#top-slider .slides > li {
+	width: 982px;
+	height: 282px;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: none;
+}
+
+.sub-two-columns .b-form-row {
+	margin-left: 5px;
+}
+
+.b-projects-list .b-project-toolbar {
+	max-width: 149px;
+}
+
+.b-project.disabled	h4 {
+	color: #b8b8b8;
+}
+
+
+.nav .col,
+.nav .nav-sub,
+.nav .animate {
+	zoom:1;
+}
+
+.nav .col {
+	float:left;
+}
+
+.i-arr-down-white	{ margin: 0 0 4px 5px; }
+
+/**
+ * Fallback instead of pseudo-class last-child
+ *
+ */
+.d .news-file-list ul {
+	margin-bottom: -1px;
+}
+
+.b-tabs { zoom:1; }
+
+	/* bugfix http://forge.typo3.org/issues/26414 */
+.b-news-list2 .g-5 {
+	clear: none;
+}
+
+/**
+ *	fix button width 
+ */
+#fancybox-content .bu, #page .bu {
+	display: inline;
+}

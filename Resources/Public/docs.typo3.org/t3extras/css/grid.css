@@ -1,0 +1,56 @@
+/* Percentage grid
+------------------------------ */
+.g,
+.gc {
+	zoom: 1;
+}
+.g:after,
+.gc:after {
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.g-3,
+.g-5,
+.g-6,
+.g-75,
+.g-25 {
+	float: left;
+	clear: right;
+}
+
+.g-5 {
+	width: 50%;
+}
+.g-6 {
+	width: 67%;
+}
+.g-3 {
+	width: 33%;
+}
+
+.gc {
+	padding-left: 15px;
+}
+
+.g-5:first-child > .gc,
+.g-6:first-child > .gc,
+.g-3:first-child > .gc,
+.g-25:first-child > .gc,
+.g-75:first-child > .gc {
+	padding-right: 15px;
+	padding-left: 0;
+}
+
+.g-75 {
+	width: 75%;
+}
+.g-25 {
+	width: 25%;
+}
+
+/* Fixed grid
+------------------------------ */

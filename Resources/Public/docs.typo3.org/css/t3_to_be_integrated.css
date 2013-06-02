@@ -1,0 +1,41 @@
+/*
+ * These styles have been added recently.
+ * They reside here for review. Once considered ok they should be moved
+ * to the main css file.
+ */
+.t3-row {
+	margin-top: 30px;
+	margin-bottom: 30px;
+    border: 1px none #888;
+	border-top: 2px solid #666;
+	background-color: #e8e8e8;
+	padding: 0;
+	clear: both;
+}
+.t3-cell {
+    border-bottom: 4px solid white;
+	background-color: transparent;
+    padding: 3px 8px 6px 8px;
+}
+.t3-cell p.term {
+    font-size: 9px;
+    font-weight: normal;
+    color: #555;
+    color: #F58006;
+    margin: 0;
+    padding: 0 0 3px 0;
+}
+
+.doc .t3-cell {
+    clear: both;
+}
+.doc .t3-cell-property,
+.doc .t3-cell-datatype,
+.doc .t3-cell-key
+ {
+    float: left;
+	clear: none;
+    font-weight: bold;
+    min-width: 30%;
+    border-right: 4px solid white;
+}

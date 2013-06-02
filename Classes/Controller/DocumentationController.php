@@ -90,7 +90,7 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 * @param boolean $force
 	 * @return string
 	 */
-	protected function renderAction($extension, $layout = 'html', $force = FALSE) {
+	protected function renderAction($extension = '', $layout = 'html', $force = FALSE) {
 		// Store preferences
 		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/extension', $extension);
 		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/layout', $layout);
