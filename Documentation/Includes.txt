@@ -19,3 +19,19 @@
 .. role::   php(code)
 
 .. highlight:: guess
+
+.. ==================================================
+.. EXTERNAL LINKS
+.. --------------------------------------------------
+
+.. _`5 min tutorial video`: http://www.youtube.com/watch?v=YeGqHMDT7R8
+
+.. _`git repository of the TYPO3 ReST tools`: https://git.typo3.org/Documentation/RestTools.git/
+
+.. _`reST Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
+
+.. _Sphinx: http://sphinx-doc.org/
+
+.. _`the TYPO3 wiki`: http://wiki.typo3.org/Rendering_reST
+
+.. _`Tips and Tricks`: http://wiki.typo3.org/Tips_and_Tricks_%28reST%29

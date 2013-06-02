@@ -18,6 +18,7 @@ A drop-down menu on top lists all loaded extensions that are featuring a Sphinx-
 
 |viewer_choose_extension|
 
+
 Internals
 """""""""
 

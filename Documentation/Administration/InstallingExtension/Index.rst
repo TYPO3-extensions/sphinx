@@ -12,10 +12,12 @@ Installing the extension
 
 There are a few steps necessary to install the Sphinx Python Documentation Generator extension. If you have installed other extensions in the past, you will run into little new here.
 
+
 1) Install the extension from Extension Manager
 """""""""""""""""""""""""""""""""""""""""""""""
 
 The Sphinx Python Documentation Generator extension can be installed through the typical TYPO3 installation process using the Extension Manager.
+
 
 2) Download and configure Sphinx
 """"""""""""""""""""""""""""""""
@@ -45,7 +47,7 @@ Everything should work out-of-the-box. Possible problems will be reported as Fla
 
 5. Install PyYAML library (http://pyyaml.org/wiki/PyYAML), needed for building TYPO3 documentation
 
-The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if you want to use the `git repository of the TYPO3 ReST tools <https://git.typo3.org/Documentation/RestTools.git/>`_ instead of a snapshot.
+The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if you want to use the `git repository of the TYPO3 ReST tools`_ instead of a snapshot.
 
 The "download" button fetches the corresponding sources of Sphinx, the TYPO3-related commands and the PyYAML library if they are not available locally.
 
@@ -53,6 +55,7 @@ The "build" button builds or rebuilds the corresponding version of the Sphinx en
 
 Finally, the "remove" button removes both the sources and the corresponding version of the Sphinx environment.
 **Good to know:** this button *WILL NOT* remove sources of the TYPO3-related commands and the PyYAML library.
+
 
 3) Choose the version of Sphinx to use
 """"""""""""""""""""""""""""""""""""""
