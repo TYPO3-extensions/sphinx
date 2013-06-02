@@ -18,25 +18,25 @@ If you plan to build PDF, you will need additionally commands "make" and "pdflat
 
 And of course, you need a documentation written in reStructuredText and as a Sphinx project. Please visit http://wiki.typo3.org/ReST for further information.
 
-The extension supports single directory projects:
+The extension supports single directory projects::
 
-	| /path/to/project/
-	| ├── _build
-	| ├── conf.py
-	| └── *other files*
+	/path/to/project/
+	|-- _build
+	|-- conf.py
+	`-- ...
 
-separate source/build directory projects:
+separate source/build directory projects::
 
-	| /path/to/project/
-	| ├── build
-	| └── source
-	|     ├── conf.py
-	|     └── *other files*
+	/path/to/project/
+	|-- build
+	`-- source
+	    |-- conf.py
+	    `-- ...
 
-and TYPO3 documentation directory structure:
+and TYPO3 documentation directory structure::
 
-	| /path/to/project/
-	| ├── *other files*
-	| └── _make
-	|     ├── build
-	|     └── conf.py
+	/path/to/project/
+	|-- ...
+	`-- _make
+	    |-- build
+	    `-- conf.py
