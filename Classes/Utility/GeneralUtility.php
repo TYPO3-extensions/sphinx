@@ -107,6 +107,7 @@ HTML;
 			$propertyTable = <<<HTML
 <div class="t3-row table-row container">
 	$propertyTable
+	<div class="cc container"></div>
 </div>
 HTML;
 
