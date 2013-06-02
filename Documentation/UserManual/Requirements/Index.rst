@@ -12,11 +12,13 @@ Requirements
 .. index::
 	pair: Directory; Structure
 
-This extension requires the Python interpreter to be available on your web server.
+This extension requires the Python interpreter to be available on your web server and -- of course -- you need a documentation written in reStructuredText and as a Sphinx project.
 
-If you plan to build PDF, you will need additionally commands "make" and "pdflatex".
+.. note::
+	Please visit http://wiki.typo3.org/ReST for further information on reStructuredText.
 
-And of course, you need a documentation written in reStructuredText and as a Sphinx project. Please visit http://wiki.typo3.org/ReST for further information.
+.. hint::
+	If you plan to build PDF, you will need additionally commands ``make`` and ``pdflatex``.
 
 The extension supports single directory projects::
 

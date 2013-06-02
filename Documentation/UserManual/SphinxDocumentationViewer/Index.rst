@@ -26,18 +26,19 @@ As Sphinx-based extension manuals are meant to be rendered on http://docs.typo3.
 
 When selecting an extension manual to be shown from the drop-down menu the following process happens:
 
-- If ``typo3conf/Documentation/<extension-key>/html/Index.html`` is found, the viewer loads it right away
+* If ``typo3conf/Documentation/<extension-key>/html/Index.html`` is found, the viewer loads it right away
 
-- Otherwise:
+Otherwise:
 
-	1. An empty Sphinx project is instantiated within ``typo3temp/tx_sphinx/<extension-key>`` and all files from ``EXT:<extension-key>/Documentation`` are copied in this directory
+#. An empty Sphinx project is instantiated within ``typo3temp/tx_sphinx/<extension-key>`` and all files from ``EXT:<extension-key>/Documentation`` are copied in this directory
 
-	2. The Sphinx project is built as HTML
+#. The Sphinx project is built as HTML
 
-	3. HTML output is copied to ``typo3conf/Documentation/<extension-key>/html/``
+#. HTML output is copied to ``typo3conf/Documentation/<extension-key>/html/``
 
-	4. The viewer loads the main page ``Index.html``
+#. The viewer loads the main page ``Index.html``
 
-**Please note:** A checkbox on the right lets you force the extension manual to be recompiled as HTML:
+.. hint::
+	A checkbox on the right lets you force the extension manual to be recompiled as HTML:
 
-|checkbox|
+	|checkbox|

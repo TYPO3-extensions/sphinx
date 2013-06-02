@@ -54,7 +54,9 @@ The "download" button fetches the corresponding sources of Sphinx, the TYPO3-rel
 The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands and PyYAML.
 
 Finally, the "remove" button removes both the sources and the corresponding version of the Sphinx environment.
-**Good to know:** this button *WILL NOT* remove sources of the TYPO3-related commands and the PyYAML library.
+
+.. hint::
+	This button *WILL NOT* remove sources of the TYPO3-related commands and the PyYAML library.
 
 
 3) Choose the version of Sphinx to use

@@ -1,5 +1,6 @@
 2013-06-02  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK][DOC] Use admonitions for better rendering (http://docutils.sourceforge.net/docs/ref/rst/directives.html#admonitions)
 	* [BUGFIX] #48773: Cannot render own manual as PDF
 	* [BUGFIX] #48772: Cannot browse documentation offline
 	* [TASK] #48771: Render property tables as on docs.typo3.org
