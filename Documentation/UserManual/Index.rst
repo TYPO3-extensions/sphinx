@@ -6,6 +6,8 @@
 .. include:: ../Includes.txt
 
 
+.. _user-manual:
+
 User Manual
 -----------
 
