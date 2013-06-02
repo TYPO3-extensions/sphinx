@@ -1,3 +1,7 @@
+2013-06-02  Xavier Perseguers  <xavier@causal.ch>
+
+	* [TASK] #48768: Makefile should use local Sphinx
+
 2013-06-01  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Render link "Up" with interactive layout

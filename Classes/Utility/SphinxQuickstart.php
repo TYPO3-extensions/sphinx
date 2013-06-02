@@ -128,6 +128,7 @@ class SphinxQuickstart {
 			'SOURCE_FILE_SUFFIX' => $sourceFileSuffix,
 			'EXCLUDE_PATTERN'    => $excludePattern,
 			'BUILD_DIRECTORY'    => $buildDirectory,
+			'BIN_DIRECTORY'      => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/bin/',
 		);
 
 		$config = array(
