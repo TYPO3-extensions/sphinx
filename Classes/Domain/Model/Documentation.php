@@ -119,6 +119,7 @@ class Documentation {
 		if ($body === NULL) {
 			if ($this->sphinxReader->getDocument() !== 'genindex/') {
 				$body = $this->sphinxReader->getBody($this->callbackLinks, $this->callbackImages);
+				$body = \Causal\Sphinx\Utility\GeneralUtility::postProcessPropertyTables($body);
 			} else {
 				$linksCategories = array();
 				$contentCategories = array();

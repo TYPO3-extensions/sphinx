@@ -65,6 +65,58 @@ class GeneralUtility {
 	}
 
 	/**
+	 * Post-processes the property tables.
+	 *
+	 * @param string $contents
+	 * @return string
+	 * @see https://forge.typo3.org/issues/48771
+	 */
+	public static function postProcessPropertyTables($contents) {
+		$contents = preg_replace_callback('#<div class="table-row container">.<dl class="docutils">(.*?)</dl>.</div>#s', function ($tableRow) {
+			$cellCounter = 0;
+			$propertyTable = preg_replace_callback('#<dt>(.*?)</dt>.<dd>(.*?)</dd>#s', function ($tableCell) use (&$cellCounter) {
+				switch (++$cellCounter) {
+					case 1:
+						$cellName = 't3-cell-property';
+						break;
+					case 2:
+						$cellName = 't3-cell-datatype';
+						break;
+					case 3:
+						$cellName = 't3-cell-description';
+						break;
+					default:
+						$cellName = 't3-cell-unknown';
+						break;
+				}
+
+				$term = $tableCell[1];
+				$definition = $tableCell[2];
+				if (substr($definition, 0, 2) !== '<p') {
+					$definition = '<p>' . $definition . '</p>';
+				}
+
+				return <<<HTML
+<div class="t3-cell $cellName">
+	<p class="term">$term</p>
+	$definition
+</div>
+HTML;
+			}, $tableRow[1]);
+
+			$propertyTable = <<<HTML
+<div class="t3-row table-row container">
+	$propertyTable
+</div>
+HTML;
+
+			return $propertyTable;
+		}, $contents);
+
+		return $contents;
+	}
+
+	/**
 	 * Generates the documentation for a given extension.
 	 *
 	 * @param string $extensionKey
