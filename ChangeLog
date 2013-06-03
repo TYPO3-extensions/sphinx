@@ -1,3 +1,7 @@
+2013-06-03  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] No syntax highlighting in documentation
+
 2013-06-02  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK][DOC] Use admonitions for better rendering (http://docutils.sourceforge.net/docs/ref/rst/directives.html#admonitions)
