@@ -55,7 +55,7 @@ The "build" button builds or rebuilds the corresponding version of the Sphinx en
 
 Finally, the "remove" button removes both the sources and the corresponding version of the Sphinx environment.
 
-.. hint::
+.. important::
 	This button *WILL NOT* remove sources of the TYPO3-related commands and the PyYAML library.
 
 

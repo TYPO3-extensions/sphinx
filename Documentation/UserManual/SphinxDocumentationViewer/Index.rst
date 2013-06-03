@@ -38,7 +38,7 @@ Otherwise:
 
 #. The viewer loads the main page ``Index.html``
 
-.. hint::
+.. tip::
 	A checkbox on the right lets you force the extension manual to be recompiled as HTML:
 
 	|checkbox|
