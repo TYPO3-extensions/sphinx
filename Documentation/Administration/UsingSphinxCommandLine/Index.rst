@@ -15,7 +15,9 @@ Using Sphinx from a command line
 
 Although this extension is primarily meant at providing a full-fledged environment to build documentation from a TYPO3 Backend, it is likely that a few users will use it to easily set up a Sphinx environment on their local machine.
 
-This extension automatically generates shortcut scripts within ``EXT:sphinx/Resources/Private/sphinx/bin/``::
+This extension automatically generates shortcut scripts within ``EXT:sphinx/Resources/Private/sphinx/bin/``:
+
+.. code-block:: no-highlight
 
 	.
 	|-- sphinx-build -> sphinx-build-1.2b1
