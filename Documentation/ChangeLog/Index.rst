@@ -19,6 +19,7 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ======================================================
 Version  Changes
 =======  ======================================================
+0.5.0    Sphinx documentation editor
 0.4.0    - Scripts to use the local Sphinx environment from the command line
          - Sphinx documentation viewer
 0.3.0    - Colored console output

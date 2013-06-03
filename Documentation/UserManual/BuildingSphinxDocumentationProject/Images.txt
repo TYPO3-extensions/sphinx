@@ -1,6 +1,5 @@
 .. |project_properties| image:: ../../Images/project_properties.png
 	:alt: Properties of a Sphinx documentation project
-	:width: 500
 
 .. |build_button_pdf| image:: ../../Images/build_button_pdf.png
 	:alt: Build button to render as PDF

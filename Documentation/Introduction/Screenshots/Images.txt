@@ -1,15 +1,13 @@
 .. |project_wizard_overview| image:: ../../Images/project_wizard_overview.png
 	:alt: Overview of the new project wizard
-	:width: 500
 
 .. |mod1_overview| image:: ../../Images/mod1_overview.png
 	:alt: Overview of the Backend module to build Sphinx projects
-	:width: 500
+	:width: 711
 
 .. |build_buttons| image:: ../../Images/build_buttons.png
 	:alt: Toolbar buttons
-	:width: 500
 
 .. |viewer| image:: ../../Images/viewer.png
 	:alt: Integrated Backend viewer for extension manuals
-	:width: 500
+	:width: 711
