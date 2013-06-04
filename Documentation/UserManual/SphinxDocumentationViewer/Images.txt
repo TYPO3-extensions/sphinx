@@ -5,5 +5,9 @@
 	:alt: Selector to show an extension manual locally
 	:width: 711
 
+.. |render_pdf| image:: ../../Images/render_pdf.png
+	:alt: Render a documentation as PDF
+	:width: 711
+
 .. |checkbox| image:: ../../Images/checkbox.png
 	:alt: Checkbox to force an extension manual to be rendered

@@ -1,0 +1,5 @@
+.. |edit_chapter| image:: ../../Images/edit_chapter.png
+	:alt: Edit ReStructuredText source from any chapter
+
+.. |save_compile| image:: ../../Images/save_compile.png
+	:alt: Save and compile your ReStructuredText chapter

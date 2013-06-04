@@ -22,3 +22,4 @@ This chapter describes how to use the extension from a user point of view.
 	CreatingSphinxDocumentationProject/Index
 	BuildingSphinxDocumentationProject/Index
 	SphinxDocumentationViewer/Index
+	SphinxDocumentationEditor/Index

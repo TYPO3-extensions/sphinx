@@ -68,7 +68,7 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 		$this->view->assign('extensions', $options);
 
 		$layouts = array(
-			'html' => $this->translate('documentationLayout_typo3'),
+			'html' => $this->translate('documentationLayout_static'),
 			'json' => $this->translate('documentationLayout_interactive'),
 		);
 		if (\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '') {
