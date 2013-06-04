@@ -162,6 +162,10 @@ HTML;
 			$metadata['release']
 		);
 
+		if ($format === 'json') {
+			self::overrideThemeT3Sphinx($basePath);
+		}
+
 		// Recursively instantiate template files
 		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
 		if (!is_dir($source)) {
@@ -198,6 +202,32 @@ HTML;
 
 		$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
 		return $documentationUrl;
+	}
+
+	/**
+	 * Creates a special-crafted conf.py for JSON output when using
+	 * t3sphinx as HTML theme.
+	 *
+	 * @param string $basePath
+	 * @return void
+	 * @see \Causal\Sphinx\Controller\ConsoleController::overrideThemeT3Sphinx()
+	 * @see http://forge.typo3.org/issues/48311
+	 */
+	protected static function overrideThemeT3Sphinx($basePath) {
+		$configuration = file_get_contents($basePath . '/_make/conf.py');
+		$t3sphinxImportPattern = '/^(\s*)import\s+t3sphinx\s*$/m';
+
+		if (preg_match($t3sphinxImportPattern, $configuration, $matches)) {
+			$imports = array(
+				'from docutils.parsers.rst import directives',
+				'from t3sphinx import fieldlisttable',
+				'directives.register_directive(\'t3-field-list-table\', fieldlisttable.FieldListTable)',
+			);
+			$replacement = $matches[1] . implode(LF . $matches[1], $imports);
+			$newConfiguration = preg_replace($t3sphinxImportPattern, $replacement, $configuration);
+
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($basePath . '/_make/conf.py', $newConfiguration);
+		}
 	}
 
 	/**

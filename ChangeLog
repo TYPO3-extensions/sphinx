@@ -1,5 +1,6 @@
 2013-06-03  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Use TYPO3 theme when compiling as HTML
 	* [TASK][DOC] OpenOffice manual is obsolete
 	* [BUGFIX] No syntax highlighting in documentation
 
