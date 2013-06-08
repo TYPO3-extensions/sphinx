@@ -60,7 +60,9 @@ class Configuration {
 		$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
 		// Do not resolve symbolic link here, no need if after all one wants to link to a local version of sphinx-build
 		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($$sphinxBuilder, $sphinxPath)) {
-			$versionLine = \TYPO3\CMS\Core\Utility\CommandUtility::exec($sphinxBuilder . ' --version');
+			$output = array();
+			\TYPO3\CMS\Core\Utility\CommandUtility::exec($sphinxBuilder . ' --version 2>&1', $output);
+			$versionLine = $output[0];
 			$versionParts = explode(' ', $versionLine);
 			$globalVersion = end($versionParts);
 			array_unshift($versions, 'SYSTEM');

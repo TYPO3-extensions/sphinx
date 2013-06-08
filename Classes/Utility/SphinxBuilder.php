@@ -62,7 +62,9 @@ class SphinxBuilder {
 		if (self::isSystemVersion()) {
 			$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
 			if ($sphinxBuilder) {
-				$versionLine = \TYPO3\CMS\Core\Utility\CommandUtility::exec($sphinxBuilder . ' --version');
+				$output = array();
+				\TYPO3\CMS\Core\Utility\CommandUtility::exec($sphinxBuilder . ' --version 2>&1', $output);
+				$versionLine = $output[0];
 				$versionParts = explode(' ', $versionLine);
 				$version = end($versionParts);
 			}
