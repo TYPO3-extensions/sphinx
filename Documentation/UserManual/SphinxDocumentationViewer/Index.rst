@@ -20,7 +20,7 @@ A drop-down menu on top lists all loaded extensions that are featuring a Sphinx-
 
 |viewer_choose_extension|
 
-.. hint::
+.. tip::
 	The Sphinx documentation viewer automatically reloads the last manual you selected and if you choose the interactive layout, it will even bring you to the chapter you were reading.
 
 .. _layouts:
