@@ -1,6 +1,13 @@
-============
+.. ==================================================
+.. FOR YOUR INFORMATION
+.. --------------------------------------------------
+.. -*- coding: utf-8 -*- with BOM.
+
+.. include:: ../Includes.txt
+
+
 Users manual
-============
+------------
 
 Documentation of how to use the extension, how it works, how to apply it, if it's a website plugin.
 
@@ -12,7 +19,7 @@ Provide screenshots of a neutral Backend such as the Backend of the Introduction
 
 Target group: **Users**
 
-.. figure:: Images/UserManual/BackendView.png
+.. figure:: ../Images/UserManual/BackendView.png
 	:width: 500px
 	:alt: Backend view
 
@@ -20,8 +27,9 @@ Target group: **Users**
 
 	The Backend view of TYPO3 after the user has clicked on module "Page". (legend of the image)
 
+
 Link to official documentation
-==============================
+""""""""""""""""""""""""""""""
 
 Sphinx makes it easy to link to official TYPO3 documentation:
 
@@ -32,7 +40,8 @@ and you may even link to a very specific chapter explaining how to :ref:`create 
 
 For a complete reference of available cross-link prefixes, please consult file ``_make/conf.py``.
 
+
 FAQ
-====
+^^^
 
 Possible subsection: FAQ
