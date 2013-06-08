@@ -380,7 +380,14 @@ class SphinxBuilder {
 		if (self::isSystemVersion()) {
 			$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
 			while (is_link($sphinxBuilder)) {
-				$sphinxBuilder = readlink($sphinxBuilder);
+				$link = readlink($sphinxBuilder);
+				if ($link{0} === '/') {
+					// Absolute symbolic link
+					$sphinxBuilder = $link;
+				} else {
+					// Relative symbolic link
+					$sphinxBuilder = realpath(dirname($sphinxBuilder) . '/' . $link);
+				}
 			}
 			$sphinxPath = substr($sphinxBuilder, 0, strrpos($sphinxBuilder, '/bin/') + 1);
 		} else {
