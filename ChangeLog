@@ -1,3 +1,7 @@
+2013-06-09  Xavier Perseguers  <xavier@causal.ch>
+
+	* [BUGFIX] #48962: Toolbar icons are misplaced on Chrome
+
 2013-06-08  Xavier Perseguers  <xavier@causal.ch>
 
 	* [TASK] Group extensions by type (S, L, G)
