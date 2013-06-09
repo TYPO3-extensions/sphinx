@@ -33,6 +33,15 @@
 			<trans-unit id="alwaysRender" xml:space="preserve">
 				<source>Always render documentation</source>
 			</trans-unit>
+			<trans-unit id="extensionType_S" xml:space="preserve">
+				<source>System Extensions</source>
+			</trans-unit>
+			<trans-unit id="extensionType_L" xml:space="preserve">
+				<source>Local Extensions</source>
+			</trans-unit>
+			<trans-unit id="extensionType_G" xml:space="preserve">
+				<source>Global Extensions</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

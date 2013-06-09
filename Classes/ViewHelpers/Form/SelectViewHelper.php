@@ -42,7 +42,39 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 	 */
 	public function initializeArguments() {
 		$this->registerTagAttribute('onchange', 'string', 'Javascript for the onchange event');
+		$this->registerArgument('groupOptions', 'boolean', 'Whether options should be grouped by 1st-dimension key');
 		parent::initializeArguments();
+	}
+
+	/**
+	 * Render the option tags.
+	 *
+	 * @param array $options the options for the form.
+	 * @return string rendered tags.
+	 */
+	protected function renderOptionTags($options) {
+		$output = '';
+		if ($this->hasArgument('prependOptionLabel')) {
+			$value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';
+			$label = $this->arguments['prependOptionLabel'];
+			$output .= $this->renderOptionTag($value, $label, FALSE) . chr(10);
+		}
+		if ($this->arguments['groupOptions']) {
+			foreach ($options as $group => $valueLabel) {
+				$output .= '<optgroup label="' . htmlentities($group) . '">';
+				foreach ($valueLabel as $value => $label) {
+					$isSelected = $this->isSelected($value);
+					$output .= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
+				}
+				$output .= '</optgroup>';
+			}
+		} else {
+			foreach ($options as $value => $label) {
+				$isSelected = $this->isSelected($value);
+				$output .= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
+			}
+		}
+		return $output;
 	}
 
 }

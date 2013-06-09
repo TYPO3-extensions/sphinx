@@ -62,8 +62,9 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	protected function menuAction() {
 		$extensions = $this->getExtensionsWithSphinxDocumentation();
 		$options = array();
-		foreach ($extensions as $extensionKey => $name) {
-			$options[$extensionKey] = sprintf('%s (%s)', $name, $extensionKey);
+		foreach ($extensions as $extensionKey => $info) {
+			$typeLabel = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionType_' . $info['type'], $this->request->getControllerExtensionKey());
+			$options[$typeLabel][$extensionKey] = sprintf('%s (%s)', $info['title'], $extensionKey);
 		}
 		$this->view->assign('extensions', $options);
 
@@ -122,16 +123,24 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 * @return array
 	 */
 	protected function getExtensionsWithSphinxDocumentation() {
-		$extensions = array();
 		$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+		$extensions = array();
+		$titles = array();
+
 		foreach ($loadedExtensions as $loadedExtension) {
 			$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($loadedExtension);
+			$info = $GLOBALS['TYPO3_LOADED_EXT'][$loadedExtension];
 			if (is_dir($extPath . 'Documentation') && is_file($extPath . 'Documentation/Index.rst')) {
 				$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($loadedExtension);
-				$extensions[$loadedExtension] = $metadata['title'];
+				$extensions[$loadedExtension] = array(
+					'title'    => $metadata['title'],
+					'ext_icon' => $info['ext_icon'],
+					'type'     => $info['type'],
+				);
+				$titles[$loadedExtension] = strtolower($metadata['title']);
 			}
 		}
-		asort($extensions);
+		array_multisort($titles, SORT_ASC, $extensions);
 
 		return $extensions;
 	}
