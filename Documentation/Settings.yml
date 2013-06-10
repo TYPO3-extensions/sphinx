@@ -6,6 +6,6 @@
 conf.py:
   copyright: 2013
   project: Sphinx Python Documentation Generator and Viewer
-  version: 0.5
-  release: 0.5.0
+  version: 0.6
+  release: 0.6.0
 ...
