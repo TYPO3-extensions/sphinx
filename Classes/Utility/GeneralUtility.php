@@ -118,6 +118,48 @@ HTML;
 	}
 
 	/**
+	 * Returns the intersphinx references of a given extension.
+	 *
+	 * @param string $extensionKey
+	 * @return array
+	 * @throws \RuntimeException
+	 */
+	public static function getIntersphinxReferences($extensionKey) {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc')) {
+			throw new \RuntimeException('Extension restdoc is not loaded', 1370809705);
+		}
+
+		$localFile = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/json/objects.inv';
+		$cacheFile = PATH_site . 'typo3temp/tx_' . self::$extKey . '/' . $extensionKey . '/_make/build/json/objects.inv';
+		$remoteUrl = 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/latest/objects.inv';
+		$path = '';
+
+		if (is_file($localFile)) {
+			$path = dirname($localFile);
+		} elseif (is_file($cacheFile)) {
+			$path = dirname($cacheFile);
+		} else {
+			$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteUrl);
+			if ($content) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($cacheFile) . '/');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $content);
+				$path = dirname($cacheFile);
+			}
+		}
+
+		if ($path) {
+			/** @var Tx_Restdoc_Reader_SphinxJson $sphinxReader */
+			$sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
+			$sphinxReader->setPath($path);
+			$references = $sphinxReader->getReferences();
+		} else {
+			$references = array();
+		}
+
+		return $references;
+	}
+
+	/**
 	 * Generates the documentation for a given extension.
 	 *
 	 * @param string $extensionKey
