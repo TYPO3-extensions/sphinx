@@ -33,6 +33,9 @@
 			<trans-unit id="alwaysRender" xml:space="preserve">
 				<source>Always render documentation</source>
 			</trans-unit>
+			<trans-unit id="showInvisibles" xml:space="preserve">
+				<source>Show Invisibles</source>
+			</trans-unit>
 			<trans-unit id="extensionType_S" xml:space="preserve">
 				<source>System Extensions</source>
 			</trans-unit>

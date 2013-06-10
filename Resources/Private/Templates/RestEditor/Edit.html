@@ -12,6 +12,8 @@
 		body {
 			margin: 0;
 			padding: 0;
+			font-family: Verdana,Arial,Helvetica,sans-serif;
+			font-size: 10px;
 		}
 		span.t3-icon {
 			display: inherit;
@@ -42,7 +44,12 @@
 				--><a title="Save document" onclick="saveAndClose()" href="#"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-save-close">&nbsp;</span></a>
 			</div>
 		</div>
-		<div class="right"></div>
+		<div class="right">
+			<input type="checkbox" id="tx-sphinx-showinvisibles" onclick="editor.setShowInvisibles(this.checked)" value="1" />
+			<label for="tx-sphinx-showinvisibles">
+				<translate key="showInvisibles">Show Invisibles</translate>
+			</label>
+		</div>
 	</div>
 </div>
 
@@ -55,6 +62,7 @@ var session = editor.getSession()
 
 editor.setTheme("ace/theme/github");
 session.setMode("ace/mode/markdown");
+
 editor.setPrintMarginColumn(120);
 session.setUseWrapMode(true);
 session.setWrapLimitRange(120, 120);

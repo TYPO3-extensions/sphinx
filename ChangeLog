@@ -1,5 +1,6 @@
 2013-06-10  Xavier Perseguers  <xavier@causal.ch>
 
+	* [TASK] Add editor checkbox to show/hide invisibles
 	* [TASK] Related to #48936: Add helper method to retrieve references from any extension
 
 2013-06-09  Xavier Perseguers  <xavier@causal.ch>
