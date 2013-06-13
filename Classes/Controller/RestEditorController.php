@@ -93,20 +93,31 @@ class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * Returns the ReST filename corresponding to a given document.
 	 *
-	 * @param string $extension
+	 * @param string $extensionKey
 	 * @param string $document
 	 * @return string
 	 * @throws \RuntimeException
 	 */
-	protected function getFilename($extension, $document) {
-		$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extension) . 'Documentation/';
-		$filename = $path . ($document ? substr($document, 0, -1) : 'Index') . '.rst';
+	protected function getFilename($extensionKey, $document) {
+		$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
+		switch ($documentationType) {
+			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_STANDARD:
+				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation/';
+				$filename = $path . ($document ? substr($document, 0, -1) : 'Index') . '.rst';
+				break;
+			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_README:
+				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+				$filename = $path . 'README.rst';
+				break;
+			default:
+				throw new \RuntimeException('Unsupported documentation type for extension "' . $extensionKey . '"', 1371117564);
+		}
 
 		// Security check
 		$path = realpath($path);
 		$filename = realpath($filename);
 		if (substr($filename, 0, strlen($path)) !== $path) {
-			throw new \RuntimeException('Security notice: attempted to access a file outside of extension "' . $extension . '"', 1370011326);
+			throw new \RuntimeException('Security notice: attempted to access a file outside of extension "' . $extensionKey . '"', 1370011326);
 		}
 
 		return $filename;

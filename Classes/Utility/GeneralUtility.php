@@ -36,6 +36,10 @@ namespace Causal\Sphinx\Utility;
  */
 class GeneralUtility {
 
+	const DOCUMENTATION_TYPE_UNKNOWN  = 0;
+	const DOCUMENTATION_TYPE_STANDARD = 1;
+	const DOCUMENTATION_TYPE_README   = 2;
+
 	/** @var string */
 	protected static $extKey = 'sphinx';
 
@@ -62,6 +66,29 @@ class GeneralUtility {
 		$EM_CONF[$_EXTKEY]['extensionKey'] = $extensionKey;
 
 		return $EM_CONF[$_EXTKEY];
+	}
+
+	/**
+	 * Returns the type of the master documentation document of a given
+	 * loaded extension as one of the DOCUMENTATION_TYPE_* constants.
+	 *
+	 * @param string $extensionKey
+	 * @return integer DOCUMENTATION_TYPE_* constant
+	 */
+	public static function getDocumentationType($extensionKey) {
+		$supportedDocuments = array(
+			'Documentation/Index.rst' => self::DOCUMENTATION_TYPE_STANDARD,
+			'README.rst'              => self::DOCUMENTATION_TYPE_README,
+		);
+		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+
+		foreach ($supportedDocuments as $supportedDocument => $type) {
+			if (is_file($extPath . $supportedDocument)) {
+				return $type;
+			}
+		}
+
+		return self::DOCUMENTATION_TYPE_UNKNOWN;
 	}
 
 	/**
@@ -168,23 +195,31 @@ HTML;
 	 * @return string
 	 */
 	public static function generateDocumentation($extensionKey, $format = 'html', $force = FALSE) {
+		$documentationType = self::getDocumentationType($extensionKey);
+		if ($documentationType === self::DOCUMENTATION_TYPE_UNKNOWN) {
+			$filename = 'typo3temp/tx_' . self::$extKey . '/1369679343.log';
+			$content = 'ERROR 1369679343: No documentation found for extension "' . $extensionKey . '"';
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
+			return '../' . $filename;
+		}
+
 		switch ($format) {
 			case 'json':
-				$documentationType = 'json';
+				$documentationFormat = 'json';
 				$masterDocument = 'Index.fjson';
 				break;
 			case 'pdf':
-				$documentationType = 'pdf';
+				$documentationFormat = 'pdf';
 				$masterDocument = $extensionKey . '.pdf';
 				break;
 			case 'html':
 			default:
-				$documentationType = 'html';
+				$documentationFormat = 'html';
 				$masterDocument = 'Index.html';
 				break;
 		}
 
-		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/' . $documentationType;
+		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/' . $documentationFormat;
 		if (!$force && is_file($outputDirectory . '/' . $masterDocument)) {
 			// Do not render the documentation again
 			$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
@@ -209,14 +244,15 @@ HTML;
 		}
 
 		// Recursively instantiate template files
-		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
-		if (!is_dir($source)) {
-			$filename = 'typo3temp/tx_' . self::$extKey . '/1369679343.log';
-			$content = 'ERROR 1369679343: Documentation directory was not found: ' . $source;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
-			return '../' . $filename;
+		switch ($documentationType) {
+			case self::DOCUMENTATION_TYPE_STANDARD:
+				$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
+				self::recursiveCopy($source, $basePath);
+				break;
+			case self::DOCUMENTATION_TYPE_README:
+				$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'README.rst';
+				copy($source, $basePath . '/Index.rst');
 		}
-		self::recursiveCopy($source, $basePath);
 
 		try {
 			if ($format === 'json') {
@@ -236,7 +272,7 @@ HTML;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($outputDirectory, TRUE);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($outputDirectory . '/');
 		if ($format !== 'pdf') {
-			self::recursiveCopy($basePath . '/_make/build/' . $documentationType, $outputDirectory);
+			self::recursiveCopy($basePath . '/_make/build/' . $documentationFormat, $outputDirectory);
 		} else {
 			// Only copy PDF output
 			copy($basePath . '/_make/build/latex/' . $extensionKey . '.pdf', $outputDirectory . '/' . $extensionKey . '.pdf');

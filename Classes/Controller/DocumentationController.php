@@ -128,14 +128,15 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 		$titles = array();
 
 		foreach ($loadedExtensions as $loadedExtension) {
-			$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($loadedExtension);
 			$info = $GLOBALS['TYPO3_LOADED_EXT'][$loadedExtension];
-			if (is_dir($extPath . 'Documentation') && is_file($extPath . 'Documentation/Index.rst')) {
+
+			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($loadedExtension);
+			if ($documentationType !== \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_UNKNOWN) {
 				$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($loadedExtension);
 				$extensions[$loadedExtension] = array(
-					'title'    => $metadata['title'],
-					'ext_icon' => $info['ext_icon'],
-					'type'     => $info['type'],
+					'title'          => $metadata['title'],
+					'ext_icon'       => $info['ext_icon'],
+					'type'           => $info['type'],
 				);
 				$titles[$loadedExtension] = strtolower($metadata['title']);
 			}
