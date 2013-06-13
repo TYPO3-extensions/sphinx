@@ -62,6 +62,12 @@ Otherwise:
 
 	|checkbox|
 
+.. note::
+	The Sphinx Documentation Viewer supports two types of extension's manual:
+
+	#. Standard documentation layout with the a whole Sphinx project stored within ``EXT:<extension-key>/Documentation/``, with the master document named ``Index.rst``
+	#. Simple ReStructuredText README file as seen on Github or Bitbucket and saved as ``EXT:<extension-key>/README.rst``
+
 According to the selected layout, the main document is:
 
 - **Static:** Main document of HTML output is ``typo3conf/Documentation/<extension-key>/html/Index.html``
