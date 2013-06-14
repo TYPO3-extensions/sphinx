@@ -22,7 +22,7 @@ This slot is used to register additional entries in the drop-down list of availa
 
 Your slot should implement a method of the form::
 
-	public function registerDocumentation(array &$references) {
+	public function postprocessReferences(array &$references) {
 	    // Custom code
 	}
 
@@ -92,7 +92,7 @@ In your extension, create a file ``EXT:your-ext/Classes/Slots/CustomDocumentatio
 	     * @param array &$references
 	     * @return void
 	     */
-	    public function registerDocumentation(array &$references) {
+	    public function postprocessReferences(array &$references) {
 	        $references['Some Category'] = array(
 	            'USER:some-reference' => 'The Title',
 	        );
