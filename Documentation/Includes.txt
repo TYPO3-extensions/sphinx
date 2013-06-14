@@ -18,7 +18,7 @@
 
 .. role::   php(code)
 
-.. highlight:: guess
+.. highlight:: php
 
 .. ==================================================
 .. EXTERNAL LINKS

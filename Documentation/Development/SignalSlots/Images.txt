@@ -1,0 +1,2 @@
+.. |custom_documentation| image:: ../../Images/custom_documentation.png
+	:alt: Custom documentation in the drop-down list

@@ -57,6 +57,7 @@ The content of this document is related to TYPO3
 	Introduction/Index
 	UserManual/Index
 	Administration/Index
+	Development/Index
 	KnownProblems/Index
 	ToDoList/Index
 	ChangeLog/Index

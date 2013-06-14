@@ -39,16 +39,24 @@ class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * Edit action.
 	 *
-	 * @param string $extension
+	 * @param string $reference
 	 * @param string $document
 	 * @return void
 	 * @throws \RuntimeException
 	 */
-	protected function editAction($extension, $document) {
-		$filename = $this->getFilename($extension, $document);
+	protected function editAction($reference, $document) {
+		list($type, $identifier) = explode(':', $reference, 2);
+		switch ($type) {
+			case 'EXT':
+				$extensionKey = $identifier;
+				$filename = $this->getFilename($extensionKey, $document);
+				break;
+			default:
+				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163472);
+		}
 		$contents = file_get_contents($filename);
 
-		$this->view->assign('extension', $extension);
+		$this->view->assign('reference', $reference);
 		$this->view->assign('document', $document);
 		$this->view->assign('contents', $contents);
 	}
@@ -56,16 +64,24 @@ class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * Saves the contents and recompiles the whole documentation if needed.
 	 *
-	 * @param string $extension
+	 * @param string $reference
 	 * @param string $document
 	 * @param string $contents
 	 * @param boolean $compile
 	 * @return void
 	 */
-	protected function saveAction($extension, $document, $contents, $compile = FALSE) {
+	protected function saveAction($reference, $document, $contents, $compile = FALSE) {
 		$response = array();
 		try {
-			$filename = $this->getFilename($extension, $document);
+			list($type, $identifier) = explode(':', $reference, 2);
+			switch ($type) {
+				case 'EXT':
+					$extensionKey = $identifier;
+					$filename = $this->getFilename($extensionKey, $document);
+					break;
+				default:
+					throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163472);
+			}
 
 			$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $contents);
 			if (!$success) {
@@ -73,7 +89,10 @@ class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 			}
 
 			if ($compile) {
-				$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extension, 'json', TRUE);
+				switch ($type) {
+					case 'EXT':
+						$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, 'json', TRUE);
+				}
 				if (substr($outputFilename, -4) === '.log') {
 					throw new \RuntimeException('Could not compile documentation', 1370011537);
 				}

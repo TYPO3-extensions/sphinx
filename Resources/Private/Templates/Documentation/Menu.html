@@ -8,10 +8,10 @@
 <body>
 
 <s:form action="render" id="tx-sphinx-form-render" target="tx-sphinx-documentation-content">
-	<label for="extension">
-		<f:translate key="showExtensionDocumentation">Show documentation of extension:</f:translate>
+	<label for="reference">
+		<f:translate key="showDocumentation">Show documentation:</f:translate>
 	</label>
-	<s:form.select id="extension" name="extension" groupOptions="1" prependOptionLabel="" options="{extensions}" value="{currentExtension}" onchange="this.form.submit();" />
+	<s:form.select id="reference" name="reference" groupOptions="1" prependOptionLabel="" options="{references}" value="{currentReference}" onchange="this.form.submit();" />
 
 	<label for="layout">
 		<f:translate key="documentationFormat">Layout:</f:translate>
@@ -27,7 +27,7 @@
 </s:form>
 
 <script type="text/javascript">
-if ("{currentExtension}" != "") {
+if ("{currentReference}" != "") {
 	document.getElementById("tx-sphinx-form-render").submit();
 }
 </script>

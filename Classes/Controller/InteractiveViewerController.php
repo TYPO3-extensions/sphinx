@@ -68,28 +68,40 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	/**
 	 * Main action.
 	 *
-	 * @param string $extension
+	 * @param string $reference
 	 * @param string $document
 	 * @return void
+	 * @throws \RuntimeException
 	 */
-	protected function renderAction($extension, $document = '') {
+	protected function renderAction($reference, $document = '') {
 		$this->checkExtensionRestdoc();
-		$this->extension = $extension;
 
 		if (empty($document)) {
-			$document = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/extension-' . $extension);
+			$document = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/reference-' . $reference);
 		}
+
+		list($type, $identifier) = explode(':', $reference, 2);
+		switch ($type) {
+			case 'EXT':
+				$extensionKey = $identifier;
+				$this->extension = $extensionKey;
+				$path = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/json';
+				break;
+			default:
+				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163248);
+		}
+
 		if (empty($document)) {
 			$document = $this->sphinxReader->getDefaultFile() . '/';
 		}
 
 		$this->sphinxReader
-			->setPath(PATH_site . 'typo3conf/Documentation/' . $extension . '/json')
+			->setPath($path)
 			->setDocument($document)
 			->load();
 
 		// Store preferences
-		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/extension-' . $extension, $document);
+		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/reference-' . $reference, $document);
 
 		/** @var \Causal\Sphinx\Domain\Model\Documentation $documentation */
 		$documentation = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\Sphinx\Domain\Model\Documentation', $this->sphinxReader);
@@ -102,7 +114,7 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		}
 
 		$this->view->assign('documentation', $documentation);
-		$this->view->assign('extension', \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extension));
+		$this->view->assign('reference', $reference);
 		$this->view->assign('document', $document);
 		$this->view->assign('canEdit', $canEdit);
 	}

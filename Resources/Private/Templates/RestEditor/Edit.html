@@ -67,9 +67,9 @@ editor.setPrintMarginColumn(120);
 session.setUseWrapMode(true);
 session.setWrapLimitRange(120, 120);
 
-var extension = "{extension}";
+var reference = "{reference}";
 var doc = "{document}";
-var redirectUrl = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{extension:extension, document:document})}";
+var redirectUrl = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{reference:reference, document:document})}";
 
 function closeEditor() {
 	// TODO: check if file was modified
@@ -82,7 +82,7 @@ function save() {
 
 	$.post(saveUrl,
 			{
-				'tx_sphinx_help_sphinxdocumentation[extension]': extension,
+				'tx_sphinx_help_sphinxdocumentation[reference]': reference,
 				'tx_sphinx_help_sphinxdocumentation[document]': doc,
 				'tx_sphinx_help_sphinxdocumentation[contents]': contents,
 				'tx_sphinx_help_sphinxdocumentation[compile]': 0
@@ -103,7 +103,7 @@ function saveAndClose() {
 
 	$.post(saveUrl,
 			{
-				'tx_sphinx_help_sphinxdocumentation[extension]': extension,
+				'tx_sphinx_help_sphinxdocumentation[reference]': reference,
 				'tx_sphinx_help_sphinxdocumentation[document]': doc,
 				'tx_sphinx_help_sphinxdocumentation[contents]': contents,
 				'tx_sphinx_help_sphinxdocumentation[compile]': 1

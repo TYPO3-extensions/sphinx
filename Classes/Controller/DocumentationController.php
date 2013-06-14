@@ -61,12 +61,21 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 */
 	protected function menuAction() {
 		$extensions = $this->getExtensionsWithSphinxDocumentation();
-		$options = array();
+		$references = array();
 		foreach ($extensions as $extensionKey => $info) {
 			$typeLabel = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionType_' . $info['type'], $this->request->getControllerExtensionKey());
-			$options[$typeLabel][$extensionKey] = sprintf('%s (%s)', $info['title'], $extensionKey);
+			$references[$typeLabel]['EXT:' . $extensionKey] = sprintf('%s (%s)', $info['title'], $extensionKey);
 		}
-		$this->view->assign('extensions', $options);
+
+		$this->signalSlotDispatcher->dispatch(
+			__CLASS__,
+			'afterInitializeReferences',
+			array(
+				'references' => &$references,
+			)
+		);
+
+		$this->view->assign('references', $references);
 
 		$layouts = array(
 			'html' => $this->translate('documentationLayout_static'),
@@ -77,32 +86,58 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 		}
 		$this->view->assign('layouts', $layouts);
 
-		$currentExtension = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/extension');
+		$currentReference = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/reference');
 		$currentLayout = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/layout');
-		$this->view->assign('currentExtension', $currentExtension);
+		$this->view->assign('currentReference', $currentReference);
 		$this->view->assign('currentLayout', $currentLayout);
 	}
 
 	/**
 	 * Render action.
 	 *
-	 * @param string $extension
+	 * @param string $reference
 	 * @param string $layout
 	 * @param boolean $force
 	 * @return string
+	 * @throws \RuntimeException
 	 */
-	protected function renderAction($extension = '', $layout = 'html', $force = FALSE) {
+	protected function renderAction($reference = '', $layout = 'html', $force = FALSE) {
 		// Store preferences
-		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/extension', $extension);
+		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/reference', $reference);
 		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/layout', $layout);
 
-		if ($extension === '') {
+		if ($reference === '') {
 			$this->redirect('blank');
 		}
-		$documentationUrl = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extension, $layout, $force);
+
+		list($type, $identifier) = explode(':', $reference, 2);
+		switch ($type) {
+			case 'EXT':
+				$extensionKey = $identifier;
+				$documentationUrl = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force);
+				break;
+			case 'USER':
+				$documentationUrl = NULL;
+				$this->signalSlotDispatcher->dispatch(
+					__CLASS__,
+					'renderUserDocumentation',
+					array(
+						'identifier' => $identifier,
+						'layout' => $layout,
+						'force' => $force,
+						'documentationUrl' => &$documentationUrl,
+					)
+				);
+				if ($documentationUrl === NULL) {
+					throw new \RuntimeException('No slot found to render documentation with identifier "' . $identifier . '"', 1371208253);
+				}
+				break;
+			default:
+				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371162948);
+		}
 
 		if ($layout === 'json' && substr($documentationUrl, -6) === '.fjson') {
-			$this->forward('render', 'InteractiveViewer', NULL, array('extension' => $extension));
+			$this->forward('render', 'InteractiveViewer', NULL, array('reference' => $reference));
 		}
 		$this->view->assign('documentationUrl', $documentationUrl);
 	}

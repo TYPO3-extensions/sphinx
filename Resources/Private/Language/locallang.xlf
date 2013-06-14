@@ -12,8 +12,8 @@
 			<trans-unit id="folderNotFoundMessage" xml:space="preserve">
 				<source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
 			</trans-unit>
-			<trans-unit id="showExtensionDocumentation" xml:space="preserve">
-				<source>Show documentation of extension:</source>
+			<trans-unit id="showDocumentation" xml:space="preserve">
+				<source>Show documentation:</source>
 			</trans-unit>
 			<trans-unit id="loadDocumentation" xml:space="preserve">
 				<source>Go</source>
