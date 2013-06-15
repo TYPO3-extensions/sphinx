@@ -59,9 +59,9 @@ class Configuration {
 		// Maybe a global install of Sphinx is available
 		$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
 		// Do not resolve symbolic link here, no need if after all one wants to link to a local version of sphinx-build
-		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($$sphinxBuilder, $sphinxPath)) {
+		if ($sphinxBuilder && !\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($$sphinxBuilder, $sphinxPath)) {
 			$output = array();
-			\TYPO3\CMS\Core\Utility\CommandUtility::exec($sphinxBuilder . ' --version 2>&1', $output);
+			\TYPO3\CMS\Core\Utility\CommandUtility::exec(escapeshellarg($sphinxBuilder) . ' --version 2>&1', $output);
 			$versionLine = $output[0];
 			$versionParts = explode(' ', $versionLine);
 			$globalVersion = end($versionParts);
@@ -83,8 +83,19 @@ class Configuration {
 			);
 			chdir($sphinxPath . '/bin');
 			foreach ($scripts as $script) {
-				@unlink($sphinxPath . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . $script);
-				symlink($script . '-' . $selectedVersion, $script);
+				$scriptFilename = $sphinxPath . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . $script;
+				$scriptVersion = $script . '-' . $selectedVersion;
+
+				if (TYPO3_OS === 'WIN') {
+					$scriptFilename .= '.bat';
+					$scriptVersion .= '.bat';
+
+					@unlink($scriptFilename);
+					copy($scriptVersion, $scriptFilename);
+				} else {
+					@unlink($scriptFilename);
+					symlink($scriptVersion, $script);
+				}
 			}
 		}
 

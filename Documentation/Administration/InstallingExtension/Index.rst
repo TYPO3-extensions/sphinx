@@ -12,12 +12,17 @@ Installing the extension
 
 There are a few steps necessary to install the Sphinx Python Documentation Generator extension. If you have installed other extensions in the past, you will run into little new here.
 
+.. note::
+	**MS Windows Users:** Please set up your environment with Python first. Instructions are available as :ref:`a separated chapter <windows-setup>`.
+
 
 1) Install the extension from Extension Manager
 """""""""""""""""""""""""""""""""""""""""""""""
 
 The Sphinx Python Documentation Generator extension can be installed through the typical TYPO3 installation process using the Extension Manager.
 
+
+.. _configure-sphinx:
 
 2) Download and configure Sphinx
 """"""""""""""""""""""""""""""""
@@ -29,6 +34,9 @@ In the Extension Manager, execute the update script this extension is providing:
 Select a version of Sphinx you would like to use and start the import process with the "import" button:
 
 |import_sphinx|
+
+.. important::
+	If the list of available versions of Sphinx is empty, you most probably lack OpenSSL support in PHP (this is a typical pitfall under MS Windows).
 
 .. index::
 	single: Install; Log

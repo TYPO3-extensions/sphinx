@@ -32,14 +32,14 @@ Parameter ``$references`` is an bi-dimensional array containing the list of loca
 .. _custom-documentation-renderUserDocumentation:
 
 Slot: renderUserDocumentation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This slot is used to render your custom documentation and return the URL of the master page.
 
 Your slot should implement a method of the form::
 
 	public function render($identifier, $layout, $force, &$documentationUrl) {
-		// Custom code
+	    // Custom code
 	}
 
 

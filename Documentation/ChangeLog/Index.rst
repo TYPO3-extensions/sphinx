@@ -19,6 +19,8 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ======================================================
 Version  Changes
 =======  ======================================================
+0.6.0    - Compatibility with MS Windows
+         - Support for external documentation
 0.5.0    - Render extension manuals as HTML, JSON or PDF
          - Sphinx documentation editor
 0.4.0    - Scripts to use the local Sphinx environment from the command line

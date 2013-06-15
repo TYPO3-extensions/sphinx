@@ -60,7 +60,7 @@ class SphinxBuilder {
 	public static function getSphinxVersion() {
 		$version = NULL;
 		if (self::isSystemVersion()) {
-			$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
+			$sphinxBuilder = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build'));
 			if ($sphinxBuilder) {
 				$output = array();
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($sphinxBuilder . ' --version 2>&1', $output);
@@ -89,11 +89,17 @@ class SphinxBuilder {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
-			$conf = '.' . DIRECTORY_SEPARATOR . 'conf.py';
+			$conf = './conf.py';
 		}
-		$basePath = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
+
+		// Compatibility with Windows platform
+		$conf = str_replace('/', DIRECTORY_SEPARATOR, $conf);
+		$basePath = str_replace('/', DIRECTORY_SEPARATOR, $basePath);
+		$sourceDirectory = str_replace('/', DIRECTORY_SEPARATOR, $sourceDirectory);
+		$buildDirectory = str_replace('/', DIRECTORY_SEPARATOR, $buildDirectory);
 
 		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
@@ -103,14 +109,14 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'html';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b html' .					// output format
-			' -c ' . escapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
-			' -d ' . escapeshellarg($referencesPath) .		// references
-				' ' . escapeshellarg($sourceDirectory) .	// source directory
-				' ' . escapeshellarg($buildPath) .			// build directory
+			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
+				' ' . self::safeEscapeshellarg($sourceDirectory) .	// source directory
+				' ' . self::safeEscapeshellarg($buildPath) .			// build directory
 				' 2>&1';									// redirect errors to STDOUT
 
 		$output = array();
-		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+		self::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
 		if (self::$htmlConsole) {
 			$output = self::colorize($output);
@@ -147,11 +153,17 @@ class SphinxBuilder {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
-			$conf = '.' . DIRECTORY_SEPARATOR . 'conf.py';
+			$conf = './conf.py';
 		}
-		$basePath = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
+
+		// Compatibility with Windows platform
+		$conf = str_replace('/', DIRECTORY_SEPARATOR, $conf);
+		$basePath = str_replace('/', DIRECTORY_SEPARATOR, $basePath);
+		$sourceDirectory = str_replace('/', DIRECTORY_SEPARATOR, $sourceDirectory);
+		$buildDirectory = str_replace('/', DIRECTORY_SEPARATOR, $buildDirectory);
 
 		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
@@ -161,14 +173,14 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'json';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b json' .					// output format
-			' -c ' . escapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
-			' -d ' . escapeshellarg($referencesPath) .		// references
-			' ' . escapeshellarg($sourceDirectory) .		// source directory
-			' ' . escapeshellarg($buildPath) .				// build directory
+			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
+			' ' . self::safeEscapeshellarg($sourceDirectory) .		// source directory
+			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';										// redirect errors to STDOUT
 
 		$output = array();
-		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+		self::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
 		if (self::$htmlConsole) {
 			$output = self::colorize($output);
@@ -202,12 +214,18 @@ class SphinxBuilder {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
-			$conf = '.' . DIRECTORY_SEPARATOR . 'conf.py';
+			$conf = './conf.py';
 		}
-		$basePath = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 		$paperSize = 'a4';
+
+		// Compatibility with Windows platform
+		$conf = str_replace('/', DIRECTORY_SEPARATOR, $conf);
+		$basePath = str_replace('/', DIRECTORY_SEPARATOR, $basePath);
+		$sourceDirectory = str_replace('/', DIRECTORY_SEPARATOR, $sourceDirectory);
+		$buildDirectory = str_replace('/', DIRECTORY_SEPARATOR, $buildDirectory);
 
 		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
@@ -217,15 +235,15 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b latex' .					// output format
-			' -c ' . escapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
-			' -d ' . escapeshellarg($referencesPath) .		// references
+			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
 			' -D latex_paper_size=' . $paperSize .			// paper size for LaTeX output
-			' ' . escapeshellarg($sourceDirectory) .		// source directory
-			' ' . escapeshellarg($buildPath) .				// build directory
+			' ' . self::safeEscapeshellarg($sourceDirectory) .		// source directory
+			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';										// redirect errors to STDOUT
 
 		$output = array();
-		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+		self::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
 		if (self::$htmlConsole) {
 			$output = self::colorize($output);
@@ -257,7 +275,7 @@ class SphinxBuilder {
 	 * @throws \RuntimeException if build process failed
 	 */
 	public static function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
-		$make = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make');
+		$make = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make'));
 		$pdflatex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex');
 
 		if (empty($make)) {
@@ -268,11 +286,17 @@ class SphinxBuilder {
 		}
 
 		if (empty($conf)) {
-			$conf = '.' . DIRECTORY_SEPARATOR . 'conf.py';
+			$conf = './conf.py';
 		}
-		$basePath = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
+
+		// Compatibility with Windows platform
+		$conf = str_replace('/', DIRECTORY_SEPARATOR, $conf);
+		$basePath = str_replace('/', DIRECTORY_SEPARATOR, $basePath);
+		$sourceDirectory = str_replace('/', DIRECTORY_SEPARATOR, $sourceDirectory);
+		$buildDirectory = str_replace('/', DIRECTORY_SEPARATOR, $buildDirectory);
 
 		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
@@ -282,12 +306,12 @@ class SphinxBuilder {
 
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			'export PATH="$PATH' . PATH_SEPARATOR . dirname($pdflatex) . '" && ' .
-			$make . ' -C ' . escapeshellarg($buildDirectory . '/latex') . ' all-pdf' .
+			\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . dirname($pdflatex) . '"') . ' && ' .
+			$make . ' -C ' . self::safeEscapeshellarg($buildDirectory . '/latex') . ' all-pdf' .
 			' 2>&1';	// redirect errors to STDOUT
 
 		$output = array('Running LaTeX files through pdflatex...');
-		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+		self::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
 		if (self::$htmlConsole) {
 			$output = self::colorize($output);
@@ -327,11 +351,17 @@ class SphinxBuilder {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
-			$conf = '.' . DIRECTORY_SEPARATOR . 'conf.py';
+			$conf = './conf.py';
 		}
-		$basePath = rtrim($basePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+		$basePath = rtrim($basePath, '/') . '/';
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
+
+		// Compatibility with Windows platform
+		$conf = str_replace('/', DIRECTORY_SEPARATOR, $conf);
+		$basePath = str_replace('/', DIRECTORY_SEPARATOR, $basePath);
+		$sourceDirectory = str_replace('/', DIRECTORY_SEPARATOR, $sourceDirectory);
+		$buildDirectory = str_replace('/', DIRECTORY_SEPARATOR, $buildDirectory);
 
 		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
@@ -341,14 +371,14 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'linkcheck';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b linkcheck' .				// output format
-			' -c ' . escapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
-			' -d ' . escapeshellarg($referencesPath) .		// references
-			' ' . escapeshellarg($sourceDirectory) .		// source directory
-			' ' . escapeshellarg($buildPath) .				// build directory
+			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
+			' ' . self::safeEscapeshellarg($sourceDirectory) .		// source directory
+			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';										// redirect errors to STDOUT
 
 		$output = array();
-		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $output, $ret);
+		self::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
 		if (self::$htmlConsole) {
 			$output = self::colorize($output);
@@ -393,7 +423,14 @@ class SphinxBuilder {
 		} else {
 			$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/' . $sphinxVersion . '/';
 			$sphinxBuilder = $sphinxPath . 'bin/sphinx-build';
+
+			if (TYPO3_OS === 'WIN') {
+				$sphinxBuilder .= '.exe';
+			}
 		}
+
+		// Compatibility with Windows platform
+		$sphinxBuilder = str_replace('/', DIRECTORY_SEPARATOR, $sphinxBuilder);
 
 		if (empty($sphinxVersion)) {
 			throw new \RuntimeException('Sphinx is not configured. Please use Extension Manager.', 1366210198);
@@ -401,14 +438,18 @@ class SphinxBuilder {
 			throw new \RuntimeException('Sphinx ' . $sphinxVersion . ' cannot be executed.', 1366280021);
 		}
 
-		$pythonPath = $sphinxPath . 'lib' . DIRECTORY_SEPARATOR . 'python';
+		$pythonPath = $sphinxPath . 'lib/python';
+
+		// Compatibility with Windows platform
+		$pythonPath = str_replace('/', DIRECTORY_SEPARATOR, $pythonPath);
+
 		$exports = array(
-			'export PYTHONPATH=' . escapeshellarg($pythonPath)
+			\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonPath)
 		);
 		if (self::$htmlConsole) {
-			$exports[] = 'export COLORTERM=1';
+			$exports[] = \Causal\Sphinx\Utility\GeneralUtility::getExportCommand('COLORTERM', '1');
 		}
-		$cmd = implode(' && ', $exports) . ' && ' . $sphinxBuilder;
+		$cmd = implode(' && ', $exports) . ' && ' . escapeshellarg($sphinxBuilder);
 		return $cmd;
 	}
 
@@ -418,7 +459,7 @@ class SphinxBuilder {
 	 * @param string $output
 	 * @return string
 	 */
-	protected function colorize($output) {
+	protected static function colorize($output) {
 		# Shell colors
 		$ESC_SEQ     = '/[\x00-\x1F\x7F]\[';
 		$COL_BLACK   = $ESC_SEQ . '30(;01)?m/';
@@ -448,6 +489,43 @@ class SphinxBuilder {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Escape a string to be used as a shell argument
+	 *
+	 * @param string $arg
+	 * @return string
+	 */
+	protected static function safeEscapeshellarg($arg) {
+		if (!(TYPO3_OS === 'WIN' && strpos($arg, ' ') === FALSE)) {
+			$arg = escapeshellarg($arg);
+		}
+		return $arg;
+	}
+
+	/**
+	 * Wrapper function for TYPO3 exec function.
+	 *
+	 * @param string $command
+	 * @param NULL|array $output
+	 * @param integer $returnValue
+	 * @return NULL|array
+	 */
+	protected static function safeExec($command, &$output = NULL, &$returnValue = 0) {
+		if (TYPO3_OS === 'WIN' && strpos($command, ' && ') !== FALSE) {
+			// Multiple commands are not supported on Windows
+			// We use an intermediate batch file instead
+			$batchFilename = PATH_site . 'typo3temp/tx_' . self::$extKey . '/build-' . $GLOBALS['EXEC_TIME'] . '.bat';
+			$batchScript = '@ECHO OFF' . CR . LF . str_replace(' && ', CR . LF, $command);
+
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($batchFilename, $batchScript);
+			\TYPO3\CMS\Core\Utility\CommandUtility::exec($batchFilename, $output, $returnValue);
+
+			@unlink($batchFilename);
+		} else {
+			\TYPO3\CMS\Core\Utility\CommandUtility::exec($command, $output, $returnValue);
+		}
 	}
 
 }

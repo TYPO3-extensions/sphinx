@@ -315,7 +315,7 @@ HTML;
 	 * @param string $target
 	 * @return void
 	 */
-	protected static function recursiveCopy($source, $target) {
+	public static function recursiveCopy($source, $target) {
 		$target = rtrim($target, '/');
 		$iterator = new \RecursiveIteratorIterator(
 			new \RecursiveDirectoryIterator($source,
@@ -329,6 +329,27 @@ HTML;
 				copy($item, $target . '/' . $iterator->getSubPathName());
 			}
 		}
+	}
+
+	/**
+	 * Returns a command to export a value to the environment variables.
+	 *
+	 * Important: if $variable is found in $value (with the '$' prefix as
+	 *            needed by Unix-like OS), it will be rewritten for the
+	 *            current OS.
+	 *
+	 * @param string $variable
+	 * @param string $value
+	 * @return string
+	 */
+	public static function getExportCommand($variable, $value) {
+		if (TYPO3_OS === 'WIN') {
+			$pattern = 'SET %s=%s';
+			$value = preg_replace('/\$' . $variable . '([^A-Za-z]|$)/', '%' . $variable . '%', $value);
+		} else {
+			$pattern = 'export %s=%s';
+		}
+		return sprintf($pattern, $variable, $value);
 	}
 
 }

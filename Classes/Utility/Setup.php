@@ -58,6 +58,9 @@ class Setup {
 		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('unzip')) {
 			$errors[] = 'Unzip cannot be executed.';
 		}
+		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
+			$errors[] = 'Tar cannot be executed.';
+		}
 
 		$directories = array(
 			'Resources/Private/sphinx/',
@@ -119,7 +122,7 @@ class Setup {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
 
 			// Unzip the Sphinx archive
-			$unzip = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('unzip');
+			$unzip = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('unzip'));
 			$cmd = $unzip . ' ' . escapeshellarg($zipFilename) . ' -d ' . escapeshellarg($targetPath) . ' 2>&1';
 			self::exec($cmd, $_, $ret);
 			if ($ret === 0) {
@@ -127,10 +130,9 @@ class Setup {
 				// When unzipping the sources, content is located under a directory "birkenfeld-sphinx-<hash>"
 				$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($directories[0], 'birkenfeld-sphinx-')) {
-					$fromDirectory = escapeshellarg($targetPath . '/' . $directories[0]);
-					$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/') . ' 2>&1';
-					self::exec($cmd);
-					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath . '/' . $directories[0], TRUE);
+					$fromDirectory = $targetPath . '/' . $directories[0];
+					\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
 
 					// Remove zip file as we don't need it anymore
 					@unlink($zipFilename);
@@ -181,7 +183,7 @@ class Setup {
 		$setupFile = $sphinxSourcesPath . $version . '/setup.py';
 
 		if (is_file($setupFile)) {
-			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
+			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 				$python . ' setup.py clean 2>&1 && ' .
 				$python . ' setup.py build 2>&1';
@@ -190,12 +192,17 @@ class Setup {
 			if ($ret === 0) {
 				$pythonHome = $sphinxPath . $version;
 				$pythonLib = $pythonHome . '/lib/python';
+
+				// Compatibility with Windows platform
+				$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
+				$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
+
 				self::$log[] = '[INFO] Recreating directory ' . $pythonHome;
 				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($pythonHome, TRUE);
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pythonLib . '/');
 
 				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-					'export PYTHONPATH=' . escapeshellarg($pythonLib) . ' && ' .
+					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
 					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 				$out = array();
 				self::exec($cmd, $out, $ret);
@@ -219,18 +226,40 @@ class Setup {
 				'sphinx-build',
 				'sphinx-quickstart',
 			);
-			$pythonPath = escapeshellarg($sphinxPath . $version . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'python');
+			$pythonPath = $sphinxPath . $version . '/lib/python';
+
+			// Compatibility with Windows platform
+			$pythonPath = str_replace('/', DIRECTORY_SEPARATOR, $pythonPath);
+
 			foreach ($shortcutScripts as $shortcutScript) {
 				$shortcutFilename = $sphinxPath . 'bin' . DIRECTORY_SEPARATOR . $shortcutScript . '-' . $version;
 				$scriptFilename = $sphinxPath . $version . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . $shortcutScript;
 
-				$script = <<<EOT
+				// Compatibility with Windows platform
+				$scriptFilename = str_replace('/', DIRECTORY_SEPARATOR, $scriptFilename);
+
+				if (TYPO3_OS === 'WIN') {
+					$shortcutFilename .= '.bat';
+					$scriptFilename .= '.exe';
+
+					$script = <<<EOT
+@ECHO OFF
+SET PYTHONPATH=$pythonPath
+
+$scriptFilename %*
+EOT;
+					// Use CRLF under Windows
+					$script = str_replace(CR, LF, $script);
+					$script = str_replace(LF, CR . LF, $script);
+				} else {
+					$script = <<<EOT
 #!/bin/bash
 
 export PYTHONPATH=$pythonPath
 
 $scriptFilename "\$@"
 EOT;
+				}
 
 				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($shortcutFilename, $script);
 				chmod($shortcutFilename, 0755);
@@ -272,6 +301,11 @@ EOT;
 		);
 		foreach ($shortcutScripts as $shortcutScript) {
 			$shortcutFilename = $sphinxPath . 'bin' . DIRECTORY_SEPARATOR . $shortcutScript;
+
+			if (TYPO3_OS === 'WIN') {
+				$shortcutFilename .= '.bat';
+			}
+
 			if (is_file($shortcutFilename)) {
 				@unlink($shortcutFilename);
 			}
@@ -331,7 +365,7 @@ EOT;
 					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($targetPath . '/');
 
 					// Unpack TYPO3 ReST Tools archive
-					$tar = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar');
+					$tar = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar'));
 					$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath) . ' 2>&1';
 					$out = array();
 					self::exec($cmd, $out, $ret);
@@ -340,10 +374,9 @@ EOT;
 						// When unpacking the sources, content is located under a directory "RestTools-<shortcommit>"
 						$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
 						if ($directories[0] === 'RestTools-' . substr($commit, 0, 7)) {
-							$fromDirectory = escapeshellarg($targetPath . '/' . $directories[0]);
-							$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/') . ' 2>&1';
-							self::exec($cmd);
-							\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath . '/' . $directories[0], TRUE);
+							$fromDirectory = $targetPath . '/' . $directories[0];
+							\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
+							\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
 
 							// Remove tar.gz archive as we don't need it anymore
 							@unlink($archiveFilename);
@@ -381,6 +414,10 @@ EOT;
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
 
+		// Compatibility with Windows platform
+		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
+		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
+
 		if (!is_dir($pythonLib)) {
 			$success = FALSE;
 			$output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
@@ -389,7 +426,7 @@ EOT;
 
 		$setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
 		if (is_file($setupFile)) {
-			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
+			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 				$python . ' setup.py clean 2>&1 && ' .
 				$python . ' setup.py build 2>&1';
@@ -397,7 +434,7 @@ EOT;
 			self::exec($cmd, $out, $ret);
 			if ($ret === 0) {
 				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-					'export PYTHONPATH=' . escapeshellarg($pythonLib) . ' && ' .
+					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
 					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 				$out = array();
 				self::exec($cmd, $out, $ret);
@@ -459,7 +496,7 @@ EOT;
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
 
 				// Unpack PyYAML archive
-				$tar = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar');
+				$tar = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar'));
 				$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath) . ' 2>&1';
 				$out = array();
 				self::exec($cmd, $out, $ret);
@@ -468,10 +505,9 @@ EOT;
 					// When unpacking the sources, content is located under a directory "PyYAML-3.10"
 					$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
 					if ($directories[0] === 'PyYAML-3.10') {
-						$fromDirectory = escapeshellarg($targetPath . '/' . $directories[0]);
-						$cmd = 'mv ' . $fromDirectory . '/* ' . escapeshellarg($targetPath . '/');
-						self::exec($cmd);
-						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath . '/' . $directories[0], TRUE);
+						$fromDirectory = $targetPath . '/' . $directories[0];
+						\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
 
 						// Remove tar.gz archive as we don't need it anymore
 						@unlink($archiveFilename);
@@ -508,6 +544,10 @@ EOT;
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
 
+		// Compatibility with Windows platform
+		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
+		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
+
 		if (!is_dir($pythonLib)) {
 			$success = FALSE;
 			$output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
@@ -516,7 +556,7 @@ EOT;
 
 		$setupFile = $sphinxSourcesPath . 'PyYAML/setup.py';
 		if (is_file($setupFile)) {
-			$python = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python');
+			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 				$python . ' setup.py clean 2>&1 && ' .
 				$python . ' setup.py build 2>&1';
@@ -524,7 +564,7 @@ EOT;
 			self::exec($cmd, $out, $ret);
 			if ($ret === 0) {
 				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-					'export PYTHONPATH=' . escapeshellarg($pythonLib) . ' && ' .
+					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
 					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 				$out = array();
 				self::exec($cmd, $out, $ret);

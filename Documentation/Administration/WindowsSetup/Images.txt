@@ -1,0 +1,23 @@
+.. |msvcr100dll| image:: ../../Images/msvcr100dll.png
+	:alt: Missing Microsoft Visual C++ Redistributable
+
+.. |environment_check_windows| image:: ../../Images/environment_check_windows.png
+	:alt: Environment check under Windows
+
+.. |environment_variables| image:: ../../Images/environment_variables.png
+	:alt: Updating the environment variables
+
+.. |libarchive_setup| image:: ../../Images/libarchive_setup.png
+	:alt: Installing LibArchive library for reading and writing streaming archives
+
+.. |python_setup| image:: ../../Images/python_setup.png
+	:alt: Installing Python
+
+.. |system_variables| image:: ../../Images/system_variables.png
+	:alt: System environment variables
+
+.. |update_script| image:: ../../Images/update_script.png
+	:alt: Running the update script in Extension Manager
+
+.. |unzip_setup| image:: ../../Images/unzip_setup.png
+	:alt: Installing UnZip extraction utility
