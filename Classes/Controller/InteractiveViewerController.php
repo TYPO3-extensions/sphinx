@@ -40,6 +40,9 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	protected $sphinxReader;
 
 	/** @var string */
+	protected $reference;
+
+	/** @var string */
 	protected $extension;
 
 	///**
@@ -75,6 +78,7 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 */
 	protected function renderAction($reference, $document = '') {
 		$this->checkExtensionRestdoc();
+		$this->reference = $reference;
 
 		if (empty($document)) {
 			$document = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/reference-' . $reference);
@@ -182,7 +186,7 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		$link = $this->uriBuilder->uriFor(
 			'render',
 			array(
-				'extension' => $this->extension,
+				'reference' => $this->reference,
 				'document' => $document
 			)
 		);
