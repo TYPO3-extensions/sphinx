@@ -137,7 +137,14 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 		}
 
 		if ($layout === 'json' && substr($documentationUrl, -6) === '.fjson') {
-			$this->forward('render', 'InteractiveViewer', NULL, array('reference' => $reference));
+			if (substr($documentationUrl, 0, 3) === '../') {
+				$documentationFilename = PATH_site . substr($documentationUrl, 3);
+			} elseif ($documentationUrl{0} === '/') {
+				$documentationFilename = PATH_site . substr($documentationUrl, 1);
+			} else {
+				$documentationFilename = '';
+			}
+			$this->forward('render', 'InteractiveViewer', NULL, array('reference' => $reference, 'documentationFilename' => $documentationFilename));
 		}
 		$this->view->assign('documentationUrl', $documentationUrl);
 	}

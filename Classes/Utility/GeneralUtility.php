@@ -192,7 +192,7 @@ HTML;
 	 * @param string $extensionKey
 	 * @param string $format
 	 * @param boolean $force
-	 * @return string
+	 * @return string The documentation URL
 	 */
 	public static function generateDocumentation($extensionKey, $format = 'html', $force = FALSE) {
 		$documentationType = self::getDocumentationType($extensionKey);

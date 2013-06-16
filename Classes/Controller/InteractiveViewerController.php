@@ -73,10 +73,11 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 *
 	 * @param string $reference
 	 * @param string $document
+	 * @param string $documentationFilename
 	 * @return void
 	 * @throws \RuntimeException
 	 */
-	protected function renderAction($reference, $document = '') {
+	protected function renderAction($reference, $document = '', $documentationFilename = '') {
 		$this->checkExtensionRestdoc();
 		$this->reference = $reference;
 
@@ -90,6 +91,9 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 				$extensionKey = $identifier;
 				$this->extension = $extensionKey;
 				$path = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/json';
+				break;
+			case 'USER':
+				$path = dirname($documentationFilename);
 				break;
 			default:
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163248);

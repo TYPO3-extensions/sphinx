@@ -69,7 +69,7 @@ session.setWrapLimitRange(120, 120);
 
 var reference = "{reference}";
 var doc = "{document}";
-var redirectUrl = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{reference:reference, document:document})}";
+var redirectUrl = "{f:uri.action(action:'render', controller:'Documentation', arguments:{reference:reference, layout:'json'})}";
 
 function closeEditor() {
 	// TODO: check if file was modified

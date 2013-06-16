@@ -51,6 +51,21 @@ class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 				$extensionKey = $identifier;
 				$filename = $this->getFilename($extensionKey, $document);
 				break;
+			case 'USER':
+				$filename = NULL;
+				$this->signalSlotDispatcher->dispatch(
+					__CLASS__,
+					'retrieveRestFilename',
+					array(
+						'identifier' => $identifier,
+						'document' => $document,
+						'filename' => &$filename,
+					)
+				);
+				if ($filename === NULL) {
+					throw new \RuntimeException('No slot found to retrieve filename with identifier "' . $identifier . '"', 1371418203);
+				}
+				break;
 			default:
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163472);
 		}
@@ -79,6 +94,21 @@ class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 					$extensionKey = $identifier;
 					$filename = $this->getFilename($extensionKey, $document);
 					break;
+				case 'USER':
+					$filename = NULL;
+					$this->signalSlotDispatcher->dispatch(
+						__CLASS__,
+						'retrieveRestFilename',
+						array(
+							'identifier' => $identifier,
+							'document' => $document,
+							'filename' => &$filename,
+						)
+					);
+					if ($filename === NULL) {
+						throw new \RuntimeException('No slot found to retrieve filename with identifier "' . $identifier . '"', 1371418203);
+					}
+					break;
 				default:
 					throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163472);
 			}
@@ -89,9 +119,26 @@ class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 			}
 
 			if ($compile) {
+				$layout = 'json';
+				$force = TRUE;
+
 				switch ($type) {
 					case 'EXT':
-						$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, 'json', TRUE);
+						$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force);
+						break;
+					case 'USER':
+						$outputFilename = NULL;
+						$this->signalSlotDispatcher->dispatch(
+							'Causal\\Sphinx\\Controller\\DocumentationController',
+							'renderUserDocumentation',
+							array(
+								'identifier' => $identifier,
+								'layout' => $layout,
+								'force' => $force,
+								'documentationUrl' => &$outputFilename,
+							)
+						);
+						break;
 				}
 				if (substr($outputFilename, -4) === '.log') {
 					throw new \RuntimeException('Could not compile documentation', 1370011537);

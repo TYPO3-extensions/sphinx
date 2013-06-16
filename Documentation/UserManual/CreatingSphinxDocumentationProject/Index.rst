@@ -7,6 +7,8 @@
 .. include:: Images.txt
 
 
+.. _kickstart_sphinx_project:
+
 Creating a Sphinx Documentation Project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
