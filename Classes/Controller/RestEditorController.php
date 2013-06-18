@@ -37,6 +37,22 @@ namespace Causal\Sphinx\Controller;
 class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
+	 * Needed in TYPO3 6.0
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 */
+	protected $signalSlotDispatcher;
+
+	/**
+	 * Injects the signal slot dispatcher
+	 * Needed in TYPO3 6.0
+	 *
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+	 */
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
+		$this->signalSlotDispatcher = $signalSlotDispatcher;
+	}
+
+	/**
 	 * Edit action.
 	 *
 	 * @param string $reference
