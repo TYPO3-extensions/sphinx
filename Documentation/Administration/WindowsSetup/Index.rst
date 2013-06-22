@@ -53,7 +53,9 @@ Following sections describe how to install:
 	.. index::
 		single: ThreadStackSize
 
-	When installing WampServer, the default ThreadStackSize is only 1 MB, which is not enough for TYPO3 Extension Manager to be loaded. To fix that, open ``httpd.conf`` and append::
+	When installing WampServer, the default ThreadStackSize is only 1 MB, which is not enough for TYPO3 Extension Manager to be loaded. To fix that, open ``httpd.conf`` and append:
+
+	.. code-block:: apacheconf
 
 		<IfModule mpm_winnt_module>
 		    ThreadStackSize 8388608
@@ -117,7 +119,9 @@ Installing Tar
 	.. index::
 		single: Error Message; Cannot fork: Function not implemented
 
-	A quick search for ``tar`` for Windows leads to GNU Tar on http://gnuwin32.sourceforge.net/packages/gtar.htm. However this package will be of no use since it cannot handle ``tar.gz`` files. Instead, it will crash with::
+	A quick search for ``tar`` for Windows leads to GNU Tar on http://gnuwin32.sourceforge.net/packages/gtar.htm. However this package will be of no use since it cannot handle ``tar.gz`` files. Instead, it will crash with:
+
+	.. code-block:: bat
 
 		C:\> Cannot fork: Function not implemented
 		C:\> Error is not recoverable: exiting now
@@ -136,7 +140,9 @@ Please go to http://gnuwin32.sourceforge.net/packages/libarchive.htm (LibArchive
 .. important::
 	By default the ``bsdtar`` extraction utility is stored under ``C:\Program Files (x86)\GnuWin32\bin``, just as ``unzip``; it should thus be automatically detected as you already registered this path into the ``%PATH%`` environment variable. If needed, please register an alternate path as described previously.
 
-	In spite of that, extension sphinx seeks for command ``tar`` and not ``bsdtar`` As such, you should either copy ``bsdtar.exe`` and rename it as ``tar.exe`` or, better, create a symbolic link to it. Do do that, open a command (CMD) prompt *as administrator*::
+	In spite of that, extension sphinx seeks for command ``tar`` and not ``bsdtar`` As such, you should either copy ``bsdtar.exe`` and rename it as ``tar.exe`` or, better, create a symbolic link to it. Do do that, open a command (CMD) prompt *as administrator*:
+
+	.. code-block:: bat
 
 		C:\Windows\system32> cd "\Program Files (x86)\GnuWin32\bin"
 

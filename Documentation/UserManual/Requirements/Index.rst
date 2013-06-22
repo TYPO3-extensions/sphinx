@@ -20,14 +20,18 @@ This extension requires the Python interpreter to be available on your web serve
 .. important::
 	If you plan to build PDF, you will need additionally commands ``make`` and ``pdflatex``.
 
-The extension supports single directory projects::
+The extension supports single directory projects:
+
+.. code-block:: none
 
 	/path/to/project/
 	|-- _build
 	|-- conf.py
 	`-- ...
 
-separate source/build directory projects::
+separate source/build directory projects:
+
+.. code-block:: none
 
 	/path/to/project/
 	|-- build
@@ -35,7 +39,9 @@ separate source/build directory projects::
 	    |-- conf.py
 	    `-- ...
 
-and TYPO3 documentation directory structure::
+and TYPO3 documentation directory structure:
+
+.. code-block:: none
 
 	/path/to/project/
 	|-- ...
