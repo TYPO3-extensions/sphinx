@@ -1,0 +1,9 @@
+.. |LaTeX_logo| image:: ../../Images/LaTeX_logo.png
+	:alt: LaTeX
+	:height: 1.2em
+
+.. |miktex_setup| image:: ../../Images/miktex_setup.png
+	:alt: Installing MiKTeX
+
+.. |miktex_onthefly| image:: ../../Images/miktex_onthefly.png
+	:alt: Default page format and installing missing packages on the fly

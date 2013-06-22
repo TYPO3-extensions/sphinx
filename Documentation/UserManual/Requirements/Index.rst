@@ -18,7 +18,7 @@ This extension requires the Python interpreter to be available on your web serve
 	Please visit http://wiki.typo3.org/ReST for further information on reStructuredText.
 
 .. important::
-	If you plan to build PDF, you will need additionally commands ``make`` and ``pdflatex``.
+	If you plan to build PDF, you will need additionally commands ``make`` and ``pdflatex``. Please read chapter :ref:`rendering_pdf` for instructions.
 
 The extension supports single directory projects:
 

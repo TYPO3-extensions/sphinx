@@ -275,10 +275,10 @@ class SphinxBuilder {
 	 * @throws \RuntimeException if build process failed
 	 */
 	public static function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
-		$make = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make'));
+		$make = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make');
 		$pdflatex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex');
 
-		if (empty($make)) {
+		if (TYPO3_OS !== 'WIN' && empty($make)) {
 			throw new \RuntimeException('Command `make\' was not found.', 1367239044);
 		}
 		if (empty($pdflatex)) {
@@ -305,10 +305,30 @@ class SphinxBuilder {
 		$outputLaTeX = self::buildLatex($basePath, $sourceDirectory, $buildDirectory, $conf);
 
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
-		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . dirname($pdflatex) . '"') . ' && ' .
-			$make . ' -C ' . self::safeEscapeshellarg($buildDirectory . '/latex') . ' all-pdf' .
-			' 2>&1';	// redirect errors to STDOUT
+		if (!empty($make)) {
+			$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
+				\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . dirname($pdflatex) . '"') . ' && ' .
+				$make . ' -C ' . self::safeEscapeshellarg($buildDirectory . '/latex') . ' all-pdf' .
+				' 2>&1';	// redirect errors to STDOUT
+		} else {
+			// We are on Windows and "make" is not available,
+			// we will thus simulate it
+			$latexPath = $basePath . $buildDirectory . DIRECTORY_SEPARATOR . 'latex' . DIRECTORY_SEPARATOR;
+			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($latexPath, 'tex');
+			$mainFile = current($files);
+			$basename = substr($mainFile, 0, -4);	// Remove .tex
+			$makeindex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('makeindex');
+
+			$cmd = 'cd ' . escapeshellarg($latexPath) . ' && ' .
+				\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . dirname($pdflatex) . '"') . ' && ' .
+				escapeshellarg($pdflatex) . ' ' . $mainFile . ' && ' .
+				escapeshellarg($pdflatex) . ' ' . $mainFile . ' && ' .
+				escapeshellarg($pdflatex) . ' ' . $mainFile . ' && ' .
+				escapeshellarg($makeindex) . ' -s python.ist ' . $basename . '.idx' . ' && ' .
+				escapeshellarg($pdflatex) . ' ' . $mainFile . ' && ' .
+				escapeshellarg($pdflatex) . ' ' . $mainFile .
+				' 2>&1';	// redirect errors to STDOUT
+		}
 
 		$output = array('Running LaTeX files through pdflatex...');
 		self::safeExec($cmd, $output, $ret);
@@ -317,7 +337,7 @@ class SphinxBuilder {
 			$output = self::colorize($output);
 		}
 		// Prepend previous command output
-		$output = $outputLaTeX . $output;
+		$output = $outputLaTeX . LF . $output;
 		if ($ret !== 0) {
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}

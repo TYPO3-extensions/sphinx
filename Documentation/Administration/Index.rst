@@ -20,6 +20,7 @@ This chapter describes how to manage the extension from a superuser point of vie
 
 	InstallingExtension/Index
 	UsingSphinxCommandLine/Index
+	RenderingPdf/Index
 
 .. toctree::
 	:hidden:
