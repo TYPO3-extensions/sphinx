@@ -424,6 +424,31 @@ EOT;
 			return $success;
 		}
 
+		// Patch RestTools to support rst2pdf. We do it here and not after downloading
+		// to let user build RestTools with Git repository as well
+		// @see http://forge.typo3.org/issues/49341
+		$globalSettingsFilename = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/src/t3sphinx/settings/GlobalSettings.yml';
+		if (is_file($globalSettingsFilename) && is_writable($globalSettingsFilename)) {
+			$globalSettings = file_get_contents($globalSettingsFilename);
+			$rst2pdfLibrary = 'rst2pdf.pdfbuilder';
+
+			if (strpos($globalSettings, '- ' . $rst2pdfLibrary) === FALSE) {
+				$globalSettingsLines = explode(LF, $globalSettings);
+				$buffer = array();
+				for ($i = 0; $i < count($globalSettingsLines); $i++) {
+					if (trim($globalSettingsLines[$i]) === 'extensions:') {
+						while (!empty($globalSettingsLines[$i])) {
+							$buffer[] = $globalSettingsLines[$i];
+							$i++;
+						};
+						$buffer[] = '  - ' . $rst2pdfLibrary;
+					}
+					$buffer[] = $globalSettingsLines[$i];
+				}
+				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
+			}
+		}
+
 		$setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
 		if (is_file($setupFile)) {
 			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
@@ -577,6 +602,266 @@ EOT;
 			} else {
 				$success = FALSE;
 				$output[] = '[ERROR] Could not build PyYAML:' . LF . LF . implode($out, LF);
+			}
+		} else {
+			$success = FALSE;
+			$output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Returns TRUE if the source files of Python Imaging Library are available locally.
+	 *
+	 * @return boolean
+	 */
+	public static function hasPIL() {
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$setupFile = $sphinxSourcesPath . 'Imaging/setup.py';
+		return is_file($setupFile);
+	}
+
+	/**
+	 * Downloads the source files of Python Imaging Library.
+	 *
+	 * @param NULL|array $output
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 * @throws \Exception
+	 * @see https://pypi.python.org/pypi/PIL
+	 */
+	public static function downloadPIL(array &$output = NULL) {
+		$success = TRUE;
+		$tempPath = PATH_site . '/typo3temp/';
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+
+		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
+			$success = FALSE;
+			$output[] = '[WARNING] Could not find command tar. Python Imaging Library was not installed.';
+		} else {
+			$url = 'http://effbot.org/media/downloads/Imaging-1.1.7.tar.gz';
+			$archiveFilename = $tempPath . 'Imaging-1.1.7.tar.gz';
+			$archiveContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
+			if ($archiveContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+				$output[] = '[INFO] Python Imaging Library 1.1.7 has been downloaded.';
+
+				$targetPath = $sphinxSourcesPath . 'Imaging';
+				self::$log[] = '[INFO] Recreating directory ' . $targetPath;
+				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
+
+				// Unpack rst2pdf archive
+				$tar = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar'));
+				$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath) . ' 2>&1';
+				$out = array();
+				self::exec($cmd, $out, $ret);
+				if ($ret === 0) {
+					$output[] = '[INFO] Python Imaging Library has been unpacked.';
+					// When unpacking the sources, content is located under a directory "Imaging-1.1.7"
+					$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
+					if ($directories[0] === 'Imaging-1.1.7') {
+						$fromDirectory = $targetPath . '/' . $directories[0];
+						\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
+
+						// Remove tar.gz archive as we don't need it anymore
+						@unlink($archiveFilename);
+					} else {
+						$success = FALSE;
+						$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
+					}
+				} else {
+					$success = FALSE;
+					$output[] = '[ERROR] Could not extract Python Imaging Library:' . LF . LF . implode($out, LF);
+				}
+			} else {
+				$success = FALSE;
+				$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
+			}
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Builds and installs Python Imaging Library locally.
+	 *
+	 * @param string $sphinxVersion The Sphinx version to build Python Imaging Library for
+	 * @param NULL|array $output
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 * @throws \Exception
+	 */
+	public static function buildPIL($sphinxVersion, array &$output = NULL) {
+		$success = TRUE;
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+
+		$pythonHome = $sphinxPath . $sphinxVersion;
+		$pythonLib = $pythonHome . '/lib/python';
+
+		// Compatibility with Windows platform
+		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
+		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
+
+		if (!is_dir($pythonLib)) {
+			$success = FALSE;
+			$output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
+			return $success;
+		}
+
+		$setupFile = $sphinxSourcesPath . 'Imaging/setup.py';
+		if (is_file($setupFile)) {
+			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
+			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+				$python . ' setup.py clean 2>&1 && ' .
+				$python . ' setup.py build 2>&1';
+			$out = array();
+			self::exec($cmd, $out, $ret);
+			if ($ret === 0) {
+				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
+					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
+				$out = array();
+				self::exec($cmd, $out, $ret);
+				if ($ret === 0) {
+					$output[] = '[INFO] Python Imaging Library has been successfully installed.';
+				} else {
+					$success = FALSE;
+					$output[] = '[ERROR] Could not install Python Imaging Library:' . LF . LF . implode($out, LF);
+				}
+			} else {
+				$success = FALSE;
+				$output[] = '[ERROR] Could not build Python Imaging Library:' . LF . LF . implode($out, LF);
+			}
+		} else {
+			$success = FALSE;
+			$output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Returns TRUE if the source files of rst2pdf are available locally.
+	 *
+	 * @return boolean
+	 */
+	public static function hasRst2Pdf() {
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$setupFile = $sphinxSourcesPath . 'rst2pdf/setup.py';
+		return is_file($setupFile);
+	}
+
+	/**
+	 * Downloads the source files of rst2pdf.
+	 *
+	 * @param NULL|array $output
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 * @throws \Exception
+	 * @see http://rst2pdf.ralsina.com.ar/
+	 */
+	public static function downloadRst2Pdf(array &$output = NULL) {
+		$success = TRUE;
+		$tempPath = PATH_site . '/typo3temp/';
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+
+		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
+			$success = FALSE;
+			$output[] = '[WARNING] Could not find command tar. rst2pdf was not installed.';
+		} else {
+			$url = 'http://rst2pdf.googlecode.com/files/rst2pdf-0.93.tar.gz';
+			$archiveFilename = $tempPath . 'rst2pdf-0.93.tar.gz';
+			$archiveContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
+			if ($archiveContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+				$output[] = '[INFO] rst2pdf 0.93 has been downloaded.';
+
+				$targetPath = $sphinxSourcesPath . 'rst2pdf';
+				self::$log[] = '[INFO] Recreating directory ' . $targetPath;
+				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
+
+				// Unpack rst2pdf archive
+				$tar = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar'));
+				$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath) . ' 2>&1';
+				$out = array();
+				self::exec($cmd, $out, $ret);
+				if ($ret === 0) {
+					$output[] = '[INFO] rst2pdf has been unpacked.';
+					// When unpacking the sources, content is located under a directory "rst2pdf-0.93"
+					$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
+					if ($directories[0] === 'rst2pdf-0.93') {
+						$fromDirectory = $targetPath . '/' . $directories[0];
+						\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
+
+						// Remove tar.gz archive as we don't need it anymore
+						@unlink($archiveFilename);
+					} else {
+						$success = FALSE;
+						$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
+					}
+				} else {
+					$success = FALSE;
+					$output[] = '[ERROR] Could not extract rst2pdf:' . LF . LF . implode($out, LF);
+				}
+			} else {
+				$success = FALSE;
+				$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
+			}
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Builds and installs rst2pdf locally.
+	 *
+	 * @param string $sphinxVersion The Sphinx version to build rst2pdf for
+	 * @param NULL|array $output
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 * @throws \Exception
+	 */
+	public static function buildRst2Pdf($sphinxVersion, array &$output = NULL) {
+		$success = TRUE;
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+
+		$pythonHome = $sphinxPath . $sphinxVersion;
+		$pythonLib = $pythonHome . '/lib/python';
+
+		// Compatibility with Windows platform
+		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
+		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
+
+		if (!is_dir($pythonLib)) {
+			$success = FALSE;
+			$output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
+			return $success;
+		}
+
+		$setupFile = $sphinxSourcesPath . 'rst2pdf/setup.py';
+		if (is_file($setupFile)) {
+			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
+			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+				$python . ' setup.py clean 2>&1 && ' .
+				$python . ' setup.py build 2>&1';
+			$out = array();
+			self::exec($cmd, $out, $ret);
+			if ($ret === 0) {
+				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
+					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
+				$out = array();
+				self::exec($cmd, $out, $ret);
+				if ($ret === 0) {
+					$output[] = '[INFO] rst2pdf has been successfully installed.';
+				} else {
+					$success = FALSE;
+					$output[] = '[ERROR] Could not install rst2pdf:' . LF . LF . implode($out, LF);
+				}
+			} else {
+				$success = FALSE;
+				$output[] = '[ERROR] Could not build rst2pdf:' . LF . LF . implode($out, LF);
 			}
 		} else {
 			$success = FALSE;

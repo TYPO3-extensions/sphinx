@@ -10,4 +10,4 @@
 	:alt: Importing Sphinx to the local environment
 
 .. |sphinx_version| image:: ../../Images/sphinx_version.png
-	:alt: Configuring the version of Sphinx to be used by default
+	:alt: Configuring the version of Sphinx to be used by default and the PDF builder

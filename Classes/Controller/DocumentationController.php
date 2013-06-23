@@ -97,7 +97,17 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 			'html' => $this->translate('documentationLayout_static'),
 			'json' => $this->translate('documentationLayout_interactive'),
 		);
-		if (\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '') {
+
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->request->getControllerExtensionKey()]);
+		switch ($configuration['pdf_builder']) {
+			case 'pdflatex':
+				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
+				break;
+			case 'rst2pdf':
+				$renderPdf = TRUE;
+				break;
+		}
+		if ($renderPdf) {
 			$layouts['pdf'] = $this->translate('documentationLayout_pdf');
 		}
 		$this->view->assign('layouts', $layouts);

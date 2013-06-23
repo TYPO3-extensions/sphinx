@@ -247,6 +247,15 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (\Causal\Sphinx\Utility\SphinxBuilder::isSystemVersion()) {
 			$sphinxVersion .= ' (system)';
 		}
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+		switch ($configuration['pdf_builder']) {
+			case 'pdflatex':
+				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
+				break;
+			case 'rst2pdf':
+				$renderPdf = TRUE;
+				break;
+		}
 		$values = array(
 			'project' => $this->project,
 			'build' => array(
@@ -254,7 +263,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				'baseDirectory' => substr($this->project['basePath'], strlen(PATH_site)),
 			),
 			'disableCompile' => empty($sphinxVersion),
-			'hasPdflatex' => \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '',
+			'hasPdflatex' => $renderPdf,
 			'consoleOutput' => $output,
 		);
 

@@ -265,7 +265,7 @@ class SphinxBuilder {
 	}
 
 	/**
-	 * Builds a Sphinx project as PDF using pdflatex on a LaTeX project.
+	 * Builds a Sphinx project as PDF.
 	 *
 	 * @param string $basePath
 	 * @param string $sourceDirectory
@@ -275,6 +275,32 @@ class SphinxBuilder {
 	 * @throws \RuntimeException if build process failed
 	 */
 	public static function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+
+		switch ($configuration['pdf_builder']) {
+			case 'pdflatex':
+				$output = self::buildPdfWithLaTeX($basePath, $sourceDirectory, $buildDirectory, $conf);
+				break;
+			case 'rst2pdf':
+			default:
+				$output = self::buildPdfWithRst2Pdf($basePath, $sourceDirectory, $buildDirectory, $conf);
+				break;
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Builds a Sphinx project as PDF using pdflatex on a LaTeX project.
+	 *
+	 * @param string $basePath
+	 * @param string $sourceDirectory
+	 * @param string $buildDirectory
+	 * @param string $conf
+	 * @return string
+	 * @throws \RuntimeException if build process failed
+	 */
+	protected static function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$make = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make');
 		$pdflatex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex');
 
@@ -352,7 +378,72 @@ class SphinxBuilder {
 				$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
 			}
 		}
-		$output .= 'pdflatex finished; the PDF files are in ' . $link . '.' . LF;
+		$output .= 'pdflatex finished; the PDF file is in ' . $link . '.' . LF;
+
+		return $output;
+	}
+
+	/**
+	 * Builds a Sphinx project as PDF using rst2pdf.
+	 *
+	 * @param string $basePath
+	 * @param string $sourceDirectory
+	 * @param string $buildDirectory
+	 * @param string $conf
+	 * @return string
+	 * @throws \RuntimeException if build process failed
+	 */
+	protected static function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+		$sphinxBuilder = self::getSphinxBuilder();
+
+		if (empty($conf)) {
+			$conf = './conf.py';
+		}
+		$basePath = rtrim($basePath, '/') . '/';
+		$sourceDirectory = rtrim($sourceDirectory);
+		$buildDirectory = rtrim($buildDirectory);
+
+		// Compatibility with Windows platform
+		$conf = str_replace('/', DIRECTORY_SEPARATOR, $conf);
+		$basePath = str_replace('/', DIRECTORY_SEPARATOR, $basePath);
+		$sourceDirectory = str_replace('/', DIRECTORY_SEPARATOR, $sourceDirectory);
+		$buildDirectory = str_replace('/', DIRECTORY_SEPARATOR, $buildDirectory);
+
+		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
+			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1372003205);
+		}
+
+		$referencesPath = $buildDirectory . DIRECTORY_SEPARATOR . 'doctrees';
+		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'pdf';
+		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
+			$sphinxBuilder . ' -b pdf' .					// output format
+			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
+			' ' . self::safeEscapeshellarg($sourceDirectory) .		// source directory
+			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
+			' 2>&1';										// redirect errors to STDOUT
+
+		$output = array();
+		self::safeExec($cmd, $output, $ret);
+		$output = implode(LF, $output);
+		if (self::$htmlConsole) {
+			$output = self::colorize($output);
+		}
+		if ($ret !== 0 || preg_match('/\[ERROR\] pdfbuilder\.py/', $output)) {
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1372003276);
+		}
+
+		$output .= LF;
+		$link = $buildPath;
+		if (self::$htmlConsole) {
+			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
+			if ($properties['project']) {
+				$project = str_replace(' ', '', $properties['project']);
+				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/pdf/' . $project . '.pdf';
+				$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
+			}
+		}
+		$output .= 'rst2pdf finished; the PDF file is in ' . $link . '.' . LF;
 
 		return $output;
 	}

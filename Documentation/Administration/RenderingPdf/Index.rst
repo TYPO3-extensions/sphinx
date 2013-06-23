@@ -8,8 +8,8 @@
 
 .. _rendering_pdf:
 
-Rendering PDF
-^^^^^^^^^^^^^
+Rendering PDF with LaTeX
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Sphinx is using *builders* to produce output. The builder’s "name" must be given to the ``-b`` command-line option of ``sphinx-build`` to select a builder. For instance, when compiling as HTML, this extension invokes:
 
@@ -17,11 +17,9 @@ Sphinx is using *builders* to produce output. The builder’s "name" must be giv
 
 	$ sphinx-build -b html -c /path/to/conf.py ...
 
-Sphinx is able to render PDF using either LaTeX as intermediate format or ``rst2pdf`` which is available off http://rst2pdf.ralsina.com.ar/.
+Sphinx is able to render PDF using either LaTeX as intermediate format or ``rst2pdf`` which is available off http://rst2pdf.ralsina.com.ar/ and is automatically installed and configured. PDF output with ``rst2pdf`` is by far not as good as when using LaTeX but it has the real advantage of not requiring you to install a full LaTeX stack on your machine.
 
 This chapter describes how to install LaTeX as the PDF output is much prettier and professional. One drawback of LaTeX is that it can only be installed globally on your system; this is the reason why this extension does not provide a wizard in Extension Manager to install and configure it automatically for you.
-
-If you happen to successfully install and configure ``rst2pdf`` locally for your own account, please drop me a note so that I can extend this manual and potentially automate the process for other users.
 
 The builder name for LaTeX rendering is ``latex``:
 

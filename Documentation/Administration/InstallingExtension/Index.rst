@@ -55,25 +55,36 @@ Everything should work out-of-the-box. Possible problems will be reported as Fla
 
 5. Install PyYAML library (http://pyyaml.org/wiki/PyYAML), needed for building TYPO3 documentation
 
+6. Install Python Imaging Library (https://pypi.python.org/pypi/PIL), needed for supporting common image types with rst2pdf
+
+7. Install rst2pdf (http://rst2pdf.ralsina.com.ar/), as a simple way of building PDF
+
 The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if you want to use the `git repository of the TYPO3 ReST tools`_ instead of a snapshot.
 
-The "download" button fetches the corresponding sources of Sphinx, the TYPO3-related commands and the PyYAML library if they are not available locally.
+The "download" button fetches the corresponding sources of Sphinx, the TYPO3-related commands, the PyYAML library and rst2pdf if they are not available locally.
 
-The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands and PyYAML.
+The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands, PyYAML, Python Imaging Library and rst2pdf.
 
 Finally, the "remove" button removes both the sources and the corresponding version of the Sphinx environment.
 
 .. important::
-	This button *WILL NOT* remove sources of the TYPO3-related commands and the PyYAML library.
+	This button *WILL NOT* remove sources of the TYPO3-related commands, the PyYAML library, the Python Imaging Library or rst2pdf.
 
 
-3) Choose the version of Sphinx to use
-""""""""""""""""""""""""""""""""""""""
+3) Choose the version of Sphinx to use and how to render PDF
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 In the Extension Manager, configure this extension as usual:
 
 |em_configure|
 
-And then choose which version of Sphinx should be used:
+.. index::
+	single: PDF; LaTeX
+	single: PDF; rst2pdf
+
+And then choose which version of Sphinx should be used and the PDF builder you prefer (either rst2pdf or LaTeX):
 
 |sphinx_version|
+
+.. tip::
+	rst2pdf is available by default with this extension. However, if you want better output, you should consider using LaTeX instead. Please read chapter :ref:`rendering_pdf` for instructions.

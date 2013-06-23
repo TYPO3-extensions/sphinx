@@ -275,7 +275,15 @@ HTML;
 			self::recursiveCopy($basePath . '/_make/build/' . $documentationFormat, $outputDirectory);
 		} else {
 			// Only copy PDF output
-			copy($basePath . '/_make/build/latex/' . $extensionKey . '.pdf', $outputDirectory . '/' . $extensionKey . '.pdf');
+			$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+			switch ($configuration['pdf_builder']) {
+				case 'pdflatex':
+					copy($basePath . '/_make/build/latex/' . $extensionKey . '.pdf', $outputDirectory . '/' . $extensionKey . '.pdf');
+					break;
+				case 'rst2pdf':
+					copy($basePath . '/_make/build/pdf/' . $extensionKey . '.pdf', $outputDirectory . '/' . $extensionKey . '.pdf');
+					break;
+			}
 		}
 
 		$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
