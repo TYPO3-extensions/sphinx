@@ -53,7 +53,7 @@ Otherwise:
 
 #. The Sphinx project is built as HTML, JSON or PDF, according to selected layout
 
-#. HTML, JSON or PDF output is copied to ``typo3conf/Documentation/<extension-key>/<format>/``
+#. HTML, JSON or PDF output is copied to ``typo3conf/documentation/<extension-key>/<language>/<format>/`` (currently ``language`` is always "default" for English)
 
 #. The viewer loads the main document (e.g., ``Index.html`` with HTML output)
 
@@ -70,8 +70,8 @@ Otherwise:
 
 According to the selected layout, the main document is:
 
-- **Static:** Main document of HTML output is ``typo3conf/Documentation/<extension-key>/html/Index.html``
+- **Static:** Main document of HTML output is ``typo3conf/Documentation/<extension-key>/default/html/Index.html``
 
-- **Interactive:** Main document of JSON output is ``typo3conf/Documentation/<extension-key>/json/Index.fjson``
+- **Interactive:** Main document of JSON output is ``typo3conf/Documentation/<extension-key>/default/json/Index.fjson``
 
-- **PDF:** Main document of PDF output is ``typo3conf/Documentation/<extension-key>/pdf/<extension-key>.pdf``
+- **PDF:** Main document of PDF output is ``typo3conf/Documentation/<extension-key>/default/pdf/<extension-key>.pdf``

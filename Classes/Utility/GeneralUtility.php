@@ -156,7 +156,7 @@ HTML;
 			throw new \RuntimeException('Extension restdoc is not loaded', 1370809705);
 		}
 
-		$localFile = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/json/objects.inv';
+		$localFile = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/default/json/objects.inv';
 		$cacheFile = PATH_site . 'typo3temp/tx_' . self::$extKey . '/' . $extensionKey . '/_make/build/json/objects.inv';
 		$remoteUrl = 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/latest/objects.inv';
 		$path = '';
@@ -219,7 +219,7 @@ HTML;
 				break;
 		}
 
-		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/' . $documentationFormat;
+		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/default/' . $documentationFormat;
 		if (!$force && is_file($outputDirectory . '/' . $masterDocument)) {
 			// Do not render the documentation again
 			$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
