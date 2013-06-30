@@ -108,8 +108,11 @@ class Setup {
 	 */
 	public static function downloadSphinxSources($version, $url, array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = PATH_site . '/typo3temp/';
+		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, PATH_site . 'typo3temp/');
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+
+		// Compatibility with Windows platform
+		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
 		$zipFilename = $tempPath . $version . '.zip';
 		self::$log[] = '[INFO] Fetching ' . $url;
@@ -117,6 +120,7 @@ class Setup {
 		if ($zipContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($zipFilename, $zipContent)) {
 			$output[] = '[INFO] Sphinx ' . $version . ' has been downloaded.';
 			$targetPath = $sphinxSourcesPath . $version;
+
 			self::$log[] = '[INFO] Recreating directory ' . $targetPath;
 			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
@@ -130,7 +134,7 @@ class Setup {
 				// When unzipping the sources, content is located under a directory "birkenfeld-sphinx-<hash>"
 				$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($directories[0], 'birkenfeld-sphinx-')) {
-					$fromDirectory = $targetPath . '/' . $directories[0];
+					$fromDirectory = $targetPath . DIRECTORY_SEPARATOR . $directories[0];
 					\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
 					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
 
@@ -139,6 +143,10 @@ class Setup {
 
 					// Patch Sphinx to let us get colored output
 					$sourceFilename = $targetPath . '/sphinx/util/console.py';
+
+					// Compatibility with Windows platform
+					$sourceFilename = str_replace('/', DIRECTORY_SEPARATOR, $sourceFilename);
+
 					if (file_exists($sourceFilename)) {
 						self::$log[] = '[INFO] Patching file ' . $sourceFilename;
 						$contents = file_get_contents($sourceFilename);
@@ -178,9 +186,13 @@ class Setup {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
+		// Compatibility with Windows platform
+		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
+		$sphinxPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxPath);
+
 		$pythonHome = NULL;
 		$pythonLib = NULL;
-		$setupFile = $sphinxSourcesPath . $version . '/setup.py';
+		$setupFile = $sphinxSourcesPath . $version . DIRECTORY_SEPARATOR . 'setup.py';
 
 		if (is_file($setupFile)) {
 			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
@@ -194,12 +206,11 @@ class Setup {
 				$pythonLib = $pythonHome . '/lib/python';
 
 				// Compatibility with Windows platform
-				$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
 				$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
 				self::$log[] = '[INFO] Recreating directory ' . $pythonHome;
 				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($pythonHome, TRUE);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pythonLib . '/');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pythonLib . DIRECTORY_SEPARATOR);
 
 				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
@@ -234,9 +245,6 @@ class Setup {
 			foreach ($shortcutScripts as $shortcutScript) {
 				$shortcutFilename = $sphinxPath . 'bin' . DIRECTORY_SEPARATOR . $shortcutScript . '-' . $version;
 				$scriptFilename = $sphinxPath . $version . DIRECTORY_SEPARATOR . 'bin' . DIRECTORY_SEPARATOR . $shortcutScript;
-
-				// Compatibility with Windows platform
-				$scriptFilename = str_replace('/', DIRECTORY_SEPARATOR, $scriptFilename);
 
 				if (TYPO3_OS === 'WIN') {
 					$shortcutFilename .= '.bat';
@@ -333,7 +341,7 @@ EOT;
 	 */
 	public static function downloadRestTools(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = PATH_site . '/typo3temp/';
+		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, PATH_site . 'typo3temp/');
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 
 		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
@@ -359,7 +367,8 @@ EOT;
 
 					// Target path is compatible with directory structure of complete git project
 					// allowing people to use the official git repository instead, if wanted
-					$targetPath = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3';
+					$targetPath = $sphinxSourcesPath . 'RestTools' . DIRECTORY_SEPARATOR . 'ExtendingSphinxForTYPO3';
+
 					self::$log[] = '[INFO] Recreating directory ' . $targetPath;
 					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
 					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($targetPath . '/');
@@ -374,7 +383,7 @@ EOT;
 						// When unpacking the sources, content is located under a directory "RestTools-<shortcommit>"
 						$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
 						if ($directories[0] === 'RestTools-' . substr($commit, 0, 7)) {
-							$fromDirectory = $targetPath . '/' . $directories[0];
+							$fromDirectory = $targetPath . DIRECTORY_SEPARATOR . $directories[0];
 							\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
 							\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
 
@@ -428,6 +437,10 @@ EOT;
 		// to let user build RestTools with Git repository as well
 		// @see http://forge.typo3.org/issues/49341
 		$globalSettingsFilename = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/src/t3sphinx/settings/GlobalSettings.yml';
+
+		// Compatibility with Windows platform
+		$globalSettingsFilename = str_replace('/', DIRECTORY_SEPARATOR, $globalSettingsFilename);
+
 		if (is_file($globalSettingsFilename) && is_writable($globalSettingsFilename)) {
 			$globalSettings = file_get_contents($globalSettingsFilename);
 			$rst2pdfLibrary = 'rst2pdf.pdfbuilder';
@@ -450,6 +463,10 @@ EOT;
 		}
 
 		$setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
+
+		// Compatibility with Windows platform
+		$setupFile = str_replace('/', DIRECTORY_SEPARATOR, $setupFile);
+
 		if (is_file($setupFile)) {
 			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
@@ -502,8 +519,12 @@ EOT;
 	 */
 	public static function downloadPyYaml(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = PATH_site . '/typo3temp/';
+		$tempPath = PATH_site . 'typo3temp/';
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+
+		// Compatibility with Windows platform
+		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, $tempPath);
+		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
 		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -516,6 +537,7 @@ EOT;
 				$output[] = '[INFO] PyYAML 3.10 has been downloaded.';
 
 				$targetPath = $sphinxSourcesPath . 'PyYAML';
+
 				self::$log[] = '[INFO] Recreating directory ' . $targetPath;
 				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
@@ -530,7 +552,7 @@ EOT;
 					// When unpacking the sources, content is located under a directory "PyYAML-3.10"
 					$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
 					if ($directories[0] === 'PyYAML-3.10') {
-						$fromDirectory = $targetPath . '/' . $directories[0];
+						$fromDirectory = $targetPath . DIRECTORY_SEPARATOR . $directories[0];
 						\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
 						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
 
@@ -570,6 +592,7 @@ EOT;
 		$pythonLib = $pythonHome . '/lib/python';
 
 		// Compatibility with Windows platform
+		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
 		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
@@ -579,7 +602,7 @@ EOT;
 			return $success;
 		}
 
-		$setupFile = $sphinxSourcesPath . 'PyYAML/setup.py';
+		$setupFile = $sphinxSourcesPath . 'PyYAML' . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
 			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
@@ -632,8 +655,12 @@ EOT;
 	 */
 	public static function downloadPIL(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = PATH_site . '/typo3temp/';
+		$tempPath = PATH_site . 'typo3temp/';
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+
+		// Compatibility with Windows platform
+		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, $tempPath);
+		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
 		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -646,6 +673,7 @@ EOT;
 				$output[] = '[INFO] Python Imaging Library 1.1.7 has been downloaded.';
 
 				$targetPath = $sphinxSourcesPath . 'Imaging';
+
 				self::$log[] = '[INFO] Recreating directory ' . $targetPath;
 				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
@@ -660,7 +688,7 @@ EOT;
 					// When unpacking the sources, content is located under a directory "Imaging-1.1.7"
 					$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
 					if ($directories[0] === 'Imaging-1.1.7') {
-						$fromDirectory = $targetPath . '/' . $directories[0];
+						$fromDirectory = $targetPath . DIRECTORY_SEPARATOR . $directories[0];
 						\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
 						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
 
@@ -700,6 +728,7 @@ EOT;
 		$pythonLib = $pythonHome . '/lib/python';
 
 		// Compatibility with Windows platform
+		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
 		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
@@ -709,7 +738,7 @@ EOT;
 			return $success;
 		}
 
-		$setupFile = $sphinxSourcesPath . 'Imaging/setup.py';
+		$setupFile = $sphinxSourcesPath . 'Imaging' . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
 			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
@@ -762,8 +791,12 @@ EOT;
 	 */
 	public static function downloadRst2Pdf(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = PATH_site . '/typo3temp/';
+		$tempPath = PATH_site . 'typo3temp/';
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+
+		// Compatibility with Windows platform
+		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, $tempPath);
+		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
 		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -776,6 +809,7 @@ EOT;
 				$output[] = '[INFO] rst2pdf 0.93 has been downloaded.';
 
 				$targetPath = $sphinxSourcesPath . 'rst2pdf';
+
 				self::$log[] = '[INFO] Recreating directory ' . $targetPath;
 				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
@@ -790,7 +824,7 @@ EOT;
 					// When unpacking the sources, content is located under a directory "rst2pdf-0.93"
 					$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
 					if ($directories[0] === 'rst2pdf-0.93') {
-						$fromDirectory = $targetPath . '/' . $directories[0];
+						$fromDirectory = $targetPath . DIRECTORY_SEPARATOR . $directories[0];
 						\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
 						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
 
@@ -830,6 +864,7 @@ EOT;
 		$pythonLib = $pythonHome . '/lib/python';
 
 		// Compatibility with Windows platform
+		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
 		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
@@ -839,7 +874,7 @@ EOT;
 			return $success;
 		}
 
-		$setupFile = $sphinxSourcesPath . 'rst2pdf/setup.py';
+		$setupFile = $sphinxSourcesPath . 'rst2pdf' . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
 			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
@@ -881,7 +916,7 @@ EOT;
 	public static function getSphinxAvailableVersions() {
 		$sphinxUrl = 'https://bitbucket.org/birkenfeld/sphinx/downloads';
 
-		$cacheFilename = PATH_site . 'typo3temp/' . self::$extKey . '.' . md5($sphinxUrl) . '.html';
+		$cacheFilename = PATH_site . 'typo3temp' . DIRECTORY_SEPARATOR . self::$extKey . '.' . md5($sphinxUrl) . '.html';
 		if (!file_exists($cacheFilename) || filemtime($cacheFilename) < (time() - 86400)) {
 			$html = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($sphinxUrl);
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFilename, $html);

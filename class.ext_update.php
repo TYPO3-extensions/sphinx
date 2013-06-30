@@ -181,10 +181,10 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (!\Causal\Sphinx\Utility\Setup::hasPyYaml()) {
 			$success &= \Causal\Sphinx\Utility\Setup::downloadPyYaml($output);
 		}
-		if (!\Causal\Sphinx\Utility\Setup::hasPIL()) {
+		if (TYPO3_OS !== 'WIN' && !\Causal\Sphinx\Utility\Setup::hasPIL()) {
 			$success &= \Causal\Sphinx\Utility\Setup::downloadPIL($output);
 		}
-		if (!\Causal\Sphinx\Utility\Setup::hasRst2Pdf()) {
+		if (TYPO3_OS !== 'WIN' && !\Causal\Sphinx\Utility\Setup::hasRst2Pdf()) {
 			$success &= \Causal\Sphinx\Utility\Setup::downloadRst2Pdf($output);
 		}
 
@@ -211,10 +211,10 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				if (\Causal\Sphinx\Utility\Setup::hasPyYaml()) {
 					$success &= \Causal\Sphinx\Utility\Setup::buildPyYaml($version, $output);
 				}
-				if (\Causal\Sphinx\Utility\Setup::hasPIL()) {
+				if (TYPO3_OS !== 'WIN' && \Causal\Sphinx\Utility\Setup::hasPIL()) {
 					$success &= \Causal\Sphinx\Utility\Setup::buildPIL($version, $output);
 				}
-				if (\Causal\Sphinx\Utility\Setup::hasRst2Pdf()) {
+				if (TYPO3_OS !== 'WIN' && \Causal\Sphinx\Utility\Setup::hasRst2Pdf()) {
 					$success &= \Causal\Sphinx\Utility\Setup::buildRst2Pdf($version, $output);
 				}
 			}

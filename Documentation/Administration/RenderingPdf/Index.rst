@@ -19,6 +19,9 @@ Sphinx is using *builders* to produce output. The builder’s "name" must be giv
 
 Sphinx is able to render PDF using either LaTeX as intermediate format or ``rst2pdf`` which is available off http://rst2pdf.ralsina.com.ar/ and is automatically installed and configured. PDF output with ``rst2pdf`` is by far not as good as when using LaTeX but it has the real advantage of not requiring you to install a full LaTeX stack on your machine.
 
+.. warning::
+	**MS Windows Users:** Installation of ``rst2pdf`` is unfortunately not yet supported for you as it requires additional components such as a GCC compiler. Please refer to http://forge.typo3.org/issues/49530.
+
 The builder name for PDF rendering using ``rst2pdf`` is simply ``pdf``:
 
 .. code-block:: bash
