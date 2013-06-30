@@ -16,7 +16,7 @@ There are a few steps necessary to install the Sphinx Python Documentation Gener
 	**MS Windows Users:** Please set up your environment with Python first. Instructions are available as :ref:`a separated chapter <windows-setup>`.
 
 
-1) Install the extension from Extension Manager
+Installing the extension from Extension Manager
 """""""""""""""""""""""""""""""""""""""""""""""
 
 The Sphinx Python Documentation Generator extension can be installed through the typical TYPO3 installation process using the Extension Manager.
@@ -24,8 +24,8 @@ The Sphinx Python Documentation Generator extension can be installed through the
 
 .. _configure-sphinx:
 
-2) Download and configure Sphinx
-""""""""""""""""""""""""""""""""
+Downloading and configuring Sphinx
+""""""""""""""""""""""""""""""""""
 
 In the Extension Manager, execute the update script this extension is providing:
 
@@ -45,25 +45,34 @@ Select a version of Sphinx you would like to use and start the import process wi
 
 Everything should work out-of-the-box. Possible problems will be reported as Flash messages and a log of all operations is stored as ``typo3temp/tx_sphinx/IMPORT-<date>.log``. The general process of importing Sphinx is as follows:
 
-1. Fetch the version as a zip archive from https://bitbucket.org/birkenfeld/sphinx/downloads ("Tags") into ``typo3temp/``
+#. Fetch the version as a zip archive from https://bitbucket.org/birkenfeld/sphinx/downloads ("Tags") into ``typo3temp/``
 
-2. Unpack the zip archive into ``EXT:sphinx/Resources/Private/sphinx-sources/<version>/``
+#. Unpack the zip archive into ``EXT:sphinx/Resources/Private/sphinx-sources/<version>/``
 
-3. Build the Python libraries into ``EXT:sphinx/Resources/Private/sphinx/<version>/``
+#. Build the Python libraries into ``EXT:sphinx/Resources/Private/sphinx/<version>/``
 
-4. Install TYPO3-related commands provided by the TYPO3 Documentation Team (TYPO3 ReST tools)
+#. Install TYPO3-related commands provided by the TYPO3 Documentation Team (TYPO3 ReST tools)
 
-5. Install PyYAML library (http://pyyaml.org/wiki/PyYAML), needed for building TYPO3 documentation
+#. Install PyYAML library (http://pyyaml.org/wiki/PyYAML), needed for building TYPO3 documentation
 
-6. Install Python Imaging Library (https://pypi.python.org/pypi/PIL), needed for supporting common image types with rst2pdf
+#. *[Not on MS Windows]* Install Python Imaging Library (https://pypi.python.org/pypi/PIL), needed for supporting common image types with ``rst2pdf``
 
-7. Install rst2pdf (http://rst2pdf.ralsina.com.ar/), as a simple way of building PDF
+#. *[Not on MS Windows]* Install ``rst2pdf`` (http://rst2pdf.ralsina.com.ar/), as a simple way of building PDF
 
 The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if you want to use the `git repository of the TYPO3 ReST tools`_ instead of a snapshot.
 
-The "download" button fetches the corresponding sources of Sphinx, the TYPO3-related commands, the PyYAML library and rst2pdf if they are not available locally.
+The "download" button fetches the corresponding sources of Sphinx, the TYPO3-related commands, the PyYAML library and ``rst2pdf`` if they are not available locally.
 
-The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands, PyYAML, Python Imaging Library and rst2pdf.
+.. tip::
+	Instead of fetching once for all the TYPO3-related commands, you may prefer to clone the official git repository. To do so, open a terminal and run:
+
+	.. code-block:: bash
+
+		$ cd /path/to/typo3conf/ext/sphinx/Resources/Private/sphinx-sources/
+		$ sudo rm -rf RestTools
+		$ git clone git://git.typo3.org/Documentation/RestTools.git
+
+The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands, PyYAML, Python Imaging Library and ``rst2pdf``.
 
 Finally, the "remove" button removes both the sources and the corresponding version of the Sphinx environment.
 
@@ -71,8 +80,8 @@ Finally, the "remove" button removes both the sources and the corresponding vers
 	This button *WILL NOT* remove sources of the TYPO3-related commands, the PyYAML library, the Python Imaging Library or rst2pdf.
 
 
-3) Choose the version of Sphinx to use and how to render PDF
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Choosing the version of Sphinx to use and how to render PDF
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 In the Extension Manager, configure this extension as usual:
 
@@ -82,9 +91,9 @@ In the Extension Manager, configure this extension as usual:
 	single: PDF; LaTeX
 	single: PDF; rst2pdf
 
-And then choose which version of Sphinx should be used and the PDF builder you prefer (either rst2pdf or LaTeX):
+And then choose which version of Sphinx should be used and the PDF builder you prefer (either ``rst2pdf`` or LaTeX):
 
 |sphinx_version|
 
 .. tip::
-	rst2pdf is available by default with this extension. However, if you want better output, you should consider using LaTeX instead. Please read chapter :ref:`rendering_pdf` for instructions.
+	**Except for MS Windows users,** ``rst2pdf`` is available by default with this extension. However, if you want better output, you should consider using LaTeX instead. Please read chapter :ref:`rendering_pdf` for instructions.

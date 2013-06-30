@@ -53,3 +53,4 @@ Once the LaTeX files have been produced, the actual rendering as PDF is just a m
 	IntroductionLaTeX
 	InstallingLaTeXLinux
 	InstallingLaTeXWindows
+	CustomizingRendering

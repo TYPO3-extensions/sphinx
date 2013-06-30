@@ -44,6 +44,8 @@
 
 .. _`reST Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
 
+.. _`Share corporate font family`: http://typo3.org/the-brand/style-guide/the-typo3-font/
+
 .. _Sphinx: http://sphinx-doc.org/
 
 .. _`the TYPO3 wiki`: http://wiki.typo3.org/Rendering_reST
