@@ -42,8 +42,6 @@ Once the LaTeX files have been produced, the actual rendering as PDF is just a m
 
 	$ pdflatex name-of-project
 
-**Available topics:**
-
 .. toctree::
 	:maxdepth: 5
 	:titlesonly:

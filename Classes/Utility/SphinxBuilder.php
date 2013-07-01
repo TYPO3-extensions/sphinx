@@ -220,12 +220,19 @@ class SphinxBuilder {
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 		$paperSize = 'a4';
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$templatePath = $sphinxSourcesPath . 'RestTools/LaTeX/';
+		$templateFiles = array(
+			'typo3.sty',
+			'typo3_logo_color.png',
+		);
 
 		// Compatibility with Windows platform
 		$conf = str_replace('/', DIRECTORY_SEPARATOR, $conf);
 		$basePath = str_replace('/', DIRECTORY_SEPARATOR, $basePath);
 		$sourceDirectory = str_replace('/', DIRECTORY_SEPARATOR, $sourceDirectory);
 		$buildDirectory = str_replace('/', DIRECTORY_SEPARATOR, $buildDirectory);
+		$templatePath = str_replace('/', DIRECTORY_SEPARATOR, $templatePath);
 
 		if (!(is_dir($basePath) && (is_file($conf) || is_file($basePath . $conf)))) {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
@@ -247,6 +254,9 @@ class SphinxBuilder {
 		$output = implode(LF, $output);
 		if (self::$htmlConsole) {
 			$output = self::colorize($output);
+		}
+		foreach ($templateFiles as $templateFile) {
+			copy($templatePath . $templateFile, $basePath . $buildPath . DIRECTORY_SEPARATOR . $templateFile);
 		}
 		if ($ret !== 0) {
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
