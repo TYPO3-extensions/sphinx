@@ -114,6 +114,11 @@ class SphinxQuickstart {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pathRoot . $directory);
 		}
 
+		$binDirectory = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/bin/';
+
+		// Compatibility with Windows platform
+		$binDirectory = str_replace('/', DIRECTORY_SEPARATOR, $binDirectory);
+
 		$markers = array(
 			'PROJECT'            => str_replace(' ', '', $projectName),
 			'PROJECT_NAME'       => $projectName,
@@ -128,7 +133,7 @@ class SphinxQuickstart {
 			'SOURCE_FILE_SUFFIX' => $sourceFileSuffix,
 			'EXCLUDE_PATTERN'    => $excludePattern,
 			'BUILD_DIRECTORY'    => $buildDirectory,
-			'BIN_DIRECTORY'      => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/bin/',
+			'BIN_DIRECTORY'      => $binDirectory,
 		);
 
 		$config = array(
