@@ -441,24 +441,26 @@ EOT;
 		// Compatibility with Windows platform
 		$globalSettingsFilename = str_replace('/', DIRECTORY_SEPARATOR, $globalSettingsFilename);
 
-		if (is_file($globalSettingsFilename) && is_writable($globalSettingsFilename)) {
-			$globalSettings = file_get_contents($globalSettingsFilename);
-			$rst2pdfLibrary = 'rst2pdf.pdfbuilder';
+		if (TYPO3_OS !== 'WIN' && \Causal\Sphinx\Utility\Setup::hasRst2Pdf()) {
+			if (is_file($globalSettingsFilename) && is_writable($globalSettingsFilename)) {
+				$globalSettings = file_get_contents($globalSettingsFilename);
+				$rst2pdfLibrary = 'rst2pdf.pdfbuilder';
 
-			if (strpos($globalSettings, '- ' . $rst2pdfLibrary) === FALSE) {
-				$globalSettingsLines = explode(LF, $globalSettings);
-				$buffer = array();
-				for ($i = 0; $i < count($globalSettingsLines); $i++) {
-					if (trim($globalSettingsLines[$i]) === 'extensions:') {
-						while (!empty($globalSettingsLines[$i])) {
-							$buffer[] = $globalSettingsLines[$i];
-							$i++;
-						};
-						$buffer[] = '  - ' . $rst2pdfLibrary;
+				if (strpos($globalSettings, '- ' . $rst2pdfLibrary) === FALSE) {
+					$globalSettingsLines = explode(LF, $globalSettings);
+					$buffer = array();
+					for ($i = 0; $i < count($globalSettingsLines); $i++) {
+						if (trim($globalSettingsLines[$i]) === 'extensions:') {
+							while (!empty($globalSettingsLines[$i])) {
+								$buffer[] = $globalSettingsLines[$i];
+								$i++;
+							};
+							$buffer[] = '  - ' . $rst2pdfLibrary;
+						}
+						$buffer[] = $globalSettingsLines[$i];
 					}
-					$buffer[] = $globalSettingsLines[$i];
+					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
 				}
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
 			}
 		}
 
