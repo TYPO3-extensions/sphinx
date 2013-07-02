@@ -35,6 +35,12 @@ Then go to directory ``RestTools/LaTeX`` and convert the Share font (the passwor
 
 	The complete Share font family can be downloaded off http://prdownloads.sourceforge.net/typo3/TYPO3_Share_Complete.zip?download.
 
+.. note::
+
+	**MS Windows Users:** As there is currently no automatic script available for you, when using MikTeX, please follow the instructions from http://www.radamir.com/tex/ttf-tex.htm.
+
+	**Tip:** You may want to use script ``convert-share.sh`` from a Linux machine and set ``INSTALL=0`` near the beginning of the script. Instead of installing the converted fonts on your system, it will only convert them and prepare mapping files within directory ``RestTools/LaTeX/fonts/texmf/``.
+
 Once converted, the font is available as ``typo3share`` within LaTeX documents. To test that it has been properly installed, you may create a sample LaTeX document, (``test-font.tex``):
 
 .. code-block:: latex
