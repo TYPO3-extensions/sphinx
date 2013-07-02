@@ -51,13 +51,13 @@ Everything should work out-of-the-box. Possible problems will be reported as Fla
 
 #. Build the Python libraries into ``EXT:sphinx/Resources/Private/sphinx/<version>/``
 
-#. Install TYPO3-related commands provided by the TYPO3 Documentation Team (TYPO3 ReST tools)
-
-#. Install PyYAML library (http://pyyaml.org/wiki/PyYAML), needed for building TYPO3 documentation
-
 #. *[Not on MS Windows]* Install Python Imaging Library (https://pypi.python.org/pypi/PIL), needed for supporting common image types with ``rst2pdf``
 
 #. *[Not on MS Windows]* Install ``rst2pdf`` (http://rst2pdf.ralsina.com.ar/), as a simple way of building PDF
+
+#. Install PyYAML library (http://pyyaml.org/wiki/PyYAML), needed for building TYPO3 documentation
+
+#. Install TYPO3-related commands provided by the TYPO3 Documentation Team (TYPO3 ReST tools)
 
 The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if you want to use the `git repository of the TYPO3 ReST tools`_ instead of a snapshot.
 
@@ -79,6 +79,20 @@ Finally, the "remove" button removes both the sources and the corresponding vers
 .. important::
 	This button *WILL NOT* remove sources of the TYPO3-related commands, the PyYAML library, the Python Imaging Library or rst2pdf.
 
+Known problems
+~~~~~~~~~~~~~~
+
+It is known that build of ``rst2pdf`` may fail with::
+
+	Traceback (most recent call last):
+	  File "setup.py", line 7, in <module>
+	    from setuptools import setup, find_packages
+
+In such case, you should first install the Python library ``setuptools``. E.g.,
+
+.. code-block:: bash
+
+	$ sudo apt-get install python-setuptools
 
 Choosing the version of Sphinx to use and how to render PDF
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""

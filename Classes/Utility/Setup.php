@@ -441,7 +441,7 @@ EOT;
 		// Compatibility with Windows platform
 		$globalSettingsFilename = str_replace('/', DIRECTORY_SEPARATOR, $globalSettingsFilename);
 
-		if (TYPO3_OS !== 'WIN' && \Causal\Sphinx\Utility\Setup::hasRst2Pdf()) {
+		if (TYPO3_OS !== 'WIN' && \Causal\Sphinx\Utility\Setup::hasLibrary('rst2pdf', $sphinxVersion)) {
 			if (is_file($globalSettingsFilename) && is_writable($globalSettingsFilename)) {
 				$globalSettings = file_get_contents($globalSettingsFilename);
 				$rst2pdfLibrary = 'rst2pdf.pdfbuilder';
@@ -906,6 +906,27 @@ EOT;
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Returns TRUE if a given Python library is present (installed).
+	 *
+	 * @param string $library Name of the library (without version)
+	 * @param string $sphinxVersion The Sphinx version to check for
+	 * @return boolean
+	 */
+	public static function hasLibrary($library, $sphinxVersion) {
+		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$pythonHome = $sphinxPath . $sphinxVersion;
+		$pythonLib = $pythonHome . '/lib/python';
+
+		$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($pythonLib);
+		foreach ($directories as $directory) {
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($directory, $library . '-')) {
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
 
 	/**
