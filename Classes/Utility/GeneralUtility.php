@@ -231,12 +231,13 @@ HTML;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
 		\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
 			$basePath,
-			$extensionKey,
+			$metadata['title'],
 			$metadata['author'],
 			FALSE,
 			'TYPO3DocEmptyProject',
 			$metadata['version'],
-			$metadata['release']
+			$metadata['release'],
+			$extensionKey
 		);
 
 		if ($format === 'json') {

@@ -49,11 +49,16 @@ class SphinxQuickstart {
 	 * @param string $template
 	 * @param string $version
 	 * @param string $release
+	 * @param string $project Name for LaTeX, man pages, ... output, defaults to $projectName
 	 * @return boolean
 	 */
-	public static function createProject($pathRoot, $projectName, $author, $separateSourceBuild = FALSE, $template = 'BlankProject', $version = '1.0', $release = '1.0.0') {
+	public static function createProject($pathRoot, $projectName, $author, $separateSourceBuild = FALSE, $template = 'BlankProject', $version = '1.0', $release = '1.0.0', $project = '') {
 		$projectName = str_replace("'", ' ', $projectName);
 		$author = str_replace("'", ' ', $author);
+		if (empty($project)) {
+			$project = $projectName;
+		}
+		$project = str_replace(array("'", ' '), '', $project);
 
 		// Inside the root directory, two more directories will be created; "_templates"
 		// for custom HTML templates and "_static" for custom stylesheets and other static
@@ -120,7 +125,7 @@ class SphinxQuickstart {
 		$binDirectory = str_replace('/', DIRECTORY_SEPARATOR, $binDirectory);
 
 		$markers = array(
-			'PROJECT'            => str_replace(' ', '', $projectName),
+			'PROJECT'            => $project,
 			'PROJECT_NAME'       => $projectName,
 			'AUTHOR'             => $author,
 			'VERSION'            => $version,
