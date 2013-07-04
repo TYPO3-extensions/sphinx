@@ -438,6 +438,17 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$properties = \Causal\Sphinx\Utility\Configuration::load($this->basePath . $this->project['conf_py']);
 			$this->project['properties'] = $properties;
 		}
+
+		if (\Causal\Sphinx\Utility\SphinxBuilder::getSphinxVersion() === NULL) {
+			$this->content .= <<<HTML
+<div id="typo3-messages">
+	<div class="typo3-message message-warning">
+		<div class="message-body">Extension sphinx is not yet configured, please go to Extension Manager and configure it.<br />
+		 <strong>Hint:</strong> This is not the "update script" button you used to download and build Sphinx locally.</div>
+	</div>
+</div>
+HTML;
+		}
 	}
 
 	/**
