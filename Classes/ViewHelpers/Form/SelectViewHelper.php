@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Sphinx\ViewHelpers\Form;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,8 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-namespace Causal\Sphinx\ViewHelpers\Form;
 
 /**
  * Extends the EXT:fluid's select VH to support onchange attribute.
