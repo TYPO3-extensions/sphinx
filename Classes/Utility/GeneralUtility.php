@@ -219,7 +219,7 @@ HTML;
 				break;
 		}
 
-		$outputDirectory = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/default/' . $documentationFormat;
+		$outputDirectory = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/default/' . $documentationFormat;
 		if (!$force && is_file($outputDirectory . '/' . $masterDocument)) {
 			// Do not render the documentation again
 			$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;

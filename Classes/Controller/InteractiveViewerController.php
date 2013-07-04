@@ -90,7 +90,7 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 			case 'EXT':
 				$extensionKey = $identifier;
 				$this->extension = $extensionKey;
-				$path = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/default/json';
+				$path = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/default/json';
 				break;
 			case 'USER':
 				$path = dirname($documentationFilename);
@@ -201,7 +201,7 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 			case substr($document, 0, 11) === '_downloads/':
 			case substr($document, 0, 8) === '_images/':
 			case substr($document, 0, 9) === '_sources/':
-				$link = '../typo3conf/Documentation/' . $this->extension . '/default/json/' . $document;
+				$link = '../typo3conf/Documentation/typo3cms.extensions.' . $this->extension . '/default/json/' . $document;
 				break;
 		}
 		return $link;
