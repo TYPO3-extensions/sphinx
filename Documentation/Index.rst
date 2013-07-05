@@ -12,11 +12,6 @@
 Sphinx Python Documentation Generator and Viewer
 ================================================
 
-.. raw:: latex
-
-	\begin{sphinxproperties}
-	\relax
-
 :Classification:
 	sphinx
 
@@ -50,17 +45,10 @@ Sphinx Python Documentation Generator and Viewer
 :Rendered:
 	|today|
 
-.. raw:: latex
-
-	\vfill
-
 The content of this document is related to TYPO3
 
 \- a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_
 
-.. raw:: latex
-
-	\end{sphinxproperties}
 
 .. toctree::
 	:maxdepth: 5

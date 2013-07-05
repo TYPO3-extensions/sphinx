@@ -11,7 +11,7 @@
 User Manual
 -----------
 
-This chapter describes how to use the extension from a user point of view.
+This chapter describes how to use the extension from a user point of view. In addition, it provides a few links and hints to get up to speed with Sphinx and ReStructuredText for your own projects.
 
 .. toctree::
 	:maxdepth: 5
@@ -23,3 +23,4 @@ This chapter describes how to use the extension from a user point of view.
 	BuildingSphinxDocumentationProject/Index
 	SphinxDocumentationViewer/Index
 	SphinxDocumentationEditor/Index
+	SphinxRest/Index

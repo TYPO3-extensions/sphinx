@@ -63,6 +63,9 @@ The manual process buttons let you locally change files and rebuild your environ
 
 The "download" button fetches the corresponding sources of Sphinx, the TYPO3-related commands, the PyYAML library and ``rst2pdf`` if they are not available locally.
 
+.. important::
+	It is known that the Python Imaging Library and/or ``rst2pdf`` might fail to be successfully installed and configured on some systems. However, as these libraries are only used to render PDF with ``rst2pdf`` and as the recommended method for rendering PDF is to use :ref:`LaTeX <rendering_pdf>` anyway, you should not worry if you are unable to install ``rst2pdf`` locally.
+
 .. tip::
 	Instead of fetching once for all the TYPO3-related commands, you may prefer to clone the official git repository. To do so, open a terminal and run:
 
