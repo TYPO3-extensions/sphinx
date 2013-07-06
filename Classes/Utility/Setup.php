@@ -940,7 +940,7 @@ EOT;
 		$sphinxUrl = 'https://bitbucket.org/birkenfeld/sphinx/downloads';
 
 		$cacheFilename = PATH_site . 'typo3temp' . DIRECTORY_SEPARATOR . self::$extKey . '.' . md5($sphinxUrl) . '.html';
-		if (!file_exists($cacheFilename) || filemtime($cacheFilename) < (time() - 86400)) {
+		if (!file_exists($cacheFilename) || filemtime($cacheFilename) < (time() - 86400) || filesize($cacheFilename) == 0) {
 			$html = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($sphinxUrl);
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFilename, $html);
 		} else {

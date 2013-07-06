@@ -73,6 +73,10 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// Load the list of locally available versions of Sphinx
 		$localVersions = \Causal\Sphinx\Utility\Setup::getSphinxLocalVersions();
 
+		if (count($availableVersions) == 0) {
+			$out[] = $this->formatWarning('Could not find any version of Sphinx. Please check if you are currently offline and if PHP has proper OpenSSL support.');
+		}
+
 		// Handle form operation, if needed
 		$operation = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('operation');
 		if ($operation) {
