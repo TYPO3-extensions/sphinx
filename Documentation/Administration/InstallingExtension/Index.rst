@@ -24,6 +24,7 @@ The Sphinx Python Documentation Generator extension can be installed through the
 
 .. _configure-sphinx:
 
+
 Downloading and configuring Sphinx
 """"""""""""""""""""""""""""""""""
 
@@ -96,6 +97,7 @@ In such case, you should first install the Python library ``setuptools``. E.g.,
 .. code-block:: bash
 
 	$ sudo apt-get install python-setuptools
+
 
 Choosing the version of Sphinx to use and how to render PDF
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
