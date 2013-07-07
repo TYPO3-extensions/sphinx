@@ -34,7 +34,6 @@ namespace Causal\Sphinx\Utility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-
 class Setup {
 
 	/** @var string */
@@ -121,49 +120,30 @@ class Setup {
 			$output[] = '[INFO] Sphinx ' . $version . ' has been downloaded.';
 			$targetPath = $sphinxSourcesPath . $version;
 
-			self::$log[] = '[INFO] Recreating directory ' . $targetPath;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
-
 			// Unzip the Sphinx archive
-			$unzip = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('unzip'));
-			$cmd = $unzip . ' ' . escapeshellarg($zipFilename) . ' -d ' . escapeshellarg($targetPath) . ' 2>&1';
-			self::exec($cmd, $_, $ret);
-			if ($ret === 0) {
+			$out = array();
+			if (self::unarchive($zipFilename, $targetPath, 'birkenfeld-sphinx-')) {
 				$output[] = '[INFO] Sphinx ' . $version . ' has been unpacked.';
-				// When unzipping the sources, content is located under a directory "birkenfeld-sphinx-<hash>"
-				$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($directories[0], 'birkenfeld-sphinx-')) {
-					$fromDirectory = $targetPath . DIRECTORY_SEPARATOR . $directories[0];
-					\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
-					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
 
-					// Remove zip file as we don't need it anymore
-					@unlink($zipFilename);
+				// Patch Sphinx to let us get colored output
+				$sourceFilename = $targetPath . '/sphinx/util/console.py';
 
-					// Patch Sphinx to let us get colored output
-					$sourceFilename = $targetPath . '/sphinx/util/console.py';
+				// Compatibility with Windows platform
+				$sourceFilename = str_replace('/', DIRECTORY_SEPARATOR, $sourceFilename);
 
-					// Compatibility with Windows platform
-					$sourceFilename = str_replace('/', DIRECTORY_SEPARATOR, $sourceFilename);
-
-					if (file_exists($sourceFilename)) {
-						self::$log[] = '[INFO] Patching file ' . $sourceFilename;
-						$contents = file_get_contents($sourceFilename);
-						$contents = str_replace(
-							'def color_terminal():',
-							"def color_terminal():\n    if 'COLORTERM' in os.environ:\n        return True",
-							$contents
-						);
-						\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($sourceFilename, $contents);
-					}
-				} else {
-					$success = FALSE;
-					$output[] = '[ERROR] Unknown structure in archive ' . $zipFilename;
+				if (file_exists($sourceFilename)) {
+					self::$log[] = '[INFO] Patching file ' . $sourceFilename;
+					$contents = file_get_contents($sourceFilename);
+					$contents = str_replace(
+						'def color_terminal():',
+						"def color_terminal():\n    if 'COLORTERM' in os.environ:\n        return True",
+						$contents
+					);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($sourceFilename, $contents);
 				}
 			} else {
 				$success = FALSE;
-				$output[] = '[ERROR] Could not extract Sphinx ' . $version . ':' . LF . $cmd;
+				$output[] = '[ERROR] Could not extract Sphinx ' . $version . ':' . LF . LF . implode($out, LF);
 			}
 		} else {
 			$success = FALSE;
@@ -369,27 +349,10 @@ EOT;
 					// allowing people to use the official git repository instead, if wanted
 					$targetPath = $sphinxSourcesPath . 'RestTools' . DIRECTORY_SEPARATOR . 'ExtendingSphinxForTYPO3';
 
-					self::$log[] = '[INFO] Recreating directory ' . $targetPath;
-					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
-					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($targetPath . '/');
-
 					// Unpack TYPO3 ReST Tools archive
-					$tar = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar'));
-					$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath) . ' 2>&1';
 					$out = array();
-					self::exec($cmd, $out, $ret);
-					if ($ret === 0) {
+					if (self::unarchive($archiveFilename, $targetPath, 'RestTools-' . substr($commit, 0, 7), $out)) {
 						$output[] = '[INFO] TYPO3 ReStructuredText Tools have been unpacked.';
-						// When unpacking the sources, content is located under a directory "RestTools-<shortcommit>"
-						$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
-						if ($directories[0] === 'RestTools-' . substr($commit, 0, 7)) {
-							$fromDirectory = $targetPath . DIRECTORY_SEPARATOR . $directories[0];
-							\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
-							\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
-
-							// Remove tar.gz archive as we don't need it anymore
-							@unlink($archiveFilename);
-						}
 					} else {
 						$success = FALSE;
 						$output[] = '[ERROR] Could not extract TYPO3 ReStructuredText Tools:' . LF . LF . implode($out, LF);
@@ -416,7 +379,6 @@ EOT;
 	 * @throws \Exception
 	 */
 	public static function buildRestTools($sphinxVersion, array &$output = NULL) {
-		$success = TRUE;
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
@@ -470,28 +432,13 @@ EOT;
 		$setupFile = str_replace('/', DIRECTORY_SEPARATOR, $setupFile);
 
 		if (is_file($setupFile)) {
-			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
-			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-				$python . ' setup.py clean 2>&1 && ' .
-				$python . ' setup.py build 2>&1';
-			$out = array();
-			self::exec($cmd, $out, $ret);
-			if ($ret === 0) {
-				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
-					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
-				$out = array();
-				self::exec($cmd, $out, $ret);
-				if ($ret === 0) {
-					$output[] = '[INFO] TYPO3 RestructuredText Tools have been successfully installed.';
-				} else {
-					$success = FALSE;
-					$output[] = '[ERROR] Could not install TYPO3 RestructuredText Tools:' . LF . LF . implode($out, LF);
-				}
-			} else {
-				$success = FALSE;
-				$output[] = '[ERROR] Could not build TYPO3 RestructuredText Tools:' . LF . LF . implode($out, LF);
-			}
+			$success = self::buildWithPython(
+				'TYPO3 RestructuredText Tools',
+				$setupFile,
+				$pythonHome,
+				$pythonLib,
+				$output
+			);
 		} else {
 			$success = FALSE;
 			$output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
@@ -540,33 +487,13 @@ EOT;
 
 				$targetPath = $sphinxSourcesPath . 'PyYAML';
 
-				self::$log[] = '[INFO] Recreating directory ' . $targetPath;
-				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
-
 				// Unpack PyYAML archive
-				$tar = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar'));
-				$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath) . ' 2>&1';
 				$out = array();
-				self::exec($cmd, $out, $ret);
-				if ($ret === 0) {
+				if (self::unarchive($archiveFilename, $targetPath, 'PyYAML-3.10', $out)) {
 					$output[] = '[INFO] PyYAML has been unpacked.';
-					// When unpacking the sources, content is located under a directory "PyYAML-3.10"
-					$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
-					if ($directories[0] === 'PyYAML-3.10') {
-						$fromDirectory = $targetPath . DIRECTORY_SEPARATOR . $directories[0];
-						\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
-						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
-
-						// Remove tar.gz archive as we don't need it anymore
-						@unlink($archiveFilename);
-					} else {
-						$success = FALSE;
-						$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
-					}
 				} else {
 					$success = FALSE;
-					$output[] = '[ERROR] Could not extract TYPO3 ReStructuredText Tools:' . LF . LF . implode($out, LF);
+					$output[] = '[ERROR] Could not extract PyYAML:' . LF . LF . implode($out, LF);
 				}
 			} else {
 				$success = FALSE;
@@ -580,13 +507,12 @@ EOT;
 	/**
 	 * Builds and installs PyYAML locally.
 	 *
-	 * @param string $sphinxVersion The Sphinx version to build the ReST tools for
+	 * @param string $sphinxVersion The Sphinx version to build PyYAML for
 	 * @param NULL|array $output
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
 	public static function buildPyYaml($sphinxVersion, array &$output = NULL) {
-		$success = TRUE;
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
@@ -606,28 +532,13 @@ EOT;
 
 		$setupFile = $sphinxSourcesPath . 'PyYAML' . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
-			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
-			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-				$python . ' setup.py clean 2>&1 && ' .
-				$python . ' setup.py build 2>&1';
-			$out = array();
-			self::exec($cmd, $out, $ret);
-			if ($ret === 0) {
-				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
-					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
-				$out = array();
-				self::exec($cmd, $out, $ret);
-				if ($ret === 0) {
-					$output[] = '[INFO] PyYAML has been successfully installed.';
-				} else {
-					$success = FALSE;
-					$output[] = '[ERROR] Could not install PyYAML:' . LF . LF . implode($out, LF);
-				}
-			} else {
-				$success = FALSE;
-				$output[] = '[ERROR] Could not build PyYAML:' . LF . LF . implode($out, LF);
-			}
+			$success = self::buildWithPython(
+				'PyYAML',
+				$setupFile,
+				$pythonHome,
+				$pythonLib,
+				$output
+			);
 		} else {
 			$success = FALSE;
 			$output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
@@ -676,33 +587,13 @@ EOT;
 
 				$targetPath = $sphinxSourcesPath . 'Imaging';
 
-				self::$log[] = '[INFO] Recreating directory ' . $targetPath;
-				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
-
-				// Unpack rst2pdf archive
-				$tar = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar'));
-				$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath) . ' 2>&1';
+				// Unpack Python Imaging Library archive
 				$out = array();
-				self::exec($cmd, $out, $ret);
-				if ($ret === 0) {
+				if (self::unarchive($archiveFilename, $targetPath, 'Imaging-1.1.7', $out)) {
 					$output[] = '[INFO] Python Imaging Library has been unpacked.';
-					// When unpacking the sources, content is located under a directory "Imaging-1.1.7"
-					$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
-					if ($directories[0] === 'Imaging-1.1.7') {
-						$fromDirectory = $targetPath . DIRECTORY_SEPARATOR . $directories[0];
-						\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
-						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
-
-						// Remove tar.gz archive as we don't need it anymore
-						@unlink($archiveFilename);
-					} else {
-						$success = FALSE;
-						$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
-					}
 				} else {
 					$success = FALSE;
-					$output[] = '[ERROR] Could not extract Python Imaging Library:' . LF . LF . implode($out, LF);
+					$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
 				}
 			} else {
 				$success = FALSE;
@@ -722,7 +613,6 @@ EOT;
 	 * @throws \Exception
 	 */
 	public static function buildPIL($sphinxVersion, array &$output = NULL) {
-		$success = TRUE;
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
@@ -742,28 +632,13 @@ EOT;
 
 		$setupFile = $sphinxSourcesPath . 'Imaging' . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
-			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
-			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-				$python . ' setup.py clean 2>&1 && ' .
-				$python . ' setup.py build 2>&1';
-			$out = array();
-			self::exec($cmd, $out, $ret);
-			if ($ret === 0) {
-				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
-					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
-				$out = array();
-				self::exec($cmd, $out, $ret);
-				if ($ret === 0) {
-					$output[] = '[INFO] Python Imaging Library has been successfully installed.';
-				} else {
-					$success = FALSE;
-					$output[] = '[ERROR] Could not install Python Imaging Library:' . LF . LF . implode($out, LF);
-				}
-			} else {
-				$success = FALSE;
-				$output[] = '[ERROR] Could not build Python Imaging Library:' . LF . LF . implode($out, LF);
-			}
+			$success = self::buildWithPython(
+				'Python Imaging Library',
+				$setupFile,
+				$pythonHome,
+				$pythonLib,
+				$output
+			);
 		} else {
 			$success = FALSE;
 			$output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
@@ -812,30 +687,10 @@ EOT;
 
 				$targetPath = $sphinxSourcesPath . 'rst2pdf';
 
-				self::$log[] = '[INFO] Recreating directory ' . $targetPath;
-				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetPath, TRUE);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($targetPath);
-
 				// Unpack rst2pdf archive
-				$tar = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar'));
-				$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetPath) . ' 2>&1';
 				$out = array();
-				self::exec($cmd, $out, $ret);
-				if ($ret === 0) {
+				if (self::unarchive($archiveFilename, $targetPath, 'rst2pdf-0.93', $out)) {
 					$output[] = '[INFO] rst2pdf has been unpacked.';
-					// When unpacking the sources, content is located under a directory "rst2pdf-0.93"
-					$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetPath);
-					if ($directories[0] === 'rst2pdf-0.93') {
-						$fromDirectory = $targetPath . DIRECTORY_SEPARATOR . $directories[0];
-						\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetPath);
-						\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
-
-						// Remove tar.gz archive as we don't need it anymore
-						@unlink($archiveFilename);
-					} else {
-						$success = FALSE;
-						$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
-					}
 				} else {
 					$success = FALSE;
 					$output[] = '[ERROR] Could not extract rst2pdf:' . LF . LF . implode($out, LF);
@@ -858,7 +713,6 @@ EOT;
 	 * @throws \Exception
 	 */
 	public static function buildRst2Pdf($sphinxVersion, array &$output = NULL) {
-		$success = TRUE;
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
@@ -878,28 +732,13 @@ EOT;
 
 		$setupFile = $sphinxSourcesPath . 'rst2pdf' . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
-			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
-			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-				$python . ' setup.py clean 2>&1 && ' .
-				$python . ' setup.py build 2>&1';
-			$out = array();
-			self::exec($cmd, $out, $ret);
-			if ($ret === 0) {
-				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
-					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
-				$out = array();
-				self::exec($cmd, $out, $ret);
-				if ($ret === 0) {
-					$output[] = '[INFO] rst2pdf has been successfully installed.';
-				} else {
-					$success = FALSE;
-					$output[] = '[ERROR] Could not install rst2pdf:' . LF . LF . implode($out, LF);
-				}
-			} else {
-				$success = FALSE;
-				$output[] = '[ERROR] Could not build rst2pdf:' . LF . LF . implode($out, LF);
-			}
+			$success = self::buildWithPython(
+				'rst2pdf',
+				$setupFile,
+				$pythonHome,
+				$pythonLib,
+				$output
+			);
 		} else {
 			$success = FALSE;
 			$output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
@@ -996,6 +835,89 @@ EOT;
 		self::$log = array_merge(self::$log, $out);
 		$output = $out;
 		return $lastLine;
+	}
+
+	/**
+	 * Untars/Unzips an archive into a given target directory.
+	 *
+	 * @param string $archiveFilename
+	 * @param string $targetDirectory
+	 * @param string|NULL $moveContentOutsideOfDirectoryPrefix
+	 * @param array &$out
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 */
+	protected static function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = NULL, array &$out = NULL) {
+		$success = FALSE;
+
+		self::$log[] = '[INFO] Recreating directory ' . $targetDirectory;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetDirectory, TRUE);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($targetDirectory . DIRECTORY_SEPARATOR);
+
+		if (substr($archiveFilename, -4) === '.zip') {
+			$unzip = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('unzip'));
+			$cmd = $unzip . ' ' . escapeshellarg($archiveFilename) . ' -d ' . escapeshellarg($targetDirectory) . ' 2>&1';
+		} else {
+			$tar = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar'));
+			$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetDirectory) . ' 2>&1';
+		}
+		self::exec($cmd, $out, $ret);
+		if ($ret === 0) {
+			$success = TRUE;
+			if ($moveContentOutsideOfDirectoryPrefix !== NULL) {
+				// When unpacking the sources, content is located under a directory
+				$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetDirectory);
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($directories[0], $moveContentOutsideOfDirectoryPrefix)) {
+					$fromDirectory = $targetDirectory . DIRECTORY_SEPARATOR . $directories[0];
+					\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetDirectory);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
+
+					// Remove tar.gz archive as we don't need it anymore
+					@unlink($archiveFilename);
+				} else {
+					$success = FALSE;
+				}
+			}
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Builds a library with Python.
+	 *
+	 * @param string $name
+	 * @param string $setupFile
+	 * @param string $pythonHome
+	 * @param string $pythonLib
+	 * @param array $output
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 */
+	protected static function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, array &$output = NULL) {
+		$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
+		$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+			$python . ' setup.py clean 2>&1 && ' .
+			$python . ' setup.py build 2>&1';
+		$out = array();
+		self::exec($cmd, $out, $ret);
+		if ($ret === 0) {
+			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
+				\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
+				$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
+			$out = array();
+			self::exec($cmd, $out, $ret);
+			if ($ret === 0) {
+				$success = TRUE;
+				$output[] = '[INFO] ' . $name . ' successfully installed.';
+			} else {
+				$success = FALSE;
+				$output[] = '[ERROR] Could not install ' . $name . ':' . LF . LF . implode($out, LF);
+			}
+		} else {
+			$success = FALSE;
+			$output[] = '[ERROR] Could not build ' . $name . ':' . LF . LF . implode($out, LF);
+		}
+
+		return $success;
 	}
 
 	/**
