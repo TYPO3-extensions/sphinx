@@ -6,7 +6,7 @@
 .. include:: ../../Includes.txt
 
 
-.. _sphinx:
+.. _sphinx-rest:
 
 Sphinx and ReStructuredText
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
