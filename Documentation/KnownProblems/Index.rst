@@ -11,9 +11,24 @@
 Known problems
 --------------
 
-- With FAL (TYPO3 6.x) only LocalStorage has been implemented and tested, meaning code will need to be adapted in order to deal with other types of remote storage.
+.. index::
+	single: Error Message; ImportError: No module named setuptools
+
+- Typically on Ubuntu Linux or Mac OS X, build of ``rst2pdf`` may fail with::
+
+    Traceback (most recent call last):
+      File "setup.py", line 7, in <module>
+        from setuptools import setup, find_packages
+
+  If so, you should first install the Python library ``setuptools``. E.g.,
+
+  .. code-block:: bash
+
+      $ sudo apt-get install python-setuptools
 
 - Sphinx installation may report as having completed successfully although it actually failed when an old version of Python is used (< 2.4).
+
+- With FAL (TYPO3 6.x) only LocalStorage has been implemented and tested, meaning code will need to be adapted in order to deal with other types of remote storage.
 
 .. note::
 	Please use the extension's bug tracker on Forge to report bugs: https://forge.typo3.org/projects/extension-sphinx/issues

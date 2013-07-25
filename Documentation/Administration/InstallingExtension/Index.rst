@@ -41,6 +41,8 @@ Select a version of Sphinx you would like to use and start the import process wi
 
 .. index::
 	single: Install; Log
+	single: Install; Python Imaging Library
+	single: Install; rst2pdf
 	single: Install; PyYAML
 	single: Install; TYPO3 ReST Tools
 
@@ -82,21 +84,6 @@ Finally, the "remove" button removes both the sources and the corresponding vers
 
 .. important::
 	This button *WILL NOT* remove sources of the TYPO3-related commands, the PyYAML library, the Python Imaging Library or rst2pdf.
-
-Known problems
-~~~~~~~~~~~~~~
-
-It is known that build of ``rst2pdf`` may fail with::
-
-	Traceback (most recent call last):
-	  File "setup.py", line 7, in <module>
-	    from setuptools import setup, find_packages
-
-In such case, you should first install the Python library ``setuptools``. E.g.,
-
-.. code-block:: bash
-
-	$ sudo apt-get install python-setuptools
 
 
 Choosing the version of Sphinx to use and how to render PDF
