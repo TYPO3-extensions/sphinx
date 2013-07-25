@@ -402,6 +402,7 @@ EOT;
 
 		// Compatibility with Windows platform
 		$globalSettingsFilename = str_replace('/', DIRECTORY_SEPARATOR, $globalSettingsFilename);
+		$isPatched = FALSE;
 
 		if (TYPO3_OS !== 'WIN' && \Causal\Sphinx\Utility\Setup::hasLibrary('rst2pdf', $sphinxVersion)) {
 			if (is_file($globalSettingsFilename) && is_writable($globalSettingsFilename)) {
@@ -421,9 +422,14 @@ EOT;
 						}
 						$buffer[] = $globalSettingsLines[$i];
 					}
-					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
+					$isPatched = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
 				}
 			}
+		}
+
+		if (!$isPatched) {
+			$output[] = '[WARNING] Could not patch file "' . $globalSettingsFilename .
+				'". rst2pdf may fail to run properly with error message "Builder name pdf not registered".';
 		}
 
 		$setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
