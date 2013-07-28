@@ -48,7 +48,7 @@ class Setup {
 	 *
 	 * @return array Error messages, if any
 	 */
-	public static function createLibraryDirectories() {
+	static public function createLibraryDirectories() {
 		$errors = array();
 
 		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('python')) {
@@ -89,7 +89,7 @@ class Setup {
 	 * @param string $version Version name (e.g., 1.0.0)
 	 * @return boolean
 	 */
-	public static function hasSphinxSources($version) {
+	static public function hasSphinxSources($version) {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$setupFile = $sphinxSourcesPath . $version . '/setup.py';
 		return is_file($setupFile);
@@ -105,7 +105,7 @@ class Setup {
 	 * @throws \Exception
 	 * @see https://bitbucket.org/birkenfeld/sphinx/
 	 */
-	public static function downloadSphinxSources($version, $url, array &$output = NULL) {
+	static public function downloadSphinxSources($version, $url, array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, PATH_site . 'typo3temp/');
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
@@ -161,7 +161,7 @@ class Setup {
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
-	public static function buildSphinx($version, array &$output = NULL) {
+	static public function buildSphinx($version, array &$output = NULL) {
 		$success = TRUE;
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
@@ -264,7 +264,7 @@ EOT;
 	 * @param NULL|array $output
 	 * @return void
 	 */
-	public static function removeSphinx($version, array &$output = NULL) {
+	static public function removeSphinx($version, array &$output = NULL) {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
@@ -305,7 +305,7 @@ EOT;
 	 *
 	 * @return boolean
 	 */
-	public static function hasRestTools() {
+	static public function hasRestTools() {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
 		return is_file($setupFile);
@@ -319,7 +319,7 @@ EOT;
 	 * @throws \Exception
 	 * @see http://forge.typo3.org/projects/tools-rest
 	 */
-	public static function downloadRestTools(array &$output = NULL) {
+	static public function downloadRestTools(array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, PATH_site . 'typo3temp/');
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
@@ -378,7 +378,7 @@ EOT;
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
-	public static function buildRestTools($sphinxVersion, array &$output = NULL) {
+	static public function buildRestTools($sphinxVersion, array &$output = NULL) {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
@@ -458,7 +458,7 @@ EOT;
 	 *
 	 * @return boolean
 	 */
-	public static function hasPyYaml() {
+	static public function hasPyYaml() {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$setupFile = $sphinxSourcesPath . 'PyYAML/setup.py';
 		return is_file($setupFile);
@@ -472,7 +472,7 @@ EOT;
 	 * @throws \Exception
 	 * @see http://pyyaml.org/
 	 */
-	public static function downloadPyYaml(array &$output = NULL) {
+	static public function downloadPyYaml(array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = PATH_site . 'typo3temp/';
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
@@ -518,7 +518,7 @@ EOT;
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
-	public static function buildPyYaml($sphinxVersion, array &$output = NULL) {
+	static public function buildPyYaml($sphinxVersion, array &$output = NULL) {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
@@ -558,7 +558,7 @@ EOT;
 	 *
 	 * @return boolean
 	 */
-	public static function hasPIL() {
+	static public function hasPIL() {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$setupFile = $sphinxSourcesPath . 'Imaging/setup.py';
 		return is_file($setupFile);
@@ -572,7 +572,7 @@ EOT;
 	 * @throws \Exception
 	 * @see https://pypi.python.org/pypi/PIL
 	 */
-	public static function downloadPIL(array &$output = NULL) {
+	static public function downloadPIL(array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = PATH_site . 'typo3temp/';
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
@@ -618,7 +618,7 @@ EOT;
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
-	public static function buildPIL($sphinxVersion, array &$output = NULL) {
+	static public function buildPIL($sphinxVersion, array &$output = NULL) {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
@@ -658,7 +658,7 @@ EOT;
 	 *
 	 * @return boolean
 	 */
-	public static function hasRst2Pdf() {
+	static public function hasRst2Pdf() {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$setupFile = $sphinxSourcesPath . 'rst2pdf/setup.py';
 		return is_file($setupFile);
@@ -672,7 +672,7 @@ EOT;
 	 * @throws \Exception
 	 * @see http://rst2pdf.ralsina.com.ar/
 	 */
-	public static function downloadRst2Pdf(array &$output = NULL) {
+	static public function downloadRst2Pdf(array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = PATH_site . 'typo3temp/';
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
@@ -718,7 +718,7 @@ EOT;
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
-	public static function buildRst2Pdf($sphinxVersion, array &$output = NULL) {
+	static public function buildRst2Pdf($sphinxVersion, array &$output = NULL) {
 		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
@@ -760,7 +760,7 @@ EOT;
 	 * @param string $sphinxVersion The Sphinx version to check for
 	 * @return boolean
 	 */
-	public static function hasLibrary($library, $sphinxVersion) {
+	static public function hasLibrary($library, $sphinxVersion) {
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -781,7 +781,7 @@ EOT;
 	 *
 	 * @return array
 	 */
-	public static function getSphinxAvailableVersions() {
+	static public function getSphinxAvailableVersions() {
 		$sphinxUrl = 'https://bitbucket.org/birkenfeld/sphinx/downloads';
 
 		$cacheFilename = PATH_site . 'typo3temp' . DIRECTORY_SEPARATOR . self::$extKey . '.' . md5($sphinxUrl) . '.html';
@@ -818,7 +818,7 @@ EOT;
 	 *
 	 * @return array
 	 */
-	public static function getSphinxLocalVersions() {
+	static public function getSphinxLocalVersions() {
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx';
 		$versions = array();
 		if (is_dir($sphinxPath)) {
@@ -931,7 +931,7 @@ EOT;
 	 *
 	 * @return void
 	 */
-	public static function clearLog() {
+	static public function clearLog() {
 		self::$log = array();
 	}
 
@@ -941,7 +941,7 @@ EOT;
 	 * @param string $filename If empty, will return the complete log of operations instead of writing it to a file
 	 * @return void|string
 	 */
-	public static function dumpLog($filename = '') {
+	static public function dumpLog($filename = '') {
 		$content = implode(LF, self::$log);
 		if ($filename) {
 			$directory = dirname($filename);

@@ -49,7 +49,7 @@ class GeneralUtility {
 	 * @param string $extensionKey
 	 * @return array
 	 */
-	public static function getExtensionMetaData($extensionKey) {
+	static public function getExtensionMetaData($extensionKey) {
 		$_EXTKEY = $extensionKey;
 		$EM_CONF = array();
 		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
@@ -75,7 +75,7 @@ class GeneralUtility {
 	 * @param string $extensionKey
 	 * @return integer DOCUMENTATION_TYPE_* constant
 	 */
-	public static function getDocumentationType($extensionKey) {
+	static public function getDocumentationType($extensionKey) {
 		$supportedDocuments = array(
 			'Documentation/Index.rst' => self::DOCUMENTATION_TYPE_STANDARD,
 			'README.rst'              => self::DOCUMENTATION_TYPE_README,
@@ -98,7 +98,7 @@ class GeneralUtility {
 	 * @return string
 	 * @see https://forge.typo3.org/issues/48771
 	 */
-	public static function postProcessPropertyTables($contents) {
+	static public function postProcessPropertyTables($contents) {
 		$contents = preg_replace_callback('#<div class="table-row container">.<dl class="docutils">(.*?)</dl>.</div>#s', function ($tableRow) {
 			$cellCounter = 0;
 			$propertyTable = preg_replace_callback('#<dt>(.*?)</dt>.<dd>(.*?)</dd>#s', function ($tableCell) use (&$cellCounter) {
@@ -151,7 +151,7 @@ HTML;
 	 * @return array
 	 * @throws \RuntimeException
 	 */
-	public static function getIntersphinxReferences($extensionKey) {
+	static public function getIntersphinxReferences($extensionKey) {
 		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc')) {
 			throw new \RuntimeException('Extension restdoc is not loaded', 1370809705);
 		}
@@ -194,7 +194,7 @@ HTML;
 	 * @param boolean $force
 	 * @return string The documentation URL
 	 */
-	public static function generateDocumentation($extensionKey, $format = 'html', $force = FALSE) {
+	static public function generateDocumentation($extensionKey, $format = 'html', $force = FALSE) {
 		$documentationType = self::getDocumentationType($extensionKey);
 		if ($documentationType === self::DOCUMENTATION_TYPE_UNKNOWN) {
 			$filename = 'typo3temp/tx_' . self::$extKey . '/1369679343.log';
@@ -324,7 +324,7 @@ HTML;
 	 * @param string $target
 	 * @return void
 	 */
-	public static function recursiveCopy($source, $target) {
+	static public function recursiveCopy($source, $target) {
 		$target = rtrim($target, '/');
 		$iterator = new \RecursiveIteratorIterator(
 			new \RecursiveDirectoryIterator($source,
@@ -351,7 +351,7 @@ HTML;
 	 * @param string $value
 	 * @return string
 	 */
-	public static function getExportCommand($variable, $value) {
+	static public function getExportCommand($variable, $value) {
 		if (TYPO3_OS === 'WIN') {
 			$pattern = 'SET %s=%s';
 			$value = preg_replace('/\$' . $variable . '([^A-Za-z]|$)/', '%' . $variable . '%', $value);

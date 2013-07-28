@@ -52,7 +52,7 @@ class SphinxQuickstart {
 	 * @param string $project Name for LaTeX, man pages, ... output, defaults to $projectName
 	 * @return boolean
 	 */
-	public static function createProject($pathRoot, $projectName, $author, $separateSourceBuild = FALSE, $template = 'BlankProject', $version = '1.0', $release = '1.0.0', $project = '') {
+	static public function createProject($pathRoot, $projectName, $author, $separateSourceBuild = FALSE, $template = 'BlankProject', $version = '1.0', $release = '1.0.0', $project = '') {
 		$projectName = str_replace("'", ' ', $projectName);
 		$author = str_replace("'", ' ', $author);
 		if (empty($project)) {

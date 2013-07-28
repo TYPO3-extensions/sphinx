@@ -40,14 +40,14 @@ class SphinxBuilder {
 	protected static $extKey = 'sphinx';
 
 	/** @var boolean */
-	public static $htmlConsole = TRUE;
+	static public $htmlConsole = TRUE;
 
 	/**
 	 * Returns TRUE if the version of Sphinx used for building documentation is system.
 	 *
 	 * @return boolean
 	 */
-	public static function isSystemVersion() {
+	static public function isSystemVersion() {
 		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
 		return $configuration['version'] === 'SYSTEM';
 	}
@@ -57,7 +57,7 @@ class SphinxBuilder {
 	 *
 	 * @return string
 	 */
-	public static function getSphinxVersion() {
+	static public function getSphinxVersion() {
 		$version = NULL;
 		if (self::isSystemVersion()) {
 			$sphinxBuilder = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build'));
@@ -85,7 +85,7 @@ class SphinxBuilder {
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -149,7 +149,7 @@ class SphinxBuilder {
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static public function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -210,7 +210,7 @@ class SphinxBuilder {
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static public function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -284,7 +284,7 @@ class SphinxBuilder {
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	public static function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static public function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
 
 		switch ($configuration['pdf_builder']) {
@@ -468,7 +468,7 @@ class SphinxBuilder {
 	 * @return string Output of the check process (if succeeded)
 	 * @throws \RuntimeException if check process failed
 	 */
-	public static function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static public function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {

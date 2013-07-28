@@ -43,7 +43,7 @@ class Configuration {
 	 * @param string $configurationFilename
 	 * @return array
 	 */
-	public static function load($configurationFilename) {
+	static public function load($configurationFilename) {
 		$contents = file_get_contents($configurationFilename);
 		$properties = array();
 
