@@ -147,6 +147,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$isInstalled = GeneralUtility::inArray($localVersions, $version['name']);
 			$hasSources = Setup::hasSphinxSources($version['name']);
 			$hasLibraries = Setup::hasPyYaml()
+				&& Setup::hasPygments()
 				&& Setup::hasRestTools();
 			if (TYPO3_OS !== 'WIN') {
 				$hasLibraries &= Setup::hasPIL();
@@ -200,6 +201,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (!Setup::hasRestTools()) {
 			$success &= Setup::downloadRestTools($output);
 		}
+		if (!Setup::hasPygments()) {
+			$success &= Setup::downloadPygments($output);
+		}
 
 		return $success;
 	}
@@ -226,6 +230,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				}
 				if (Setup::hasPyYaml()) {
 					$success &= Setup::buildPyYaml($version, $output);
+				}
+				if (Setup::hasPygments()) {
+					$success &= Setup::buildPygments($version, $output);
 				}
 				if (Setup::hasRestTools()) {
 					$success &= Setup::buildRestTools($version, $output);

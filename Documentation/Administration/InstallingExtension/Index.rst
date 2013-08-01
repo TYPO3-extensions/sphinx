@@ -44,6 +44,7 @@ Select a version of Sphinx you would like to use and start the import process wi
 	single: Install; Python Imaging Library
 	single: Install; rst2pdf
 	single: Install; PyYAML
+	single: Install; Pygments
 	single: Install; TYPO3 ReST Tools
 
 Everything should work out-of-the-box. Possible problems will be reported as Flash messages and a log of all operations is stored as ``typo3temp/tx_sphinx/IMPORT-<date>.log``. The general process of importing Sphinx is as follows:
@@ -59,6 +60,8 @@ Everything should work out-of-the-box. Possible problems will be reported as Fla
 #. *[Not on MS Windows]* Install ``rst2pdf`` (http://rst2pdf.ralsina.com.ar/), as a simple way of building PDF
 
 #. Install PyYAML library (http://pyyaml.org/wiki/PyYAML), needed for building TYPO3 documentation
+
+#. Install Pygments library (http://pygments.org/), and configure TypoScript highlighting
 
 #. Install TYPO3-related commands provided by the TYPO3 Documentation Team (TYPO3 ReST tools)
 

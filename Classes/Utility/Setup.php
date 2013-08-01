@@ -94,7 +94,7 @@ class Setup {
 	 * @return boolean
 	 */
 	static public function hasSphinxSources($version) {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcesPath . $version . '/setup.py';
 		return is_file($setupFile);
 	}
@@ -111,11 +111,8 @@ class Setup {
 	 */
 	static public function downloadSphinxSources($version, $url, array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, PATH_site . 'typo3temp/');
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-
-		// Compatibility with Windows platform
-		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
+		$tempPath = self::getTemporaryPath();
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
 
 		$zipFilename = $tempPath . $version . '.zip';
 		self::$log[] = '[INFO] Fetching ' . $url;
@@ -167,12 +164,8 @@ class Setup {
 	 */
 	static public function buildSphinx($version, array &$output = NULL) {
 		$success = TRUE;
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
-
-		// Compatibility with Windows platform
-		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
-		$sphinxPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxPath);
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxPath = self::getSphinxPath();
 
 		$pythonHome = NULL;
 		$pythonLib = NULL;
@@ -269,8 +262,8 @@ EOT;
 	 * @return void
 	 */
 	static public function removeSphinx($version, array &$output = NULL) {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxPath = self::getSphinxPath();
 
 		if (is_dir($sphinxSourcesPath . $version)) {
 			if (GeneralUtility::rmdir($sphinxSourcesPath . $version, TRUE)) {
@@ -310,7 +303,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasRestTools() {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
 		return is_file($setupFile);
 	}
@@ -325,8 +318,8 @@ EOT;
 	 */
 	static public function downloadRestTools(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, PATH_site . 'typo3temp/');
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$tempPath = self::getTemporaryPath();
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
 
 		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -380,8 +373,8 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildRestTools($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxPath = self::getSphinxPath();
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -460,7 +453,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasPyYaml() {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcesPath . 'PyYAML/setup.py';
 		return is_file($setupFile);
 	}
@@ -475,12 +468,8 @@ EOT;
 	 */
 	static public function downloadPyYaml(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = PATH_site . 'typo3temp/';
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-
-		// Compatibility with Windows platform
-		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, $tempPath);
-		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
+		$tempPath = self::getTemporaryPath();
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
 
 		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -520,14 +509,13 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildPyYaml($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxPath = self::getSphinxPath();
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
 
 		// Compatibility with Windows platform
-		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
 		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
@@ -560,7 +548,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasPIL() {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcesPath . 'Imaging/setup.py';
 		return is_file($setupFile);
 	}
@@ -575,12 +563,8 @@ EOT;
 	 */
 	static public function downloadPIL(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = PATH_site . 'typo3temp/';
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-
-		// Compatibility with Windows platform
-		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, $tempPath);
-		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
+		$tempPath = self::getTemporaryPath();
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
 
 		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -620,14 +604,13 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildPIL($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxPath = self::getSphinxPath();
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
 
 		// Compatibility with Windows platform
-		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
 		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
@@ -655,12 +638,145 @@ EOT;
 	}
 
 	/**
+	 * Returns TRUE if the source files of Pygments are available locally.
+	 *
+	 * @return boolean
+	 */
+	static public function hasPygments() {
+		$sphinxSourcePath = self::getSphinxSourcesPath();
+		$setupFile = $sphinxSourcePath . 'Pygments/setup.py';
+		return is_file($setupFile);
+	}
+
+	/**
+	 * Downloads the source files of Pygments.
+	 *
+	 * @param NULL|array $output
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 * @throws \Exception
+	 * @see http://pygments.org/
+	 */
+	static public function downloadPygments() {
+		$success = TRUE;
+		$tempPath = self::getTemporaryPath();
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
+
+		if (!CommandUtility::checkCommand('tar')) {
+			$success = FALSE;
+			$output[] = '[WARNING] Could not find command tar. Pygments was not installed.';
+		} else {
+			$url = 'https://bitbucket.org/birkenfeld/pygments-main/get/1.6.tar.gz';
+			$archiveFilename = $tempPath . 'pygments-1.6.tar.gz';
+			$archiveContent = GeneralUtility::getUrl($url);
+			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+				$output[] = '[INFO] Pygments 1.6 has been downloaded.';
+
+				$targetPath = $sphinxSourcesPath . 'Pygments';
+
+				// Unpack Pygments archive
+				$out = array();
+				if (self::unarchive($archiveFilename, $targetPath, 'birkenfeld-pygments-main-', $out)) {
+					$output[] = '[INFO] Pygments has been unpacked.';
+				} else {
+					$success = FALSE;
+					$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
+				}
+			} else {
+				$success = FALSE;
+				$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
+			}
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Builds and installs Pygments locally.
+	 *
+	 * @param string $sphinxVersion The Sphinx version to build Pygments for
+	 * @param NULL|array $output
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 * @throws \Exception
+	 */
+	static public function buildPygments($sphinxVersion, array &$output = NULL) {
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxPath = self::getSphinxPath();
+
+		$pythonHome = $sphinxPath . $sphinxVersion;
+		$pythonLib = $pythonHome . '/lib/python';
+
+		// Compatibility with Windows platform
+		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
+		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
+
+		if (!is_dir($pythonLib)) {
+			$success = FALSE;
+			$output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
+			return $success;
+		}
+
+		$setupFile = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . 'setup.py';
+		if (is_file($setupFile)) {
+			self::configureTyposcriptForPygments($output);
+
+			$success = self::buildWithPython(
+				'Pygments',
+				$setupFile,
+				$pythonHome,
+				$pythonLib,
+				$output
+			);
+		} else {
+			$success = FALSE;
+			$output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Configures TypoScript support for Pygments.
+	 *
+	 * @param NULL|array $output
+	 * @return void
+	 */
+	static private function configureTyposcriptForPygments(array &$output = NULL) {
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$lexersPath = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . 'pygments' . DIRECTORY_SEPARATOR . 'lexers' . DIRECTORY_SEPARATOR;
+
+		$url = 'https://git.typo3.org/Documentation/RestTools.git/blob_plain/HEAD:/ExtendingPygmentsForTYPO3/_incoming/typoscript.py';
+		$libraryFilename = $lexersPath . 'typoscript.py';
+		$libraryContent = GeneralUtility::getUrl($url);
+
+		if ($libraryContent) {
+			if (!is_file($libraryFilename) || md5_file($libraryFilename) !== md5($libraryContent)) {
+				if (GeneralUtility::writeFile($libraryFilename, $libraryContent)) {
+					$output[] = '[INFO] TypoScript library for Pygments successfully downloaded/updated.';
+				}
+			}
+			if (is_file($libraryFilename)) {
+				// Update the list of Pygments lexers
+				$python = escapeshellarg(CommandUtility::getCommand('python'));
+				$cmd = 'cd ' . escapeshellarg($lexersPath) . ' && ' .
+					$python . ' _mapping.py 2>&1';
+				$out = array();
+				self::exec($cmd, $out, $ret);
+				if ($ret === 0) {
+					$output[] = '[INFO] TypoScript library successfully registered with Pygments.';
+				} else {
+					$output[] = '[WARNING] Could not install TypoScript library for Pygments.';
+				}
+			}
+		}
+	}
+
+	/**
 	 * Returns TRUE if the source files of rst2pdf are available locally.
 	 *
 	 * @return boolean
 	 */
 	static public function hasRst2Pdf() {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcesPath . 'rst2pdf/setup.py';
 		return is_file($setupFile);
 	}
@@ -675,12 +791,8 @@ EOT;
 	 */
 	static public function downloadRst2Pdf(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = PATH_site . 'typo3temp/';
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-
-		// Compatibility with Windows platform
-		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, $tempPath);
-		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
+		$tempPath = self::getTemporaryPath();
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
 
 		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -720,14 +832,13 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildRst2Pdf($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxPath = self::getSphinxPath();
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
 
 		// Compatibility with Windows platform
-		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
 		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
@@ -762,7 +873,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasLibrary($library, $sphinxVersion) {
-		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxPath = self::getSphinxPath();
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
 
@@ -785,7 +896,7 @@ EOT;
 	static public function getSphinxAvailableVersions() {
 		$sphinxUrl = 'https://bitbucket.org/birkenfeld/sphinx/downloads';
 
-		$cacheFilename = PATH_site . 'typo3temp' . DIRECTORY_SEPARATOR . self::$extKey . '.' . md5($sphinxUrl) . '.html';
+		$cacheFilename = self::getTemporaryPath() . self::$extKey . '.' . md5($sphinxUrl) . '.html';
 		if (!file_exists($cacheFilename) || filemtime($cacheFilename) < (time() - 86400) || filesize($cacheFilename) == 0) {
 			$html = GeneralUtility::getURL($sphinxUrl);
 			GeneralUtility::writeFile($cacheFilename, $html);
@@ -820,7 +931,7 @@ EOT;
 	 * @return array
 	 */
 	static public function getSphinxLocalVersions() {
-		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx';
+		$sphinxPath = self::getSphinxPath();
 		$versions = array();
 		if (is_dir($sphinxPath)) {
 			$versions = GeneralUtility::get_dirs($sphinxPath);
@@ -951,6 +1062,45 @@ EOT;
 		} else {
 			return $content;
 		}
+	}
+
+	/**
+	 * Returns the path to Sphinx sources base directory.
+	 *
+	 * @return string
+	 */
+	static private function getSphinxSourcesPath() {
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		// Compatibility with Windows platform
+		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
+
+		return $sphinxSourcesPath;
+	}
+
+	/**
+	 * Returns the path to Sphinx binaries.
+	 *
+	 * @return string
+	 */
+	static private function getSphinxPath() {
+		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		// Compatibility with Windows platform
+		$sphinxPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxPath);
+
+		return $sphinxPath;
+	}
+
+	/**
+	 * Returns the path to the website's temporary directory.
+	 *
+	 * @return string
+	 */
+	static private function getTemporaryPath() {
+		$temporaryPath = PATH_site . 'typo3temp/';
+		// Compatibility with Windows platform
+		$temporaryPath = str_replace('/', DIRECTORY_SEPARATOR, $temporaryPath);
+
+		return $temporaryPath;
 	}
 
 }
