@@ -15,6 +15,13 @@ Known problems
 	single: Error Message; ImportError: No module named setuptools
 	single: Error Message; Builder name pdf not registered
 
+- A few Linux distributions (such as Fedora) do not provide ``docutils`` or the header files and libraries to develop Python
+  extensions. With a vanilla Fedora, you may install missing components with:
+
+  .. code-block:: bash
+
+      $ sudo yum install python python-docutils python-devel
+
 - Typically on Ubuntu Linux or Mac OS X, build of ``rst2pdf`` may fail with::
 
     Traceback (most recent call last):

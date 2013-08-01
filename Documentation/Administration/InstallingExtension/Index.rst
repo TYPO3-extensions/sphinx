@@ -81,7 +81,7 @@ The "download" button fetches the corresponding sources of Sphinx, the TYPO3-rel
 		$ sudo rm -rf RestTools
 		$ git clone git://git.typo3.org/Documentation/RestTools.git
 
-The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands, PyYAML, Python Imaging Library and ``rst2pdf``.
+The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands, PyYAML, Pygments, Python Imaging Library and ``rst2pdf``.
 
 Finally, the "remove" button removes both the sources and the corresponding version of the Sphinx environment.
 
