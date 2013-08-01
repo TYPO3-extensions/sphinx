@@ -168,12 +168,14 @@ class SphinxQuickstart {
 		if (!is_dir($source)) {
 			throw new \RuntimeException('Template directory was not found: ' . $source, 1367044890);
 		}
+		/** @var \RecursiveDirectoryIterator $iterator */
 		$iterator = new \RecursiveIteratorIterator(
 			new \RecursiveDirectoryIterator($source,
 			\RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::SELF_FIRST
 		);
 		foreach ($iterator as $item) {
+			/** @var \splFileInfo $item */
 			if ($item->isDir()) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($config['path'] . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
 			} else {

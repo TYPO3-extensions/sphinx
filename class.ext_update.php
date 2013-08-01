@@ -25,6 +25,9 @@
 
 $BACK_PATH = $GLOBALS['BACK_PATH'] . TYPO3_mainDir;
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \Causal\Sphinx\Utility\Setup;
+
 /**
  * Class to be used to initialize the Sphinx Python Documentation Generator locally.
  *
@@ -60,7 +63,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function main() {
 		$out = array();
 
-		$errors = \Causal\Sphinx\Utility\Setup::createLibraryDirectories();
+		$errors = Setup::createLibraryDirectories();
 		if (count($errors) > 0) {
 			foreach ($errors as $error) {
 				$out[] = $this->formatError($error);
@@ -69,16 +72,16 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// Fetch the list of official versions of Sphinx
-		$availableVersions = \Causal\Sphinx\Utility\Setup::getSphinxAvailableVersions();
+		$availableVersions = Setup::getSphinxAvailableVersions();
 		// Load the list of locally available versions of Sphinx
-		$localVersions = \Causal\Sphinx\Utility\Setup::getSphinxLocalVersions();
+		$localVersions = Setup::getSphinxLocalVersions();
 
 		if (count($availableVersions) == 0) {
 			$out[] = $this->formatWarning('Could not find any version of Sphinx. Please check if you are currently offline and if PHP has proper OpenSSL support.');
 		}
 
 		// Handle form operation, if needed
-		$operation = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('operation');
+		$operation = GeneralUtility::_POST('operation');
 		if ($operation) {
 			list($action, $version) = explode('-', $operation, 2);
 
@@ -104,13 +107,13 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 				foreach ($messages as $message) {
 					switch (TRUE) {
-						case \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($message, '[INFO] '):
+						case GeneralUtility::isFirstPartOfStr($message, '[INFO] '):
 							$out[] = $this->formatInformation(substr($message, 7));
 							break;
-						case \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($message, '[WARNING] '):
+						case GeneralUtility::isFirstPartOfStr($message, '[WARNING] '):
 							$out[] = $this->formatWarning(substr($message, 10));
 							break;
-						case \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($message, '[ERROR] '):
+						case GeneralUtility::isFirstPartOfStr($message, '[ERROR] '):
 							$out[] = $this->formatError(substr($message, 8));
 							break;
 						default:
@@ -120,16 +123,16 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				}
 
 				$logFilename = PATH_site . 'typo3temp/tx_sphinx/' . $action . '-' . date('YmdHis') . '.log';
-				\Causal\Sphinx\Utility\Setup::dumpLog($logFilename);
+				Setup::dumpLog($logFilename);
 
 				$out[] = '<p><a href="../' . substr($logFilename, strlen(PATH_site)) . '" target="_blank">Click here</a> to show the complete log.</p>';
 
 				// Reload the list of locally available versions of Sphinx
-				$localVersions = \Causal\Sphinx\Utility\Setup::getSphinxLocalVersions();
+				$localVersions = Setup::getSphinxLocalVersions();
 			}
 		}
 
-		$out[] = '<form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '" method="post">';
+		$out[] = '<form action="' . GeneralUtility::linkThisScript() . '" method="post">';
 		$out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
 
 		$out[] = '<table class="t3-table">';
@@ -141,8 +144,14 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		$i = 0;
 		foreach ($availableVersions as $version) {
-			$isInstalled = \TYPO3\CMS\Core\Utility\GeneralUtility::inArray($localVersions, $version['name']);
-			$hasSources = \Causal\Sphinx\Utility\Setup::hasSphinxSources($version['name']);
+			$isInstalled = GeneralUtility::inArray($localVersions, $version['name']);
+			$hasSources = Setup::hasSphinxSources($version['name']);
+			$hasLibraries = Setup::hasPyYaml()
+				&& Setup::hasRestTools();
+			if (TYPO3_OS !== 'WIN') {
+				$hasLibraries &= Setup::hasPIL();
+				$hasLibraries &= Setup::hasRst2Pdf();
+			}
 
 			$out[] = '<tr class="' . (++$i % 2 == 0 ? 't3-row-even' : 't3-row-odd') . '" style="padding:5px">';
 			$out[] = '<td>' . ($isInstalled ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '</td>';
@@ -152,7 +161,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 			$out[] = '<td><button name="operation" value="IMPORT-' . htmlspecialchars($version['name']) . '"' . ($isInstalled ? ' disabled="disabled"' : '') . '>import</button></td>';
 			$out[] = '<td>';
-			$out[] = '<button name="operation" value="DOWNLOAD-' . htmlspecialchars($version['name']) . '"' . ($hasSources ? ' disabled="disabled"' : '') . '>download</button>';
+			$out[] = '<button name="operation" value="DOWNLOAD-' . htmlspecialchars($version['name']) . '"' . ($hasSources && $hasLibraries ? ' disabled="disabled"' : '') . '>download</button>';
 			$out[] = '<button name="operation" value="BUILD-' . htmlspecialchars($version['name']) . '"' . (!$hasSources ? ' disabled="disabled"' : '') . '>build</button>';
 			$out[] = '<button name="operation" value="REMOVE-' . htmlspecialchars($version['name']) . '"' . (!($hasSources || $isInstalled) ? ' disabled="disabled"' : '') . '>remove</button>';
 			$out[] = '</td>';
@@ -176,20 +185,20 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$version = $data['name'];
 		$url = 'https://bitbucket.org' . $data['url'];
 
-		if (!\Causal\Sphinx\Utility\Setup::hasSphinxSources($version)) {
-			$success &= \Causal\Sphinx\Utility\Setup::downloadSphinxSources($version, $url, $output);
+		if (!Setup::hasSphinxSources($version)) {
+			$success &= Setup::downloadSphinxSources($version, $url, $output);
 		}
-		if (TYPO3_OS !== 'WIN' && !\Causal\Sphinx\Utility\Setup::hasPIL()) {
-			$success &= \Causal\Sphinx\Utility\Setup::downloadPIL($output);
+		if (TYPO3_OS !== 'WIN' && !Setup::hasPIL()) {
+			$success &= Setup::downloadPIL($output);
 		}
-		if (TYPO3_OS !== 'WIN' && !\Causal\Sphinx\Utility\Setup::hasRst2Pdf()) {
-			$success &= \Causal\Sphinx\Utility\Setup::downloadRst2Pdf($output);
+		if (TYPO3_OS !== 'WIN' && !Setup::hasRst2Pdf()) {
+			$success &= Setup::downloadRst2Pdf($output);
 		}
-		if (!\Causal\Sphinx\Utility\Setup::hasPyYaml()) {
-			$success &= \Causal\Sphinx\Utility\Setup::downloadPyYaml($output);
+		if (!Setup::hasPyYaml()) {
+			$success &= Setup::downloadPyYaml($output);
 		}
-		if (!\Causal\Sphinx\Utility\Setup::hasRestTools()) {
-			$success &= \Causal\Sphinx\Utility\Setup::downloadRestTools($output);
+		if (!Setup::hasRestTools()) {
+			$success &= Setup::downloadRestTools($output);
 		}
 
 		return $success;
@@ -206,20 +215,20 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$success = FALSE;
 		$version = $data['name'];
 
-		if (\Causal\Sphinx\Utility\Setup::hasSphinxSources($version)) {
-			$success = \Causal\Sphinx\Utility\Setup::buildSphinx($version, $output);
+		if (Setup::hasSphinxSources($version)) {
+			$success = Setup::buildSphinx($version, $output);
 			if ($success) {
-				if (TYPO3_OS !== 'WIN' && \Causal\Sphinx\Utility\Setup::hasPIL()) {
-					$success &= \Causal\Sphinx\Utility\Setup::buildPIL($version, $output);
+				if (TYPO3_OS !== 'WIN' && Setup::hasPIL()) {
+					$success &= Setup::buildPIL($version, $output);
 				}
-				if (TYPO3_OS !== 'WIN' && \Causal\Sphinx\Utility\Setup::hasRst2Pdf()) {
-					$success &= \Causal\Sphinx\Utility\Setup::buildRst2Pdf($version, $output);
+				if (TYPO3_OS !== 'WIN' && Setup::hasRst2Pdf()) {
+					$success &= Setup::buildRst2Pdf($version, $output);
 				}
-				if (\Causal\Sphinx\Utility\Setup::hasPyYaml()) {
-					$success &= \Causal\Sphinx\Utility\Setup::buildPyYaml($version, $output);
+				if (Setup::hasPyYaml()) {
+					$success &= Setup::buildPyYaml($version, $output);
 				}
-				if (\Causal\Sphinx\Utility\Setup::hasRestTools()) {
-					$success &= \Causal\Sphinx\Utility\Setup::buildRestTools($version, $output);
+				if (Setup::hasRestTools()) {
+					$success &= Setup::buildRestTools($version, $output);
 				}
 			}
 		}
@@ -236,7 +245,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function removeSphinx(array $data, array &$output) {
 		$version = $data['name'];
-		\Causal\Sphinx\Utility\Setup::removeSphinx($version, $output);
+		Setup::removeSphinx($version, $output);
 	}
 
 	/**

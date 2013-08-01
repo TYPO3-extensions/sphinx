@@ -27,6 +27,9 @@ namespace Causal\Sphinx\Controller;
 $GLOBALS['LANG']->includeLLFile('EXT:sphinx/Resources/Private/Language/locallang.xlf');
 $GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissions and exits if the users has no permission for entry.
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \Causal\Sphinx\Utility\SphinxBuilder;
+
 /**
  * Module 'Sphinx Console' for the 'sphinx' extension.
  *
@@ -69,13 +72,13 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function init() {
 		parent::init();
 
-		$this->id = ($combinedIdentifier = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->id = ($combinedIdentifier = GeneralUtility::_GP('id'));
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
 		try {
 			if ($combinedIdentifier) {
 				/** @var $fileFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
-				$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+				$fileFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
 				// Disallow the rendering of the processing folder (e.g. could be called manually)
 				// and all folders without any defined storage
@@ -98,7 +101,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $fileException) {
 			// Set folder object to null and throw a message later on
 			$this->folderObject = NULL;
-			$this->errorMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			$this->errorMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 				sprintf($GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE),
 					htmlspecialchars($this->id)
 				),
@@ -108,7 +111,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// File operation object:
-		$this->basicFF = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+		$this->basicFF = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
 		$this->basicFF->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 	}
 
@@ -120,16 +123,16 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function main() {
 		// Initialize doc
-		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('template');
+		$this->doc = GeneralUtility::makeInstance('template');
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Layouts/ModuleSphinx.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/Css/Backend.css';
 
 		/** @var \TYPO3\CMS\Filelist\FileList $filelist */
-		$filelist = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Filelist\FileList');
+		$filelist = GeneralUtility::makeInstance('TYPO3\CMS\Filelist\FileList');
 		$filelist->backPath = $GLOBALS['BACK_PATH'];
 
-		$filelist->clipObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$filelist->clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 		$filelist->clipObj->fileMode = 1;
 		$filelist->clipObj->initializeClipboard();
 
@@ -238,13 +241,13 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected function buildFormAction() {
 		// Handle compilation, if needed
 		$output = '';
-		$operation = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('operation');
+		$operation = GeneralUtility::_POST('operation');
 		if ($operation) {
 			$output = $this->handleCompilation($operation);
 		}
 
-		$sphinxVersion = \Causal\Sphinx\Utility\SphinxBuilder::getSphinxVersion();
-		if (\Causal\Sphinx\Utility\SphinxBuilder::isSystemVersion()) {
+		$sphinxVersion = SphinxBuilder::getSphinxVersion();
+		if (SphinxBuilder::isSystemVersion()) {
 			$sphinxVersion .= ' (system)';
 		}
 		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
@@ -285,7 +288,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		switch ($operation) {
 			case 'build_html':
 				try {
-					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildHtml(
+					$output = SphinxBuilder::buildHtml(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
@@ -307,7 +310,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							}
 						}
 					}
-					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildJson(
+					$output = SphinxBuilder::buildJson(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
@@ -325,7 +328,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				break;
 			case 'build_latex':
 				try {
-					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildLatex(
+					$output = SphinxBuilder::buildLatex(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
@@ -337,7 +340,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				break;
 			case 'build_pdf':
 				try {
-					$output = \Causal\Sphinx\Utility\SphinxBuilder::buildPdf(
+					$output = SphinxBuilder::buildPdf(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
@@ -349,7 +352,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				break;
 			case 'check_links':
 				try {
-					$output = \Causal\Sphinx\Utility\SphinxBuilder::checkLinks(
+					$output = SphinxBuilder::checkLinks(
 						$this->project['basePath'],
 						rtrim($this->project['source'], '/'),
 						rtrim($this->project['build'], '/'),
@@ -392,14 +395,14 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				'not compatible with JSON output.',
 				$this->project['conf_py']
 			);
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, 'Sphinx', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, 'Sphinx', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
 			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 			$defaultFlashMessageQueue->enqueue($flashMessage);
 
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($this->project['basePath'] . $this->project['conf_py'], $newConfiguration);
+			GeneralUtility::writeFile($this->project['basePath'] . $this->project['conf_py'], $newConfiguration);
 		}
 	}
 
@@ -439,7 +442,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->project['properties'] = $properties;
 		}
 
-		if (\Causal\Sphinx\Utility\SphinxBuilder::getSphinxVersion() === NULL) {
+		if (SphinxBuilder::getSphinxVersion() === NULL) {
 			$this->content .= <<<HTML
 <div id="typo3-messages">
 	<div class="typo3-message message-warning">
@@ -481,7 +484,7 @@ HTML;
 
 // Make instance:
 /** @var $SOBE \Causal\Sphinx\Controller\ConsoleController */
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\\Sphinx\\Controller\\ConsoleController');
+$SOBE = GeneralUtility::makeInstance('Causal\\Sphinx\\Controller\\ConsoleController');
 $SOBE->init();
 
 // Include files?

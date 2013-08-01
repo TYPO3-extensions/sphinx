@@ -24,6 +24,10 @@ namespace Causal\Sphinx\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\Utility\CommandUtility;
+
 /**
  * Sphinx environment setup.
  *
@@ -51,13 +55,13 @@ class Setup {
 	static public function createLibraryDirectories() {
 		$errors = array();
 
-		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('python')) {
+		if (!CommandUtility::checkCommand('python')) {
 			$errors[] = 'Python interpreter was not found.';
 		}
-		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('unzip')) {
+		if (!CommandUtility::checkCommand('unzip')) {
 			$errors[] = 'Unzip cannot be executed.';
 		}
-		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
+		if (!CommandUtility::checkCommand('tar')) {
 			$errors[] = 'Tar cannot be executed.';
 		}
 
@@ -66,10 +70,10 @@ class Setup {
 			'Resources/Private/sphinx/bin/',
 			'Resources/Private/sphinx-sources/',
 		);
-		$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey);
+		$basePath = ExtensionManagementUtility::extPath(self::$extKey);
 		foreach ($directories as $directory) {
 			if (!is_dir($basePath . $directory)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($basePath, $directory);
+				GeneralUtility::mkdir_deep($basePath, $directory);
 			}
 			if (is_dir($basePath . $directory)) {
 				if (!is_writable($basePath . $directory)) {
@@ -90,7 +94,7 @@ class Setup {
 	 * @return boolean
 	 */
 	static public function hasSphinxSources($version) {
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$setupFile = $sphinxSourcesPath . $version . '/setup.py';
 		return is_file($setupFile);
 	}
@@ -108,15 +112,15 @@ class Setup {
 	static public function downloadSphinxSources($version, $url, array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, PATH_site . 'typo3temp/');
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 
 		// Compatibility with Windows platform
 		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
 		$zipFilename = $tempPath . $version . '.zip';
 		self::$log[] = '[INFO] Fetching ' . $url;
-		$zipContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
-		if ($zipContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($zipFilename, $zipContent)) {
+		$zipContent = GeneralUtility::getUrl($url);
+		if ($zipContent && GeneralUtility::writeFile($zipFilename, $zipContent)) {
 			$output[] = '[INFO] Sphinx ' . $version . ' has been downloaded.';
 			$targetPath = $sphinxSourcesPath . $version;
 
@@ -139,7 +143,7 @@ class Setup {
 						"def color_terminal():\n    if 'COLORTERM' in os.environ:\n        return True",
 						$contents
 					);
-					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($sourceFilename, $contents);
+					GeneralUtility::writeFile($sourceFilename, $contents);
 				}
 			} else {
 				$success = FALSE;
@@ -163,8 +167,8 @@ class Setup {
 	 */
 	static public function buildSphinx($version, array &$output = NULL) {
 		$success = TRUE;
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
 		// Compatibility with Windows platform
 		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
@@ -175,7 +179,7 @@ class Setup {
 		$setupFile = $sphinxSourcesPath . $version . DIRECTORY_SEPARATOR . 'setup.py';
 
 		if (is_file($setupFile)) {
-			$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
+			$python = escapeshellarg(CommandUtility::getCommand('python'));
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 				$python . ' setup.py clean 2>&1 && ' .
 				$python . ' setup.py build 2>&1';
@@ -189,8 +193,8 @@ class Setup {
 				$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
 				self::$log[] = '[INFO] Recreating directory ' . $pythonHome;
-				\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($pythonHome, TRUE);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pythonLib . DIRECTORY_SEPARATOR);
+				GeneralUtility::rmdir($pythonHome, TRUE);
+				GeneralUtility::mkdir_deep($pythonLib . DIRECTORY_SEPARATOR);
 
 				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
@@ -249,7 +253,7 @@ $scriptFilename "\$@"
 EOT;
 				}
 
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($shortcutFilename, $script);
+				GeneralUtility::writeFile($shortcutFilename, $script);
 				chmod($shortcutFilename, 0755);
 			}
 		}
@@ -265,18 +269,18 @@ EOT;
 	 * @return void
 	 */
 	static public function removeSphinx($version, array &$output = NULL) {
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
 		if (is_dir($sphinxSourcesPath . $version)) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($sphinxSourcesPath . $version, TRUE)) {
+			if (GeneralUtility::rmdir($sphinxSourcesPath . $version, TRUE)) {
 				$output[] = '[INFO] Sources of Sphinx ' . $version . ' have been deleted.';
 			} else {
 				$output[] = '[ERROR] Could not delete sources of Sphinx ' . $version . '.';
 			}
 		}
 		if (is_dir($sphinxPath . $version)) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($sphinxPath . $version, TRUE)) {
+			if (GeneralUtility::rmdir($sphinxPath . $version, TRUE)) {
 				$output[] = '[INFO] Sphinx ' . $version . ' has been deleted.';
 			} else {
 				$output[] = '[ERROR] Could not delete Sphinx ' . $version . '.';
@@ -306,7 +310,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasRestTools() {
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
 		return is_file($setupFile);
 	}
@@ -322,18 +326,15 @@ EOT;
 	static public function downloadRestTools(array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, PATH_site . 'typo3temp/');
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 
-		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
+		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
 			$output[] = '[WARNING] Could not find command tar. TYPO3-related commands were not installed.';
 		} else {
 			$url = 'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3';
 			/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
-			$http = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-				'\\TYPO3\\CMS\\Core\\Http\HttpRequest',
-				$url
-			);
+			$http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\HttpRequest', $url);
 			self::$log[] = '[INFO] Fetching ' . $url;
 			$body = $http->send()->getBody();
 			if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">snapshot</a>#', $body, $matches)) {
@@ -342,7 +343,7 @@ EOT;
 				$archiveFilename = $tempPath . 'RestTools.tar.gz';
 				self::$log[] = '[INFO] Fetching ' . $url;
 				$archiveContent = $http->setUrl($url)->send()->getBody();
-				if ($archiveContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+				if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 					$output[] = '[INFO] TYPO3 ReStructuredText Tools (' . $commit . ') have been downloaded.';
 
 					// Target path is compatible with directory structure of complete git project
@@ -379,8 +380,8 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildRestTools($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -422,7 +423,7 @@ EOT;
 						}
 						$buffer[] = $globalSettingsLines[$i];
 					}
-					$isPatched = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
+					$isPatched = GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
 				}
 			}
 		}
@@ -459,7 +460,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasPyYaml() {
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$setupFile = $sphinxSourcesPath . 'PyYAML/setup.py';
 		return is_file($setupFile);
 	}
@@ -475,20 +476,20 @@ EOT;
 	static public function downloadPyYaml(array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = PATH_site . 'typo3temp/';
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 
 		// Compatibility with Windows platform
 		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, $tempPath);
 		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
-		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
+		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
 			$output[] = '[WARNING] Could not find command tar. PyYAML was not installed.';
 		} else {
 			$url = 'http://pyyaml.org/download/pyyaml/PyYAML-3.10.tar.gz';
 			$archiveFilename = $tempPath . 'PyYAML-3.10.tar.gz';
-			$archiveContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
-			if ($archiveContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+			$archiveContent = GeneralUtility::getUrl($url);
+			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 				$output[] = '[INFO] PyYAML 3.10 has been downloaded.';
 
 				$targetPath = $sphinxSourcesPath . 'PyYAML';
@@ -519,8 +520,8 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildPyYaml($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -559,7 +560,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasPIL() {
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$setupFile = $sphinxSourcesPath . 'Imaging/setup.py';
 		return is_file($setupFile);
 	}
@@ -575,20 +576,20 @@ EOT;
 	static public function downloadPIL(array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = PATH_site . 'typo3temp/';
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 
 		// Compatibility with Windows platform
 		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, $tempPath);
 		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
-		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
+		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
 			$output[] = '[WARNING] Could not find command tar. Python Imaging Library was not installed.';
 		} else {
 			$url = 'http://effbot.org/media/downloads/Imaging-1.1.7.tar.gz';
 			$archiveFilename = $tempPath . 'Imaging-1.1.7.tar.gz';
-			$archiveContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
-			if ($archiveContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+			$archiveContent = GeneralUtility::getUrl($url);
+			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 				$output[] = '[INFO] Python Imaging Library 1.1.7 has been downloaded.';
 
 				$targetPath = $sphinxSourcesPath . 'Imaging';
@@ -619,8 +620,8 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildPIL($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -659,7 +660,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasRst2Pdf() {
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 		$setupFile = $sphinxSourcesPath . 'rst2pdf/setup.py';
 		return is_file($setupFile);
 	}
@@ -675,20 +676,20 @@ EOT;
 	static public function downloadRst2Pdf(array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = PATH_site . 'typo3temp/';
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
 
 		// Compatibility with Windows platform
 		$tempPath = str_replace('/', DIRECTORY_SEPARATOR, $tempPath);
 		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
-		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('tar')) {
+		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
 			$output[] = '[WARNING] Could not find command tar. rst2pdf was not installed.';
 		} else {
 			$url = 'http://rst2pdf.googlecode.com/files/rst2pdf-0.93.tar.gz';
 			$archiveFilename = $tempPath . 'rst2pdf-0.93.tar.gz';
-			$archiveContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
-			if ($archiveContent && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+			$archiveContent = GeneralUtility::getUrl($url);
+			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 				$output[] = '[INFO] rst2pdf 0.93 has been downloaded.';
 
 				$targetPath = $sphinxSourcesPath . 'rst2pdf';
@@ -719,8 +720,8 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildRst2Pdf($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
-		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -761,13 +762,13 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasLibrary($library, $sphinxVersion) {
-		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
 
-		$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($pythonLib);
+		$directories = GeneralUtility::get_dirs($pythonLib);
 		foreach ($directories as $directory) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($directory, $library . '-')) {
+			if (GeneralUtility::isFirstPartOfStr($directory, $library . '-')) {
 				return TRUE;
 			}
 		}
@@ -786,8 +787,8 @@ EOT;
 
 		$cacheFilename = PATH_site . 'typo3temp' . DIRECTORY_SEPARATOR . self::$extKey . '.' . md5($sphinxUrl) . '.html';
 		if (!file_exists($cacheFilename) || filemtime($cacheFilename) < (time() - 86400) || filesize($cacheFilename) == 0) {
-			$html = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($sphinxUrl);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFilename, $html);
+			$html = GeneralUtility::getURL($sphinxUrl);
+			GeneralUtility::writeFile($cacheFilename, $html);
 		} else {
 			$html = file_get_contents($cacheFilename);
 		}
@@ -819,10 +820,10 @@ EOT;
 	 * @return array
 	 */
 	static public function getSphinxLocalVersions() {
-		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx';
+		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx';
 		$versions = array();
 		if (is_dir($sphinxPath)) {
-			$versions = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($sphinxPath);
+			$versions = GeneralUtility::get_dirs($sphinxPath);
 		}
 		return $versions;
 	}
@@ -837,7 +838,7 @@ EOT;
 	 */
 	protected static function exec($cmd, &$output = NULL, &$returnValue = 0) {
 		self::$log[] = '[CMD] ' . $cmd;
-		$lastLine = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $out, $returnValue);
+		$lastLine = CommandUtility::exec($cmd, $out, $returnValue);
 		self::$log = array_merge(self::$log, $out);
 		$output = $out;
 		return $lastLine;
@@ -856,14 +857,14 @@ EOT;
 		$success = FALSE;
 
 		self::$log[] = '[INFO] Recreating directory ' . $targetDirectory;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($targetDirectory, TRUE);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($targetDirectory . DIRECTORY_SEPARATOR);
+		GeneralUtility::rmdir($targetDirectory, TRUE);
+		GeneralUtility::mkdir_deep($targetDirectory . DIRECTORY_SEPARATOR);
 
 		if (substr($archiveFilename, -4) === '.zip') {
-			$unzip = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('unzip'));
+			$unzip = escapeshellarg(CommandUtility::getCommand('unzip'));
 			$cmd = $unzip . ' ' . escapeshellarg($archiveFilename) . ' -d ' . escapeshellarg($targetDirectory) . ' 2>&1';
 		} else {
-			$tar = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('tar'));
+			$tar = escapeshellarg(CommandUtility::getCommand('tar'));
 			$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetDirectory) . ' 2>&1';
 		}
 		self::exec($cmd, $out, $ret);
@@ -871,11 +872,11 @@ EOT;
 			$success = TRUE;
 			if ($moveContentOutsideOfDirectoryPrefix !== NULL) {
 				// When unpacking the sources, content is located under a directory
-				$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($targetDirectory);
-				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($directories[0], $moveContentOutsideOfDirectoryPrefix)) {
+				$directories = GeneralUtility::get_dirs($targetDirectory);
+				if (GeneralUtility::isFirstPartOfStr($directories[0], $moveContentOutsideOfDirectoryPrefix)) {
 					$fromDirectory = $targetDirectory . DIRECTORY_SEPARATOR . $directories[0];
 					\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetDirectory);
-					\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($fromDirectory, TRUE);
+					GeneralUtility::rmdir($fromDirectory, TRUE);
 
 					// Remove tar.gz archive as we don't need it anymore
 					@unlink($archiveFilename);
@@ -899,7 +900,7 @@ EOT;
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 */
 	protected static function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, array &$output = NULL) {
-		$python = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('python'));
+		$python = escapeshellarg(CommandUtility::getCommand('python'));
 		$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 			$python . ' setup.py clean 2>&1 && ' .
 			$python . ' setup.py build 2>&1';
@@ -945,8 +946,8 @@ EOT;
 		$content = implode(LF, self::$log);
 		if ($filename) {
 			$directory = dirname($filename);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($directory);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $content);
+			GeneralUtility::mkdir($directory);
+			GeneralUtility::writeFile($filename, $content);
 		} else {
 			return $content;
 		}

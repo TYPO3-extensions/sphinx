@@ -50,6 +50,12 @@ The content of this document is related to TYPO3
 \- a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_
 
 
+.. code-block:: typoscript
+
+   page = PAGE
+   page.10 = TEXT
+   page.10.value = Hello world!
+
 .. toctree::
 	:maxdepth: 5
 	:titlesonly:

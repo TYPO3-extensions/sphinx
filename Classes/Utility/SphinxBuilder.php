@@ -108,12 +108,12 @@ class SphinxBuilder {
 		$referencesPath = $buildDirectory . DIRECTORY_SEPARATOR . 'doctrees';
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'html';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			$sphinxBuilder . ' -b html' .					// output format
+			$sphinxBuilder . ' -b html' .								// output format
 			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-				' ' . self::safeEscapeshellarg($sourceDirectory) .	// source directory
+				' ' . self::safeEscapeshellarg($sourceDirectory) .		// source directory
 				' ' . self::safeEscapeshellarg($buildPath) .			// build directory
-				' 2>&1';									// redirect errors to STDOUT
+				' 2>&1';												// redirect errors to STDOUT
 
 		$output = array();
 		self::safeExec($cmd, $output, $ret);
@@ -172,12 +172,12 @@ class SphinxBuilder {
 		$referencesPath = $buildDirectory . DIRECTORY_SEPARATOR . 'doctrees';
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'json';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			$sphinxBuilder . ' -b json' .					// output format
+			$sphinxBuilder . ' -b json' .								// output format
 			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-			' ' . self::safeEscapeshellarg($sourceDirectory) .		// source directory
+			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
 			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
-			' 2>&1';										// redirect errors to STDOUT
+			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
 		self::safeExec($cmd, $output, $ret);
@@ -241,13 +241,13 @@ class SphinxBuilder {
 		$referencesPath = $buildDirectory . DIRECTORY_SEPARATOR . 'doctrees';
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			$sphinxBuilder . ' -b latex' .					// output format
+			$sphinxBuilder . ' -b latex' .								// output format
 			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-			' -D latex_paper_size=' . $paperSize .			// paper size for LaTeX output
-			' ' . self::safeEscapeshellarg($sourceDirectory) .		// source directory
+			' -D latex_paper_size=' . $paperSize .						// paper size for LaTeX output
+			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
 			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
-			' 2>&1';										// redirect errors to STDOUT
+			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
 		self::safeExec($cmd, $output, $ret);
@@ -426,12 +426,12 @@ class SphinxBuilder {
 		$referencesPath = $buildDirectory . DIRECTORY_SEPARATOR . 'doctrees';
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'pdf';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			$sphinxBuilder . ' -b pdf' .					// output format
+			$sphinxBuilder . ' -b pdf' .								// output format
 			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-			' ' . self::safeEscapeshellarg($sourceDirectory) .		// source directory
+			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
 			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
-			' 2>&1';										// redirect errors to STDOUT
+			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
 		self::safeExec($cmd, $output, $ret);
@@ -491,12 +491,12 @@ class SphinxBuilder {
 		$referencesPath = $buildDirectory . DIRECTORY_SEPARATOR . 'doctrees';
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'linkcheck';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-			$sphinxBuilder . ' -b linkcheck' .				// output format
+			$sphinxBuilder . ' -b linkcheck' .							// output format
 			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-			' ' . self::safeEscapeshellarg($sourceDirectory) .		// source directory
+			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
 			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
-			' 2>&1';										// redirect errors to STDOUT
+			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
 		self::safeExec($cmd, $output, $ret);
