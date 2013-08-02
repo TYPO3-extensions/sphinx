@@ -75,7 +75,9 @@ Registering the slots
 In your extension, open ``EXT:your-ext/ext_localconf.php`` and add::
 
 	/** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
-	$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+	$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+	    'TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher'
+	);
 
 	$signalSlotDispatcher->connect(
 	    'Causal\\Sphinx\\Controller\\DocumentationController',
@@ -189,7 +191,9 @@ In example above the actual rendering of an arbitrary documentation is not shown
 	                break;
 	            case 'pdf':
 	            default:
-	                throw new RuntimeException('Sorry! Layout ' . $layout . ' is not yet supported', 1371415095);
+	                throw new RuntimeException(
+	                    'Sorry! Layout ' . $layout . ' is not yet supported', 1371415095
+	                );
 	        }
 	    } catch (\RuntimeException $e) {
 	        $filename = 'typo3temp/tx_myext_' . $e->getCode() . '.log';

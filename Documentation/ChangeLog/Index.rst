@@ -19,6 +19,8 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ======================================================
 Version  Changes
 =======  ======================================================
+1.1.0    - Extend EXT:documentation (TYPO3 6.2)
+         - OpenOffice to Sphinx converter (using online tool on http://docs.typo3.org)
 1.0.0    - Support for rst2pdf
          - TYPO3 branding when rendering PDF with LaTeX
 0.6.0    - Compatibility with MS Windows
