@@ -52,7 +52,7 @@ Extensions' manuals may be rendered with different "layouts":
 
 - **Interactive:** This renders and shows the JSON version and as such requires extension `reST Documentation Viewer (restdoc)`_. In addition, this layout features an integrated :ref:`ReStructuredText editor <sphinx-documentation-editor>` to let you quickly edit and recompile a given chapter;
 
-- **PDF:** This renders and shows the PDF version and as such requires ``pdflatex``:
+- **PDF:** This renders and shows the PDF version and as such requires either ``pdflatex`` or ``rst2pdf``:
 
 |render_pdf|
 
