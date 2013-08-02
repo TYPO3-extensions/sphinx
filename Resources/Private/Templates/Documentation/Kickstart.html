@@ -25,6 +25,20 @@
 	</tr>
 	</thead>
 	<tbody>
+	<f:for each="{extensionsEmpty}" as="extension">
+		<tr id="{extension.extensionKey}" >
+			<td class="title">
+				<img src="../{extension.icon}" title="{extension.title}" alt="{extension.title}" />
+				{extension.title}
+			</td>
+			<td>{extension.description}</td>
+			<td class="actions">
+				<sphinx:link.action action="createProject" arguments="{extensionKey: extension.extensionKey}">
+					<f:translate key="kickstart.action.createProject" />
+				</sphinx:link.action>
+			</td>
+		</tr>
+	</f:for>
 	<f:for each="{extensionsOpenOffice}" as="extension">
 		<tr id="{extension.extensionKey}" >
 			<td class="title">

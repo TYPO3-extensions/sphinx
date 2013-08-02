@@ -36,6 +36,11 @@ using an online tool on http://docs.typo3.org:
 
 |convert-openoffice|
 
+Similarly, an empty Sphinx documentation project may be created for local extensions without any manual yet:
+
+|kickstart-sphinx|
+
+
 .. _layouts:
 
 Layouts

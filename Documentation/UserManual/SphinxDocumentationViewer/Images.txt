@@ -8,6 +8,10 @@
 .. |kickstart| image:: ../../Images/kickstart.png
 	:alt: No documentation selected
 
+.. |kickstart-sphinx| image:: ../../Images/kickstart-sphinx.png
+	:alt: Kickstart a Sphinx documentation project
+	:width: 711
+
 .. |render_pdf| image:: ../../Images/render_pdf.png
 	:alt: Render a documentation as PDF
 	:width: 711

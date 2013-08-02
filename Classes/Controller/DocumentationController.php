@@ -57,8 +57,10 @@ class DocumentationController extends AbstractActionController {
 	 * @return void
 	 */
 	protected function kickstartAction() {
+		$extensionsWithoutDocumentation = $this->extensionRepository->findByHasNoDocumentation('G,L');
 		$extensionWithOpenOfficeDocumentation = $this->extensionRepository->findByHasOpenOffice('G,L');
 
+		$this->view->assign('extensionsEmpty', $extensionsWithoutDocumentation);
 		$this->view->assign('extensionsOpenOffice', $extensionWithOpenOfficeDocumentation);
 	}
 
@@ -176,13 +178,40 @@ class DocumentationController extends AbstractActionController {
 	protected function convertAction($extensionKey) {
 		$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 		$sxwFilename = $extensionPath . 'doc/manual.sxw';
-		$outputDirectory = $extensionPath . 'Documentation';
+		$documentationDirectory = $extensionPath . 'Documentation';
 
 		if (is_file($sxwFilename)) {
-			\Causal\Sphinx\Utility\OpenOfficeConverter::convert($sxwFilename, $outputDirectory);
+			\Causal\Sphinx\Utility\OpenOfficeConverter::convert($sxwFilename, $documentationDirectory);
 		}
 
 		// Open converted documentation
+		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', 'EXT:' . $extensionKey);
+		$this->redirect('index');
+	}
+
+	/**
+	 * Creates a Sphinx documentation project for a given extension.
+	 *
+	 * @param string $extensionKey
+	 * @return void
+	 */
+	protected function createProjectAction($extensionKey) {
+		$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+		$documentationDirectory = $extensionPath . 'Documentation';
+		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($documentationDirectory . DIRECTORY_SEPARATOR);
+
+		$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
+		\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
+			$documentationDirectory,
+			$metadata['title'],
+			$metadata['author'],
+			FALSE,
+			'TYPO3DocProject',
+			$metadata['version'],
+			$metadata['release']
+		);
+
+		// Open freshly created documentation
 		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', 'EXT:' . $extensionKey);
 		$this->redirect('index');
 	}

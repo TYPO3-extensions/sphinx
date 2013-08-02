@@ -57,6 +57,9 @@
 			<trans-unit id="kickstart.action" xml:space="preserve">
 				<source>Action</source>
 			</trans-unit>
+			<trans-unit id="kickstart.action.createProject" xml:space="preserve">
+				<source>Create documentation project</source>
+			</trans-unit>
 			<trans-unit id="kickstart.action.convert" xml:space="preserve">
 				<source>Convert OpenOffice manual to Sphinx</source>
 			</trans-unit>
