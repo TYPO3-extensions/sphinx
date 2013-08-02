@@ -12,42 +12,45 @@
 Sphinx Python Documentation Generator and Viewer
 ================================================
 
-:Classification:
-	sphinx
+.. only:: html
 
-:Version:
-	|release|
+	:Classification:
+		sphinx
 
-:Language:
-	en
+	:Version:
+		|release|
 
-:Description:
-	One-click install Sphinx generator for your TYPO3 website. This extension builds ReStructuredText documentation
-	(format of official TYPO3 manuals), renders other extension manuals and provides an integrated editor for your
-	own extension manuals.
+	:Language:
+		en
 
-:Keywords:
-	reStructuredText, reST, sphinx, documentation
+	:Description:
+		One-click install Sphinx generator for your TYPO3 website. This extension builds ReStructuredText documentation
+		(format of official TYPO3 manuals), renders other extension manuals and provides an integrated editor for your
+		own extension manuals.
 
-:Copyright:
-	2013
+	:Keywords:
+		reStructuredText, reST, sphinx, documentation
 
-:Author:
-	Xavier Perseguers
+	:Copyright:
+		2013
 
-:Email:
-	xavier@causal.ch
+	:Author:
+		Xavier Perseguers
 
-:License:
-	This document is published under the Open Content License
-	available from http://www.opencontent.org/opl.shtml
+	:Email:
+		xavier@causal.ch
 
-:Rendered:
-	|today|
+	:License:
+		This document is published under the Open Content License
+		available from http://www.opencontent.org/opl.shtml
 
-The content of this document is related to TYPO3
+	:Rendered:
+		|today|
 
-\- a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_
+	The content of this document is related to TYPO3
+
+	\- a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_
+
 
 .. toctree::
 	:maxdepth: 5
