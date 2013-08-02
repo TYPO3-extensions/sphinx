@@ -47,10 +47,11 @@ Sphinx Python Documentation Generator and Viewer
 	:Rendered:
 		|today|
 
-	The content of this document is related to TYPO3
+	The content of this document is related to TYPO3,
+	a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
 
-	\- a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_
 
+	**Table of Contents**
 
 .. toctree::
 	:maxdepth: 5
