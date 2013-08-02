@@ -1,13 +1,20 @@
+.. |checkbox| image:: ../../Images/checkbox.png
+	:alt: Checkbox to force an extension manual to be rendered
+
+.. |convert-openoffice| image:: ../../Images/convert-openoffice.png
+	:alt: Easily convert OpenOffice manuals to Sphinx projects
+	:width: 711
+
+.. |kickstart| image:: ../../Images/kickstart.png
+	:alt: No documentation selected
+
+.. |render_pdf| image:: ../../Images/render_pdf.png
+	:alt: Render a documentation as PDF
+	:width: 711
+
 .. |section_help| image:: ../../Images/section_help.png
 	:alt: Sphinx documentation viewer
 
 .. |viewer_choose_extension| image:: ../../Images/viewer_choose_extension.png
 	:alt: Selector to show an extension manual locally
 	:width: 711
-
-.. |render_pdf| image:: ../../Images/render_pdf.png
-	:alt: Render a documentation as PDF
-	:width: 711
-
-.. |checkbox| image:: ../../Images/checkbox.png
-	:alt: Checkbox to force an extension manual to be rendered

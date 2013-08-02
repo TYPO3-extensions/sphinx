@@ -13,7 +13,7 @@ if (TYPO3_MODE === 'BE') {
 		'documentation',
 		'top',
 		array(
-			'Documentation' => 'index,menu,blank,render',
+			'Documentation' => 'index,menu,kickstart,render,convert',
 			'InteractiveViewer' => 'render,missingRestdoc,outdatedRestdoc',
 			'RestEditor' => 'edit,save',
 		),

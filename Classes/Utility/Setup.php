@@ -41,10 +41,10 @@ use \TYPO3\CMS\Core\Utility\CommandUtility;
 class Setup {
 
 	/** @var string */
-	protected static $extKey = 'sphinx';
+	static protected $extKey = 'sphinx';
 
 	/** @var array */
-	protected static $log = array();
+	static protected $log = array();
 
 	/**
 	 * Initializes the environment by creating directories to hold sphinx and 3rd
@@ -947,7 +947,7 @@ EOT;
 	 * @param integer $returnValue
 	 * @return NULL|array
 	 */
-	protected static function exec($cmd, &$output = NULL, &$returnValue = 0) {
+	static protected function exec($cmd, &$output = NULL, &$returnValue = 0) {
 		self::$log[] = '[CMD] ' . $cmd;
 		$lastLine = CommandUtility::exec($cmd, $out, $returnValue);
 		self::$log = array_merge(self::$log, $out);
@@ -964,7 +964,7 @@ EOT;
 	 * @param array &$out
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 */
-	protected static function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = NULL, array &$out = NULL) {
+	static public function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = NULL, array &$out = NULL) {
 		$success = FALSE;
 
 		self::$log[] = '[INFO] Recreating directory ' . $targetDirectory;
@@ -1010,7 +1010,7 @@ EOT;
 	 * @param array $output
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 */
-	protected static function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, array &$output = NULL) {
+	static protected function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, array &$output = NULL) {
 		$python = escapeshellarg(CommandUtility::getCommand('python'));
 		$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 			$python . ' setup.py clean 2>&1 && ' .

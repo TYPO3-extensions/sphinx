@@ -1,0 +1,46 @@
+{namespace sphinx=Causal\Sphinx\ViewHelpers}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/visual/fonts.css" />
+	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
+
+	<sphinx:includeJs.jQuery version="1.8"/>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.dataTables-1.9.4.min.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.tools.min.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.clearable.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/main.js')}"></script>
+</head>
+<body>
+
+<h1><f:translate key="kickstart.title" /></h1>
+
+<table id="tx-sphinx-kickstart-list" class="tx-sphinx-extension-list">
+	<thead>
+	<tr>
+		<th><f:translate key="tx_sphinx_domain_model_extension.title" /></th>
+		<th><f:translate key="tx_sphinx_domain_model_extension.description" /></th>
+		<th><f:translate key="kickstart.action" /></th>
+	</tr>
+	</thead>
+	<tbody>
+	<f:for each="{extensionsOpenOffice}" as="extension">
+		<tr id="{extension.extensionKey}" >
+			<td class="title">
+				<img src="../{extension.icon}" title="{extension.title}" alt="{extension.title}" />
+				{extension.title}
+			</td>
+			<td>{extension.description}</td>
+			<td class="actions">
+				<sphinx:link.action action="convert" arguments="{extensionKey: extension.extensionKey}">
+					<f:translate key="kickstart.action.convert" />
+				</sphinx:link.action>
+			</td>
+		</tr>
+	</f:for>
+	</tbody>
+</table>
+
+</body>
+</html>

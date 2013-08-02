@@ -45,6 +45,21 @@
 			<trans-unit id="extensionType_G" xml:space="preserve">
 				<source>Global Extensions</source>
 			</trans-unit>
+			<trans-unit id="tx_sphinx_domain_model_extension.title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_sphinx_domain_model_extension.description" xml:space="preserve">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="kickstart.title" xml:space="preserve">
+				<source>Kickstart Sphinx Documentation</source>
+			</trans-unit>
+			<trans-unit id="kickstart.action" xml:space="preserve">
+				<source>Action</source>
+			</trans-unit>
+			<trans-unit id="kickstart.action.convert" xml:space="preserve">
+				<source>Convert OpenOffice manual to Sphinx</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

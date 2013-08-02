@@ -23,6 +23,19 @@ A drop-down menu on top lists all loaded extensions that are featuring a Sphinx-
 .. tip::
 	The Sphinx documentation viewer automatically reloads the last manual you selected and if you choose the interactive layout, it will even bring you to the chapter you were reading.
 
+
+Welcome screen
+""""""""""""""
+
+If no documentation has been selected in the drop-down menu:
+
+|kickstart|
+
+a list of locally available extensions with an OpenOffice manual only is shown and lets you easily convert it to Sphinx
+using an online tool on http://docs.typo3.org:
+
+|convert-openoffice|
+
 .. _layouts:
 
 Layouts
@@ -37,6 +50,7 @@ Extensions' manuals may be rendered with different "layouts":
 - **PDF:** This renders and shows the PDF version and as such requires ``pdflatex``:
 
 |render_pdf|
+
 
 Internals
 """""""""

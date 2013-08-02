@@ -52,12 +52,14 @@ class DocumentationController extends AbstractActionController {
 	}
 
 	/**
-	 * Blank action.
+	 * Kickstart action.
 	 *
 	 * @return void
 	 */
-	protected function blankAction() {
-		// Nothing to do
+	protected function kickstartAction() {
+		$extensionWithOpenOfficeDocumentation = $this->extensionRepository->findByHasOpenOffice('G,L');
+
+		$this->view->assign('extensionsOpenOffice', $extensionWithOpenOfficeDocumentation);
 	}
 
 	/**
@@ -123,7 +125,7 @@ class DocumentationController extends AbstractActionController {
 		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/layout', $layout);
 
 		if ($reference === '') {
-			$this->redirect('blank');
+			$this->redirect('kickstart');
 		}
 
 		list($type, $identifier) = explode(':', $reference, 2);
@@ -163,6 +165,26 @@ class DocumentationController extends AbstractActionController {
 			$this->forward('render', 'InteractiveViewer', NULL, array('reference' => $reference, 'documentationFilename' => $documentationFilename));
 		}
 		$this->view->assign('documentationUrl', $documentationUrl);
+	}
+
+	/**
+	 * Converts an OpenOffice manual into a Sphinx project.
+	 *
+	 * @param string $extensionKey
+	 * @return void
+	 */
+	protected function convertAction($extensionKey) {
+		$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+		$sxwFilename = $extensionPath . 'doc/manual.sxw';
+		$outputDirectory = $extensionPath . 'Documentation';
+
+		if (is_file($sxwFilename)) {
+			\Causal\Sphinx\Utility\OpenOfficeConverter::convert($sxwFilename, $outputDirectory);
+		}
+
+		// Open converted documentation
+		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', 'EXT:' . $extensionKey);
+		$this->redirect('index');
 	}
 
 }

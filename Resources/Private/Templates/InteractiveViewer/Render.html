@@ -1,3 +1,4 @@
+{namespace sphinx=Causal\Sphinx\ViewHelpers}
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -40,7 +41,7 @@
 	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/css/t3_org_doc_main_alt_1.css')}" type="text/css"/>
 
 	<!--script src="http://docs.typo3.org/t3extras/js/css_browser_selector.js"></script-->
-	<script src="contrib/jquery/jquery-1.8.2.min.js"></script>
+	<sphinx:includeJs.jQuery version="1.8"/>
 	<script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/jquery.easing.js')}"></script>
 	<script src="sysext/extensionmanager/Resources/Public/JavaScript/jquery.tools.min.js"></script>
 	<script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/cufon.js')}"></script>
