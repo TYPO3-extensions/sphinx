@@ -181,11 +181,24 @@ class DocumentationController extends AbstractActionController {
 		$documentationDirectory = $extensionPath . 'Documentation';
 
 		if (is_file($sxwFilename)) {
-			\Causal\Sphinx\Utility\OpenOfficeConverter::convert($sxwFilename, $documentationDirectory);
+			try {
+				\Causal\Sphinx\Utility\OpenOfficeConverter::convert($sxwFilename, $documentationDirectory);
+
+				// Open converted documentation
+				$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', 'EXT:' . $extensionKey);
+			} catch (\RuntimeException $exception) {
+				$this->controllerContext->getFlashMessageQueue()->enqueue(
+					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+						$exception->getMessage(),
+						'',
+						\TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
+						TRUE
+					)
+				);
+			}
 		}
 
-		// Open converted documentation
-		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', 'EXT:' . $extensionKey);
 		$this->redirect('index');
 	}
 
@@ -198,21 +211,35 @@ class DocumentationController extends AbstractActionController {
 	protected function createProjectAction($extensionKey) {
 		$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 		$documentationDirectory = $extensionPath . 'Documentation';
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($documentationDirectory . DIRECTORY_SEPARATOR);
 
-		$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
-		\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
-			$documentationDirectory,
-			$metadata['title'],
-			$metadata['author'],
-			FALSE,
-			'TYPO3DocProject',
-			$metadata['version'],
-			$metadata['release']
-		);
+		try {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($documentationDirectory . DIRECTORY_SEPARATOR);
 
-		// Open freshly created documentation
-		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', 'EXT:' . $extensionKey);
+			$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
+			\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
+				$documentationDirectory,
+				$metadata['title'],
+				$metadata['author'],
+				FALSE,
+				'TYPO3DocProject',
+				$metadata['version'],
+				$metadata['release']
+			);
+
+			// Open freshly created documentation
+			$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', 'EXT:' . $extensionKey);
+		} catch (\RuntimeException $exception) {
+			$this->controllerContext->getFlashMessageQueue()->enqueue(
+				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+					$exception->getMessage(),
+					'',
+					\TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
+					TRUE
+				)
+			);
+		}
+
 		$this->redirect('index');
 	}
 
