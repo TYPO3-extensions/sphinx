@@ -1,2 +1,0 @@
-.. |project_wizard| image:: ../../Images/project_wizard.png
-	:alt: Kickstarting a new Sphinx project

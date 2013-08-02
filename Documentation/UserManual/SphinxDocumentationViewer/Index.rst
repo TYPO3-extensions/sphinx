@@ -46,7 +46,7 @@ Similarly, an empty Sphinx documentation project may be created for local extens
 Layouts
 """""""
 
-Extensions' manuals may be rendered with different "layouts":
+Extension manuals may be rendered with different "layouts":
 
 - **Static:** This renders and shows the HTML version;
 
@@ -54,13 +54,15 @@ Extensions' manuals may be rendered with different "layouts":
 
 - **PDF:** This renders and shows the PDF version and as such requires either ``pdflatex`` or ``rst2pdf``:
 
-|render_pdf|
+  |
+
+  |render_pdf|
 
 
 Internals
 """""""""
 
-As Sphinx-based extensions' manuals are meant to be rendered on http://docs.typo3.org using the TYPO3 corporate design, they do not provide the general configuration files needed to be rendered locally.
+As Sphinx-based extension manuals are meant to be rendered on http://docs.typo3.org using the TYPO3 corporate design, they do not provide the general configuration files needed to be rendered locally.
 
 When selecting an extension's manual to be shown from the drop-down menu the following process happens:
 
@@ -72,9 +74,11 @@ Otherwise:
 
 #. The Sphinx project is built as HTML, JSON or PDF, according to selected layout
 
-#. HTML, JSON or PDF output is copied to ``typo3conf/documentation/<extension-key>/<language>/<format>/`` (currently ``language`` is always "default" for English)
+#. HTML, JSON or PDF output is copied to ``typo3conf/documentation/<extension-key>/`` ``<language>/<format>/`` (currently ``language`` is always "default" for English)
 
 #. The viewer loads the main document (e.g., ``Index.html`` with HTML output)
+
+|
 
 .. tip::
 	A checkbox on the right lets you force the extension's manual to be recompiled (thus recreating the cached version):
@@ -89,8 +93,8 @@ Otherwise:
 
 According to the selected layout, the main document is:
 
-- **Static:** Main document of HTML output is ``typo3conf/Documentation/<extension-key>/default/html/Index.html``
+- **Static:** Main document of HTML output is ``typo3conf/Documentation/<extension-key>/`` ``default/html/Index.html``
 
-- **Interactive:** Main document of JSON output is ``typo3conf/Documentation/<extension-key>/default/json/Index.fjson``
+- **Interactive:** Main document of JSON output is ``typo3conf/Documentation/<extension-key>/`` ``default/json/Index.fjson``
 
-- **PDF:** Main document of PDF output is ``typo3conf/Documentation/<extension-key>/default/pdf/<extension-key>.pdf``
+- **PDF:** Main document of PDF output is ``typo3conf/Documentation/<extension-key>/`` ``default/pdf/<extension-key>.pdf``

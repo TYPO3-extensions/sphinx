@@ -16,6 +16,8 @@ In an attempt to convince you that LaTeX output is indeed much prettier and prof
 
 and then with LaTeX:
 
+|
+
 |pdf_latex|
 
 The files were generated without any special configuration nor tuning.

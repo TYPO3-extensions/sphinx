@@ -19,8 +19,7 @@ This chapter describes how to use the extension from a user point of view. In ad
 	:glob:
 
 	Requirements/Index
-	CreatingSphinxDocumentationProject/Index
-	BuildingSphinxDocumentationProject/Index
+	CreatingBuildingSphinxDocumentationProject/Index
 	SphinxDocumentationViewer/Index
 	SphinxDocumentationEditor/Index
 	SphinxRest/Index

@@ -81,12 +81,12 @@ The "download" button fetches the corresponding sources of Sphinx, the TYPO3-rel
 		$ sudo rm -rf RestTools
 		$ git clone git://git.typo3.org/Documentation/RestTools.git
 
-The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands, PyYAML, Pygments, Python Imaging Library and ``rst2pdf``.
+The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands, PyYAML, Pygments, Python Imaging Library and ``rst2pdf``. **Good to know:** TypoScript support for Pygments is automatically updated, if needed, upon rebuilding your Sphinx environment.
 
 Finally, the "remove" button removes both the sources and the corresponding version of the Sphinx environment.
 
 .. important::
-	This button *WILL NOT* remove sources of the TYPO3-related commands, the PyYAML library, the Python Imaging Library or rst2pdf.
+	This button *WILL NOT* remove sources of the TYPO3-related commands, the PyYAML library, Pygments, the Python Imaging Library or rst2pdf.
 
 
 Choosing the version of Sphinx to use and how to render PDF

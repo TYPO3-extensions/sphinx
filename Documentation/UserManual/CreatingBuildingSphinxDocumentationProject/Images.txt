@@ -1,5 +1,8 @@
 .. |project_properties| image:: ../../Images/project_properties.png
 	:alt: Properties of a Sphinx documentation project
 
+.. |project_wizard| image:: ../../Images/project_wizard.png
+	:alt: Kickstarting a new Sphinx project
+
 .. |build_button_pdf| image:: ../../Images/build_button_pdf.png
 	:alt: Build button to render as PDF
