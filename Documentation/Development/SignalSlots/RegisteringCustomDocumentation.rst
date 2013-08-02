@@ -191,7 +191,7 @@ In example above the actual rendering of an arbitrary documentation is not shown
 	                break;
 	            case 'pdf':
 	            default:
-	                throw new RuntimeException(
+	                throw new \RuntimeException(
 	                    'Sorry! Layout ' . $layout . ' is not yet supported', 1371415095
 	                );
 	        }

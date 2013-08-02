@@ -14,7 +14,7 @@
 
 .. |render_pdf| image:: ../../Images/render_pdf.png
 	:alt: Render a documentation as PDF
-	:width: 711
+	:width: 691
 
 .. |section_help| image:: ../../Images/section_help.png
 	:alt: Sphinx documentation viewer
