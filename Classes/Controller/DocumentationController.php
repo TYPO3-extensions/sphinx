@@ -34,23 +34,13 @@ namespace Causal\Sphinx\Controller;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class DocumentationController extends AbstractActionController {
 
 	/**
-	 * Needed in TYPO3 6.0
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+	 * @var \Causal\Sphinx\Domain\Repository\ExtensionRepository
+	 * @inject
 	 */
-	protected $signalSlotDispatcher;
-
-	/**
-	 * Injects the signal slot dispatcher
-	 * Needed in TYPO3 6.0
-	 *
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
-		$this->signalSlotDispatcher = $signalSlotDispatcher;
-	}
+	protected $extensionRepository;
 
 	/**
 	 * Main action.
@@ -76,11 +66,11 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 * @return void
 	 */
 	protected function menuAction() {
-		$extensions = $this->getExtensionsWithSphinxDocumentation();
+		$extensions = $this->extensionRepository->findByHasSphinxDocumentation();
 		$references = array();
-		foreach ($extensions as $extensionKey => $info) {
-			$typeLabel = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionType_' . $info['type'], $this->request->getControllerExtensionKey());
-			$references[$typeLabel]['EXT:' . $extensionKey] = sprintf('%s (%s)', $info['title'], $extensionKey);
+		foreach ($extensions as $extension) {
+			$typeLabel = $this->translate('extensionType_' . $extension->getInstallType());
+			$references[$typeLabel]['EXT:' . $extension->getExtensionKey()] = sprintf('%s (%s)', $extension->getTitle(), $extension->getExtensionKey());
 		}
 
 		$this->signalSlotDispatcher->dispatch(
@@ -98,12 +88,12 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 			'json' => $this->translate('documentationLayout_interactive'),
 		);
 
-		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->request->getControllerExtensionKey()]);
-		switch ($configuration['pdf_builder']) {
+		switch ($this->settings['pdf_builder']) {
 			case 'pdflatex':
 				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
 				break;
 			case 'rst2pdf':
+			default:
 				$renderPdf = TRUE;
 				break;
 		}
@@ -112,8 +102,8 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 		}
 		$this->view->assign('layouts', $layouts);
 
-		$currentReference = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/reference');
-		$currentLayout = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/layout');
+		$currentReference = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference');
+		$currentLayout = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/layout');
 		$this->view->assign('currentReference', $currentReference);
 		$this->view->assign('currentLayout', $currentLayout);
 	}
@@ -129,8 +119,8 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 	 */
 	protected function renderAction($reference = '', $layout = 'html', $force = FALSE) {
 		// Store preferences
-		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/reference', $reference);
-		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/layout', $layout);
+		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', $reference);
+		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/layout', $layout);
 
 		if ($reference === '') {
 			$this->redirect('blank');
@@ -173,45 +163,6 @@ class DocumentationController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
 			$this->forward('render', 'InteractiveViewer', NULL, array('reference' => $reference, 'documentationFilename' => $documentationFilename));
 		}
 		$this->view->assign('documentationUrl', $documentationUrl);
-	}
-
-	/**
-	 * Returns the localized label of a given key.
-	 *
-	 * @param string $key
-	 * @return string
-	 */
-	protected function translate($key) {
-		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->request->getControllerExtensionKey());
-	}
-
-	/**
-	 * Returns the list of loaded extensions with Sphinx documentation.
-	 *
-	 * @return array
-	 */
-	protected function getExtensionsWithSphinxDocumentation() {
-		$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
-		$extensions = array();
-		$titles = array();
-
-		foreach ($loadedExtensions as $loadedExtension) {
-			$info = $GLOBALS['TYPO3_LOADED_EXT'][$loadedExtension];
-
-			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($loadedExtension);
-			if ($documentationType !== \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_UNKNOWN) {
-				$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($loadedExtension);
-				$extensions[$loadedExtension] = array(
-					'title'          => $metadata['title'],
-					'ext_icon'       => $info['ext_icon'],
-					'type'           => $info['type'],
-				);
-				$titles[$loadedExtension] = strtolower($metadata['title']);
-			}
-		}
-		array_multisort($titles, SORT_ASC, $extensions);
-
-		return $extensions;
 	}
 
 }

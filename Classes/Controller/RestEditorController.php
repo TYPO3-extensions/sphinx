@@ -34,23 +34,7 @@ namespace Causal\Sphinx\Controller;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
-
-	/**
-	 * Needed in TYPO3 6.0
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected $signalSlotDispatcher;
-
-	/**
-	 * Injects the signal slot dispatcher
-	 * Needed in TYPO3 6.0
-	 *
-	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-	 */
-	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
-		$this->signalSlotDispatcher = $signalSlotDispatcher;
-	}
+class RestEditorController extends AbstractActionController {
 
 	/**
 	 * Edit action.
@@ -183,7 +167,7 @@ class RestEditorController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	protected function getFilename($extensionKey, $document) {
 		$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
 		switch ($documentationType) {
-			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_STANDARD:
+			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX:
 				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation/';
 				$filename = $path . ($document ? substr($document, 0, -1) : 'Index') . '.rst';
 				break;

@@ -24,6 +24,8 @@ namespace Causal\Sphinx\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 /**
  * General utility.
  *
@@ -36,9 +38,10 @@ namespace Causal\Sphinx\Utility;
  */
 class GeneralUtility {
 
-	const DOCUMENTATION_TYPE_UNKNOWN  = 0;
-	const DOCUMENTATION_TYPE_STANDARD = 1;
-	const DOCUMENTATION_TYPE_README   = 2;
+	const DOCUMENTATION_TYPE_UNKNOWN    = 0;
+	const DOCUMENTATION_TYPE_SPHINX     = 1;
+	const DOCUMENTATION_TYPE_README     = 2;
+	const DOCUMENTATION_TYPE_OPENOFFICE = 3;
 
 	/** @var string */
 	protected static $extKey = 'sphinx';
@@ -52,7 +55,7 @@ class GeneralUtility {
 	static public function getExtensionMetaData($extensionKey) {
 		$_EXTKEY = $extensionKey;
 		$EM_CONF = array();
-		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+		$extPath = ExtensionManagementUtility::extPath($extensionKey);
 		include($extPath . 'ext_emconf.php');
 
 		$release = $EM_CONF[$_EXTKEY]['version'];
@@ -77,10 +80,11 @@ class GeneralUtility {
 	 */
 	static public function getDocumentationType($extensionKey) {
 		$supportedDocuments = array(
-			'Documentation/Index.rst' => self::DOCUMENTATION_TYPE_STANDARD,
+			'Documentation/Index.rst' => self::DOCUMENTATION_TYPE_SPHINX,
 			'README.rst'              => self::DOCUMENTATION_TYPE_README,
+			'doc/manual.sxw'          => self::DOCUMENTATION_TYPE_OPENOFFICE,
 		);
-		$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+		$extPath = ExtensionManagementUtility::extPath($extensionKey);
 
 		foreach ($supportedDocuments as $supportedDocument => $type) {
 			if (is_file($extPath . $supportedDocument)) {
@@ -152,7 +156,7 @@ HTML;
 	 * @throws \RuntimeException
 	 */
 	static public function getIntersphinxReferences($extensionKey) {
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc')) {
+		if (!ExtensionManagementUtility::isLoaded('restdoc')) {
 			throw new \RuntimeException('Extension restdoc is not loaded', 1370809705);
 		}
 
@@ -175,7 +179,7 @@ HTML;
 		}
 
 		if ($path) {
-			/** @var Tx_Restdoc_Reader_SphinxJson $sphinxReader */
+			/** @var \Tx_Restdoc_Reader_SphinxJson $sphinxReader */
 			$sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
 			$sphinxReader->setPath($path);
 			$references = $sphinxReader->getReferences();
@@ -196,7 +200,9 @@ HTML;
 	 */
 	static public function generateDocumentation($extensionKey, $format = 'html', $force = FALSE) {
 		$documentationType = self::getDocumentationType($extensionKey);
-		if ($documentationType === self::DOCUMENTATION_TYPE_UNKNOWN) {
+		if (!($documentationType === self::DOCUMENTATION_TYPE_SPHINX
+			|| $documentationType === self::DOCUMENTATION_TYPE_README)) {
+
 			$filename = 'typo3temp/tx_' . self::$extKey . '/1369679343.log';
 			$content = 'ERROR 1369679343: No documentation found for extension "' . $extensionKey . '"';
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
@@ -226,10 +232,10 @@ HTML;
 			return $documentationUrl;
 		}
 
-		$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
+		$metadata = GeneralUtility::getExtensionMetaData($extensionKey);
 		$basePath = PATH_site . 'typo3temp/tx_' . self::$extKey . '/' . $extensionKey;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
-		\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
+		SphinxQuickstart::createProject(
 			$basePath,
 			$metadata['title'],
 			$metadata['author'],
@@ -246,22 +252,22 @@ HTML;
 
 		// Recursively instantiate template files
 		switch ($documentationType) {
-			case self::DOCUMENTATION_TYPE_STANDARD:
-				$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
+			case self::DOCUMENTATION_TYPE_SPHINX:
+				$source = ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
 				self::recursiveCopy($source, $basePath);
 				break;
 			case self::DOCUMENTATION_TYPE_README:
-				$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'README.rst';
+				$source = ExtensionManagementUtility::extPath($extensionKey) . 'README.rst';
 				copy($source, $basePath . '/Index.rst');
 		}
 
 		try {
 			if ($format === 'json') {
-				\Causal\Sphinx\Utility\SphinxBuilder::buildJson($basePath, '.', '_make/build', '_make/conf.py');
+				SphinxBuilder::buildJson($basePath, '.', '_make/build', '_make/conf.py');
 			} elseif ($format === 'pdf') {
-				\Causal\Sphinx\Utility\SphinxBuilder::buildPdf($basePath, '.', '_make/build', '_make/conf.py');
+				SphinxBuilder::buildPdf($basePath, '.', '_make/build', '_make/conf.py');
 			} else {
-				\Causal\Sphinx\Utility\SphinxBuilder::buildHtml($basePath, '.', '_make/build', '_make/conf.py');
+				SphinxBuilder::buildHtml($basePath, '.', '_make/build', '_make/conf.py');
 			}
 		} catch (\RuntimeException $e) {
 			$filename = 'typo3temp/tx_' . self::$extKey . '/' . $e->getCode() . '.log';
@@ -326,12 +332,14 @@ HTML;
 	 */
 	static public function recursiveCopy($source, $target) {
 		$target = rtrim($target, '/');
+		/** @var \RecursiveDirectoryIterator $iterator */
 		$iterator = new \RecursiveIteratorIterator(
 			new \RecursiveDirectoryIterator($source,
 				\RecursiveDirectoryIterator::SKIP_DOTS),
 			\RecursiveIteratorIterator::SELF_FIRST
 		);
 		foreach ($iterator as $item) {
+			/** @var \splFileInfo $item */
 			if ($item->isDir()) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($target . '/' . $iterator->getSubPathName());
 			} else {

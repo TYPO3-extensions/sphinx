@@ -34,7 +34,7 @@ namespace Causal\Sphinx\Controller;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class InteractiveViewerController extends AbstractActionController {
 
 	/** @var \Tx_Restdoc_Reader_SphinxJson */
 	protected $sphinxReader;
@@ -82,7 +82,7 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		$this->reference = $reference;
 
 		if (empty($document)) {
-			$document = $GLOBALS['BE_USER']->getModuleData('help_documentation/DocumentationController/reference-' . $reference);
+			$document = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference-' . $reference);
 		}
 
 		list($type, $identifier) = explode(':', $reference, 2);
@@ -109,7 +109,7 @@ class InteractiveViewerController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 			->load();
 
 		// Store preferences
-		$GLOBALS['BE_USER']->pushModuleData('help_documentation/DocumentationController/reference-' . $reference, $document);
+		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference-' . $reference, $document);
 
 		/** @var \Causal\Sphinx\Domain\Model\Documentation $documentation */
 		$documentation = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\Sphinx\Domain\Model\Documentation', $this->sphinxReader);

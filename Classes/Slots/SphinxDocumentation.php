@@ -43,6 +43,12 @@ class SphinxDocumentation {
 	protected $objectManager;
 
 	/**
+	 * @var \Causal\Sphinx\Domain\Repository\ExtensionRepository
+	 * @inject
+	 */
+	protected $extensionRepository;
+
+	/**
 	 * Post-processes the list of available documents.
 	 *
 	 * @param string $language
@@ -50,17 +56,17 @@ class SphinxDocumentation {
 	 * @return void
 	 */
 	public function postProcessDocuments($language, array &$documents) {
-		$extensionsWithSphinxDocumentation = $this->getExtensionsWithSphinxDocumentation();
-		foreach ($extensionsWithSphinxDocumentation as $extensionKey => $info) {
-			$packageKey = 'typo3cms.extensions.' . $extensionKey;
-
+		$extensionsWithSphinxDocumentation = $this->extensionRepository->findByHasSphinxDocumentation();
+		foreach ($extensionsWithSphinxDocumentation as $extension) {
 			/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
 			/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
+
+			$packageKey = $extension->getPackageKey();
 
 			if (!isset($documents[$packageKey])) {
 				$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
 					->setPackageKey($packageKey)
-					->setIcon($info['ext_icon']);
+					->setIcon($extension->getIcon());
 				$documents[$packageKey] = $document;
 			}
 
@@ -77,14 +83,15 @@ class SphinxDocumentation {
 			if ($documentTranslation === NULL) {
 				$documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
 					->setLanguage('default')
-					->setTitle($info['title'])
-					->setDescription($info['description']);
+					->setTitle($extension->getTitle())
+					->setDescription($extension->getDescription());
 
 				$document->addTranslation($documentTranslation);
 			}
 
 			$existingFormats = array();
 			foreach ($documentTranslation->getFormats() as $documentFormat) {
+				/** @var $documentFormat \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat */
 				if ($documentFormat->getFormat() === 'sxw') {
 					// Remove OpenOffice from the list when HTML/PDF is available
 					$documentTranslation->removeFormat($documentFormat);
@@ -99,45 +106,15 @@ class SphinxDocumentation {
 					/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
 					$documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
 						->setFormat($format)
-						->setPath($this->getRenderLink($extensionKey, $format));
+						->setPath($this->getRenderLink($extension->getExtensionKey(), $format));
 
 					$documentTranslation->addFormat($documentFormat);
 				} else {
 					// Override path of the document to point to EXT:sphinx's renderer
-					$existingFormats[$format]->setPath($this->getRenderLink($extensionKey, $format));
+					$existingFormats[$format]->setPath($this->getRenderLink($extension->getExtensionKey(), $format));
 				}
 			}
 		}
-	}
-
-	/**
-	 * Returns the list of loaded extensions with Sphinx documentation.
-	 *
-	 * @return array
-	 */
-	protected function getExtensionsWithSphinxDocumentation() {
-		$loadedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
-		$extensions = array();
-		$titles = array();
-
-		foreach ($loadedExtensions as $loadedExtension) {
-			$info = $GLOBALS['TYPO3_LOADED_EXT'][$loadedExtension];
-
-			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($loadedExtension);
-			if ($documentationType !== \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_UNKNOWN) {
-				$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($loadedExtension);
-				$extensions[$loadedExtension] = array(
-					'title'       => $metadata['title'],
-					'description' => $metadata['description'],
-					'ext_icon'    => $info['siteRelPath'] . $info['ext_icon'],
-					'type'        => $info['type'],
-				);
-				$titles[$loadedExtension] = strtolower($metadata['title']);
-			}
-		}
-		array_multisort($titles, SORT_ASC, $extensions);
-
-		return $extensions;
 	}
 
 	/**
@@ -154,6 +131,7 @@ class SphinxDocumentation {
 				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
 				break;
 			case 'rst2pdf':
+			default:
 				$renderPdf = TRUE;
 				break;
 		}
