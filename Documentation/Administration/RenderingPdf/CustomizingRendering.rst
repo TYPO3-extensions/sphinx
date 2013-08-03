@@ -187,4 +187,4 @@ We want to stick as much as possible to default rendering, to avoid having to ch
 	    'preamble': '\\usepackage{typo3}'
 	}
 
-The package ``typo3`` is available from repository RestTools, within directory ``RestTools/latex/`` and is automatically copied to the build directory when using this extension. Alternatively, you may want to register it globally within ``TEXMF`` if you plan to generate PDF from the command line solely.
+The package ``typo3`` is available from repository RestTools, within directory ``RestTools/LaTeX/`` and is automatically copied to the build directory when using this extension. Alternatively, you may want to register it globally within ``TEXMF`` if you plan to generate PDF from the command line solely.
