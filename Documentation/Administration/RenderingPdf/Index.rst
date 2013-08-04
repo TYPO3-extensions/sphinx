@@ -6,6 +6,8 @@
 .. include:: ../../Includes.txt
 
 
+.. _admin_rendering_pdf:
+
 Rendering PDF from ReStructuredText
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
