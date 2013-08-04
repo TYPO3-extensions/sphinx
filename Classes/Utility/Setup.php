@@ -195,7 +195,7 @@ class Setup {
 				$out = array();
 				self::exec($cmd, $out, $ret);
 				if ($ret === 0) {
-					$output[] = '[INFO] Sphinx ' . $version . ' has been successfully installed.';
+					$output[] = '[OK] Sphinx ' . $version . ' has been successfully installed.';
 				} else {
 					$success = FALSE;
 					$output[] = '[ERROR] Could not install Sphinx ' . $version . ':' . LF . LF . implode($out, LF);
@@ -267,14 +267,14 @@ EOT;
 
 		if (is_dir($sphinxSourcesPath . $version)) {
 			if (GeneralUtility::rmdir($sphinxSourcesPath . $version, TRUE)) {
-				$output[] = '[INFO] Sources of Sphinx ' . $version . ' have been deleted.';
+				$output[] = '[OK] Sources of Sphinx ' . $version . ' have been deleted.';
 			} else {
 				$output[] = '[ERROR] Could not delete sources of Sphinx ' . $version . '.';
 			}
 		}
 		if (is_dir($sphinxPath . $version)) {
 			if (GeneralUtility::rmdir($sphinxPath . $version, TRUE)) {
-				$output[] = '[INFO] Sphinx ' . $version . ' has been deleted.';
+				$output[] = '[OK] Sphinx ' . $version . ' has been deleted.';
 			} else {
 				$output[] = '[ERROR] Could not delete Sphinx ' . $version . '.';
 			}
@@ -751,7 +751,7 @@ EOT;
 		if ($libraryContent) {
 			if (!is_file($libraryFilename) || md5_file($libraryFilename) !== md5($libraryContent)) {
 				if (GeneralUtility::writeFile($libraryFilename, $libraryContent)) {
-					$output[] = '[INFO] TypoScript library for Pygments successfully downloaded/updated.';
+					$output[] = '[OK] TypoScript library for Pygments successfully downloaded/updated.';
 				}
 			}
 			if (is_file($libraryFilename)) {
@@ -762,7 +762,7 @@ EOT;
 				$out = array();
 				self::exec($cmd, $out, $ret);
 				if ($ret === 0) {
-					$output[] = '[INFO] TypoScript library successfully registered with Pygments.';
+					$output[] = '[OK] TypoScript library successfully registered with Pygments.';
 				} else {
 					$output[] = '[WARNING] Could not install TypoScript library for Pygments.';
 				}
@@ -1025,7 +1025,7 @@ EOT;
 			self::exec($cmd, $out, $ret);
 			if ($ret === 0) {
 				$success = TRUE;
-				$output[] = '[INFO] ' . $name . ' successfully installed.';
+				$output[] = '[OK] ' . $name . ' successfully installed.';
 			} else {
 				$success = FALSE;
 				$output[] = '[ERROR] Could not install ' . $name . ':' . LF . LF . implode($out, LF);

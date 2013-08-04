@@ -107,6 +107,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 				foreach ($messages as $message) {
 					switch (TRUE) {
+						case GeneralUtility::isFirstPartOfStr($message, '[OK] '):
+							$out[] = $this->formatOk(substr($message, 5));
+							break;
 						case GeneralUtility::isFirstPartOfStr($message, '[INFO] '):
 							$out[] = $this->formatInformation(substr($message, 7));
 							break;
@@ -262,8 +265,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string
 	 */
 	protected function formatError($message) {
-		$output = '<div style="border: solid 2px black;	background-color: #f00; color: #fff; padding: 10px; font-weight: bold; margin: 10px 0px 10px 0px;">';
-		$output .= nl2br(htmlspecialchars($message));
+		$output = '<div class="typo3-message message-error">';
+		//$output .= '<div class="message-header">Message head</div>';
+		$output .= '<div class="message-body">' . nl2br(htmlspecialchars($message)) . '</div>';
 		$output .= '</div>';
 
 		return $output;
@@ -276,8 +280,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string
 	 */
 	protected function formatWarning($message) {
-		$output = '<div style="border: solid 2px black;	background-color: yellow; padding: 10px; font-weight: bold; margin: 10px 0px 10px 0px;">';
-		$output .= nl2br(htmlspecialchars($message));
+		$output = '<div class="typo3-message message-warning">';
+		//$output .= '<div class="message-header">Message head</div>';
+		$output .= '<div class="message-body">' . nl2br(htmlspecialchars($message)) . '</div>';
 		$output .= '</div>';
 
 		return $output;
@@ -290,12 +295,29 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string
 	 */
 	protected function formatInformation($message) {
-		$output = '<div style="border: solid 2px black;	background-color: lightblue; padding: 10px; font-weight: bold; margin: 10px 0px 10px 0px;">';
-		$output .= nl2br(htmlspecialchars($message));
+		$output = '<div class="typo3-message message-information">';
+		//$output .= '<div class="message-header">Message head</div>';
+		$output .= '<div class="message-body">' . nl2br(htmlspecialchars($message)) . '</div>';
 		$output .= '</div>';
 
 		return $output;
 	}
+
+	/**
+	 * Creates an OK message for backend output.
+	 *
+	 * @param string $message
+	 * @return string
+	 */
+	protected function formatOk($message) {
+		$output = '<div class="typo3-message message-ok">';
+		//$output .= '<div class="message-header">Message head</div>';
+		$output .= '<div class="message-body">' . nl2br(htmlspecialchars($message)) . '</div>';
+		$output .= '</div>';
+
+		return $output;
+	}
+
 }
 
 ?>
