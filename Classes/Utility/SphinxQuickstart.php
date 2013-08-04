@@ -37,7 +37,7 @@ namespace Causal\Sphinx\Utility;
 class SphinxQuickstart {
 
 	/** @var string */
-	protected static $extKey = 'sphinx';
+	static protected $extKey = 'sphinx';
 
 	/**
 	 * Creates an empty Sphinx project.
@@ -159,7 +159,7 @@ class SphinxQuickstart {
 	 * @return boolean
 	 * @throws \RuntimeException
 	 */
-	protected static function createFromTemplate(array $config) {
+	static protected function createFromTemplate(array $config) {
 		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
 		$contentObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 

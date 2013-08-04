@@ -44,7 +44,7 @@ class GeneralUtility {
 	const DOCUMENTATION_TYPE_OPENOFFICE = 3;
 
 	/** @var string */
-	protected static $extKey = 'sphinx';
+	static protected $extKey = 'sphinx';
 
 	/**
 	 * Returns meta-data for a given extension.
@@ -306,7 +306,7 @@ HTML;
 	 * @see \Causal\Sphinx\Controller\ConsoleController::overrideThemeT3Sphinx()
 	 * @see http://forge.typo3.org/issues/48311
 	 */
-	protected static function overrideThemeT3Sphinx($basePath) {
+	static protected function overrideThemeT3Sphinx($basePath) {
 		$configuration = file_get_contents($basePath . '/_make/conf.py');
 		$t3sphinxImportPattern = '/^(\s*)import\s+t3sphinx\s*$/m';
 

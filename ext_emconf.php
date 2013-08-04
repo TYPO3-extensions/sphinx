@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'One-click install Sphinx generator for your TYPO3 website. This extension builds ReStructuredText documentation
 	(format of official TYPO3 manuals), renders other extension manuals and provides an integrated editor for your own extension manuals.',
 	'category' => 'service',
-	'author' => 'Xavier Perseguers',
+	'author' => 'Xavier Perseguers (Causal)',
 	'author_company' => 'Causal Sàrl',
 	'author_email' => 'xavier@causal.ch',
 	'shy' => '',

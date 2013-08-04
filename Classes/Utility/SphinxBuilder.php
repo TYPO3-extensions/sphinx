@@ -37,7 +37,7 @@ namespace Causal\Sphinx\Utility;
 class SphinxBuilder {
 
 	/** @var string */
-	protected static $extKey = 'sphinx';
+	static protected $extKey = 'sphinx';
 
 	/** @var boolean */
 	static public $htmlConsole = TRUE;
@@ -310,7 +310,7 @@ class SphinxBuilder {
 	 * @return string
 	 * @throws \RuntimeException if build process failed
 	 */
-	protected static function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static protected function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$make = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make');
 		$pdflatex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex');
 
@@ -403,7 +403,7 @@ class SphinxBuilder {
 	 * @return string
 	 * @throws \RuntimeException if build process failed
 	 */
-	protected static function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static protected function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -526,7 +526,7 @@ class SphinxBuilder {
 	 * @return string
 	 * @throws \RuntimeException
 	 */
-	protected static function getSphinxBuilder() {
+	static protected function getSphinxBuilder() {
 		$sphinxVersion = self::getSphinxVersion();
 		if (self::isSystemVersion()) {
 			$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
@@ -580,7 +580,7 @@ class SphinxBuilder {
 	 * @param string $output
 	 * @return string
 	 */
-	protected static function colorize($output) {
+	static protected function colorize($output) {
 		# Shell colors
 		$ESC_SEQ     = '/[\x00-\x1F\x7F]\[';
 		$COL_BLACK   = $ESC_SEQ . '30(;01)?m/';
@@ -618,7 +618,7 @@ class SphinxBuilder {
 	 * @param string $arg
 	 * @return string
 	 */
-	protected static function safeEscapeshellarg($arg) {
+	static protected function safeEscapeshellarg($arg) {
 		if (!(TYPO3_OS === 'WIN' && strpos($arg, ' ') === FALSE)) {
 			$arg = escapeshellarg($arg);
 		}
@@ -633,7 +633,7 @@ class SphinxBuilder {
 	 * @param integer $returnValue
 	 * @return NULL|array
 	 */
-	protected static function safeExec($command, &$output = NULL, &$returnValue = 0) {
+	static protected function safeExec($command, &$output = NULL, &$returnValue = 0) {
 		if (TYPO3_OS === 'WIN' && strpos($command, ' && ') !== FALSE) {
 			// Multiple commands are not supported on Windows
 			// We use an intermediate batch file instead
