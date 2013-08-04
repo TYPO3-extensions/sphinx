@@ -82,10 +82,11 @@ class SphinxBuilder {
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
 	 * @param string $conf
+	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -111,9 +112,10 @@ class SphinxBuilder {
 			$sphinxBuilder . ' -b html' .								// output format
 			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-				' ' . self::safeEscapeshellarg($sourceDirectory) .		// source directory
-				' ' . self::safeEscapeshellarg($buildPath) .			// build directory
-				' 2>&1';												// redirect errors to STDOUT
+			(!empty($language) ? ' ' . self::getLanguageOption($language) : '') .
+			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
+			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
+			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
 		self::safeExec($cmd, $output, $ret);
@@ -146,10 +148,11 @@ class SphinxBuilder {
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
 	 * @param string $conf
+	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static public function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static public function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -175,6 +178,7 @@ class SphinxBuilder {
 			$sphinxBuilder . ' -b json' .								// output format
 			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
+			(!empty($language) ? ' ' . self::getLanguageOption($language) : '') .
 			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
 			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
@@ -207,10 +211,11 @@ class SphinxBuilder {
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
 	 * @param string $conf
+	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static public function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static public function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -244,6 +249,7 @@ class SphinxBuilder {
 			$sphinxBuilder . ' -b latex' .								// output format
 			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
+			(!empty($language) ? ' ' . self::getLanguageOption($language) : '') .
 			' -D latex_paper_size=' . $paperSize .						// paper size for LaTeX output
 			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
 			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
@@ -281,19 +287,20 @@ class SphinxBuilder {
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
 	 * @param string $conf
+	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static public function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static public function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
 		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
 
 		switch ($configuration['pdf_builder']) {
 			case 'pdflatex':
-				$output = self::buildPdfWithLaTeX($basePath, $sourceDirectory, $buildDirectory, $conf);
+				$output = self::buildPdfWithLaTeX($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
 				break;
 			case 'rst2pdf':
 			default:
-				$output = self::buildPdfWithRst2Pdf($basePath, $sourceDirectory, $buildDirectory, $conf);
+				$output = self::buildPdfWithRst2Pdf($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
 				break;
 		}
 
@@ -307,10 +314,11 @@ class SphinxBuilder {
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
 	 * @param string $conf
+	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string
 	 * @throws \RuntimeException if build process failed
 	 */
-	static protected function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static protected function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
 		$make = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make');
 		$pdflatex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex');
 
@@ -338,7 +346,7 @@ class SphinxBuilder {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
 		}
 
-		$outputLaTeX = self::buildLatex($basePath, $sourceDirectory, $buildDirectory, $conf);
+		$outputLaTeX = self::buildLatex($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
 
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
 		if (!empty($make)) {
@@ -400,10 +408,11 @@ class SphinxBuilder {
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
 	 * @param string $conf
+	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string
 	 * @throws \RuntimeException if build process failed
 	 */
-	static protected function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static protected function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -429,6 +438,7 @@ class SphinxBuilder {
 			$sphinxBuilder . ' -b pdf' .								// output format
 			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
+			(!empty($language) ? ' ' . self::getLanguageOption($language) : '') .
 			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
 			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
@@ -465,10 +475,11 @@ class SphinxBuilder {
 	 * @param string $sourceDirectory
 	 * @param string $buildDirectory
 	 * @param string $conf
+	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string Output of the check process (if succeeded)
 	 * @throws \RuntimeException if check process failed
 	 */
-	static public function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '') {
+	static public function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
 		$sphinxBuilder = self::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -494,6 +505,7 @@ class SphinxBuilder {
 			$sphinxBuilder . ' -b linkcheck' .							// output format
 			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
+			(!empty($language) ? ' ' . self::getLanguageOption($language) : '') .
 			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
 			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
@@ -610,6 +622,71 @@ class SphinxBuilder {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Returns the list of supported locales for Sphinx.
+	 *
+	 * @return array
+	 * @see http://sphinx-doc.org/latest/config.html#intl-options
+	 */
+	static public function getSupportedLocales() {
+		return array(
+			'bn',		// Bengali
+			'ca',		// Catalan
+			'cs',		// Czech
+			'da',		// Danish
+			'de',		// German
+			'en',		// English
+			'es',		// Spanish
+			'et',		// Estonian
+			'eu',		// Basque
+			'fa',		// Iranian
+			'fi',		// Finnish
+			'fr',		// French
+			'hr',		// Croatian
+			'hu',		// Hungarian
+			'it',		// Italian
+			'ja',		// Japanese
+			'ko',		// Korean
+			'lt',		// Lithuanian
+			'lv',		// Latvian
+			'nb_NO',	// Norwegian Bokmal
+			'ne',		// Nepali
+			'nl',		// Dutch
+			'pl',		// Polish
+			'pt_BR',	// Brazilian Portuguese
+			'ru',		// Russian
+			'sk',		// Slovak
+			'sl',		// Slovenian
+			'sv',		// Swedish
+			'tr',		// Turkish
+			'uk_UA',	// Ukrainian
+			'zh_CN',	// Simplified Chinese
+			'zh_TW',	// Traditional Chinese
+		);
+	}
+
+	/**
+	 * Returns a language compilation command option for Sphinx.
+	 *
+	 * @param string $languageCode
+	 * @return string
+	 */
+	static protected function getLanguageOption($languageCode) {
+		$locale = '';
+		$supportedLocales = self::getSupportedLocales();
+
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inArray($supportedLocales, $languageCode)) {
+			$locale = $languageCode;
+		} elseif (($pos = strpos($languageCode, '_')) !== FALSE) {
+			$languageCode = substr($languageCode, 0, $pos);
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inArray($supportedLocales, $languageCode)) {
+				$locale = $languageCode;
+			}
+		}
+
+		return !empty($locale) ? '-D language=' . $locale : '';
 	}
 
 	/**
