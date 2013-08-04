@@ -24,5 +24,3 @@ The files were generated without any special configuration nor tuning.
 
 .. note::
 	One drawback of LaTeX is that it can only be installed globally on your system; this is the reason why this extension does not provide a wizard in Extension Manager to install and configure it automatically for you.
-
-The remainder of this chapter gives you more insights on LaTeX and guides you through its installation and configuration.
