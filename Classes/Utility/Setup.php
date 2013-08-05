@@ -399,31 +399,37 @@ EOT;
 		$isPatched = FALSE;
 
 		if (TYPO3_OS !== 'WIN' && \Causal\Sphinx\Utility\Setup::hasLibrary('rst2pdf', $sphinxVersion)) {
-			if (is_file($globalSettingsFilename) && is_writable($globalSettingsFilename)) {
+			if (is_file($globalSettingsFilename)) {
 				$globalSettings = file_get_contents($globalSettingsFilename);
 				$rst2pdfLibrary = 'rst2pdf.pdfbuilder';
+				$isPatched = strpos($globalSettings, '- ' . $rst2pdfLibrary) !== FALSE;
 
-				if (strpos($globalSettings, '- ' . $rst2pdfLibrary) === FALSE) {
-					$globalSettingsLines = explode(LF, $globalSettings);
-					$buffer = array();
-					for ($i = 0; $i < count($globalSettingsLines); $i++) {
-						if (trim($globalSettingsLines[$i]) === 'extensions:') {
-							while (!empty($globalSettingsLines[$i])) {
-								$buffer[] = $globalSettingsLines[$i];
-								$i++;
-							};
-							$buffer[] = '  - ' . $rst2pdfLibrary;
+				if (!$isPatched && is_writable($globalSettingsFilename)) {
+					if (strpos($globalSettings, '- ' . $rst2pdfLibrary) === FALSE) {
+						$globalSettingsLines = explode(LF, $globalSettings);
+						$buffer = array();
+						for ($i = 0; $i < count($globalSettingsLines); $i++) {
+							if (trim($globalSettingsLines[$i]) === 'extensions:') {
+								while (!empty($globalSettingsLines[$i])) {
+									$buffer[] = $globalSettingsLines[$i];
+									$i++;
+								};
+								$buffer[] = '  - ' . $rst2pdfLibrary;
+							}
+							$buffer[] = $globalSettingsLines[$i];
 						}
-						$buffer[] = $globalSettingsLines[$i];
+						$isPatched = GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
 					}
-					$isPatched = GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
 				}
+			} else {
+				// Should not happen
+				$output[] = '[ERROR] Could not find file "' . $globalSettingsFilename . '".';
 			}
 		}
 
 		if (!$isPatched) {
 			$output[] = '[WARNING] Could not patch file "' . $globalSettingsFilename .
-				'". rst2pdf may fail to run properly with error message "Builder name pdf not registered".';
+				'". Please check file permissions. rst2pdf may fail to run properly with error message "Builder name pdf not registered".';
 		}
 
 		$setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';

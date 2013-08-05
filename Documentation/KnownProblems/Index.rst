@@ -36,9 +36,24 @@ Known problems
 
 - Sphinx installation may report as having completed successfully although it actually failed when an old version of Python is used (< 2.4).
 
-- The rendering of a PDF may fail with "Builder name pdf not registered" when using ``rst2pdf``. This is caused by global configuration
-  file ``Resources/Private/sphinx-sources/RestTools/`` ``ExtendingSphinxForTYPO3/src/t3sphinx/settings/GlobalSettings.yml`` not being writable
-  by the web server. This file is modified to support ``rst2pdf`` while building the Sphinx environment in Extension Manager.
+- The rendering of a PDF may fail with "Builder name pdf not registered" when using ``rst2pdf``. This is caused by global
+  configuration file ``Resources/Private/sphinx-sources/RestTools/`` ``ExtendingSphinxForTYPO3/src/t3sphinx/settings/GlobalSettings.yml``
+  not being writable by the web server. This file is modified to support ``rst2pdf`` while building the Sphinx environment
+  in Extension Manager. If this file cannot be written by the web server user, you may patch it manually by adding a
+  reference to extension ``rst2pdf.pdfbuilder`` (line 9):
+
+  .. code-block:: yaml
+      :linenos:
+
+      extensions:
+        - sphinx.ext.extlinks
+        - sphinx.ext.ifconfig
+        - sphinx.ext.intersphinx
+        - sphinx.ext.todo
+        - t3sphinx.ext.t3extras
+        - t3sphinx.ext.t3tablerows
+        - t3sphinx.ext.targets
+        - rst2pdf.pdfbuilder
 
 - With FAL (TYPO3 6.x) only LocalStorage has been implemented and tested, meaning code will need to be adapted in order to deal with other types of remote storage.
 
