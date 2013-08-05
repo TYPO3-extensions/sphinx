@@ -84,6 +84,23 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 				$extension = $this->createExtensionObject($extensionKey);
 				$extensions[$extensionKey] = $extension;
 				$titles[$extensionKey] = strtolower($extension->getTitle());
+
+				// Look for possible translations
+				$supportedLocales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
+				foreach ($supportedLocales as $locale => $name) {
+					$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getLocalizedDocumentationType($extensionKey, $locale);
+					if ($documentationType === \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX) {
+						$localizationDirectories = \Causal\Sphinx\Utility\GeneralUtility::getLocalizationDirectories($extensionKey);
+						$documentationKey = $extensionKey . '.' . $localizationDirectories[$locale]['locale'];
+
+						$extension = $this->createExtensionObject($extensionKey);
+						$extension->setExtensionKey($documentationKey);
+						$extension->setTitle($extension->getTitle() . ' - ' . $name);
+
+						$extensions[$documentationKey] = $extension;
+						$titles[$documentationKey] = strtolower($extension->getTitle());
+					}
+				}
 			}
 		}
 		array_multisort($titles, SORT_ASC, $extensions);

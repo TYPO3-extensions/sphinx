@@ -133,8 +133,8 @@ class DocumentationController extends AbstractActionController {
 		list($type, $identifier) = explode(':', $reference, 2);
 		switch ($type) {
 			case 'EXT':
-				$extensionKey = $identifier;
-				$documentationUrl = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force);
+				list($extensionKey, $locale) = explode('.', $identifier, 2);
+				$documentationUrl = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
 				break;
 			case 'USER':
 				$documentationUrl = NULL;

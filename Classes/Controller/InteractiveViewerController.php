@@ -88,9 +88,10 @@ class InteractiveViewerController extends AbstractActionController {
 		list($type, $identifier) = explode(':', $reference, 2);
 		switch ($type) {
 			case 'EXT':
-				$extensionKey = $identifier;
+				list($extensionKey, $locale) = explode('.', $identifier, 2);
+				$languageDirectory = empty($locale) ? 'default' : $locale;
 				$this->extension = $extensionKey;
-				$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/default/json');
+				$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $languageDirectory . '/json');
 				break;
 			case 'USER':
 				$path = dirname($documentationFilename);

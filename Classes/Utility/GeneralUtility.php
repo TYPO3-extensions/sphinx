@@ -96,6 +96,109 @@ class GeneralUtility {
 	}
 
 	/**
+	 * Returns an array of localization directories along with the
+	 * mapping to an official locale supported by Sphinx.
+	 *
+	 * @param string $extensionKey
+	 * @return array
+	 * @see \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales()
+	 */
+	static public function getLocalizationDirectories($extensionKey) {
+		static $localizationDirectories = array();
+
+		if (!isset($localizationDirectories[$extensionKey])) {
+			$localizationDirectories[$extensionKey] = array();
+
+			$pattern = 'Documentation/Localization.*';
+			$supportedLocales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
+			$extPath = ExtensionManagementUtility::extPath($extensionKey);
+			$directories = glob($extPath . $pattern);
+
+			foreach ($directories as $directory) {
+				$directory = substr($directory, strlen($extPath));
+				if (preg_match('#Documentation/Localization\.([a-z]{2})_([A-Z]{2})$#', $directory, $matches)) {
+					$localizationLocale = $matches[1] . '_' . $matches[2];
+
+					foreach ($supportedLocales as $locale => $_) {
+						if (strpos($locale, '_') === FALSE && $matches[1] === $locale) {
+							$localizationDirectories[$extensionKey][$locale] = array(
+								'directory' => $directory,
+								'locale' => $localizationLocale,
+							);
+							$localizationDirectories[$extensionKey][$localizationLocale] = array(
+								'directory' => $directory,
+								'locale' => $localizationLocale,
+							);
+							break;
+						} elseif ($localizationLocale === $locale) {
+							$localizationDirectories[$extensionKey][$locale] = array(
+								'directory' => $directory,
+								'locale' => $localizationLocale,
+							);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		return $localizationDirectories[$extensionKey];
+	}
+
+	/**
+	 * Returns the type of the master documentation document, localized
+	 * in a given language/locale, of a given loaded extension as one of
+	 * the DOCUMENTATION_TYPE_* constants.
+	 *
+	 * @param string $extensionKey
+	 * @param string $locale
+	 * @return integer DOCUMENTATION_TYPE_* constant
+	 */
+	static public function getLocalizedDocumentationType($extensionKey, $locale) {
+		$localizationDirectories = self::getLocalizationDirectories($extensionKey);
+
+		if (isset($localizationDirectories[$locale])) {
+			$extPath = ExtensionManagementUtility::extPath($extensionKey);
+			if (is_file($extPath . $localizationDirectories[$locale]['directory'] . '/Index.rst')) {
+				return self::DOCUMENTATION_TYPE_SPHINX;
+			}
+		}
+
+		return self::DOCUMENTATION_TYPE_UNKNOWN;
+	}
+
+	/**
+	 * Returns the documentation project title for a given extension.
+	 *
+	 * @param string $extensionKey
+	 * @param string $locale
+	 * @return string
+	 */
+	static public function getDocumentationProjectTitle($extensionKey, $locale = '') {
+		$projectTitle = '';
+
+		if (empty($locale)) {
+			$settingsFilename = 'Documentation/Settings.yml';
+		} else {
+			$localizationDirectories = self::getLocalizationDirectories($extensionKey);
+			if (!isset($localizationDirectories[$locale])) {
+				return $projectTitle;
+			}
+			$settingsFilename = $localizationDirectories[$locale]['directory'] . '/Settings.yml';
+		}
+		$extPath = ExtensionManagementUtility::extPath($extensionKey);
+
+		if (is_file($extPath . $settingsFilename)) {
+			$settings = file_get_contents($extPath . $settingsFilename);
+			if (preg_match('/^\s+project:\s*(.*)$/m', $settings, $matches)) {
+				$projectTitle = trim($matches[1]);
+			}
+		}
+
+		return $projectTitle;
+	}
+
+	/**
 	 * Post-processes the property tables.
 	 *
 	 * @param string $contents
@@ -196,10 +299,19 @@ HTML;
 	 * @param string $extensionKey
 	 * @param string $format
 	 * @param boolean $force
+	 * @param string $locale
 	 * @return string The documentation URL
 	 */
-	static public function generateDocumentation($extensionKey, $format = 'html', $force = FALSE) {
-		$documentationType = self::getDocumentationType($extensionKey);
+	static public function generateDocumentation($extensionKey, $format = 'html', $force = FALSE, $locale = '') {
+		if (empty($locale)) {
+			$documentationType = self::getDocumentationType($extensionKey);
+			$projectTitle = self::getDocumentationProjectTitle($extensionKey);
+			$languageDirectory = 'default';
+		} else {
+			$documentationType = self::getLocalizedDocumentationType($extensionKey, $locale);
+			$projectTitle = self::getDocumentationProjectTitle($extensionKey, $locale);
+			$languageDirectory = $locale;
+		}
 		if (!($documentationType === self::DOCUMENTATION_TYPE_SPHINX
 			|| $documentationType === self::DOCUMENTATION_TYPE_README)) {
 
@@ -225,7 +337,7 @@ HTML;
 				break;
 		}
 
-		$relativeOutputDirectory = 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/default/' . $documentationFormat;
+		$relativeOutputDirectory = 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $languageDirectory . '/' . $documentationFormat;
 		$absoluteOutputDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($relativeOutputDirectory);
 		if (!$force && is_file($absoluteOutputDirectory . '/' . $masterDocument)) {
 			// Do not render the documentation again
@@ -235,10 +347,15 @@ HTML;
 
 		$metadata = GeneralUtility::getExtensionMetaData($extensionKey);
 		$basePath = PATH_site . 'typo3temp/tx_' . self::$extKey . '/' . $extensionKey;
+		$documentationBasePath = $basePath;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
+		if (!empty($locale)) {
+			$documentationBasePath .= '/Localization.' . $locale;
+		}
+
 		SphinxQuickstart::createProject(
-			$basePath,
-			$metadata['title'],
+			$documentationBasePath,
+			$projectTitle ?: $metadata['title'],
 			$metadata['author'],
 			FALSE,
 			'TYPO3DocEmptyProject',
@@ -248,7 +365,7 @@ HTML;
 		);
 
 		if ($format === 'json') {
-			self::overrideThemeT3Sphinx($basePath);
+			self::overrideThemeT3Sphinx($documentationBasePath);
 		}
 
 		// Recursively instantiate template files
@@ -264,11 +381,11 @@ HTML;
 
 		try {
 			if ($format === 'json') {
-				SphinxBuilder::buildJson($basePath, '.', '_make/build', '_make/conf.py');
+				SphinxBuilder::buildJson($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale);
 			} elseif ($format === 'pdf') {
-				SphinxBuilder::buildPdf($basePath, '.', '_make/build', '_make/conf.py');
+				SphinxBuilder::buildPdf($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale);
 			} else {
-				SphinxBuilder::buildHtml($basePath, '.', '_make/build', '_make/conf.py');
+				SphinxBuilder::buildHtml($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale);
 			}
 		} catch (\RuntimeException $e) {
 			$relativeFilename = 'typo3temp/tx_' . self::$extKey . '/' . $e->getCode() . '.log';
@@ -281,16 +398,16 @@ HTML;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($absoluteOutputDirectory, TRUE);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($absoluteOutputDirectory . '/');
 		if ($format !== 'pdf') {
-			self::recursiveCopy($basePath . '/_make/build/' . $documentationFormat, $absoluteOutputDirectory);
+			self::recursiveCopy($documentationBasePath . '/_make/build/' . $documentationFormat, $absoluteOutputDirectory);
 		} else {
 			// Only copy PDF output
 			$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
 			switch ($configuration['pdf_builder']) {
 				case 'pdflatex':
-					copy($basePath . '/_make/build/latex/' . $extensionKey . '.pdf', $absoluteOutputDirectory . '/' . $extensionKey . '.pdf');
+					copy($documentationBasePath . '/_make/build/latex/' . $extensionKey . '.pdf', $absoluteOutputDirectory . '/' . $extensionKey . '.pdf');
 					break;
 				case 'rst2pdf':
-					copy($basePath . '/_make/build/pdf/' . $extensionKey . '.pdf', $absoluteOutputDirectory . '/' . $extensionKey . '.pdf');
+					copy($documentationBasePath . '/_make/build/pdf/' . $extensionKey . '.pdf', $absoluteOutputDirectory . '/' . $extensionKey . '.pdf');
 					break;
 			}
 		}

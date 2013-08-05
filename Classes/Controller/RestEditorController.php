@@ -48,8 +48,8 @@ class RestEditorController extends AbstractActionController {
 		list($type, $identifier) = explode(':', $reference, 2);
 		switch ($type) {
 			case 'EXT':
-				$extensionKey = $identifier;
-				$filename = $this->getFilename($extensionKey, $document);
+				list($extensionKey, $locale) = explode('.', $identifier, 2);
+				$filename = $this->getFilename($extensionKey, $document, $locale);
 				break;
 			case 'USER':
 				$filename = NULL;
@@ -91,8 +91,8 @@ class RestEditorController extends AbstractActionController {
 			list($type, $identifier) = explode(':', $reference, 2);
 			switch ($type) {
 				case 'EXT':
-					$extensionKey = $identifier;
-					$filename = $this->getFilename($extensionKey, $document);
+					list($extensionKey, $locale) = explode('.', $identifier, 2);
+					$filename = $this->getFilename($extensionKey, $document, $locale);
 					break;
 				case 'USER':
 					$filename = NULL;
@@ -124,7 +124,7 @@ class RestEditorController extends AbstractActionController {
 
 				switch ($type) {
 					case 'EXT':
-						$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force);
+						$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
 						break;
 					case 'USER':
 						$outputFilename = NULL;
@@ -161,14 +161,25 @@ class RestEditorController extends AbstractActionController {
 	 *
 	 * @param string $extensionKey
 	 * @param string $document
+	 * @param string $locale
 	 * @return string
 	 * @throws \RuntimeException
 	 */
-	protected function getFilename($extensionKey, $document) {
-		$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
+	protected function getFilename($extensionKey, $document, $locale) {
+		if (empty($locale)) {
+			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
+		} else {
+			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getLocalizedDocumentationType($extensionKey, $locale);
+		}
 		switch ($documentationType) {
 			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX:
-				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation/';
+				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+				if (empty($locale)) {
+					$path .= 'Documentation/';
+				} else {
+					$localizationDirectories = \Causal\Sphinx\Utility\GeneralUtility::getLocalizationDirectories($extensionKey);
+					$path .= $localizationDirectories[$locale]['directory'] . '/';
+				}
 				$filename = $path . ($document ? substr($document, 0, -1) : 'Index') . '.rst';
 				break;
 			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_README:

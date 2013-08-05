@@ -632,38 +632,38 @@ class SphinxBuilder {
 	 */
 	static public function getSupportedLocales() {
 		return array(
-			'bn',		// Bengali
-			'ca',		// Catalan
-			'cs',		// Czech
-			'da',		// Danish
-			'de',		// German
-			'en',		// English
-			'es',		// Spanish
-			'et',		// Estonian
-			'eu',		// Basque
-			'fa',		// Iranian
-			'fi',		// Finnish
-			'fr',		// French
-			'hr',		// Croatian
-			'hu',		// Hungarian
-			'it',		// Italian
-			'ja',		// Japanese
-			'ko',		// Korean
-			'lt',		// Lithuanian
-			'lv',		// Latvian
-			'nb_NO',	// Norwegian Bokmal
-			'ne',		// Nepali
-			'nl',		// Dutch
-			'pl',		// Polish
-			'pt_BR',	// Brazilian Portuguese
-			'ru',		// Russian
-			'sk',		// Slovak
-			'sl',		// Slovenian
-			'sv',		// Swedish
-			'tr',		// Turkish
-			'uk_UA',	// Ukrainian
-			'zh_CN',	// Simplified Chinese
-			'zh_TW',	// Traditional Chinese
+			'bn'    => 'Bengali',
+			'ca'    => 'Catalan',
+			'cs'    => 'Czech',
+			'da'    => 'Danish',
+			'de'    => 'German',
+			//'en'  => 'English',
+			'es'    => 'Spanish',
+			'et'    => 'Estonian',
+			'eu'    => 'Basque',
+			'fa'    => 'Iranian',
+			'fi'    => 'Finnish',
+			'fr'    => 'French',
+			'hr'    => 'Croatian',
+			'hu'    => 'Hungarian',
+			'it'    => 'Italian',
+			'ja'    => 'Japanese',
+			'ko'    => 'Korean',
+			'lt'    => 'Lithuanian',
+			'lv'    => 'Latvian',
+			'nb_NO' => 'Norwegian Bokmal',
+			'ne'    => 'Nepali',
+			'nl'    => 'Dutch',
+			'pl'    => 'Polish',
+			'pt_BR' => 'Brazilian Portuguese',
+			'ru'    => 'Russian',
+			'sk'    => 'Slovak',
+			'sl'    => 'Slovenian',
+			'sv'    => 'Swedish',
+			'tr'    => 'Turkish',
+			'uk_UA' => 'Ukrainian',
+			'zh_CN' => 'Simplified Chinese',
+			'zh_TW' => 'Traditional Chinese',
 		);
 	}
 
@@ -677,7 +677,7 @@ class SphinxBuilder {
 		$locale = '';
 		$supportedLocales = self::getSupportedLocales();
 
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::inArray($supportedLocales, $languageCode)) {
+		if (isset($supportedLocales[$languageCode])) {
 			$locale = $languageCode;
 		} elseif (($pos = strpos($languageCode, '_')) !== FALSE) {
 			$languageCode = substr($languageCode, 0, $pos);

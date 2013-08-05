@@ -20,7 +20,8 @@ Ce qui suit est une vue d'ensemble très haut niveau des changements de cette ex
 =======  ======================================================
 Version  Changements
 =======  ======================================================
-1.1.0    - Intégration à EXT:documentation (TYPO3 6.2)
+1.1.0    - Support de documentation multilingue
+         - Intégration à EXT:documentation (TYPO3 6.2)
          - Pygments avec coloration syntaxique TypoScript
          - Convertisseur OpenOffice vers Sphinx (à l'aide de l'outil en ligne de http://docs.typo3.org)
          - Documentation française

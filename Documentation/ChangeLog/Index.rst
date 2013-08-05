@@ -19,7 +19,8 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ======================================================
 Version  Changes
 =======  ======================================================
-1.1.0    - Extend EXT:documentation (TYPO3 6.2)
+1.1.0    - Support for multilingual documentation
+         - Extend EXT:documentation (TYPO3 6.2)
          - Pygments with TypoScript highlighting
          - OpenOffice to Sphinx converter (using online tool on http://docs.typo3.org)
          - French documentation
