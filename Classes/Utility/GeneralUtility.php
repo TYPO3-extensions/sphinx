@@ -225,10 +225,11 @@ HTML;
 				break;
 		}
 
-		$outputDirectory = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/default/' . $documentationFormat;
-		if (!$force && is_file($outputDirectory . '/' . $masterDocument)) {
+		$relativeOutputDirectory = 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/default/' . $documentationFormat;
+		$absoluteOutputDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($relativeOutputDirectory);
+		if (!$force && is_file($absoluteOutputDirectory . '/' . $masterDocument)) {
 			// Do not render the documentation again
-			$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
+			$documentationUrl = '../' . $relativeOutputDirectory . '/' . $masterDocument;
 			return $documentationUrl;
 		}
 
@@ -270,30 +271,31 @@ HTML;
 				SphinxBuilder::buildHtml($basePath, '.', '_make/build', '_make/conf.py');
 			}
 		} catch (\RuntimeException $e) {
-			$filename = 'typo3temp/tx_' . self::$extKey . '/' . $e->getCode() . '.log';
+			$relativeFilename = 'typo3temp/tx_' . self::$extKey . '/' . $e->getCode() . '.log';
+			$absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($relativeFilename);
 			$content = $e->getMessage();
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
-			return '../' . $filename;
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($absoluteFilename, $content);
+			return '../' . $relativeFilename;
 		}
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($outputDirectory, TRUE);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($outputDirectory . '/');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($absoluteOutputDirectory, TRUE);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($absoluteOutputDirectory . '/');
 		if ($format !== 'pdf') {
-			self::recursiveCopy($basePath . '/_make/build/' . $documentationFormat, $outputDirectory);
+			self::recursiveCopy($basePath . '/_make/build/' . $documentationFormat, $absoluteOutputDirectory);
 		} else {
 			// Only copy PDF output
 			$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
 			switch ($configuration['pdf_builder']) {
 				case 'pdflatex':
-					copy($basePath . '/_make/build/latex/' . $extensionKey . '.pdf', $outputDirectory . '/' . $extensionKey . '.pdf');
+					copy($basePath . '/_make/build/latex/' . $extensionKey . '.pdf', $absoluteOutputDirectory . '/' . $extensionKey . '.pdf');
 					break;
 				case 'rst2pdf':
-					copy($basePath . '/_make/build/pdf/' . $extensionKey . '.pdf', $outputDirectory . '/' . $extensionKey . '.pdf');
+					copy($basePath . '/_make/build/pdf/' . $extensionKey . '.pdf', $absoluteOutputDirectory . '/' . $extensionKey . '.pdf');
 					break;
 			}
 		}
 
-		$documentationUrl = '../' . substr($outputDirectory, strlen(PATH_site)) . '/' . $masterDocument;
+		$documentationUrl = '../' . $relativeOutputDirectory . '/' . $masterDocument;
 		return $documentationUrl;
 	}
 

@@ -125,10 +125,11 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					}
 				}
 
-				$logFilename = PATH_site . 'typo3temp/tx_sphinx/' . $action . '-' . date('YmdHis') . '.log';
-				Setup::dumpLog($logFilename);
+				$relativeLogFilename = 'typo3temp/tx_sphinx/' . $action . '-' . date('YmdHis') . '.log';
+				$absoluteLogFilename = GeneralUtility::getFileAbsFileName($relativeLogFilename);
+				Setup::dumpLog($absoluteLogFilename);
 
-				$out[] = '<p><a href="../' . substr($logFilename, strlen(PATH_site)) . '" target="_blank">Click here</a> to show the complete log.</p>';
+				$out[] = '<p><a href="../' . $relativeLogFilename . '" target="_blank">Click here</a> to show the complete log.</p>';
 
 				// Reload the list of locally available versions of Sphinx
 				$localVersions = Setup::getSphinxLocalVersions();

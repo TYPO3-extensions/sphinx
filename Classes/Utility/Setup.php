@@ -1102,7 +1102,7 @@ EOT;
 	 * @return string
 	 */
 	static private function getTemporaryPath() {
-		$temporaryPath = PATH_site . 'typo3temp/';
+		$temporaryPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/');
 		// Compatibility with Windows platform
 		$temporaryPath = str_replace('/', DIRECTORY_SEPARATOR, $temporaryPath);
 

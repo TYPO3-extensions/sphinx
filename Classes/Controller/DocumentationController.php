@@ -158,9 +158,9 @@ class DocumentationController extends AbstractActionController {
 
 		if ($layout === 'json' && substr($documentationUrl, -6) === '.fjson') {
 			if (substr($documentationUrl, 0, 3) === '../') {
-				$documentationFilename = PATH_site . substr($documentationUrl, 3);
+				$documentationFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($documentationUrl, 3));
 			} elseif ($documentationUrl{0} === '/') {
-				$documentationFilename = PATH_site . substr($documentationUrl, 1);
+				$documentationFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($documentationUrl, 1));
 			} else {
 				$documentationFilename = '';
 			}

@@ -90,7 +90,7 @@ class InteractiveViewerController extends AbstractActionController {
 			case 'EXT':
 				$extensionKey = $identifier;
 				$this->extension = $extensionKey;
-				$path = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/default/json';
+				$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/default/json');
 				break;
 			case 'USER':
 				$path = dirname($documentationFilename);

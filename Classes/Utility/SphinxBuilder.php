@@ -714,13 +714,14 @@ class SphinxBuilder {
 		if (TYPO3_OS === 'WIN' && strpos($command, ' && ') !== FALSE) {
 			// Multiple commands are not supported on Windows
 			// We use an intermediate batch file instead
-			$batchFilename = PATH_site . 'typo3temp/tx_' . self::$extKey . '/build-' . $GLOBALS['EXEC_TIME'] . '.bat';
+			$relativeBatchFilename = 'typo3temp/tx_' . self::$extKey . '/build-' . $GLOBALS['EXEC_TIME'] . '.bat';
+			$absoluteBatchFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($relativeBatchFilename);
 			$batchScript = '@ECHO OFF' . CR . LF . str_replace(' && ', CR . LF, $command);
 
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($batchFilename, $batchScript);
-			\TYPO3\CMS\Core\Utility\CommandUtility::exec($batchFilename, $output, $returnValue);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($absoluteBatchFilename, $batchScript);
+			\TYPO3\CMS\Core\Utility\CommandUtility::exec($absoluteBatchFilename, $output, $returnValue);
 
-			@unlink($batchFilename);
+			@unlink($absoluteBatchFilename);
 		} else {
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($command, $output, $returnValue);
 		}

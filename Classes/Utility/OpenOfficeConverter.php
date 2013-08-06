@@ -76,7 +76,7 @@ class OpenOfficeConverter {
 			&& preg_match('#(http://docs.typo3.org/getthedocs/files/\d+/Documentation.zip)#', $response, $matches)) {
 
 			$documentationUrl = $matches[1];
-			$zipFilename = PATH_site . 'typo3temp/documentation.zip';
+			$zipFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/documentation.zip');
 			$zipContent = GeneralUtility::getUrl($documentationUrl);
 			if ($zipContent && GeneralUtility::writeFile($zipFilename, $zipContent)) {
 				GeneralUtility::rmdir($outputDirectory, TRUE);

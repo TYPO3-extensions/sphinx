@@ -166,7 +166,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		$storageRecord = $this->folderObject->getStorage()->getStorageRecord();
 		if ($storageRecord['driver'] === 'Local') {
-			$this->basePath = PATH_site . $this->folderObject->getPublicUrl();
+			$this->basePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->folderObject->getPublicUrl());
 
 			if ($_POST['project']) {
 				\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
