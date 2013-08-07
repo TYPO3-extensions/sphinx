@@ -16,7 +16,7 @@ TeX systems produce output -- on paper or on the computer screen -- of the highe
 
 LaTeX is intended to provide a high-level language that accesses the power of TeX. LaTeX essentially comprises a collection of TeX macros and a program to process LaTeX documents. Because the TeX formatting commands are very low-level, it is usually much simpler for end-users to use LaTeX.
 
-Similarly to ReStructuredText, LaTeX is based on the idea that it is better to leave document design to document designers, and to let authors get on with writing documents. In ReStructuredText you would input a simple document as:
+Similarly to reStructuredText, LaTeX is based on the idea that it is better to leave document design to document designers, and to let authors get on with writing documents. In reStructuredText you would input a simple document as:
 
 .. code-block:: rest
 

@@ -1,0 +1,23 @@
+.. |msvcr100dll| image:: ../../../Images/msvcr100dll.png
+	:alt: Redistribuable Visual C++ pour manquant
+
+.. |environment_check_windows| image:: ../../../Images/environment_check_windows.png
+	:alt: Vérification de l'environnement sous MS Windows
+
+.. |environment_variables| image:: ../../../Images/environment_variables.png
+	:alt: Mise à jour des variables d'environnement
+
+.. |libarchive_setup| image:: ../../../Images/libarchive_setup.png
+	:alt: Installation de la bibliothèque LibArchive pour lire et écrire des flux d'archives
+
+.. |python_setup| image:: ../../../Images/python_setup.png
+	:alt: Installation de Python
+
+.. |system_variables| image:: ../../../Images/system_variables.png
+	:alt: Variables d'environnement au niveau système
+
+.. |update_script| image:: ../../../Images/update_script.png
+	:alt: Exécution du script de mise à niveau dans le gestionnaire d'extensions
+
+.. |unzip_setup| image:: ../../../Images/unzip_setup.png
+	:alt: Installation de l'utilitaire d'extraction UnZip

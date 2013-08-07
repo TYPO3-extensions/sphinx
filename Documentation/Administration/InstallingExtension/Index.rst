@@ -24,7 +24,6 @@ The Sphinx Python Documentation Generator extension can be installed through the
 
 .. _configure-sphinx:
 
-
 Downloading and configuring Sphinx
 """"""""""""""""""""""""""""""""""
 
@@ -49,11 +48,12 @@ Select a version of Sphinx you would like to use and start the import process wi
 
 Everything should work out-of-the-box. Possible problems will be reported as Flash messages and a log of all operations is stored as ``typo3temp/tx_sphinx/IMPORT-<date>.log``. The general process of importing Sphinx is as follows:
 
-#. Fetch the version as a zip archive from https://bitbucket.org/birkenfeld/sphinx/downloads ("Tags") into ``typo3temp/``
+#. Fetch the version as a zip archive from https://bitbucket.org/birkenfeld/sphinx/downloads ("Tags") into
+   directory ``typo3temp/``
 
-#. Unpack the zip archive into ``EXT:sphinx/Resources/Private/sphinx-sources/<version>/``
+#. Unpack the zip archive into directory ``EXT:sphinx/Resources/Private/sphinx-sources/<version>/``
 
-#. Build the Python libraries into ``EXT:sphinx/Resources/Private/sphinx/<version>/``
+#. Build the Python libraries into directory ``EXT:sphinx/Resources/Private/sphinx/<version>/``
 
 #. *[Not on MS Windows]* Install Python Imaging Library (https://pypi.python.org/pypi/PIL), needed for supporting common image types with ``rst2pdf``
 
@@ -67,7 +67,8 @@ Everything should work out-of-the-box. Possible problems will be reported as Fla
 
 The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if you want to use the `git repository of the TYPO3 ReST tools`_ instead of a snapshot.
 
-The "download" button fetches the corresponding sources of Sphinx, the TYPO3-related commands, the PyYAML library and ``rst2pdf`` if they are not available locally.
+The "download" button fetches the corresponding sources of Sphinx, the TYPO3-related commands, the PyYAML library, the
+Pygments library, ... if they are not available locally.
 
 .. important::
 	It is known that the Python Imaging Library and/or ``rst2pdf`` might fail to be successfully installed and configured on some systems. However, as these libraries are only used to render PDF with ``rst2pdf`` and as the recommended method for rendering PDF is to use :ref:`LaTeX <rendering_pdf>` anyway, you should not worry if you are unable to install ``rst2pdf`` locally.
@@ -86,7 +87,8 @@ The "build" button builds or rebuilds the corresponding version of the Sphinx en
 Finally, the "remove" button removes both the sources and the corresponding version of the Sphinx environment.
 
 .. important::
-	This button *WILL NOT* remove sources of the TYPO3-related commands, the PyYAML library, Pygments, the Python Imaging Library or rst2pdf.
+	This button *WILL NOT* remove sources of the TYPO3-related commands, the PyYAML library, Pygments, the Python Imaging
+	Library or ``rst2pdf``.
 
 
 Choosing the version of Sphinx to use and how to render PDF

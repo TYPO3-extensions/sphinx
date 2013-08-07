@@ -1,0 +1,24 @@
+.. |checkbox| image:: ../../../Images/checkbox.png
+	:alt: Case à cocher pour forcer un manuel d'extension à être généré
+
+.. |convert-openoffice| image:: ../../../Images/convert-openoffice.png
+	:alt: Conversion facile des manuels OpenOffice en projets Sphinx
+	:width: 711
+
+.. |kickstart| image:: ../../../Images/kickstart.png
+	:alt: Aucune documentation sélectionnée
+
+.. |kickstart-sphinx| image:: ../../../Images/kickstart-sphinx.png
+	:alt: Démarrer un projet de documentation Sphinx
+	:width: 711
+
+.. |render_pdf| image:: ../../../Images/render_pdf.png
+	:alt: Génération d'une documentation en PDF
+	:width: 691
+
+.. |section_help| image:: ../../../Images/section_help.png
+	:alt: Visionneuse de documentation Sphinx
+
+.. |viewer_choose_extension| image:: ../../../Images/viewer_choose_extension.png
+	:alt: Choix du manuel d'extension à afficher localement
+	:width: 711

@@ -3,29 +3,30 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../../Includes.txt
+.. include:: ../../../Includes.txt
 .. include:: Images.txt
 
 
-Registering Custom Documentation
-""""""""""""""""""""""""""""""""
+Enregistrement d'une documentation personnalisée
+""""""""""""""""""""""""""""""""""""""""""""""""
 
-The two slots :ref:`afterInitializeReferences <custom-documentation-afterInitializeReferences>` and
-:ref:`renderUserDocumentation <custom-documentation-renderUserDocumentation>` should be used to register and render your
-own documentation. Please see :ref:`sample code below <custom-documentation-sample>`.
+Les deux slots :ref:`afterInitializeReferences <custom-documentation-afterInitializeReferences>` et
+:ref:`renderUserDocumentation <custom-documentation-renderUserDocumentation>` peuvent être utilisés pour enregistrer et
+générer votre propre documentation. Veuillez regarder l':ref:`exemple de code ci-dessous <custom-documentation-sample>`.
 
-Slot :ref:`retrieveRestFilename <custom-documentation-retrieveRestFilename>` should be used if you plan to edit source
-files using the integrated :ref:`ReStructuredText editor <sphinx-documentation-editor>`.
+Le slot :ref:`retrieveRestFilename <custom-documentation-retrieveRestFilename>` peut être utilisé si vous envisagez de
+permettre l'édition des fichiers sources avec l':ref:`éditeur ReStructuredText <sphinx-documentation-editor>` intégré.
 
 
 .. _custom-documentation-afterInitializeReferences:
 
-Slot: afterInitializeReferences
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Slot : afterInitializeReferences
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This slot is used to register additional entries in the drop-down list of available documentations.
+Ce slot peut être utilisé pour enregistrer des entrées supplémentaires dans la liste déroulante des documentations
+disponibles.
 
-Your slot should implement a method of the form:
+Votre slot doit implémenter une méthode de la forme :
 
 .. code-block:: php
 
@@ -33,20 +34,19 @@ Your slot should implement a method of the form:
 	    // Custom code
 	}
 
-Parameter ``$references`` is an bi-dimensional array containing the list of local, global and system extensions with a
-Sphinx/ReStructuredText-based documentation. As the array is passed by reference, you may post-process the array and
-add/remove/modify
-existing entries.
+Le paramètre ``$references`` est un tableau bidimensionnel contenant une liste d'extensions locales, globales et systèmes
+dont la documentation est écrite avec Sphinx/ReStructuredText. Puisque le tableau est passé par référence, vous pouvez
+faire du post-traitement dessus et ajouter/supprimer/modifier les entrées existantes.
 
 
 .. _custom-documentation-renderUserDocumentation:
 
-Slot: renderUserDocumentation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Slot : renderUserDocumentation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This slot is used to render your custom documentation and return the URL of the master page.
+Ce slot peut être utilisé pour générer votre propre documentation et doit retourner l'URL de la page principale.
 
-Your slot should implement a method of the form:
+Votre slot doit implémenter une méthode de la forme :
 
 .. code-block:: php
 
@@ -57,12 +57,12 @@ Your slot should implement a method of the form:
 
 .. _custom-documentation-retrieveRestFilename:
 
-Slot: retrieveRestFilename
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Slot : retrieveRestFilename
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This slot is used to retrieve the ReStructuredText filename corresponding to a given document.
+Ce slot peut-être utilisé pour récupérer le nom de fichier ReStructuredText correspondant à un document donné.
 
-Your  slot should implement a method of the form:
+Votre slot doit implémenter une méthode de la forme :
 
 .. code-block:: php
 
@@ -73,19 +73,19 @@ Your  slot should implement a method of the form:
 
 .. _custom-documentation-sample:
 
-Sample code
-^^^^^^^^^^^
+Code exemple
+^^^^^^^^^^^^
 
-This sample code will register a custom documentation and simply return a public URL (http://www.example.com) as
-"master page":
+Ce code exemple enregistre une documentation personnelle and retourne simplement une URL publique (http://www.example.com)
+comme "page principale".
 
 |custom_documentation|
 
 
-Registering the slots
-~~~~~~~~~~~~~~~~~~~~~
+Enregistrement des slots
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-In your extension, open ``EXT:your-ext/ext_localconf.php`` and add:
+Dans votre extension, ouvrez ``EXT:your-ext/ext_localconf.php`` et ajoutez :
 
 .. code-block:: php
 
@@ -118,10 +118,10 @@ In your extension, open ``EXT:your-ext/ext_localconf.php`` and add:
 	*/
 
 
-Implementing the slots
-~~~~~~~~~~~~~~~~~~~~~~
+Impémentation des slots
+~~~~~~~~~~~~~~~~~~~~~~~
 
-In your extension, create a file ``EXT:your-ext/Classes/Slots/CustomDocumentation.php``:
+Dans votre extension, créez un fichier ``EXT:your-ext/Classes/Slots/CustomDocumentation.php`` :
 
 .. code-block:: php
 
@@ -166,13 +166,14 @@ In your extension, create a file ``EXT:your-ext/Classes/Slots/CustomDocumentatio
 	?>
 
 
-Example implementation of the TODO
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Exemple d'implémentation de la partie TODO
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In example above, the actual rendering of an arbitrary documentation is not shown. Here is an example of a possible
-implementation. We suppose that you have a TYPO3-based documentation project within directory ``fileadmin/demo-sphinx``
-(e.g., generated with the :ref:`Sphinx Project Kickstarter <kickstart_sphinx_project>`); that is, a project where file
-``conf.py`` is stored within a directory ``_make``:
+Dans l'exemple précédent, la génération en tant que telle d'une documentation arbitraire n'est pas montrée. Voici un
+exemple d'une implémentation possible de cette génération. Nous supposons que vous avez un projet de documentation basé
+sur le modèle TYPO3 dans le répertoire ``fileadmin/demo-sphinx`` (p. ex. généré avec
+l':ref:`assistant de nouveau projet Sphinx <kickstart_sphinx_project>`) ; c.-à-d. un projet dont le fichier ``conf.py``
+est stocké dans le répertoire ``_make`` :
 
 .. code-block:: php
 
@@ -225,4 +226,5 @@ implementation. We suppose that you have a TYPO3-based documentation project wit
 	    }
 	}
 
-Please see method ``\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation()`` for further ideas.
+Vous pouvez analyser la méthode ``\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation()`` pour d'autres idées
+d'implémentation.

@@ -1,0 +1,2 @@
+.. |custom_documentation| image:: ../../../Images/custom_documentation.png
+	:alt: Documentation personnalisée dans la liste déroulante

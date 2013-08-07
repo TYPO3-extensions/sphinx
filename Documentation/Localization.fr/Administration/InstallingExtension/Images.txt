@@ -1,0 +1,13 @@
+.. |em_update| image:: ../../../Images/em_update.png
+	:alt: Lancement du script de mise à niveau dans le gestionnaire d'extensions
+	:width: 711
+
+.. |em_configure| image:: ../../../Images/em_configure.png
+	:alt: Configuration de l'extension dans le gestionnaire d'extensions
+	:width: 711
+
+.. |import_sphinx| image:: ../../../Images/import_sphinx.png
+	:alt: Importation de Sphinx dans l'environnement local
+
+.. |sphinx_version| image:: ../../../Images/sphinx_version.png
+	:alt: Configuration de la version de Sphinx et du générateur PDF à utiliser par défaut
