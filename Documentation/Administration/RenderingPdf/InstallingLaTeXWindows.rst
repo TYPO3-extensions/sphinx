@@ -14,7 +14,8 @@ Download and run the MiKTeX_ installer to setup a basic TeX/LaTeX system on your
 
 .. note::
 
-	The recommended download is the MiKTeX Basic Installer and implies that the installer will install missing packages on-the-fly.
+	The recommended download is the MiKTeX Basic Installer and implies that the installer will install missing packages
+	on-the-fly, by fetching them online.
 
 	Alternatively, you may choose to install a full-fledge version of MiKTeX (MiKTeX Net Installer under "Other Downloads" on the MiKTeX's website). But keep in mind that this results in a *lot larger* footprint.
 

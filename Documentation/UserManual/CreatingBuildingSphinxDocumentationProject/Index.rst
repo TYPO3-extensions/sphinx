@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../../Includes.txt
+.. include:: ../../../Includes.txt
 .. include:: Images.txt
 
 
@@ -71,4 +71,4 @@ If commands ``make`` and ``pdflatex`` are found on your server (or if you config
 Check Links
 """""""""""
 
-This Sphinx builder checks all links within your documentation and generates a report output.txt into directory ``_build/linkcheck/``.
+This Sphinx builder checks all links within your documentation and generates a report ``output.txt`` into directory ``_build/linkcheck/``.

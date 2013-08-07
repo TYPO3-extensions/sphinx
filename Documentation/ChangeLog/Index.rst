@@ -22,6 +22,7 @@ Version  Changes
 1.1.0    - Extend EXT:documentation (TYPO3 6.2)
          - Pygments with TypoScript highlighting
          - OpenOffice to Sphinx converter (using online tool on http://docs.typo3.org)
+         - French documentation
 1.0.0    - Support for rst2pdf
          - TYPO3 branding when rendering PDF with LaTeX
 0.6.0    - Compatibility with MS Windows

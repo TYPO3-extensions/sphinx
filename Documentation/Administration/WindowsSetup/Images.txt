@@ -2,7 +2,7 @@
 	:alt: Missing Microsoft Visual C++ Redistributable
 
 .. |environment_check_windows| image:: ../../Images/environment_check_windows.png
-	:alt: Environment check under Windows
+	:alt: Environment check under MS Windows
 
 .. |environment_variables| image:: ../../Images/environment_variables.png
 	:alt: Updating the environment variables

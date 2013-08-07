@@ -70,11 +70,14 @@ When selecting an extension's manual to be shown from the drop-down menu the fol
 
 Otherwise:
 
-#. An empty Sphinx project is instantiated within ``typo3temp/tx_sphinx/<extension-key>`` and all files from ``EXT:<extension-key>/Documentation`` are copied in this directory
+#. An empty Sphinx project is instantiated within ``typo3temp/tx_sphinx/<extension-key>`` and all files from
+   ``EXT:<extension-key>/Documentation`` are copied in this directory
 
 #. The Sphinx project is built as HTML, JSON or PDF, according to selected layout
 
-#. HTML, JSON or PDF output is copied to ``typo3conf/documentation/<extension-key>/`` ``<language>/<format>/`` (currently ``language`` is always "default" for English)
+#. HTML, JSON or PDF output is copied to ``typo3conf/documentation/<extension-key>/`` ``<language>/<format>/`` (``language``
+   is always "default" for English, unless a multilingual documentation is found, just as this very extensions does for
+   French)
 
 #. The viewer loads the main document (e.g., ``Index.html`` with HTML output)
 
@@ -89,7 +92,7 @@ Otherwise:
 	The Sphinx Documentation Viewer supports two types of extension's manual:
 
 	#. Standard documentation layout with the a whole Sphinx project stored within ``EXT:<extension-key>/Documentation/``, with the master document named ``Index.rst``
-	#. Simple ReStructuredText README file as seen on Github or Bitbucket and saved as ``EXT:<extension-key>/README.rst``
+	#. Simple reStructuredText README file as seen on Github or Bitbucket and saved as ``EXT:<extension-key>/README.rst``
 
 According to the selected layout, the main document is:
 

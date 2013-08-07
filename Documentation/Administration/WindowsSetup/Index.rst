@@ -46,8 +46,8 @@ Following sections describe how to install:
 
 	This cryptic error message means that you need to install the Microsoft Visual C++ Redistributable which can easily be downloaded on the Microsoft website as x86 or x64 edition:
 
-	- **32 bit:** http://www.microsoft.com/download/en/details.aspx?id=5555
-	- **64 bit:** http://www.microsoft.com/download/en/details.aspx?id=14632
+	- **32 bit:** http://www.microsoft.com/en-us/download/details.aspx?id=5555
+	- **64 bit:** http://www.microsoft.com/en-us/download/details.aspx?id=14632
 
 .. tip::
 	.. index::
@@ -90,7 +90,7 @@ Find the system variable ``Path`` and edit it:
 
 |system_variables|
 
-You should append the path to ``python``. By default it is stored under ``C:\Python27\``
+You should append the path to ``python``. By default it is stored under directory ``C:\Python27\``
 
 .. important::
 	Put the path at the end of the existing list, after having inserted a path separator character which is, under MS Windows, a semi-colon.
@@ -104,11 +104,13 @@ You should append the path to ``python``. By default it is stored under ``C:\Pyt
 Installing Unzip
 """"""""""""""""
 
-Please go to http://gnuwin32.sourceforge.net/packages/unzip.htm and download the setup file. Then launch the installer and follow the instructions:
+Please go to http://gnuwin32.sourceforge.net/packages/unzip.htm and download the setup file. Then launch the installer
+and follow the instructions:
 
 |unzip_setup|
 
-You should now register the ``unzip`` command in ``%PATH%`` to be globally available. By default it is stored under ``C:\Program Files (x86)\GnuWin32\bin``. Please perform instructions as in previous section.
+You should now register the ``unzip`` command in ``%PATH%`` to be globally available. By default it is stored under
+directory ``C:\Program Files (x86)\GnuWin32\bin``. Please perform steps as in previous section.
 
 
 .. _installing_tar:
@@ -120,7 +122,8 @@ Installing Tar
 	.. index::
 		single: Error Message; Cannot fork: Function not implemented
 
-	A quick search for ``tar`` for Windows leads to GNU Tar on http://gnuwin32.sourceforge.net/packages/gtar.htm. However this package will be of no use since it cannot handle ``tar.gz`` files. Instead, it will crash with:
+	A quick search for ``tar`` for Windows leads to GNU Tar on http://gnuwin32.sourceforge.net/packages/gtar.htm. However
+	this package will be of no use since it cannot handle ``tar.gz`` files. Instead, it will crash with:
 
 	.. code-block:: bat
 
@@ -129,19 +132,25 @@ Installing Tar
 
 	In fact, the Tar package itself recommends using BsdTar:
 
-		The Win32 port can only create ``tar`` archives, but cannot pipe its output to other programs such as ``gzip`` or
-		``compress``, and will not create ``tar.gz`` archives; you will have to use or simulate a batch pipe. BsdTar does have
-		the ability to direcly create and manipulate ``.tar``, ``.tar.gz``, ``tar.bz2``, ``.zip``, ``.gz`` and ``.bz2`` archives, understands
-		the most-used options of GNU Tar, and is also much faster; for most purposes it is to be preferred to GNU Tar.
+		The Win32 port can only create ``tar`` archives, but cannot pipe its output to other programs such as ``gzip``
+		or ``compress``, and will not create ``tar.gz`` archives; you will have to use or simulate a batch pipe. BsdTar
+		does have the ability to direcly create and manipulate ``.tar``, ``.tar.gz``, ``tar.bz2``, ``.zip``, ``.gz``
+		and ``.bz2`` archives, understands the most-used options of GNU Tar, and is also much faster; for most purposes
+		it is to be preferred to GNU Tar.
 
-Please go to http://gnuwin32.sourceforge.net/packages/libarchive.htm (LibArchive contains BsdTar) and download the setup file. Then launch the installer and follow the instructions, as you did for :ref:`unzip <installing_unzip>`:
+Please go to http://gnuwin32.sourceforge.net/packages/libarchive.htm (LibArchive contains BsdTar) and download the setup
+file. Then launch the installer and follow the instructions, as you did for :ref:`unzip <installing_unzip>`:
 
 |libarchive_setup|
 
 .. important::
-	By default the ``bsdtar`` extraction utility is stored under ``C:\Program Files (x86)\GnuWin32\bin``, just as ``unzip``; it should thus be automatically detected as you already registered this path into the ``%PATH%`` environment variable. If needed, please register an alternate path as described previously.
+	By default the ``bsdtar`` extraction utility is stored under directory ``C:\Program Files (x86)\GnuWin32\bin``, just
+	as ``unzip``; it should thus be automatically detected as you already registered this path into the ``%PATH%``
+	environment variable. If needed, please register an alternate path as described previously.
 
-	In spite of that, extension sphinx seeks for command ``tar`` and not ``bsdtar`` As such, you should either copy ``bsdtar.exe`` and rename it as ``tar.exe`` or, better, create a symbolic link to it. Do do that, open a command (CMD) prompt *as administrator*:
+	In spite of that, extension Sphinx seeks for command ``tar`` and not ``bsdtar``. As such, you should either copy
+	``bsdtar.exe`` and rename it as ``tar.exe`` or, better, create a symbolic link to it. Do do that, open a command
+	(CMD) prompt *as administrator*:
 
 	.. code-block:: bat
 
@@ -150,4 +159,4 @@ Please go to http://gnuwin32.sourceforge.net/packages/libarchive.htm (LibArchive
 		C:\Program Files (x86)\GnuWin32\bin> mklink tar.exe bsdtar.exe
 		symbolic link created for tar.exe <<===>> bsdtar.exe
 
-Congratulations! You should now be able to :ref:`configure the sphinx extension <configure-sphinx>`!
+Congratulations! You should now be able to :ref:`configure the extension Sphinx <configure-sphinx>`!

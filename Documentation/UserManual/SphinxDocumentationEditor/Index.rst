@@ -31,4 +31,4 @@ This editor lets you quickly update the corresponding chapter and recompile the 
 |save_compile|
 
 .. note::
-	The Ace editor currently lacks syntax highlighting for ReStructuredText and is configured with Markdown instead.
+	The Ace editor currently lacks syntax highlighting for reStructuredText and is configured with Markdown instead.

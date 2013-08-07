@@ -24,8 +24,6 @@
 .. EXTERNAL LINKS
 .. --------------------------------------------------
 
-.. _`5 min tutorial video`: http://www.youtube.com/watch?v=YeGqHMDT7R8
-
 .. _`Donald E. Knuth`: http://en.wikipedia.org/wiki/Donald_Knuth
 
 .. _`git repository of the TYPO3 ReST tools`: https://git.typo3.org/Documentation/RestTools.git/

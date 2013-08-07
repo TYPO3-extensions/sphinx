@@ -8,7 +8,7 @@
 
 .. _rendering_pdf:
 
-Rendering PDF from ReStructuredText
+Rendering PDF from reStructuredText
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Sphinx is using *builders* to produce output. The builder’s "name" must be given to the ``-b`` command-line option of ``sphinx-build`` to select a builder. For instance, when compiling as HTML, this extension invokes:
@@ -31,7 +31,7 @@ whereas the builder name for LaTeX rendering is ``latex``:
 
 	$ sphinx-build -b latex -c /path/to/conf.py ...
 
-This latter produces a bunch of LaTeX files in the output directory. You have to specify which documents are to be included in which LaTeX files via the `latex_documents <http://sphinx-doc.org/config.html#confval-latex_documents>`_ configuration value. There are a few configuration values that customize the output of this builder, see the chapter `Options for LaTeX output <http://sphinx-doc.org/config.html#latex-options>`_ for details.
+This latter produces a bunch of LaTeX files in the output directory. You have to specify which documents are to be included in which LaTeX files via the `latex_documents <http://sphinx-doc.org/config.html#confval-latex_documents>`_ configuration value. There are a few configuration values that customize the output of this builder. See chapter `Options for LaTeX output <http://sphinx-doc.org/config.html#latex-options>`_ for details.
 
 Once the LaTeX files have been produced, the actual rendering as PDF is just a matter of compiling the LaTeX sources with ``pdflatex``:
 
