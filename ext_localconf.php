@@ -15,11 +15,41 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'] = implode(',', $textFileExten
 /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 
+// Hook into EXT:documentation
 $signalSlotDispatcher->connect(
 	'TYPO3\\CMS\\Documentation\\Controller\\DocumentController',
 	'afterInitializeDocuments',
 	'Causal\\Sphinx\\Slots\\SphinxDocumentation',
 	'postProcessDocuments'
+);
+
+// Hook into ourselves to handle custom projects
+$signalSlotDispatcher->connect(
+	'Causal\\Sphinx\\Controller\\DocumentationController',
+	'afterInitializeReferences',
+	'Causal\\Sphinx\\Slots\\CustomProject',
+	'postprocessReferences'
+);
+
+$signalSlotDispatcher->connect(
+	'Causal\\Sphinx\\Controller\\DocumentationController',
+	'renderUserDocumentation',
+	'Causal\\Sphinx\\Slots\\CustomProject',
+	'render'
+);
+
+$signalSlotDispatcher->connect(
+	'Causal\\Sphinx\\Controller\\InteractiveViewerController',
+	'retrieveBasePath',
+	'Causal\\Sphinx\\Slots\\CustomProject',
+	'retrieveBasePath'
+);
+
+$signalSlotDispatcher->connect(
+	'Causal\\Sphinx\\Controller\\RestEditorController',
+	'retrieveRestFilename',
+	'Causal\\Sphinx\\Slots\\CustomProject',
+	'retrieveRestFilename'
 );
 
 ?>

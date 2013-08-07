@@ -208,7 +208,7 @@ class DocumentationController extends AbstractActionController {
 	 * @param string $extensionKey
 	 * @return void
 	 */
-	protected function createProjectAction($extensionKey) {
+	protected function createExtensionProjectAction($extensionKey) {
 		$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 		$documentationDirectory = $extensionPath . 'Documentation';
 

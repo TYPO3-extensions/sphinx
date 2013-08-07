@@ -101,3 +101,40 @@ According to the selected layout, the main document is:
 - **Interactive:** Main document of JSON output is ``typo3conf/Documentation/<extension-key>/`` ``default/json/Index.fjson``
 
 - **PDF:** Main document of PDF output is ``typo3conf/Documentation/<extension-key>/`` ``default/pdf/<extension-key>.pdf``
+
+
+.. _documentation-viewer-custom-project:
+
+Registering a custom project
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you have a complete Sphinx project (that is with a configuration file ``_make/conf.py``) somewhere in your website,
+such as project you kickstarted with the :ref:`Sphinx Console <kickstart_sphinx_project>`, you may register it with the
+Sphinx Documentation Viewer.
+
+In fact, we implemented our own signal for :ref:`registering custom documentation <register-custom-documentation>`.
+
+The list of custom projects is stored within file ``typo3conf/sphinx-projects.json``. If this file does not exist, simply
+create with your preferred text editor:
+
+.. code-block:: json
+
+	[
+	  {
+	    "name": "My Custom Project ABC",
+	    "description": "Custom project ABC describing...",
+	    "group": "Company Name",
+	    "key": "company.project.abc",
+	    "directory": "fileadmin/restructuredtext-projects/abc/"
+	  },
+	  {
+	    "name": "My Custom Project DEF",
+	    "description": "Custom project describing...",
+	    "group": "Company Name",
+	    "key": "company.project.def",
+	    "directory": "fileadmin/restructuredtext-projects/def/"
+	  }
+	]
+
+When you do so, your project will appear in the list of documents and you will be able to render it just as any
+documentation of an extension.

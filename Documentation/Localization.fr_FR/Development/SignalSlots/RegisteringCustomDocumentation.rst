@@ -7,6 +7,8 @@
 .. include:: Images.txt
 
 
+.. _register-custom-documentation:
+
 Enregistrement d'une documentation personnalisée
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -108,6 +110,13 @@ Dans votre extension, ouvrez ``EXT:your-ext/ext_localconf.php`` et ajoutez :
 	    'render'
 	);
 
+	$signalSlotDispatcher->connect(
+	    'Causal\\Sphinx\\Controller\\InteractiveViewerController',
+	    'retrieveBasePath',
+	    'Company\\MyExt\\Slots\\CustomDocumentation',
+	    'retrieveBasePath'
+	);
+
 	/*
 	$signalSlotDispatcher->connect(
 	    'Causal\\Sphinx\\Controller\\RestEditorController',
@@ -161,6 +170,16 @@ Dans votre extension, créez un fichier ``EXT:your-ext/Classes/Slots/CustomDocum
 	        $documentationUrl = 'http://www.example.com';
 	    }
 
+	    /**
+	     * Returns the base path for a given project identifier.
+	     *
+	     * @param string $identifier
+	     * @param string &$path
+	     */
+	    public function retrieveBasePath($identifier, &$path) {
+	        // Not yet implemented
+	    }
+
 	}
 
 	?>
@@ -201,7 +220,7 @@ est stocké dans le répertoire ``_make`` :
 	                $documentationUrl = '../' . $basePath . $masterFile;
 	                break;
 	            case 'json':	// Interactive
-	                $masterFile = '_make/build/html/Index.fjson';
+	                $masterFile = '_make/build/json/Index.fjson';
 	                if ($force || !is_file($basePath . $masterFile)) {
 	                    \Causal\Sphinx\Utility\SphinxBuilder::buildJson(
 	                        PATH_site . $basePath,
@@ -226,5 +245,5 @@ est stocké dans le répertoire ``_make`` :
 	    }
 	}
 
-Vous pouvez analyser la méthode ``\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation()`` pour d'autres idées
-d'implémentation.
+Vous pouvez analyser la méthode ``\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation()`` et la classe
+``\Causal\Sphinx\Slots\CustomProject`` pour d'autres idées d'implémentation.

@@ -23,41 +23,22 @@
 
 <table id="tx-sphinx-kickstart-list" class="tx-sphinx-extension-list">
 	<thead>
-	<tr>
-		<th><f:translate key="tx_sphinx_domain_model_extension.title" /></th>
-		<th><f:translate key="tx_sphinx_domain_model_extension.description" /></th>
-		<th><f:translate key="kickstart.action" /></th>
-	</tr>
+		<tr>
+			<th><f:translate key="tx_sphinx_domain_model_extension.title" /></th>
+			<th><f:translate key="tx_sphinx_domain_model_extension.description" /></th>
+			<th><f:translate key="kickstart.action" /></th>
+		</tr>
 	</thead>
 	<tbody>
-	<f:for each="{extensionsEmpty}" as="extension">
-		<tr id="{extension.extensionKey}" >
-			<td class="title">
-				<img src="../{extension.icon}" title="{extension.title}" alt="{extension.title}" />
-				{extension.title}
-			</td>
-			<td>{extension.description}</td>
-			<td class="actions">
-				<sphinx:link.action action="createProject" arguments="{extensionKey: extension.extensionKey}">
-					<f:translate key="kickstart.action.createProject" />
-				</sphinx:link.action>
-			</td>
-		</tr>
-	</f:for>
-	<f:for each="{extensionsOpenOffice}" as="extension">
-		<tr id="{extension.extensionKey}" >
-			<td class="title">
-				<img src="../{extension.icon}" title="{extension.title}" alt="{extension.title}" />
-				{extension.title}
-			</td>
-			<td>{extension.description}</td>
-			<td class="actions">
-				<sphinx:link.action action="convert" arguments="{extensionKey: extension.extensionKey}">
-					<f:translate key="kickstart.action.convert" />
-				</sphinx:link.action>
-			</td>
-		</tr>
-	</f:for>
+		<f:for each="{extensionsEmpty}" as="extension">
+			<f:render partial="Documentation/ExtensionRow" arguments="{extension: extension, action: 'createExtensionProject'}"/>
+		</f:for>
+		<f:for each="{extensionsOpenOffice}" as="extension">
+			<f:render partial="Documentation/ExtensionRow" arguments="{extension: extension, action: 'convert'}"/>
+		</f:for>
+		<f:for each="{projects}" as="project">
+			<f:render partial="Documentation/ProjectRow" arguments="{project: project}"/>
+		</f:for>
 	</tbody>
 </table>
 

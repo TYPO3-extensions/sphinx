@@ -37,6 +37,10 @@ boutons de compilation :
 
 La console affichera la sortie standard de la commande.
 
+.. tip::
+	Vous pouvez faire apparaître votre projet dans la :ref:`sphinx-documentation-viewer`. Pour se faire, veuillez suivre
+	les :ref:`instructions <documentation-viewer-custom-project>`.
+
 
 HTML
 ^^^^

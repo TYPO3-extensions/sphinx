@@ -94,7 +94,19 @@ class InteractiveViewerController extends AbstractActionController {
 				$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $languageDirectory . '/json');
 				break;
 			case 'USER':
-				$path = dirname($documentationFilename);
+				if (is_file($documentationFilename)) {
+					$path = dirname($documentationFilename);
+				} else {
+					$path = '';
+					$this->signalSlotDispatcher->dispatch(
+						__CLASS__,
+						'retrieveBasePath',
+						array(
+							'identifier' => $identifier,
+							'path' => &$path,
+						)
+					);
+				}
 				break;
 			default:
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163248);

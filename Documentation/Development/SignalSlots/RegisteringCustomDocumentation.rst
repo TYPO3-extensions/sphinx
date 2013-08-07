@@ -7,6 +7,8 @@
 .. include:: Images.txt
 
 
+.. _register-custom-documentation:
+
 Registering Custom Documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -108,6 +110,13 @@ In your extension, open ``EXT:your-ext/ext_localconf.php`` and add:
 	    'render'
 	);
 
+	$signalSlotDispatcher->connect(
+	    'Causal\\Sphinx\\Controller\\InteractiveViewerController',
+	    'retrieveBasePath',
+	    'Company\\MyExt\\Slots\\CustomDocumentation',
+	    'retrieveBasePath'
+	);
+
 	/*
 	$signalSlotDispatcher->connect(
 	    'Causal\\Sphinx\\Controller\\RestEditorController',
@@ -161,6 +170,16 @@ In your extension, create a file ``EXT:your-ext/Classes/Slots/CustomDocumentatio
 	        $documentationUrl = 'http://www.example.com';
 	    }
 
+	    /**
+	     * Returns the base path for a given project identifier.
+	     *
+	     * @param string $identifier
+	     * @param string &$path
+	     */
+	    public function retrieveBasePath($identifier, &$path) {
+	        // Not yet implemented
+	    }
+
 	}
 
 	?>
@@ -200,7 +219,7 @@ implementation. We suppose that you have a TYPO3-based documentation project wit
 	                $documentationUrl = '../' . $basePath . $masterFile;
 	                break;
 	            case 'json':	// Interactive
-	                $masterFile = '_make/build/html/Index.fjson';
+	                $masterFile = '_make/build/json/Index.fjson';
 	                if ($force || !is_file($basePath . $masterFile)) {
 	                    \Causal\Sphinx\Utility\SphinxBuilder::buildJson(
 	                        PATH_site . $basePath,
@@ -225,4 +244,5 @@ implementation. We suppose that you have a TYPO3-based documentation project wit
 	    }
 	}
 
-Please see method ``\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation()`` for further ideas.
+Please see method ``\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation()`` and class
+``\Causal\Sphinx\Slots\CustomProject`` for further ideas.

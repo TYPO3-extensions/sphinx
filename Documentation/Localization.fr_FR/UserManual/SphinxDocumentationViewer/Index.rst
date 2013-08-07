@@ -113,3 +113,40 @@ En fonction du gabarit choisi, le document principal est :
 - **Interactif:** Le document principal en JSON est ``typo3conf/Documentation/<extension-key>/`` ``default/json/Index.fjson``
 
 - **PDF:** Le document principal en PDF est ``typo3conf/Documentation/<extension-key>/`` ``default/pdf/<extension-key>.pdf``
+
+
+.. _documentation-viewer-custom-project:
+
+Référenement d'un projet personnel
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Si vous avez un projet Sphinx complet (c'est-à-dire avec un fichier de configuration ``_make/conf.py``) quelque part dans
+votre site. comme un projet démarré avec la :ref:`Console Sphinx <kickstart_sphinx_project>`, vous pouvez l'enregistrer
+avec la visionneuse de documentation Sphinx.
+
+En effet, nous avons implémenté notre propre signal pour :ref:`enregistrer une documentation personnelle <register-custom-documentation>`.
+
+La liste des projets personnels est stockée dans le fichier ``typo3conf/sphinx-projects.json``. Si ce fichier n'existe
+pas, vous pouvez simplement le créer avec votre éditeur de texte préféré :
+
+.. code-block:: json
+
+	[
+	  {
+	    "name": "Mon projet ABC",
+	    "description": "Projet ABC qui décrit...",
+	    "group": "Nom de société",
+	    "key": "company.project.abc",
+	    "directory": "fileadmin/restructuredtext-projects/abc/"
+	  },
+	  {
+	    "name": "mon projet DEF",
+	    "description": "Projet DEF qui décrit...",
+	    "group": "Nom de société",
+	    "key": "company.project.def",
+	    "directory": "fileadmin/restructuredtext-projects/def/"
+	  }
+	]
+
+Lorsque vous faites cela, votre projet va apparaître dans la liste des documents et vous pourrez le compiler comme la
+documentation de n'importe quelle extension.

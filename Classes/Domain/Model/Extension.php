@@ -36,19 +36,29 @@ namespace Causal\Sphinx\Domain\Model;
  */
 class Extension {
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $extensionKey;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $title;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $icon;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $installType;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $description;
 
 	/**
