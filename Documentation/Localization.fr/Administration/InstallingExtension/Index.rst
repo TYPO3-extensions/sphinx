@@ -129,6 +129,6 @@ LaTeX) :
 |sphinx_version|
 
 .. tip::
-	**Mis à part pour les utilisateurs MS Windows,** ``rst2pdf`` est disponible par défaut avec cette extension. Cependant,
+	**Sauf pour les utilisateurs MS Windows,** ``rst2pdf`` est disponible par défaut avec cette extension. Cependant,
 	si vous souhaitez un meilleur rendu, vous devriez plutôt utiliser LaTeX. Veuillez consulter le chapitre
 	:ref:`admin_rendering_pdf` pour plus d'information.
