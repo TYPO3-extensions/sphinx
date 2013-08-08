@@ -8,4 +8,14 @@ conf.py:
   project: Sphinx Python Documentation Generator and Viewer
   version: 1.1
   release: 1.1.0
+  latex_documents:
+  - - Index
+    - sphinx.tex
+    - Sphinx Python Documentation Generator and Viewer
+    - Xavier Perseguers
+    - manual
+  latex_elements:
+    papersize: a4paper
+    pointsize: 10pt
+    preamble: \usepackage{typo3}
 ...
