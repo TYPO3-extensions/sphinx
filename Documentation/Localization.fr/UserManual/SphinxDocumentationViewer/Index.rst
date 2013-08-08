@@ -1,4 +1,4 @@
-.. ==================================================
+﻿.. ==================================================
 .. FOR YOUR INFORMATION
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
@@ -54,8 +54,8 @@ Les manuels d'extensions peuvent être générés avec différents "gabarits" :
 - **Statique:** Génère et affiche une version HTML ;
 
 - **Interactif:** Génère et affiche une version JSON qui nécessite donc l'extension `reST Documentation Viewer (restdoc)`_.
-Par ailleurs, ce gabarit propose un :ref:`éditeur ReStructuredText <sphinx-documentation-editor>` intégré pour vous
-permettre de modifier rapidement et de recompiler un chapitre donné ;
+  Par ailleurs, ce gabarit propose un :ref:`éditeur ReStructuredText <sphinx-documentation-editor>` intégré pour vous
+  permettre de modifier rapidement et de recompiler un chapitre donné ;
 
 - **PDF:** Génère et affiche une version PDF et de ce fait nécessite soit ``pdflatex`` soit ``rst2pdf`` :
 
@@ -74,7 +74,7 @@ local.
 Lorsque vous sélectionnez un manuel d'extension à afficher dans la liste déroulante, le processus suivant intervient :
 
 - Si une version en cache du document principal est trouvée, la visionneuse la charge directement et ne génère pas à
-nouveau la documentation.
+  nouveau la documentation.
 
 Sinon :
 
