@@ -36,11 +36,26 @@ namespace Causal\Sphinx\Slots;
  */
 class CustomProject {
 
+	/** @var string */
+	static protected $extKey = 'sphinx';
+
 	/**
 	 * @var \Causal\Sphinx\Domain\Repository\ProjectRepository
 	 * @inject
 	 */
 	protected $projectRepository;
+
+	/**
+	 * @var array
+	 */
+	protected $settings;
+
+	/**
+	 * Default constructor.
+	 */
+	public function __construct() {
+		$this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+	}
 
 	/**
 	 * Registers the documentation.
@@ -75,6 +90,7 @@ class CustomProject {
 		}
 
 		$basePath = $projects[$identifier]->getDirectory();
+		$absoluteBasePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($basePath);
 		$buildDirectory = '_make/build/';
 		$confFilename = '_make/conf.py';
 
@@ -82,9 +98,9 @@ class CustomProject {
 			switch ($layout) {
 				case 'html':        // Static
 					$masterFile = '_make/build/html/Index.html';
-					if ($force || !is_file($basePath . $masterFile)) {
+					if ($force || !is_file($absoluteBasePath . $masterFile)) {
 						\Causal\Sphinx\Utility\SphinxBuilder::buildHtml(
-							\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($basePath),
+							$absoluteBasePath,
 							'.',
 							$buildDirectory,
 							$confFilename
@@ -94,16 +110,14 @@ class CustomProject {
 					break;
 				case 'json':        // Interactive
 					$masterFile = '_make/build/json/Index.fjson';
-					if ($force || !is_file($basePath . $masterFile)) {
-						$configurationFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($basePath . $confFilename);
+					if ($force || !is_file($absoluteBasePath . $masterFile)) {
+						$configurationFilename = $absoluteBasePath . $confFilename;
 						$backupConfigurationFilename = $configurationFilename . '.bak';
 						if (copy($configurationFilename, $backupConfigurationFilename)) {
-							\Causal\Sphinx\Utility\GeneralUtility::overrideThemeT3Sphinx(
-								\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($basePath)
-							);
+							\Causal\Sphinx\Utility\GeneralUtility::overrideThemeT3Sphinx($absoluteBasePath);
 
 							\Causal\Sphinx\Utility\SphinxBuilder::buildJson(
-								\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($basePath),
+								$absoluteBasePath,
 								'.',
 								$buildDirectory,
 								$confFilename
@@ -118,6 +132,28 @@ class CustomProject {
 					$documentationUrl = '../' . $basePath . $masterFile;
 					break;
 				case 'pdf':
+					switch ($this->settings['pdf_builder']) {
+						case 'pdflatex':
+							$masterFilePattern = '_make/build/latex/*.pdf';
+							break;
+						case 'rst2pdf':
+						default:
+							$masterFilePattern = '_make/build/pdf/*.pdf';
+							break;
+					}
+
+					$availablePdfs = glob($absoluteBasePath . $masterFilePattern);
+					if ($force || count($availablePdfs) == 0) {
+						\Causal\Sphinx\Utility\SphinxBuilder::buildPdf(
+							$absoluteBasePath,
+							'.',
+							$buildDirectory,
+							$confFilename
+						);
+						$availablePdfs = glob($absoluteBasePath . $masterFilePattern);
+					}
+					$documentationUrl = '../' . substr($availablePdfs[0], strlen(PATH_site));
+					break;
 				default:
 					throw new \RuntimeException(
 						'Sorry! Layout ' . $layout . ' is not yet supported', 1371415095

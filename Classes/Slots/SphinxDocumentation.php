@@ -49,6 +49,12 @@ class SphinxDocumentation {
 	protected $extensionRepository;
 
 	/**
+	 * @var \Causal\Sphinx\Domain\Repository\ProjectRepository
+	 * @inject
+	 */
+	protected $projectRepository;
+
+	/**
 	 * Post-processes the list of available documents.
 	 *
 	 * @param string $language
@@ -56,6 +62,8 @@ class SphinxDocumentation {
 	 * @return void
 	 */
 	public function postProcessDocuments($language, array &$documents) {
+		$formats = $this->getSupportedFormats();
+
 		$extensionsWithSphinxDocumentation = $this->extensionRepository->findByHasSphinxDocumentation();
 		foreach ($extensionsWithSphinxDocumentation as $extension) {
 			/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
@@ -100,7 +108,6 @@ class SphinxDocumentation {
 				$existingFormats[$documentFormat->getFormat()] = $documentFormat;
 			}
 
-			$formats = $this->getSupportedFormats();
 			foreach ($formats as $format) {
 				if (!isset($existingFormats[$format])) {
 					/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
@@ -114,6 +121,38 @@ class SphinxDocumentation {
 					$existingFormats[$format]->setPath($this->getRenderLink($extension->getExtensionKey(), $format));
 				}
 			}
+		}
+
+		$defaultIcon = '../' . substr(
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('documentation') . 'ext_icon.gif',
+			strlen(PATH_site)
+		);
+		$projects = $this->projectRepository->findAll();
+		foreach ($projects as $project) {
+			$packageKey = $project->getDocumentationKey();
+
+			/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
+			$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
+				->setPackageKey($packageKey)
+				->setIcon($defaultIcon);
+
+			/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
+			$documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
+				->setLanguage('default')
+				->setTitle($project->getName())
+				->setDescription($project->getDescription());
+
+			foreach ($formats as $format) {
+				/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
+				$documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
+					->setFormat($format)
+					->setPath($this->getRenderLink($project->getDocumentationKey(), $format, 'USER'));
+
+				$documentTranslation->addFormat($documentFormat);
+			}
+
+			$document->addTranslation($documentTranslation);
+			$documents[$packageKey] = $document;
 		}
 	}
 
@@ -143,11 +182,14 @@ class SphinxDocumentation {
 	}
 
 	/**
-	 * @param string $extensionKey
+	 * Returns a rendering link.
+	 *
+	 * @param string $reference
 	 * @param string $format
+	 * @param string $referenceType
 	 * @return string
 	 */
-	protected function getRenderLink($extensionKey, $format) {
+	protected function getRenderLink($reference, $format, $referenceType = 'EXT') {
 		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
 		$uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Request');
@@ -156,7 +198,7 @@ class SphinxDocumentation {
 		$link = 'typo3/' . $uriBuilder->uriFor(
 			'render',
 			array(
-				'reference' => 'EXT:' . $extensionKey,
+				'reference' => $referenceType . ':' . $reference,
 				'layout' => $format,
 				'force' => FALSE,
 			),
