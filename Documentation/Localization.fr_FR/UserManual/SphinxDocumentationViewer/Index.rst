@@ -150,3 +150,9 @@ pas, vous pouvez simplement le créer avec votre éditeur de texte préféré :
 
 Lorsque vous faites cela, votre projet va apparaître dans la liste des documents et vous pourrez le compiler comme la
 documentation de n'importe quelle extension.
+
+.. warning::
+	Les utilisateurs MS Windows auront peut-être à faire face à une liste de documents n'affichant pas leurs propres
+	documents. Ce comportement peut être provoqué par le fichier ``typo3conf/sphinx-projects.json`` qui est encodé en
+	UTF-8 avec `BOM <http://fr.wikipedia.org/wiki/Byte_Order_Mark>`_ alors que votre serveur web ne s'attend pas à avoir
+	ce BOM présent.
