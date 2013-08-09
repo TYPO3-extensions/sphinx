@@ -8,7 +8,7 @@
 
 
 Installing the extension
-^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------
 
 There are a few steps necessary to install the Sphinx Python Documentation Generator extension. If you have installed other extensions in the past, you will run into little new here.
 
@@ -17,7 +17,7 @@ There are a few steps necessary to install the Sphinx Python Documentation Gener
 
 
 Installing the extension from Extension Manager
-"""""""""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Sphinx Python Documentation Generator extension can be installed through the typical TYPO3 installation process using the Extension Manager.
 
@@ -25,7 +25,7 @@ The Sphinx Python Documentation Generator extension can be installed through the
 .. _configure-sphinx:
 
 Downloading and configuring Sphinx
-""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the Extension Manager, execute the update script this extension is providing:
 
@@ -92,7 +92,7 @@ Finally, the "remove" button removes both the sources and the corresponding vers
 
 
 Choosing the version of Sphinx to use and how to render PDF
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the Extension Manager, configure this extension as usual:
 

@@ -10,7 +10,7 @@
 .. _windows-setup:
 
 Mise en place de l'environnement avec MS Windows
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------------------------
 
 À la différence de la plupart des systèmes d'exploitation :abbr:`UN*X (Unix-like)`, MS Windows ne fournit pas de façon
 systématique un interpréteur Python and certains utilitaires généraux.
@@ -74,7 +74,7 @@ Les sections suivantes décrivent comment installer :
 .. _installing_python:
 
 Installation de Python
-""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^
 
 Allez sur http://www.python.org/download/releases/ et téléchargez l'installateur Python pour Windows. Au moment de la
 rédaction, Python 2.7.5 est connu pour fonctionner correctement. Ensuite exécutez l'installateur et suivez les
@@ -114,7 +114,7 @@ Vous devez rajouter le chemin vers ``python``. Par défaut Python est installé 
 .. _installing_unzip:
 
 Installation de Unzip
-"""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^
 
 Allez sur http://gnuwin32.sourceforge.net/packages/unzip.htm et téléchargez le programme d'installation. Ensuite lancez-le
 et suivez les instrutions :
@@ -129,7 +129,7 @@ dans la section précédente.
 .. _installing_tar:
 
 Installation de Tar
-"""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^
 
 .. important::
 	.. index::

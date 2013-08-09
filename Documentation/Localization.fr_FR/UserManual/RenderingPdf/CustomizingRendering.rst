@@ -7,7 +7,7 @@
 
 
 Personnalisation du rendu
-"""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Afin de personnaliser le rendu d'une documentation générée en PDF avec LaTeX pour correspondre au design TYPO3, nous
 devons d'abord installer la `famille de fontes corporate Share`_ et la convertir pour être compatible avec LaTeX. Veuillez
@@ -18,7 +18,7 @@ consulter le chapitre :ref:`installing_share_font` pour plus d'informations.
 
 
 Modèle LaTeX
-~~~~~~~~~~~~
+""""""""""""
 
 Le modèle LaTeX est défini dans le fichier ``conf.py`` :
 
@@ -74,7 +74,7 @@ le paquet ``sphinx`` à la ligne 12 du code ci-dessus. Ce paquet (fichier ``sphi
 répertoire ``build/latex/``.
 
 Préambule LaTeX
-~~~~~~~~~~~~~~~
+"""""""""""""""
 
 Des commandes supplémentaires peuvent être ajoutées au préambule du fichier LaTeX généré. C'est facilement réalisé en
 modifiant le fichier ``conf.py`` :
@@ -120,13 +120,13 @@ le document LaTeX généré devient :
 	\author{Xavier Perseguers}
 
 Autres options
-~~~~~~~~~~~~~~
+""""""""""""""
 
 Le fichier de configuration ``conf.py`` vous permet d'effectuer d'autres réglages avec LaTeX. Veuillez consulter
 http://sphinx-doc.org/config.html#options-for-latex-output pour plus d'informations.
 
 Modèle TYPO3
-~~~~~~~~~~~~
+""""""""""""
 
 Nous voulons rester aussi proche que possible du rendu par défaut, pour éviter de devoir modifier le code de génération
 LaTeX de Sphinx. C'est pourquoi nous choisissons d'inclure un paquet personnalisé ``typo3`` (fichier ``typo3.sty``) qui

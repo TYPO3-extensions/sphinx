@@ -9,7 +9,7 @@
 .. _changelog:
 
 Journal des modifications
--------------------------
+=========================
 
 Ce qui suit est une vue d'ensemble très haut niveau des changements de cette extension. Pour plus de détails,
 `lisez le journal des modifications en ligne <https://git.typo3.org/TYPO3CMS/Extensions/sphinx.git/log>`_.

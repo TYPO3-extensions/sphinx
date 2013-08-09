@@ -7,7 +7,7 @@
 
 
 Requirements
-^^^^^^^^^^^^
+------------
 
 .. index::
 	pair: Directory; Structure

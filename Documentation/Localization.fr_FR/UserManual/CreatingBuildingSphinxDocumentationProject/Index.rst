@@ -10,7 +10,7 @@
 .. _kickstart_sphinx_project:
 
 Création et compilation d'un projet de documentation Sphinx
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------------------------------
 
 .. note::
 
@@ -39,13 +39,13 @@ La console affichera la sortie standard de la commande.
 
 
 HTML
-""""
+^^^^
 
 Ce générateur Sphinx génère un site HTML autonome à partir de votre documentation dans le répertoire ``_build/html``.
 
 
 JSON
-""""
+^^^^
 
 Ce générateur Sphinx génère un dérivé de HTML dans le répertoire ``_build/json``. Vous devriez utiliser ce générateur
 afin de pouvoir intégrer proprement votre documentation à votre site TYPO3. L'extension
@@ -54,7 +54,7 @@ rendu JSON.
 
 
 LaTeX
-"""""
+^^^^^
 
 .. index::
 	single: LaTeX
@@ -65,7 +65,7 @@ vous référer au chapitre :ref:`rendering_pdf` pour plus d'informations.
 
 
 PDF
-"""
+^^^
 
 .. index::
 	single: PDF
@@ -78,7 +78,7 @@ documentation automatiquement :
 
 
 Vérification des liens
-""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^
 
 Ce générateur Sphinx vérifie tous les liens de votre documentation et prépare un rapport ``output.txt`` dans le répertoire
 ``_build/linkcheck/``.

@@ -9,7 +9,7 @@
 .. _sphinx-rest:
 
 Sphinx et reStructuredText
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------
 
 .. index::
 	pair: reStructuredText; Syntaxe
@@ -20,7 +20,7 @@ Quelques liens pour bien démarrer avec Sphinx et reStructuredText :
 
 
 Conversion d'un manuel OpenOffice en Sphinx
-"""""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Le dépot RestTools (http://git.typo3.org/Documentation/RestTools.git) fournit un script dans le répertoire
 ``T3PythonDocBuilderPackage/src/T3PythonDocBuilder`` pour convertir votre manuel OpenOffice en Sphinx/reStructuredText.
@@ -30,7 +30,7 @@ Si vous préférez, vous pouvez utiliser un convertisseur en ligne : http://docs
 
 
 Trucs et astuces pour le rendu PDF
-""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
 	single: Image; Formats supportés

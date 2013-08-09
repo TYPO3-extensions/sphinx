@@ -9,7 +9,7 @@
 .. _known-problems:
 
 Known problems
---------------
+==============
 
 .. index::
 	single: Error Message; ImportError: No module named setuptools

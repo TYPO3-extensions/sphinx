@@ -9,7 +9,7 @@
 .. _rendering_pdf:
 
 Rendering PDF from reStructuredText
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------
 
 Sphinx is using *builders* to produce output. The builder’s "name" must be given to the ``-b`` command-line option of ``sphinx-build`` to select a builder. For instance, when compiling as HTML, this extension invokes:
 

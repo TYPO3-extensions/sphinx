@@ -7,7 +7,7 @@
 
 
 Using Sphinx from a command line
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------
 
 .. index::
 	single: Command Line

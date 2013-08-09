@@ -10,7 +10,7 @@
 .. _installing_share_font:
 
 Installing the Share font
-"""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In order to customize the output of documentation rendered as PDF with LaTeX to match the TYPO3 branding, we first
 need to install the `Share corporate font family`_ and convert it to be compatible with LaTeX. Instructions can be

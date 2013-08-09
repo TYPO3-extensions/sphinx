@@ -7,7 +7,7 @@
 
 
 Customizing the rendering
-"""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In order to customize the output of documentation rendered as PDF with LaTeX to match the TYPO3 branding, we first
 need to install the `Share corporate font family`_ and convert it to be compatible with LaTeX. Please refer to chapter
@@ -15,7 +15,7 @@ need to install the `Share corporate font family`_ and convert it to be compatib
 
 
 LaTeX template
-~~~~~~~~~~~~~~
+""""""""""""""
 
 The LaTeX template is defined in file ``conf.py``:
 
@@ -65,7 +65,7 @@ Both class files (``sphinxmanual.cls`` and ``sphinxhowto.cls``) are copied to di
 After playing with the various options to customize the rendering, the outcome is that creating a custom document class is not the best option as most of the settings are then overridden by package ``sphinx`` on line 12 in code above. This package (file ``sphinx.sty``) is copied as well to directory ``build/latex/``.
 
 LaTeX preamble
-~~~~~~~~~~~~~~
+""""""""""""""
 
 Additional commands may be added as preamble in the generated LaTeX file. This is easily done by editing file ``conf.py``:
 
@@ -110,12 +110,12 @@ the generated LaTeX document becomes:
 	\author{Xavier Perseguers}
 
 Other options
-~~~~~~~~~~~~~
+"""""""""""""
 
 The configuration file ``conf.py`` lets you further tune the rendering with LaTeX. Please consult http://sphinx-doc.org/config.html#options-for-latex-output for further instructions.
 
 TYPO3 template
-~~~~~~~~~~~~~~
+""""""""""""""
 
 We want to stick as much as possible to default rendering, to avoid having to change the LaTeX code generation from Sphinx. As such, we choose to include a custom package ``typo3`` (file ``typo3.sty``) that will override some settings of package ``sphinx``. To include it automatically, we simply use the ``preamble`` option of ``conf.py``:
 

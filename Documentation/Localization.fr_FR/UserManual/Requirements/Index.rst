@@ -7,7 +7,7 @@
 
 
 Prérequis
-^^^^^^^^^
+---------
 
 .. index::
 	pair: Répertoire; Structure

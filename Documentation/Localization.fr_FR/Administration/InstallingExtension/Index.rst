@@ -8,7 +8,7 @@
 
 
 Installation de l'extension
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
 
 L'installation de l'extension *Sphinx Python Documentation Generator* se fait en quelques étapes. Si vous avez déjà
 installé d'autres extensions par le passé vous aurez peu de surprise ici.
@@ -19,7 +19,7 @@ installé d'autres extensions par le passé vous aurez peu de surprise ici.
 
 
 Installation de l'extension depuis le gestionnaire d'extensions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 L'extension *Sphinx Python Documentation Generator* peut être installée de façon habituelle en utilisant le gestionnaire
 d'extensions de TYPO3.
@@ -28,7 +28,7 @@ d'extensions de TYPO3.
 .. _configure-sphinx:
 
 Téléchargement et configuration de Sphinx
-"""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Depuis le gestionnaire d'extensions, exécutez le script de mise à niveau que cette extension fournit :
 
@@ -113,7 +113,7 @@ Pour terminer, le bouton "remove" supprime à la fois les sources et la version 
 .. _`dépôt git des utilitaires ReST TYPO3`: https://git.typo3.org/Documentation/RestTools.git/
 
 Choix de la version de Sphinx à utiliser et de la méthode de génération PDF
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Depuis le gestionnaire d'extensions, configurez l'extension de façon habituelle :
 

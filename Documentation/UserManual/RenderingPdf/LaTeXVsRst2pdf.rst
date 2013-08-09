@@ -8,7 +8,7 @@
 
 
 LaTeX versus rst2pdf
-""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^
 
 In an attempt to convince you that LaTeX output is indeed much prettier and professional, we rendered the documentation you are currently reading once with ``rst2pdf``:
 

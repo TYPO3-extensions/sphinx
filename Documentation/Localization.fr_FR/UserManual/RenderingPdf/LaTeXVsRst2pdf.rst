@@ -8,7 +8,7 @@
 
 
 Comparaison LaTeX / rst2pdf
-"""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Dans un souci de vous convaincre que le rendu LaTeX est réellement beaucoup plus élégant et professionnel, nous avons
 généré la documentation que vous êtes en train de lire une fois avec ``rst2pdf`` :

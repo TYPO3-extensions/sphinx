@@ -8,7 +8,7 @@
 
 
 Présentation de LaTeX
-"""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^
 
 TeX et les programmes associés comme LaTeX (formaté comme |LaTeX_logo| et prononcé "La-tek") est un système de mise en
 page pour ordinateur. Il est bien connu pour son habileté avec le contenu mathématique et scientifique (LaTeX est utilisé
@@ -61,7 +61,7 @@ et en LaTeX vous créez ce même document avec :
 	\end{document}
 
 Historique
-~~~~~~~~~~
+""""""""""
 
 LaTeX se base sur le langage de mise en page TeX_ de `Donald E. Knuth`_ et certaines extensions. LaTeX a été développé
 pour la première fois en 1985 par `Leslie Lamport`_, et est maintenant maintenu et développé par le `LaTeX3 Project`_.

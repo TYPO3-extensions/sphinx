@@ -9,7 +9,7 @@
 .. _rendering_pdf:
 
 Rendu PDF à partir de reStructuredText
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------------------
 
 Sphinx utilise des *générateurs* pour préparer le rendu. Le "nom" du générateur doit être passé en ligne de commande
 comme une option de ``sphinx-build`` avec ``-b``. Par exemple, pour un rendu HTML, cette extension invoque :

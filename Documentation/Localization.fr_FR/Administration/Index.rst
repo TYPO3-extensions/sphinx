@@ -9,7 +9,7 @@
 .. _administration:
 
 Administration
---------------
+==============
 
 Ce chapitre décrit comment gérer l'extension du point de vue d'un administrateur.
 

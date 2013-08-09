@@ -7,7 +7,7 @@
 
 
 Installing LaTeX on Linux or Mac OS X
-"""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Your system distribution or vendor has probably provided a TeX system including LaTeX. Check your usual software source for a TeX package; otherwise install `TeX Live`_ directly.
 
@@ -20,7 +20,7 @@ Your system distribution or vendor has probably provided a TeX system including 
 	- fonts-recommended
 
 Linux Debian
-~~~~~~~~~~~~
+""""""""""""
 
 You can issue following command to install required components:
 
@@ -37,7 +37,7 @@ In order to compile as PDF, this extension requires both ``pdflatex`` (included 
 
 
 Mac OS X
-~~~~~~~~
+""""""""
 
 You can install the TeX Live environment using package MacTeX_. Alternatively, if you are used to MacPorts_, the process is similar to a Debian system:
 

@@ -8,7 +8,7 @@
 
 
 Introduction to LaTeX
-"""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^
 
 TeX and associated programs such as LaTeX (formatted as |LaTeX_logo|, and pronounced "Lah-tech") is a system for computer typesetting. It is well known for its skill with mathematical and scientific text (LaTeX is used as the primary method of displaying formulas on Wikipedia) and other difficult typesetting jobs such as long or intricate documents and multilingual works.
 
@@ -47,7 +47,7 @@ and in LaTeX you would input this document as:
 	\end{document}
 
 History
-~~~~~~~
+"""""""
 
 LaTeX is based on `Donald E. Knuth`_'s TeX_ typesetting language or certain extensions. LaTeX was first developed in 1985 by `Leslie Lamport`_, and is now being maintained and developed by the `LaTeX3 Project`_. It is worth mentioning that first release of TeX dates back from 1978 and that the current stable release is version 3.1415926 from March 2008!
 

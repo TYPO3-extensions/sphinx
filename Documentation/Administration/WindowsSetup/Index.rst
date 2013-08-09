@@ -10,7 +10,7 @@
 .. _windows-setup:
 
 MS Windows environment setup
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------
 
 Unlike most :abbr:`UN*X (Unix-like)` operating systems, MS Windows generally lacks a Python interpreter and a few utilities being globally available.
 
@@ -67,7 +67,7 @@ Following sections describe how to install:
 .. _installing_python:
 
 Installing Python
-"""""""""""""""""
+^^^^^^^^^^^^^^^^^
 
 Please go to http://www.python.org/download/releases/ and download the Python Windows Installer. As of writing, Python 2.7.5 is known to be working properly. Then launch the installer and follow the instructions:
 
@@ -102,7 +102,7 @@ You should append the path to ``python``. By default it is stored under director
 .. _installing_unzip:
 
 Installing Unzip
-""""""""""""""""
+^^^^^^^^^^^^^^^^
 
 Please go to http://gnuwin32.sourceforge.net/packages/unzip.htm and download the setup file. Then launch the installer
 and follow the instructions:
@@ -116,7 +116,7 @@ directory ``C:\Program Files (x86)\GnuWin32\bin``. Please perform steps as in pr
 .. _installing_tar:
 
 Installing Tar
-""""""""""""""
+^^^^^^^^^^^^^^
 
 .. important::
 	.. index::

@@ -10,7 +10,7 @@
 .. _sphinx-documentation-editor:
 
 Sphinx documentation editor
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
 
 When showing an extension's manual using the :ref:`interactive layout <layouts>`, the standard TYPO3 Backend toolbar shows a pencil icon to let you edit the corresponding chapter:
 
@@ -20,7 +20,7 @@ When showing an extension's manual using the :ref:`interactive layout <layouts>`
 
 
 Editing a document
-""""""""""""""""""
+^^^^^^^^^^^^^^^^^^
 
 The pencil icon loads the online version from the "Ace editor" (http://ace.ajax.org/). Thus it currently requires an active Internet connection and prevents you from offline-editing documentation.
 

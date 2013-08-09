@@ -9,7 +9,7 @@
 .. _to-do-list:
 
 Liste de tâches
----------------
+===============
 
 .. note::
 	Veuillez svp utiliser le système de suivi de bogues de l'extension sur Forge pour proposer de nouvelles

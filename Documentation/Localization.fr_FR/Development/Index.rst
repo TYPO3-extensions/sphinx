@@ -9,13 +9,13 @@
 .. _development:
 
 Développement
--------------
+=============
 
 Ce chapitre décrit certains mécanismes internes de l'extension Sphinx pour vous permettre de l'étendre facilement.
 
 
 Signaux et slots
-""""""""""""""""
+----------------
 
 Le concept de *signaux* et *slots* permet une implémentation facile du patron de conception
 `observateur/observable <http://fr.wikipedia.org/wiki/Observateur_%28patron_de_conception%29>`_ en génie logiciel, un

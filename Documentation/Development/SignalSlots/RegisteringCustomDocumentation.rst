@@ -8,7 +8,7 @@
 
 
 Registering Custom Documentation
-""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The two slots :ref:`afterInitializeReferences <custom-documentation-afterInitializeReferences>` and
 :ref:`renderUserDocumentation <custom-documentation-renderUserDocumentation>` should be used to register and render your
@@ -21,7 +21,7 @@ files using the integrated :ref:`ReStructuredText editor <sphinx-documentation-e
 .. _custom-documentation-afterInitializeReferences:
 
 Slot: afterInitializeReferences
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""""
 
 This slot is used to register additional entries in the drop-down list of available documentations.
 
@@ -42,7 +42,7 @@ existing entries.
 .. _custom-documentation-renderUserDocumentation:
 
 Slot: renderUserDocumentation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""""
 
 This slot is used to render your custom documentation and return the URL of the master page.
 
@@ -58,7 +58,7 @@ Your slot should implement a method of the form:
 .. _custom-documentation-retrieveRestFilename:
 
 Slot: retrieveRestFilename
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""
 
 This slot is used to retrieve the ReStructuredText filename corresponding to a given document.
 
@@ -74,7 +74,7 @@ Your  slot should implement a method of the form:
 .. _custom-documentation-sample:
 
 Sample code
-^^^^^^^^^^^
+"""""""""""
 
 This sample code will register a custom documentation and simply return a public URL (http://www.example.com) as
 "master page":

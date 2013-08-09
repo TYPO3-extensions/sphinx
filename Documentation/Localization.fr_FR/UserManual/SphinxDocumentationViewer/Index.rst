@@ -10,7 +10,7 @@
 .. _sphinx-documentation-viewer:
 
 Visionneuse de documentation Sphinx
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------
 
 Cette extension fournit un autre module Backend dans la partie "Aide" :
 
@@ -27,7 +27,7 @@ vous permet de rapidement l'afficher **localement** :
 
 
 Écran d'accueil
-"""""""""""""""
+^^^^^^^^^^^^^^^
 
 Si aucune documentation n'est sélectionnée dans la liste déroulante :
 
@@ -47,7 +47,7 @@ manuel :
 .. _layouts:
 
 Gabarits
-""""""""
+^^^^^^^^
 
 Les manuels d'extensions peuvent être générés avec différents "gabarits" :
 
@@ -65,7 +65,7 @@ Les manuels d'extensions peuvent être générés avec différents "gabarits" :
 
 
 Fonctionnement interne
-""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^
 
 Comme les manuels d'extensions basés sur Sphinx sont destinés à être générés sur http://docs.typo3.org en utilisant la
 mise en page officielle de TYPO3, ils ne fournissent pas les fichiers de configuration généraux nécessaires à un rendu

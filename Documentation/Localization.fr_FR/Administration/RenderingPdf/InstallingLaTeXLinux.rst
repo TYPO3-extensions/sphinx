@@ -7,7 +7,7 @@
 
 
 Installation de LaTeX sous Linux ou Mac OS X
-""""""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Votre distribution sysème ou vendeur fournit très probablement un paquet TeX comprenant LaTeX. Veuillez rechercher votre
 source de logiciels usuelle pour un paquet TeX ; ou alors installez `TeX Live`_ directement.
@@ -22,7 +22,7 @@ source de logiciels usuelle pour un paquet TeX ; ou alors installez `TeX Live`_ 
 	- fonts-recommended
 
 Linux Debian
-~~~~~~~~~~~~
+""""""""""""
 
 Vous pouvez exécuter la commande suivante pour installer les composants requis :
 
@@ -40,7 +40,7 @@ et ``make``:
 
 
 Mac OS X
-~~~~~~~~
+""""""""
 
 Vous pouvez installer un environnement Tex Live en utilisant le paquet MacTeX_. Autrement, si vous êtes habitué à utiliser
 MacPorts_, le processus est similaire à un système Debian :

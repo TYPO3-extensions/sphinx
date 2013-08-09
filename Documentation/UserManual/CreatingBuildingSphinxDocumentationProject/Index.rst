@@ -10,7 +10,7 @@
 .. _kickstart_sphinx_project:
 
 Creating and building a Sphinx documentation project
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------------------------
 
 .. note::
 
@@ -37,19 +37,19 @@ The console will show you the output of the command.
 
 
 HTML
-""""
+^^^^
 
 This Sphinx builder generates a standalone HTML website of your documentation into directory ``_build/html``.
 
 
 JSON
-""""
+^^^^
 
 This Sphinx builder generates a derivate from HTML into directory ``_build/json``. You should use this builder in order to properly integrate your documentation within your TYPO3 website. Extension `reST Documentation Viewer (restdoc) <http://typo3.org/extensions/repository/view/restdoc>`_ should be used with JSON output.
 
 
 LaTeX
-"""""
+^^^^^
 
 .. index::
 	single: LaTeX
@@ -58,7 +58,7 @@ This Sphinx builder generates a LaTeX project of your documentation into directo
 
 
 PDF
-"""
+^^^
 
 .. index::
 	single: PDF
@@ -69,6 +69,6 @@ If commands ``make`` and ``pdflatex`` are found on your server (or if you config
 
 
 Check Links
-"""""""""""
+^^^^^^^^^^^
 
 This Sphinx builder checks all links within your documentation and generates a report ``output.txt`` into directory ``_build/linkcheck/``.

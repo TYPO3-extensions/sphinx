@@ -8,7 +8,7 @@
 
 
 Enregistrement d'une documentation personnalisée
-""""""""""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Les deux slots :ref:`afterInitializeReferences <custom-documentation-afterInitializeReferences>` et
 :ref:`renderUserDocumentation <custom-documentation-renderUserDocumentation>` peuvent être utilisés pour enregistrer et
@@ -21,7 +21,7 @@ permettre l'édition des fichiers sources avec l':ref:`éditeur ReStructuredText
 .. _custom-documentation-afterInitializeReferences:
 
 Slot : afterInitializeReferences
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""
 
 Ce slot peut être utilisé pour enregistrer des entrées supplémentaires dans la liste déroulante des documentations
 disponibles.
@@ -42,7 +42,7 @@ faire du post-traitement dessus et ajouter/supprimer/modifier les entrées exist
 .. _custom-documentation-renderUserDocumentation:
 
 Slot : renderUserDocumentation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""
 
 Ce slot peut être utilisé pour générer votre propre documentation et doit retourner l'URL de la page principale.
 
@@ -58,7 +58,7 @@ Votre slot doit implémenter une méthode de la forme :
 .. _custom-documentation-retrieveRestFilename:
 
 Slot : retrieveRestFilename
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""""""""""
 
 Ce slot peut-être utilisé pour récupérer le nom de fichier ReStructuredText correspondant à un document donné.
 
@@ -74,7 +74,7 @@ Votre slot doit implémenter une méthode de la forme :
 .. _custom-documentation-sample:
 
 Code exemple
-^^^^^^^^^^^^
+""""""""""""
 
 Ce code exemple enregistre une documentation personnelle and retourne simplement une URL publique (http://www.example.com)
 comme "page principale".

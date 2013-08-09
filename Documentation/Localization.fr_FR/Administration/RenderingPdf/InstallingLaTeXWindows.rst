@@ -8,7 +8,7 @@
 
 
 Installation de LaTeX sous MS Windows
-"""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Téléchargez et exécutez l'installateur MiKTeX_ pour mettre en place un système TeX/LaTeX de base sur votre ordinateur.
 Vous pouvez lire le chapitre `Installing MiKTeX`_ dans le manuel MiKTeX si vous êtes intéressé à connaître tous les détails.

@@ -9,7 +9,7 @@
 .. _admin_rendering_pdf:
 
 Rendu PDF depuis ReStructuredText
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------
 
 Sphinx utilise des *générateurs* pour préparer le rendu. Le "nom" du générateur pour un rendu PDF est soit ``latex``
 (meilleur rendu) soit ``rst2pdf``.

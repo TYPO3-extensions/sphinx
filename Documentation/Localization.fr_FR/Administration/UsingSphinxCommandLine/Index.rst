@@ -7,7 +7,7 @@
 
 
 Utilisation de Sphinx depuis la ligne de commande
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------------------
 
 .. index::
 	single: Ligne de commande

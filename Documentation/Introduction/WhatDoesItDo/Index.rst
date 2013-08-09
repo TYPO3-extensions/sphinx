@@ -7,7 +7,7 @@
 
 
 What does it do?
-^^^^^^^^^^^^^^^^
+----------------
 
 This extension lets you build documentation projects written with Sphinx_ (the Python Documentation Generator used by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend. Watch `5 min tutorial video`_.
 
@@ -28,7 +28,7 @@ Sphinx was originally created for the Python documentation and a few features ar
 
 
 And this extension?
-"""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^
 
 Setting up a Sphinx environment to build documentation may be complicated for some users. This extension takes for granted that Python interpreter is available on your web server and will install and configure Sphinx **locally** (thus in your website) in a few clicks.
 
@@ -42,6 +42,6 @@ In addition, this extension comes with a few goodies such as:
 
 
 What can I do with a Sphinx project?
-""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A lot! And above all, if you compile your documentation as JSON, you may easily integrate it to your website. Best way is to use TYPO3 extension `reST Documentation Viewer (restdoc)`_.

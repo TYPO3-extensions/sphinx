@@ -10,7 +10,7 @@
 .. _sphinx-documentation-viewer:
 
 Sphinx documentation viewer
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
 
 This extension provides another Backend module under section "Help":
 
@@ -25,7 +25,7 @@ A drop-down menu on top lists all loaded extensions that are featuring a Sphinx-
 
 
 Welcome screen
-""""""""""""""
+^^^^^^^^^^^^^^
 
 If no documentation has been selected in the drop-down menu:
 
@@ -44,7 +44,7 @@ Similarly, an empty Sphinx documentation project may be created for local extens
 .. _layouts:
 
 Layouts
-"""""""
+^^^^^^^
 
 Extension manuals may be rendered with different "layouts":
 
@@ -60,7 +60,7 @@ Extension manuals may be rendered with different "layouts":
 
 
 Internals
-"""""""""
+^^^^^^^^^
 
 As Sphinx-based extension manuals are meant to be rendered on http://docs.typo3.org using the TYPO3 corporate design, they do not provide the general configuration files needed to be rendered locally.
 

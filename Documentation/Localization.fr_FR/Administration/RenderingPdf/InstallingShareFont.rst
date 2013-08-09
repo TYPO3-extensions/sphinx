@@ -10,7 +10,7 @@
 .. _installing_share_font:
 
 Installation de la fonte Share
-""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Afin de personnaliser le rendu PDF de la documentation avec LaTeX pour s'accorder à la mise en page TYPO3, nous devons
 tout d'abord installer la `famille de fontes corporate Share`_ et la convertir pour qu'elle soit compatible avec LaTeX.

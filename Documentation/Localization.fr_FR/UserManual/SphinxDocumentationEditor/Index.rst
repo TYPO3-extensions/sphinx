@@ -10,7 +10,7 @@
 .. _sphinx-documentation-editor:
 
 Éditeur de documentation Sphinx
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------
 
 Lorsque vous affichez un manuel d'extension en utilisant le :ref:`gabarit interactif <layouts>`, la barre d'outils
 standard de TYPO3 affiche une icône de crayon pour vous permettre de modifier le chapitre correspondant :
@@ -21,7 +21,7 @@ standard de TYPO3 affiche une icône de crayon pour vous permettre de modifier l
 
 
 Modification d'un document
-""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 L'icône de crayon charge une version en ligne de l'éditeur "Ace" (http://ace.ajax.org/). Par conséquent ce module
 nécessite une connexion à Internet et il n'est pas actuellement possible de modifier les fichiers en étant déconnecté.

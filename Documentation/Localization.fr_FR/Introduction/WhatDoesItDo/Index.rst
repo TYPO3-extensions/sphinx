@@ -7,7 +7,7 @@
 
 
 Qu'est-ce que ça fait ?
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (the générateur de documentation
 Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le Backend de TYPO3.
@@ -36,7 +36,7 @@ mises en évidence :
 
 
 Et cette extension ?
-""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^
 
 La mise en place d'un environnement Sphinx pour générer de la documentation peut être compliqué aux yeux de certains
 utilisateurs. Cette extension part du principe qu'un interpréteur Python est disponible sur votre serveur web et se
@@ -53,7 +53,7 @@ Par ailleurs, cette extension fournit quelques utilitaires comme :
 
 
 Que puis-je faire avec un project Sphinx ?
-""""""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Plein de choses ! Et avant tout, si vous compilez votre documentation en JSON, vous pouvez facilement l'intégrer à votre
 site. Le meilleur moyen est d'utiliser l'extension TYPO3 `reST Documentation Viewer (restdoc)`_.

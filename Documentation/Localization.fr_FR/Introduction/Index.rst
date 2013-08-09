@@ -8,8 +8,8 @@
 
 .. _introduction:
 
-Introduction
-------------
+Présentation
+============
 
 .. toctree::
 	:maxdepth: 5
