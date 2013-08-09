@@ -1,13 +1,13 @@
-.. |project_wizard_overview| image:: ../../../Images/project_wizard_overview.png
+.. |project_wizard_overview| image:: ../../Images/project_wizard_overview.png
 	:alt: Vue d'ensemble de l'assistant de création d'un nouveau projet
 
-.. |mod1_overview| image:: ../../../Images/mod1_overview.png
+.. |mod1_overview| image:: ../../Images/mod1_overview.png
 	:alt: Vue d'ensemble du module Backend pour générer des projets Sphinx
 	:width: 711
 
-.. |build_buttons| image:: ../../../Images/build_buttons.png
+.. |build_buttons| image:: ../../Images/build_buttons.png
 	:alt: Boutons de la barre d'outils
 
-.. |viewer| image:: ../../../Images/viewer.png
+.. |viewer| image:: ../../Images/viewer.png
 	:alt: Visionneuse intégrée au Backend pour les manuels des extensions
 	:width: 711
