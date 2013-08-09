@@ -117,8 +117,8 @@ En fonction du gabarit choisi, le document principal est :
 
 .. _documentation-viewer-custom-project:
 
-Référenement d'un projet personnel
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Référencement d'un projet personnel
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Si vous avez un projet Sphinx complet (c'est-à-dire avec un fichier de configuration ``_make/conf.py``) quelque part dans
 votre site. comme un projet démarré avec la :ref:`Console Sphinx <kickstart_sphinx_project>`, vous pouvez l'enregistrer
