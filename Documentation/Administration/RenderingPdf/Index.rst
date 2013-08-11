@@ -8,7 +8,7 @@
 
 .. _admin_rendering_pdf:
 
-Rendering PDF from ReStructuredText
+Rendering PDF from reStructuredText
 -----------------------------------
 
 Sphinx is using *builders* to produce output. The builder’s "name" for PDF is either ``latex`` (best output) or ``rst2pdf``.

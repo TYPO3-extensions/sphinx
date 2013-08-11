@@ -1,5 +1,5 @@
 .. |edit_chapter| image:: ../../../Images/edit_chapter.png
-	:alt: Modifier la source ReStructuredText de n'importe quel chapitre
+	:alt: Modifier la source reStructuredText de n'importe quel chapitre
 
 .. |save_compile| image:: ../../../Images/save_compile.png
-	:alt: Sauvegarder et compiler votre chapitre ReStructuredText
+	:alt: Sauvegarder et compiler votre chapitre reStructuredText

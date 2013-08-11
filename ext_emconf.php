@@ -12,8 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Sphinx Python Documentation Generator and Viewer',
-	'description' => 'One-click install Sphinx generator for your TYPO3 website. This extension builds ReStructuredText documentation
-	(format of official TYPO3 manuals), renders other extension manuals and provides an integrated editor for your own extension manuals.',
+	'description' => 'One-click install Sphinx generator for your TYPO3 website. This extension builds Sphinx/reStructuredText documents (format of official TYPO3 manuals), renders extension manuals as HTML/JSON/PDF and provides an integrated editor for your own extension manuals and documents.',
 	'category' => 'service',
 	'author' => 'Xavier Perseguers (Causal)',
 	'author_company' => 'Causal Sàrl',
@@ -30,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'version' => '1.1.0',
+	'version' => '1.1.1-dev',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.3-5.4.99',

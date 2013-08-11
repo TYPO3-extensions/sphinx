@@ -11,7 +11,7 @@
 Manuel utilisateur
 ==================
 
-This chapter describes how to use the extension from a user point of view. In addition, it provides a few links and hints to get up to speed with Sphinx and ReStructuredText for your own projects.
+This chapter describes how to use the extension from a user point of view. In addition, it provides a few links and hints to get up to speed with Sphinx and reStructuredText for your own projects.
 
 .. toctree::
 	:maxdepth: 5

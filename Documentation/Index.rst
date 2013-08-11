@@ -24,9 +24,9 @@ Sphinx Python Documentation Generator and Viewer
 		en
 
 	:Description:
-		One-click install Sphinx generator for your TYPO3 website. This extension builds ReStructuredText documentation
-		(format of official TYPO3 manuals), renders other extension manuals and provides an integrated editor for your
-		own extension manuals.
+		One-click install Sphinx generator for your TYPO3 website. This extension builds Sphinx/reStructuredText
+		documents (format of official TYPO3 manuals), renders extension manuals as HTML/JSON/PDF and provides an
+		integrated editor for your own extension manuals and documents.
 
 	:Keywords:
 		reStructuredText, reST, sphinx, documentation

@@ -17,7 +17,13 @@ The two slots :ref:`afterInitializeReferences <custom-documentation-afterInitial
 own documentation. Please see :ref:`sample code below <custom-documentation-sample>`.
 
 Slot :ref:`retrieveRestFilename <custom-documentation-retrieveRestFilename>` should be used if you plan to edit source
-files using the integrated :ref:`ReStructuredText editor <sphinx-documentation-editor>`.
+files using the integrated :ref:`reStructuredText editor <sphinx-documentation-editor>`.
+
+.. tip::
+	Before going on implementing signals to register your own documentation, make sure to read the
+	:ref:`instructions to register a project <documentation-viewer-custom-project>` with the built-in facility. As a
+	bonus, if you do so, your documentation will automatically show up in the documentation Backend module starting
+	from TYPO3 6.2.
 
 
 .. _custom-documentation-afterInitializeReferences:
@@ -36,7 +42,7 @@ Your slot should implement a method of the form:
 	}
 
 Parameter ``$references`` is an bi-dimensional array containing the list of local, global and system extensions with a
-Sphinx/ReStructuredText-based documentation. As the array is passed by reference, you may post-process the array and
+Sphinx/reStructuredText-based documentation. As the array is passed by reference, you may post-process the array and
 add/remove/modify
 existing entries.
 
@@ -57,12 +63,28 @@ Your slot should implement a method of the form:
 	}
 
 
+.. _custom-documentation-retrieveBasePath:
+
+Slot: retrieveBasePath
+""""""""""""""""""""""
+
+This slot is used to retrieve the base path for the generated documentation corresponding to a given identifier.
+
+Your  slot should implement a method of the form:
+
+.. code-block:: php
+
+	public function retrieveBasePath($identifier, &$path) {
+	    // Custom code
+	}
+
+
 .. _custom-documentation-retrieveRestFilename:
 
 Slot: retrieveRestFilename
 """"""""""""""""""""""""""
 
-This slot is used to retrieve the ReStructuredText filename corresponding to a given document.
+This slot is used to retrieve the reStructuredText filename corresponding to a given document.
 
 Your  slot should implement a method of the form:
 

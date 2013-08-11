@@ -8,7 +8,7 @@
 
 .. _admin_rendering_pdf:
 
-Rendu PDF depuis ReStructuredText
+Rendu PDF depuis reStructuredText
 ---------------------------------
 
 Sphinx utilise des *générateurs* pour préparer le rendu. Le "nom" du générateur pour un rendu PDF est soit ``latex``

@@ -46,7 +46,7 @@ In addition, this extension comes with a few goodies such as:
 - Backend documentation viewer
 - Backend module to kickstart a Sphinx documentation project
 - Backend module to compile a Sphinx project
-- Integrated ReStructuredText editor
+- Integrated reStructuredText editor
 - Wizard to convert an OpenOffice document (``manual.sxw``) to a Sphinx project (using an online tool on http://docs.typo3.org)
 
 

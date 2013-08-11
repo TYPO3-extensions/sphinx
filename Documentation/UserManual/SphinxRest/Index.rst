@@ -16,7 +16,7 @@ Sphinx and reStructuredText
 
 A few links to get started with Sphinx projects and reStructuredText:
 
-- `ReStructuredText Syntax <http://wiki.typo3.org/ReST_Syntax>`_
+- `reStructuredText Syntax <http://wiki.typo3.org/ReST_Syntax>`_
 
 
 Converting OpenOffice manual to Sphinx

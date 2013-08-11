@@ -17,7 +17,13 @@ Les deux slots :ref:`afterInitializeReferences <custom-documentation-afterInitia
 générer votre propre documentation. Veuillez regarder l':ref:`exemple de code ci-dessous <custom-documentation-sample>`.
 
 Le slot :ref:`retrieveRestFilename <custom-documentation-retrieveRestFilename>` peut être utilisé si vous envisagez de
-permettre l'édition des fichiers sources avec l':ref:`éditeur ReStructuredText <sphinx-documentation-editor>` intégré.
+permettre l'édition des fichiers sources avec l':ref:`éditeur reStructuredText <sphinx-documentation-editor>` intégré.
+
+.. tip::
+	Avant de vous lancer dans l'implémentation de signaux pour enregisrer votre propre documentation, assurez-vous de
+	lire les :ref:`instructions pour enregistrer un projet <documentation-viewer-custom-project>` avec le mécanisme
+	intégré. En prime, si vous le faites ainsi, votre documentation apparaîtra automatiquement dans le module Backend
+	de documentation à partir de TYPO3 6.2.
 
 
 .. _custom-documentation-afterInitializeReferences:
@@ -37,7 +43,7 @@ Votre slot doit implémenter une méthode de la forme :
 	}
 
 Le paramètre ``$references`` est un tableau bidimensionnel contenant une liste d'extensions locales, globales et systèmes
-dont la documentation est écrite avec Sphinx/ReStructuredText. Puisque le tableau est passé par référence, vous pouvez
+dont la documentation est écrite avec Sphinx/reStructuredText. Puisque le tableau est passé par référence, vous pouvez
 faire du post-traitement dessus et ajouter/supprimer/modifier les entrées existantes.
 
 
@@ -57,12 +63,29 @@ Votre slot doit implémenter une méthode de la forme :
 	}
 
 
+.. _custom-documentation-retrieveBasePath:
+
+Slot : retrieveBasePath
+"""""""""""""""""""""""
+
+Ce slot peut être utilisé pour récupérer le chemin de base de la documentation générée correspondant à un idenfiant
+donnée.
+
+Votre slot doit implémenter une méthode de la forme :
+
+.. code-block:: php
+
+	public function retrieveBasePath($identifier, &$path) {
+	    // Custom code
+	}
+
+
 .. _custom-documentation-retrieveRestFilename:
 
 Slot : retrieveRestFilename
 """""""""""""""""""""""""""
 
-Ce slot peut-être utilisé pour récupérer le nom de fichier ReStructuredText correspondant à un document donné.
+Ce slot peut être utilisé pour récupérer le nom de fichier reStructuredText correspondant à un document donné.
 
 Votre slot doit implémenter une méthode de la forme :
 
