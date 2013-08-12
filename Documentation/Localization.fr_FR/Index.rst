@@ -68,9 +68,9 @@ Générateur et visionneuse de documentation Sphinx Python
 	:glob:
 
 	Introduction/Index
-	UserManual/Index
-	Administration/Index
-	Development/Index
+	UsersManual/Index
+	AdministratorManual/Index
+	DeveloperManual/Index
 	KnownProblems/Index
 	ToDoList/Index
 	ChangeLog/Index

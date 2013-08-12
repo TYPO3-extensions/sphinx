@@ -6,8 +6,10 @@
 .. include:: ../Includes.txt
 
 
+.. _admin-manual:
+
 Administrator Manual
---------------------
+====================
 
 Describes how to manage the extension from an administrator’s point of
 view. That relates to Page/User TSconfig, permissions, configuration
@@ -20,7 +22,7 @@ Target group: **Administrators**
 
 
 Installation
-""""""""""""
+------------
 
 How should the extension be set up? E.g. is there a static template to include?
 

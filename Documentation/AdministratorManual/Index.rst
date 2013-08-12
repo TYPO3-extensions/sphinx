@@ -3,15 +3,15 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../../Includes.txt
+.. include:: ../Includes.txt
 
 
-.. _administration:
+.. _admin-manual:
 
-Administration
-==============
+Administrator manual
+====================
 
-Ce chapitre décrit comment gérer l'extension du point de vue d'un administrateur.
+This chapter describes how to manage the extension from a superuser point of view.
 
 .. toctree::
 	:maxdepth: 5

@@ -3,15 +3,16 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../../Includes.txt
+.. include:: ../Includes.txt
 
 
-.. _user-manual:
+.. _users-manual:
 
-Manuel utilisateur
-==================
+Users manual
+============
 
-This chapter describes how to use the extension from a user point of view. In addition, it provides a few links and hints to get up to speed with Sphinx and reStructuredText for your own projects.
+This chapter describes how to use the extension from a user point of view. In addition, it provides a few links and
+hints to get up to speed with Sphinx and reStructuredText for your own projects.
 
 .. toctree::
 	:maxdepth: 5

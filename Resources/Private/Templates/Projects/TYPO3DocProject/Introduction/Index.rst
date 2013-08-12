@@ -7,7 +7,7 @@
 
 
 What does it do?
-----------------
+================
 
 First of all, if you have any idea how this template can be improved, please, drop a note to our team_. Documentation is written in reST format. Please, refer to Help writing reStructuredText to get some insight regarding syntax and existing reST editors on the market.
 

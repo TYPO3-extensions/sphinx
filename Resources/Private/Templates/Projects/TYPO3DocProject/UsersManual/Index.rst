@@ -6,8 +6,10 @@
 .. include:: ../Includes.txt
 
 
+.. _users-manual:
+
 Users manual
-------------
+============
 
 Documentation of how to use the extension, how it works, how to apply it, if it's a website plugin.
 
@@ -29,7 +31,7 @@ Target group: **Users**
 
 
 Link to official documentation
-""""""""""""""""""""""""""""""
+------------------------------
 
 Sphinx makes it easy to link to official TYPO3 documentation:
 

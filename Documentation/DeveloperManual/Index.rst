@@ -6,10 +6,10 @@
 .. include:: ../Includes.txt
 
 
-.. _development:
+.. _developer-manual:
 
-Development
-===========
+Developer manual
+================
 
 This chapter describes some internals of the Sphinx extension to let you extend it easily.
 
