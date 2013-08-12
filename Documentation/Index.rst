@@ -51,6 +51,15 @@ Sphinx Python Documentation Generator and Viewer
 	a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
 
 
+	**Other versions of this document**
+
+	:PDF:
+		http://docs.typo3.org/typo3cms/extensions/sphinx/latest/_pdf/
+
+	:French Manual:
+		http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/latest/
+
+
 	**Table of Contents**
 
 .. toctree::
