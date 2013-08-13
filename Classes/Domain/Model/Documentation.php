@@ -120,6 +120,12 @@ class Documentation {
 			if ($this->sphinxReader->getDocument() !== 'genindex/') {
 				$body = $this->sphinxReader->getBody($this->callbackLinks, $this->callbackImages);
 				$body = \Causal\Sphinx\Utility\GeneralUtility::postProcessPropertyTables($body);
+
+				// Recreate list of labels for cross-referencing
+				if (strpos($body, '<span id="labels-for-crossreferencing"></span>') !== FALSE) {
+					$references = $this->sphinxReader->getReferences();
+					$body = \Causal\Sphinx\Utility\GeneralUtility::populateCrossReferencingLabels($body, $references, $this->callbackLinks);
+				}
 			} else {
 				$linksCategories = array();
 				$contentCategories = array();

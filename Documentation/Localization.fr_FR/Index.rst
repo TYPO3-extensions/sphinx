@@ -74,3 +74,4 @@ Générateur et visionneuse de documentation Sphinx Python
 	KnownProblems/Index
 	ToDoList/Index
 	ChangeLog/Index
+	Targets

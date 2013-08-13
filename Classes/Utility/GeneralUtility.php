@@ -252,6 +252,102 @@ HTML;
 	}
 
 	/**
+	 * Populate the list of labels for cross-referencing because package t3sphinx
+	 * is not (yet?) compatible with JSON rendering and thus its directive
+	 * ".. ref-targets-list::" is bypassed.
+	 *
+	 * @param string $contents
+	 * @param array $references
+	 * @param callback $callbackLinks Callback to generate Links in current context
+	 * @return string
+	 * @throws \RuntimeException
+	 * @see http://forge.typo3.org/issues/48313
+	 */
+	static public function populateCrossReferencingLabels($contents, array $references, $callbackLinks) {
+		$callableName = '';
+		if (!is_callable($callbackLinks, FALSE, $callableName)) {
+			throw new \RuntimeException('Invalid callback for links: ' . $callableName, 1376471476);
+		}
+
+		if (preg_match('#(.*)(<div class="section"[^>]*>.<span id="labels-for-crossreferencing"></span>[^\n]*.)([^\n]+)(.*)#s', $contents, $matches)) {
+			// Pattern matches:
+			// #1: beginning up to:
+			// #2: <div id="index-labels-for-cross-referencing" class="section">
+			//     <span id="labels-for-crossreferencing"></span><h1>Index: Labels for Cross-referencing</h1>
+			// #3: </div>
+			// #4: to the end
+			if ($matches[3] === '</div>') {
+				$listOfLabels = array();
+				$listOfLabels[] = '<dl class="ref-targets-list docutils">';
+
+				// Clean up references
+				foreach (array('0', 'search', 'py-modindex') as $file) {
+					unset($references[$file]);
+				}
+
+				// Move 1st-level references at the beginning
+				$tempReferences = array();
+				foreach ($references as $file => $anchors) {
+					if (strpos($file, '/') === FALSE) {
+						$tempReferences[$file] = $anchors;
+					}
+				}
+				$references = array_merge($tempReferences, array_diff_key($references, $tempReferences));
+
+				foreach ($references as $file => $anchors) {
+					$listOfLabels[] = '<dt>' . htmlspecialchars($file) . '</dt>';
+					$listOfLabels[] = '<dd><ul class="first last simple">';
+
+					// Prepare retrieval of line numbers for anchors
+					$lines = array();
+					if ($file !== 'genindex') {
+						$source = '_sources/' . $file . '.txt';
+						$filename = call_user_func($callbackLinks, $source);
+						$absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($filename, 3));
+						if (is_file($absoluteFilename)) {
+							$fileContents = file_get_contents($absoluteFilename);
+							$lines = explode(LF, $fileContents);
+						}
+					}
+
+					foreach ($anchors as $anchor) {
+						$lineNumber = 1;
+						for ($i = 0; $i < count($lines); $i++) {
+							if (preg_match('/^\s*\.\. _`?' . preg_quote($anchor['name']) . '`?:/', $lines[$i])) {
+								$lineNumber = $i + 1;
+								break;
+							}
+						}
+
+						$source = '_sources/' . substr($anchor['link'], 0, strrpos($anchor['link'], '/')) . '.txt';
+						$sourceUrl = call_user_func($callbackLinks, $source);
+						$sourceUrl .= '?refid=start&line=' . $lineNumber;
+						$sourceUrl = str_replace('&amp;', '&', $sourceUrl);
+						$sourceUrl = str_replace('&', '&amp;', $sourceUrl);
+
+						$document = str_replace('$', $anchor['name'], $anchor['link']);
+						$documentUrl = call_user_func($callbackLinks, $document);
+						$documentUrl = str_replace('&amp;', '&', $documentUrl);
+						$documentUrl = str_replace('&', '&amp;', $documentUrl);
+
+						$listOfLabels[] = '<li><span class="e1">[</span>' .
+							'<a href="' . $sourceUrl . '" class="e2 reference internal">' . sprintf('%04d', $lineNumber) . '</a>' .
+							'<span class="e3">]</span> ' .
+							'<a title="' . htmlspecialchars($anchor['title']) . '" href="' . $documentUrl . '" class="e4 reference internal">' .
+								':ref:`' . htmlspecialchars($anchor['name']) . '`' .
+							'</a></li>';
+					}
+					$listOfLabels[] = '</ul>';
+				}
+				$listOfLabels[] = '</dl>';
+				$contents = $matches[1] . $matches[2] . implode(LF, $listOfLabels) . $matches[3] . $matches[4];
+			}
+		}
+
+		return $contents;
+	}
+
+	/**
 	 * Returns the intersphinx references of a given extension.
 	 *
 	 * @param string $extensionKey
