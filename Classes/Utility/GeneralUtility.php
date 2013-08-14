@@ -373,6 +373,18 @@ HTML;
 			case self::DOCUMENTATION_TYPE_SPHINX:
 				$source = ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
 				self::recursiveCopy($source, $basePath);
+
+				// Remove Localization.* directories to prevent clash with references
+				// @see https://forge.typo3.org/issues/51066
+				if (empty($locale)) {
+					$localizationDirectories = self::getLocalizationDirectories($extensionKey);
+					foreach ($localizationDirectories as $info) {
+						$localizationDirectory = $basePath . DIRECTORY_SEPARATOR . basename($info['directory']);
+						if (is_dir($localizationDirectory)) {
+							\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($localizationDirectory, TRUE);
+						}
+					}
+				}
 				break;
 			case self::DOCUMENTATION_TYPE_README:
 				$source = ExtensionManagementUtility::extPath($extensionKey) . 'README.rst';
