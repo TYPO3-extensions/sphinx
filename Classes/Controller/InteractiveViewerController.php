@@ -45,6 +45,9 @@ class InteractiveViewerController extends AbstractActionController {
 	/** @var string */
 	protected $extension;
 
+	/** @var string */
+	protected $languageDirectory = 'default';
+
 	///**
 	// * @param \Tx_Restdoc_Reader_SphinxJson $sphinxReader
 	// * @return void
@@ -89,9 +92,9 @@ class InteractiveViewerController extends AbstractActionController {
 		switch ($type) {
 			case 'EXT':
 				list($extensionKey, $locale) = explode('.', $identifier, 2);
-				$languageDirectory = empty($locale) ? 'default' : $locale;
+				$this->languageDirectory = empty($locale) ? 'default' : $locale;
 				$this->extension = $extensionKey;
-				$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $languageDirectory . '/json');
+				$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $this->languageDirectory . '/json');
 				break;
 			case 'USER':
 				if (is_file($documentationFilename)) {
@@ -214,7 +217,7 @@ class InteractiveViewerController extends AbstractActionController {
 			case substr($document, 0, 11) === '_downloads/':
 			case substr($document, 0, 8) === '_images/':
 			case substr($document, 0, 9) === '_sources/':
-				$link = '../typo3conf/Documentation/typo3cms.extensions.' . $this->extension . '/default/json/' . $document;
+				$link = '../typo3conf/Documentation/typo3cms.extensions.' . $this->extension . '/' . $this->languageDirectory . '/json/' . $document;
 				break;
 		}
 		return $link;
