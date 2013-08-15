@@ -300,7 +300,8 @@ HTML;
 
 					// Prepare retrieval of line numbers for anchors
 					$lines = array();
-					if ($file !== 'genindex') {
+					$isGeneralIndex = ($file === 'genindex');
+					if (!$isGeneralIndex) {
 						$source = '_sources/' . $file . '.txt';
 						$filename = call_user_func($callbackLinks, $source);
 						$absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($filename, 3));
@@ -319,19 +320,27 @@ HTML;
 							}
 						}
 
-						$source = '_sources/' . substr($anchor['link'], 0, strrpos($anchor['link'], '/')) . '.txt';
-						$sourceUrl = call_user_func($callbackLinks, $source);
-						$sourceUrl .= '?refid=start&line=' . $lineNumber;
-						$sourceUrl = str_replace('&amp;', '&', $sourceUrl);
-						$sourceUrl = str_replace('&', '&amp;', $sourceUrl);
+						if (!$isGeneralIndex) {
+							$source = '_sources/' . substr($anchor['link'], 0, strrpos($anchor['link'], '/')) . '.txt';
+							$sourceUrl = call_user_func($callbackLinks, $source);
+							$sourceUrl .= '?refid=start&line=' . $lineNumber;
+							$sourceUrl = str_replace('&amp;', '&', $sourceUrl);
+							$sourceUrl = str_replace('&', '&amp;', $sourceUrl);
+
+							$sourceLink = '<a href="' . $sourceUrl . '" class="e2 reference internal">' . sprintf('%04d', $lineNumber) . '</a>';
+						} else {
+							$sourceLink = sprintf('%04d', $lineNumber);
+						}
 
 						$document = str_replace('$', $anchor['name'], $anchor['link']);
 						$documentUrl = call_user_func($callbackLinks, $document);
 						$documentUrl = str_replace('&amp;', '&', $documentUrl);
 						$documentUrl = str_replace('&', '&amp;', $documentUrl);
 
+						$sourceLinkPattern =
+
 						$listOfLabels[] = '<li><span class="e1">[</span>' .
-							'<a href="' . $sourceUrl . '" class="e2 reference internal">' . sprintf('%04d', $lineNumber) . '</a>' .
+							$sourceLink .
 							'<span class="e3">]</span> ' .
 							'<a title="' . htmlspecialchars($anchor['title']) . '" href="' . $documentUrl . '" class="e4 reference internal">' .
 								':ref:`' . htmlspecialchars($anchor['name']) . '`' .
