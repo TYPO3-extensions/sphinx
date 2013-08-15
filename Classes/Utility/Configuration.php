@@ -50,7 +50,7 @@ class Configuration {
 		preg_replace_callback(
 			'/^\s*([^#].*?)\s*=\s*u?\'(.*)\'/m',
 			function ($matches) use (&$properties) {
-				$properties[$matches[1]] = $matches[2];
+				$properties[$matches[1]] = stripcslashes($matches[2]);
 			},
 			$contents
 		);
