@@ -20,8 +20,8 @@ Slot :ref:`retrieveRestFilename <custom-documentation-retrieveRestFilename>` sho
 files using the integrated :ref:`reStructuredText editor <sphinx-documentation-editor>`.
 
 .. tip::
-	Before going on implementing signals to register your own documentation, make sure to read the
-	:ref:`instructions to register a project <documentation-viewer-custom-project>` with the built-in facility. As a
+	Before going on implementing signals to register your own documentation, make sure to read
+	the :ref:`instructions to register a project <documentation-viewer-custom-project>` with the built-in facility. As a
 	bonus, if you do so, your documentation will automatically show up in the documentation Backend module starting
 	from TYPO3 6.2.
 

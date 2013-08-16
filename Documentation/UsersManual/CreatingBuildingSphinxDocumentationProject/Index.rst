@@ -36,8 +36,8 @@ To build a Sphinx project, choose a director containing a documentation project 
 The console will show you the output of the command.
 
 .. tip::
-	You may register your custom project with the :ref:`sphinx-documentation-viewer`. To do so, please follow the
-	:ref:`instructions <documentation-viewer-custom-project>`.
+	You may register your custom project with the :ref:`sphinx-documentation-viewer`. To do so, please follow
+	the :ref:`instructions <documentation-viewer-custom-project>`.
 
 
 HTML

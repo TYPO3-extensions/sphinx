@@ -107,4 +107,5 @@ And then choose which version of Sphinx should be used and the PDF builder you p
 |sphinx_version|
 
 .. tip::
-	**Except for MS Windows users,** ``rst2pdf`` is available by default with this extension. However, if you want better output, you should consider using LaTeX instead. Please read chapter :ref:`admin_rendering_pdf` for instructions.
+	**Except for MS Windows users,** ``rst2pdf`` is available by default with this extension. However, if you want
+	better output, you should consider using LaTeX instead. Please read chapter :ref:`admin_rendering_pdf` for instructions.
