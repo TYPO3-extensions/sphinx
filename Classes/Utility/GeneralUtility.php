@@ -469,10 +469,6 @@ HTML;
 			$extensionKey
 		);
 
-		if ($format === 'json') {
-			self::overrideThemeT3Sphinx($documentationBasePath);
-		}
-
 		// Recursively instantiate template files
 		switch ($documentationType) {
 			case self::DOCUMENTATION_TYPE_SPHINX:
@@ -494,6 +490,18 @@ HTML;
 			case self::DOCUMENTATION_TYPE_README:
 				$source = ExtensionManagementUtility::extPath($extensionKey) . 'README.rst';
 				copy($source, $basePath . '/Index.rst');
+		}
+
+		if ($format === 'json') {
+			self::overrideThemeT3Sphinx($documentationBasePath);
+			$settingsYamlFilename = $documentationBasePath . '/Settings.yml';
+			if (is_file($settingsYamlFilename)) {
+				$confpyFilename = $documentationBasePath . '/_make/conf.py';
+				$confpy = file_get_contents($confpyFilename);
+				$pythonConfiguration = self::yamlToPython($settingsYamlFilename);
+				$confpy .= LF . '# Additional options from Settings.yml' . LF . implode(LF, $pythonConfiguration);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($confpyFilename, $confpy);
+			}
 		}
 
 		try {
@@ -603,6 +611,108 @@ HTML;
 			$pattern = 'export %s=%s';
 		}
 		return sprintf($pattern, $variable, $value);
+	}
+
+	/**
+	 * Converts a (simple) YAML file to Python instructions.
+	 *
+	 * Note: First tried to use 3rd party libraries:
+	 *
+	 * - spyc: http://code.google.com/p/spyc/
+	 * - Symfony2 YAML: http://symfony.com/doc/current/components/yaml/introduction.html
+	 *
+	 * but none of them were able to parse our Settings.yml Sphinx configuration files.
+	 *
+	 * @param string $filename
+	 * @return string
+	 */
+	static public function yamlToPython($filename) {
+		$contents = file_get_contents($filename);
+		$lines = explode(LF, $contents);
+		$pythonConfiguration = array();
+
+		$i = 0;
+		while ($lines[$i] !== 'conf.py:' && $i < count($lines)) {
+			$i++;
+		}
+		while ($i < count($lines)) {
+			$i++;
+			if (preg_match('/^(\s+)([^:]+):\s*(.*)$/', $lines[$i], $matches)) {
+				$pythonLine = '';
+				switch ($matches[2]) {
+					case 'latex_documents':
+						$pythonLine = 'latex_documents = [(' . LF;
+						if (preg_match('/^(\s+)- - /', $lines[$i + 1], $matches)) {
+							$indent = $matches[1];
+							$firstLine = TRUE;
+							while (preg_match('/^' . $indent . '(- -|  -) (.+)$/', $lines[++$i], $matches)) {
+								if (!$firstLine) {
+									$pythonLine .= ',' . LF;
+								}
+								$pythonLine .= sprintf('u\'%s\'', addcslashes($matches[2], "\\'"));
+								$firstLine = FALSE;
+							}
+						}
+						$pythonLine .= LF . ')]';
+						$i--;
+						break;
+					case 'latex_elements':
+						$pythonLine = 'latex_elements = {' . LF;
+						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
+							$indent = $matches[1];
+							$firstLine = TRUE;
+							while (preg_match('/^' . $indent . '([^:]+):\s*(.*)$/', $lines[++$i], $matches)) {
+								if (!$firstLine) {
+									$pythonLine .= ',' . LF;
+								}
+								$pythonLine .= sprintf('\'%s\': \'%s\'', $matches[1], addcslashes($matches[2], "\\'"));
+								$firstLine = FALSE;
+							}
+						}
+						$pythonLine .= LF . '}';
+						$i--;
+						break;
+					case 'intersphinx_mapping':
+						$pythonLine = 'intersphinx_mapping = {' . LF;
+						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
+							$indent = $matches[1];
+							$firstLine = TRUE;
+							while (preg_match('/^' . $indent . '(.+):/', $lines[++$i], $matches)) {
+								if (!$firstLine) {
+									$pythonLine .= ',' . LF;
+								}
+								$pythonLine .= sprintf('\'%s\': (', $matches[1]);
+								$firstItem = TRUE;
+								while (preg_match('/^' . $indent . '- (.+)/', $lines[++$i], $matches)) {
+									if (!$firstItem) {
+										$pythonLine .= ', ';
+									}
+									if ($matches[1] === 'null') {
+										$pythonLine .= 'None';
+									} else {
+										$pythonLine .= sprintf('\'%s\'', $matches[1]);
+									}
+									$firstItem = FALSE;
+								}
+								$pythonLine .= ')';
+								$firstLine = FALSE;
+								$i--;
+							}
+						}
+						$pythonLine .= LF . '}';
+						$i--;
+						break;
+					default:
+						$pythonLine = sprintf('%s = u\'%s\'', $matches[2], addcslashes($matches[3], "\\'"));
+						break;
+				}
+				if (!empty($pythonLine)) {
+					$pythonConfiguration[] = $pythonLine;
+				}
+			}
+		}
+
+		return $pythonConfiguration;
 	}
 
 }

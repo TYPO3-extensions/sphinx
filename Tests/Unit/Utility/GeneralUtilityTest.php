@@ -141,6 +141,114 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEmpty($projectTitle);
 	}
 
+	/**
+	 * @test
+	 */
+	public function canParseBasicYaml() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+# This is the project specific Settings.yml file.
+# Place Sphinx specific build information here.
+# Settings given here will replace the settings of 'conf.py'.
+
+conf.py:
+  copyright: 2013
+  project: Sphinx Python Documentation Generator and Viewer
+  version: 1.1
+  release: 1.1.1-dev
+YAML;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		$pythonConfiguration = GeneralUtility::yamlToPython($fixtureFilename);
+		$expected = array(
+			'copyright = u\'2013\'',
+			'project = u\'Sphinx Python Documentation Generator and Viewer\'',
+			'version = u\'1.1\'',
+			'release = u\'1.1.1-dev\'',
+		);
+		$this->assertSame($expected, $pythonConfiguration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canParseLaTeXYamlConfiguration() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  latex_documents:
+  - - Index
+    - sphinx.tex
+    - Sphinx Python Documentation Generator and Viewer
+    - Xavier Perseguers
+    - manual
+  latex_elements:
+    papersize: a4paper
+    pointsize: 10pt
+    preamble: \usepackage{typo3}
+YAML;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		$pythonConfiguration = GeneralUtility::yamlToPython($fixtureFilename);
+		$expected = array(
+			'latex_documents = [(' . LF .
+				"u'Index'," . LF .
+				"u'sphinx.tex'," . LF .
+				"u'Sphinx Python Documentation Generator and Viewer'," . LF .
+				"u'Xavier Perseguers'," . LF .
+				"u'manual'" . LF .
+			')]',
+			'latex_elements = {' . LF .
+				"'papersize': 'a4paper'," . LF .
+				"'pointsize': '10pt'," . LF .
+				"'preamble': '\\\\usepackage{typo3}'" . LF .
+			'}',
+		);
+		$this->assertSame($expected, $pythonConfiguration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canParseIntersphinxYamlMapping() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  intersphinx_mapping:
+    t3tsref:
+    - http://docs.typo3.org/typo3cms/TyposcriptReference/
+    - null
+    restdoc:
+    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - null
+YAML;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		$pythonConfiguration = GeneralUtility::yamlToPython($fixtureFilename);
+		$expected = array(
+			'intersphinx_mapping = {' . LF .
+				"'t3tsref': ('http://docs.typo3.org/typo3cms/TyposcriptReference/', None)," . LF .
+				"'restdoc': ('http://docs.typo3.org/typo3cms/extensions/restdoc/', None)" . LF .
+			'}',
+		);
+		$this->assertSame($expected, $pythonConfiguration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
 }
 
 ?>
