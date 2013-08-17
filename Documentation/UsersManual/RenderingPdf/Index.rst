@@ -39,6 +39,10 @@ Once the LaTeX files have been produced, the actual rendering as PDF is just a m
 
 	$ pdflatex name-of-project
 
+.. tip::
+	PDF rendering on docs.typo3.org needs a minor adjustement to your project's configuration. Please read
+	chapter :ref:`docs-typo3-org` for further information.
+
 The remainder of this chapter gives you more insights on LaTeX:
 
 .. toctree::

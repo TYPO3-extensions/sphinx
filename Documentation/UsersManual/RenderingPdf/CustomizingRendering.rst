@@ -6,6 +6,8 @@
 .. include:: ../../Includes.txt
 
 
+.. _customizing-rendering:
+
 Customizing the rendering
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -56,9 +58,12 @@ LaTeX is ``sphinxmanual``:
 
 Sphinx provides two document classes:
 
-- ``manual`` that is, ``sphinxmanual``, extending the real LaTeX document class ``report`` (by default two-side with full title page);
+- ``manual`` that is, ``sphinxmanual``, extending the real LaTeX document class ``report`` (by default two-side
+  with full title page);
 
 - ``howto`` that is, ``sphinxhowto``, extending the real LaTeX document class ``article`` (by default one-side).
+  "howto" documents will not get appendices.  Also, howtos will have a simpler title page.
+
 
 Both class files (``sphinxmanual.cls`` and ``sphinxhowto.cls``) are copied to directory ``build/latex/`` during rendering.
 

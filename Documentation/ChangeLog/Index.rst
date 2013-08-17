@@ -13,6 +13,10 @@ ChangeLog
 
 The following is a very high level overview of the changes in this extension. For more details, `read the online log <https://git.typo3.org/TYPO3CMS/Extensions/sphinx.git/log>`_.
 
+.. tip::
+	Release notes and possible quick fixes for published versions are available in the project's wiki:
+	http://forge.typo3.org/projects/extension-sphinx/wiki.
+
 
 .. tabularcolumns:: |r|p{13.7cm}|
 
