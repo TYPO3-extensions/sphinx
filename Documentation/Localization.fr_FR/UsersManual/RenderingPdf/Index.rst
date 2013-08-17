@@ -6,7 +6,7 @@
 .. include:: ../../../Includes.txt
 
 
-.. _rendering_pdf:
+.. _rendering-pdf:
 
 Rendu PDF à partir de reStructuredText
 --------------------------------------
@@ -45,6 +45,10 @@ des fichiers sources avec ``pdflatex`` :
 .. code-block:: bash
 
 	$ pdflatex nom-du-projet
+
+.. tip::
+	Le rendu PDF sur docs.typo3.org nécessite une modification mineure dans le fichier de configuration de votre projet.
+	Veuillez lire le chapitre :ref:`docs-typo3-org` pour de plus amples informations.
 
 Le reste de ce chapitre vous donne quelques informations supplémentaires sur LaTeX :
 

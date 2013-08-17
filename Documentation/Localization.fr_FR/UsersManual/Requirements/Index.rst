@@ -20,7 +20,7 @@ documentation écrite en reStructuredText sous forme d'un projet Sphinx.
 
 .. tip::
 	Cette extension installe et configure automatiquement ``rst2pdf`` pour le rendu PDF. Cependant, si vous désirez un
-	meilleur rendu, vous devriez installer plutôt LaTeX. Veuillez lire le chapitre :ref:`rendering_pdf` pour les
+	meilleur rendu, vous devriez installer plutôt LaTeX. Veuillez lire le chapitre :ref:`rendering-pdf` pour les
 	instructions.
 
 Cette extension supporte des projets dans un répertoire unique :

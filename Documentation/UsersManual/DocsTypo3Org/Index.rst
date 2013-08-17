@@ -40,9 +40,10 @@ Title, copyright and version
 A valid Sphinx project for an extension manual should contain a configuration file ``Settings.yml`` next to the main
 document ``Index.rst``. This file is your key to override default settings from the real Sphinx configuration file
 ``conf.py`` which is not part of your project (because it contains settings related to the build environment on
-http://docs.typo3.org). Instead, this YAML configuration file lets you define project options. This extension takes
-care of loading options from ``Settings.yml`` as well, thus ensuring a smooth experience when working locally on your
-extension manuals before their automatic deployment to http://docs.typo3.org.
+http://docs.typo3.org). Instead, this YAML configuration file lets you define project options.
+
+This extension takes care of loading options from ``Settings.yml`` as well, thus ensuring a smooth experience when
+working locally on your extension manuals before their automatic deployment to http://docs.typo3.org.
 
 A basic ``Settings.yml`` file should define a few basic project information:
 
@@ -59,7 +60,7 @@ project
 	The documented project's name.
 
 copyright
-	A copyright statement in the style ``'2008, Author Name'``.
+	A copyright statement in the style ``2013, Author Name``.
 
 	.. tip::
 		Within TYPO3 official documentation, we usually only show the year(s) of copyright, e.g., ``2013``
@@ -70,8 +71,8 @@ version
 	documentation, this may be something like ``6.2``.
 
 release
-	The full project version, used as the replacement for ``|release|`` and e.g., in the HTML templates.
-	For example, for the TYPO3 documentation, this may be something like ``6.2.0rc1``.
+	The full project version, used as the replacement for ``|release|``. For example, for the TYPO3 documentation, this
+	may be something like ``6.2.0rc1``.
 
 	If you don't need the separation provided between ``version`` and ``release``, just set them both to
 	the same value.
@@ -79,7 +80,7 @@ release
 	.. tip::
 		This is of course up to the extension's author to decide on a version numbering scheme but best practices follow
 		the same rules as for TYPO3 core and do not introduce breaking changes or new features in patch-release
-		version (when the last of the three digits changes).
+		versions (when the last of the three digits changes).
 
 
 .. _docs-typo3-org-pdf:
@@ -110,15 +111,12 @@ documentation folder) and make sure it contains following configuration options 
 	    pointsize: 10pt
 	    preamble: \usepackage{typo3}
 
-File ``Settings.yml`` is your key to override default settings from Sphinx configuration file ``conf.py`` which is
-automatically generated upon rendering.
-
 Lines 7 to 11 define options for value ``latex_documents`` which determines how to group the document tree into LaTeX
 source files. This is a list of tuples: ``startdocname``, ``targetname``, ``title``, ``author``, ``documentclass``, where
 the items are:
 
 startdocname
-	Document name that is the "root" of the LaTeX file.  All documents referenced by it in TOC trees will be included
+	Document name that is the "root" of the LaTeX files. All documents referenced by it in TOC trees will be included
 	in the LaTeX file too.
 
 	.. warning::
@@ -135,11 +133,11 @@ title
 	represented by the proper LaTeX commands if they are to be inserted literally.
 
 author
-	Author for the LaTeX document.  The same LaTeX markup caveat as for *title* applies. Use ``\and`` to separate
+	Author for the LaTeX document. The same LaTeX markup caveat as for *title* applies. Use ``\and`` to separate
 	multiple authors, as in: ``'John \and Sarah'``.
 
 documentclass
-	Normally, one of ``'manual'`` or ``'howto'`` (provided by Sphinx).
+	Normally, one of ``manual`` or ``howto`` (provided by Sphinx).
 
 	.. tip::
 		To keep TYPO3 branding, you should always use ``manual`` here.
@@ -159,12 +157,13 @@ Multilingual documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Multilingual exension manuals are supported by both this extension and http://docs.typo3.org. If you want to translate
-your documentation, kickstart a new Sphinx project within directory ``Documentation/Localization.<locale>``.
+your documentation, kickstart a new Sphinx project (incl. ``Settings.yml``) within directory
+``Documentation/Localization.<locale>``.
 
 .. tip::
 	You may reuse assets such as ``Includes.txt`` or images from the main documentation under directory
 	``Documentation`` but not the other way around, so you cannot reuse assets from a translated manual within the
-	main manual.
+	main (English) manual.
 
 Locales
 """""""
@@ -225,7 +224,7 @@ Cross-link to other documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 By default, Sphinx on http://docs.typo3.org lets you cross-link to official manuals and thus looking up references in a
-foreign set by prefixing the link target approprately. A link like ``:ref:`stdWrap in details <t3tsref:stdwrap>``` will
+foreign set by prefixing the link target appropriately. A link like ``:ref:`stdWrap in details <t3tsref:stdwrap>``` will
 create a link to the stable version of the official TYPO3 "TypoScript Reference", within chapter "stdWrap":
 
 * :ref:`stdWrap in details <t3tsref:stdwrap>`
@@ -241,8 +240,8 @@ Behind the scenes, this works as follows:
 
 The list of official manuals and corresponding prefixes may be found on http://docs.typo3.org/typo3cms/Index.html.
 
-You may link to any other documentation on http://docs.typo3.org by configuring the Intersphinx mapping within
-``Settings.yml``. To do so, add configuration options (lines ...):
+You may link to any other documentation on http://docs.typo3.org (or elsewhere) by configuring the Intersphinx mapping
+within ``Settings.yml``. To do so, add configuration options (lines 6 to 9):
 
 .. code-block:: yaml
 	:linenos:
@@ -268,3 +267,13 @@ other manuals:
 	Once you define some Intersphinx mapping within configuration file ``Settings.yml``, it empties the list of
 	official manual references. If you want to cross-link to an official documentation as well, make sure to define the
 	corresponding mapping as well.
+
+.. tip::
+	You may take advantage of this extension's API to fetch and retrieve the list of references from any extension
+	rendered on http://docs.typo3.org by invoking method ``getIntersphinxReferences()``:
+
+	.. code-block:: php
+
+		$extensionKey = 'sphinx';
+		$references = \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences($extensionKey);
+		print_r($references);

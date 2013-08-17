@@ -6,7 +6,7 @@
 .. include:: ../../Includes.txt
 
 
-.. _rendering_pdf:
+.. _rendering-pdf:
 
 Rendering PDF from reStructuredText
 -----------------------------------

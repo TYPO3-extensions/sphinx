@@ -86,7 +86,7 @@ la bibliothèque Pygments, ... si elles ne sont pas disponibles localement.
 .. important::
 	Il est connu que la bibliothèque graphique Python et/ou ``rst2pdf`` peuvent ne pas s'installer et se configurer avec
 	succès sur certains systèmes. Cependant, comme ces bibliothèques ne sont utilisées que pour générer un PDF avec
-	``rst2pdf`` et que de toute façon la méthode recommandée pour générer un PDF et d'utiliser :ref:`LaTeX <rendering_pdf>`,
+	``rst2pdf`` et que de toute façon la méthode recommandée pour générer un PDF et d'utiliser :ref:`LaTeX <rendering-pdf>`,
 	vous ne devriez pas prêter trop attention à cette erreur si vous ne pouvez pas installer ``rst2pdf`` localement.
 
 .. tip::
@@ -131,4 +131,4 @@ LaTeX) :
 .. tip::
 	**Sauf pour les utilisateurs MS Windows,** ``rst2pdf`` est disponible par défaut avec cette extension. Cependant,
 	si vous souhaitez un meilleur rendu, vous devriez plutôt utiliser LaTeX. Veuillez consulter le
-	chapitre :ref:`admin_rendering_pdf` pour plus d'information.
+	chapitre :ref:`admin-rendering-pdf` pour plus d'information.

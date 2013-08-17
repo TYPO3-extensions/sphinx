@@ -71,7 +71,7 @@ The "download" button fetches the corresponding sources of Sphinx, the TYPO3-rel
 Pygments library, ... if they are not available locally.
 
 .. important::
-	It is known that the Python Imaging Library and/or ``rst2pdf`` might fail to be successfully installed and configured on some systems. However, as these libraries are only used to render PDF with ``rst2pdf`` and as the recommended method for rendering PDF is to use :ref:`LaTeX <rendering_pdf>` anyway, you should not worry if you are unable to install ``rst2pdf`` locally.
+	It is known that the Python Imaging Library and/or ``rst2pdf`` might fail to be successfully installed and configured on some systems. However, as these libraries are only used to render PDF with ``rst2pdf`` and as the recommended method for rendering PDF is to use :ref:`LaTeX <rendering-pdf>` anyway, you should not worry if you are unable to install ``rst2pdf`` locally.
 
 .. tip::
 	Instead of fetching once for all the TYPO3-related commands, you may prefer to clone the official git repository. To do so, open a terminal and run:
@@ -108,4 +108,4 @@ And then choose which version of Sphinx should be used and the PDF builder you p
 
 .. tip::
 	**Except for MS Windows users,** ``rst2pdf`` is available by default with this extension. However, if you want
-	better output, you should consider using LaTeX instead. Please read chapter :ref:`admin_rendering_pdf` for instructions.
+	better output, you should consider using LaTeX instead. Please read chapter :ref:`admin-rendering-pdf` for instructions.

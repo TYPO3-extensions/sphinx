@@ -58,7 +58,7 @@ LaTeX
 .. index::
 	single: LaTeX
 
-This Sphinx builder generates a LaTeX project of your documentation into directory ``_build/latex``. You need a LaTeX environment to compile LaTeX projects and generate nice-looking PDF. Please consult chapter :ref:`rendering_pdf` for further information.
+This Sphinx builder generates a LaTeX project of your documentation into directory ``_build/latex``. You need a LaTeX environment to compile LaTeX projects and generate nice-looking PDF. Please consult chapter :ref:`rendering-pdf` for further information.
 
 
 PDF

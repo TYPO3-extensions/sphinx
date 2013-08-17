@@ -6,6 +6,8 @@
 .. include:: ../../../Includes.txt
 
 
+.. _customizing-rendering:
+
 Personnalisation du rendu
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -63,7 +65,8 @@ Sphinx fournit deux classes de documents :
   recto-verso avec une page de titre séparée) ;
 
 - ``howto`` c'est-à-dire ``sphinxhowto``, qui étend la classe de base de documents LaTeX ``article`` (par défaut recto
-  uniquement).
+  uniquement). Les documents "howto" n'auront pas d'annexes. Par ailleurs, ce type de document fournit une page de titre
+  simplifiée.
 
 Les deux fichiers de classes (``sphinxmanual.cls`` et ``sphinxhowto.cls``) sont copiés dans le répertoire ``build/latex/``
 au moment du rendu.

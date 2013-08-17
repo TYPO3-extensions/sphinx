@@ -65,7 +65,7 @@ LaTeX
 
 Ce générateur Sphinx génère un projet LaTeX à  partir de votre documentation dans le répertoire ``_build/latex``. Vous
 avez besoin d'un environnement LaTeX pour compiler les projets LaTeX et générer de beaux documents PDF. Veuillez
-vous référer au chapitre :ref:`rendering_pdf` pour plus d'informations.
+vous référer au chapitre :ref:`rendering-pdf` pour plus d'informations.
 
 
 PDF

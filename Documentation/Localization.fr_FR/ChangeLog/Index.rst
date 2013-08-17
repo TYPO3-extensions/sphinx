@@ -14,6 +14,11 @@ Journal des modifications
 Ce qui suit est une vue d'ensemble très haut niveau des changements de cette extension. Pour plus de détails,
 `lisez le journal des modifications en ligne <https://git.typo3.org/TYPO3CMS/Extensions/sphinx.git/log>`_.
 
+.. tip::
+	Les informations concernant chaque publication sur le TER et les éventuels correctifs sont pour les
+	différentes versions de cette extension sont disponible dans le wiki du projet :
+	http://forge.typo3.org/projects/extension-sphinx/wiki.
+
 
 .. tabularcolumns:: |r|p{13.7cm}|
 

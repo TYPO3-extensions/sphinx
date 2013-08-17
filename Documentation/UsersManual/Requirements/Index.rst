@@ -20,7 +20,7 @@ documentation written in reStructuredText and as a Sphinx project.
 
 .. tip::
 	This extension automatically installs and configure ``rst2pdf`` to build PDF. However, if you want better output,
-	you should consider using LaTeX instead. Please read chapter :ref:`rendering_pdf` for instructions.
+	you should consider using LaTeX instead. Please read chapter :ref:`rendering-pdf` for instructions.
 
 The extension supports single directory projects:
 

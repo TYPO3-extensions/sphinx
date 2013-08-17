@@ -35,6 +35,6 @@ Trucs et astuces pour le rendu PDF
 .. index::
 	single: Image; Formats supportés
 
-Le rendu PDF sur http://docs.typo3.org utilise LaTeX comme décrit dans le chapitre :ref:`rendering_pdf`. C'est pourquoi
+Le rendu PDF sur http://docs.typo3.org utilise LaTeX comme décrit dans le chapitre :ref:`rendering-pdf`. C'est pourquoi
 vous devez vous limiter à utiliser des images en JPG (image/jpeg) ou PNG (image/png) et ne pas avoir d'images au format
 GIF (image/gif) qui empêche le rendu PDF.
