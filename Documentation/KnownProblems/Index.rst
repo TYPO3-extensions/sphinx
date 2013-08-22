@@ -14,6 +14,7 @@ Known problems
 .. index::
 	single: Error Message; ImportError: No module named setuptools
 	single: Error Message; Builder name pdf not registered
+	single: Error Message; LaTeX Error: File 'typo3.sty' not found
 
 - A few Linux distributions (such as Fedora) do not provide ``docutils`` or the header files and libraries to develop Python
   extensions. With a vanilla Fedora, you may install missing components with:
@@ -54,6 +55,16 @@ Known problems
         - t3sphinx.ext.t3tablerows
         - t3sphinx.ext.targets
         - rst2pdf.pdfbuilder
+
+- When using LaTeX to build PDF, the rendering may fail with:
+
+  .. code-block:: bash
+
+       LaTeX Error: File `typo3.sty' not found.
+
+  This happens if your documentation is trying to produce a PDF with TYPO3 branding but without having followed the
+  instructions from chapter :ref:`installing_share_font`. What is actually needed is the clone of the RestTools git
+  repository, not the Share font per se.
 
 - With FAL (TYPO3 6.x) only LocalStorage has been implemented and tested, meaning code will need to be adapted in order to deal with other types of remote storage.
 

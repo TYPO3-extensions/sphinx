@@ -39,7 +39,7 @@ est lié à l'utilisation de ``sudo`` ; c'est donc votre propre mot de passe) :
 
 .. tip::
 
-	la famille de fontes Share complète peut être téléchargée depuis
+	La famille de fontes Share complète peut être téléchargée depuis
 	http://prdownloads.sourceforge.net/typo3/TYPO3_Share_Complete.zip?download.
 
 .. note::

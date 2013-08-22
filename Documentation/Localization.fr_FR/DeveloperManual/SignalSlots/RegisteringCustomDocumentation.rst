@@ -20,7 +20,7 @@ Le slot :ref:`retrieveRestFilename <custom-documentation-retrieveRestFilename>` 
 permettre l'édition des fichiers sources avec l':ref:`éditeur reStructuredText <sphinx-documentation-editor>` intégré.
 
 .. tip::
-	Avant de vous lancer dans l'implémentation de signaux pour enregisrer votre propre documentation, assurez-vous de
+	Avant de vous lancer dans l'implémentation de signaux pour enregistrer votre propre documentation, assurez-vous de
 	lire les :ref:`instructions pour enregistrer un projet <documentation-viewer-custom-project>` avec le mécanisme
 	intégré. En prime, si vous le faites ainsi, votre documentation apparaîtra automatiquement dans le module Backend
 	de documentation à partir de TYPO3 6.2.

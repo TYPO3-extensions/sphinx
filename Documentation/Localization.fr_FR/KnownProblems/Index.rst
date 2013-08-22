@@ -14,6 +14,7 @@ Problèmes connus
 .. index::
 	single: Message d'erreur; ImportError: No module named setuptools
 	single: Message d'erreur; Builder name pdf not registered
+	single: Message d'erreur; LaTeX Error: File 'typo3.sty' not found
 
 - Certaines distributions de Linux (comme Fedora) ne fournissent pas ``docutils`` ou les fichiers d'en-tête (*header files*)
   et les bibliothèques pour développer des extensions Python. Depuis une Fedora en version standard, vous pouvez installer
@@ -58,6 +59,16 @@ Problèmes connus
         - t3sphinx.ext.t3tablerows
         - t3sphinx.ext.targets
         - rst2pdf.pdfbuilder
+
+- Lorsque vous utilisez LaTeX pour générer un PDF, le rendu peut échouer avec :
+
+  .. code-block:: bash
+
+       LaTeX Error: File `typo3.sty' not found.
+
+  Cela arrive si vous tentez de produire un PDF avec la mise en page TYPO3 mais sans avoir suivi les instructions du
+  chapitre :ref:`installing_share_font`. Ce qui est en fait réellement requis est le clone du dépôt git RestTools, et
+  pas la fonte Share.
 
 - Avec FAL (TYPO3 6.x) seul le stockage local (*LocalStorage*) a été implémenté et testé, ce qui signifie que le code
   devra être adapté pour pouvoir supporter d'autres types de stockages distants.
