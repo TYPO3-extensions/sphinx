@@ -93,10 +93,12 @@ Le but de référencer Doxygen est d'être en mesure d'écrire quelque chose com
 
 .. code-block:: restructuredtext
 
-	Veuillez regarder la classe :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility` pour les détails.
+	Veuillez regarder la classe :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility`
+	pour les détails.
 
-	Lorsque vous instanciez une classe depuis une extension TYPO3, vous ne devriez pas utiliser le mot-clé
-	``new`` mais faire un appel à :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance`.
+	Lorsque vous instanciez une classe depuis une extension TYPO3, vous ne devriez pas
+	utiliser le mot-clé ``new`` mais faire un appel
+	à :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance`.
 
 Le résultat escompté est  :
 

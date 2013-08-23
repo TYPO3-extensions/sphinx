@@ -89,17 +89,19 @@ The goal of cross-linking to Doxygen is to be able to write something like that 
 
 .. code-block:: restructuredtext
 
-	Please see class :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility` for details.
+	Please see class :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility`
+	for details.
 
-	When instantiating a class from a TYPO3 extension, you should not use PHP keywords ``new``
-	but call :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance` instead.
+	When instantiating a class from a TYPO3 extension, you should not use PHP keyword
+	``new`` but call :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance`
+	instead.
 
 Expected result is:
 
 	Please see class `\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility`_ for details.
 
-	When instantiating a class from a TYPO3 extension, you should not use PHP keywords ``new``
-	but call `\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance()`_ instead.
+	When instantiating a class from a TYPO3 extension, you should not use PHP keyword
+	``new`` but call `\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance()`_ instead.
 
 
 .. _`\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility`: http://typo3.org/api/typo3cms/class_t_y_p_o3_1_1_c_m_s_1_1_core_1_1_utility_1_1_general_utility.html

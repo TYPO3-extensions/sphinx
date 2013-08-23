@@ -44,7 +44,8 @@ do
     echo "Processing $XML"
 
     FILE=$(cat $XML | xmlstarlet sel -t -v "//doxygen/compounddef/@id")
-    CLASS_INTERNAL_NAME=$(cat $XML | xmlstarlet sel -t -v "//doxygen/compounddef/compoundname")
+    CLASS_INTERNAL_NAME=$(cat $XML \
+        | xmlstarlet sel -t -v "//doxygen/compounddef/compoundname")
     CLASS_NAME="${CLASS_INTERNAL_NAME//::/\\}"
     if [[ "$CLASS_NAME" == *\\* ]]; then
         LABEL_CLASS_NAME="\\$CLASS_NAME"
@@ -56,15 +57,18 @@ do
     ANCHOR=$(echo "$CLASS_NAME" | tr '[A-Z]' '[a-z]')
     echo "$ANCHOR std:label -1 $FILE.html# $LABEL_CLASS_NAME" >> $TMPFILE
 
-    for ID in $(cat $XML | xmlstarlet sel -t -v "//doxygen/compounddef//memberdef[@kind='function']/@id");
+    for ID in $(cat $XML \
+        | xmlstarlet sel -t -v "//doxygen/compounddef//memberdef[@kind='function']/@id");
     do
         # Beware there's a "1" (for colon) at the beginning of the anchor
         METHOD_ANCHOR=$(echo $ID | sed "s/^${FILE}_1//")
-        METHOD=$(cat $XML | xmlstarlet sel -t -v "//doxygen/compounddef//memberdef[@id='$ID']/name")
+        METHOD=$(cat $XML \
+            | xmlstarlet sel -t -v "//doxygen/compounddef//memberdef[@id='$ID']/name")
         if [ -n "$METHOD" ]; then
             # Pseudo anchor for the method
             ANCHOR2=$(echo "$ANCHOR::$METHOD" | tr '[A-Z]' '[a-z]')
-            echo "$ANCHOR2 std:label -1 $FILE.html#$METHOD_ANCHOR $LABEL_CLASS_NAME::$METHOD()" >> $TMPFILE
+            echo -n "$ANCHOR2 std:label -1 $FILE.html#$METHOD_ANCHOR " >> $TMPFILE
+            echo "$LABEL_CLASS_NAME::$METHOD()" >> $TMPFILE
         fi
     done
 done
