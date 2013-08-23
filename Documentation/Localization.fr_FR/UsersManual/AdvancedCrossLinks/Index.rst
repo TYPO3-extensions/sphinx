@@ -118,7 +118,7 @@ Vous avez besoin des versions HTML et XML de la documentation. Pour générer la
 	GENERATE_XML   =   YES
 
 à votre fichier de configuration Doxygen. Générez ensuite votre documentation d'API comme d'habitude. Vous devriez vous
-retrouver avec deux répertoires ``html`` et ``xml``(en gardant les options de configuration par défaut).
+retrouver avec deux répertoires ``html`` et ``xml`` (en gardant les options de configuration par défaut).
 
 Exécutez ensuite le script suivant :
 
