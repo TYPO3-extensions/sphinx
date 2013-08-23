@@ -26,3 +26,4 @@ hints to get up to speed with Sphinx and reStructuredText for your own projects.
 	RenderingPdf/Index
 	SphinxRest/Index
 	DocsTypo3Org/Index
+	AdvancedCrossLinks/Index
