@@ -42,13 +42,13 @@ class SphinxQuickstart {
 	/**
 	 * Creates an empty Sphinx project.
 	 *
-	 * @param string $pathRoot
-	 * @param string $projectName
-	 * @param string $author
-	 * @param boolean $separateSourceBuild
-	 * @param string $template
-	 * @param string $version
-	 * @param string $release
+	 * @param string $pathRoot Absolute path to the root directory
+	 * @param string $projectName Name of the project
+	 * @param string $author Author of the project
+	 * @param boolean $separateSourceBuild TRUE if sources should be in a dedicated directory, otherwise FALSE
+	 * @param string $template Template to use
+	 * @param string $version Version of the project
+	 * @param string $release Release of the project
 	 * @param string $project Name for LaTeX, man pages, ... output, defaults to $projectName
 	 * @return boolean
 	 */
@@ -155,7 +155,7 @@ class SphinxQuickstart {
 	/**
 	 * Instantiates a documentation template.
 	 *
-	 * @param array $config
+	 * @param array $config Configuration options
 	 * @return boolean
 	 * @throws \RuntimeException
 	 */

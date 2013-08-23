@@ -40,7 +40,7 @@ class Configuration {
 	 * Loads a conf.py configuration file and returns an array with
 	 * available properties.
 	 *
-	 * @param string $configurationFilename
+	 * @param string $configurationFilename Absolute filename to the configuration file conf.py
 	 * @return array
 	 */
 	static public function load($configurationFilename) {

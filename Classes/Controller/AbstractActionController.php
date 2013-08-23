@@ -38,6 +38,7 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 
 	/**
 	 * Needed in TYPO3 6.0.0-6.0.99
+	 *
 	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 * @inject
 	 */
@@ -59,8 +60,8 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 	/**
 	 * Returns the localized label of a given key.
 	 *
-	 * @param string $key
-	 * @return string
+	 * @param string $key The label key
+	 * @return string Localized label
 	 */
 	protected function translate($key) {
 		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->request->getControllerExtensionKey());

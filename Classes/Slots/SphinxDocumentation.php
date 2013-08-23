@@ -185,7 +185,7 @@ class SphinxDocumentation {
 	 * Returns a rendering link.
 	 *
 	 * @param string $reference
-	 * @param string $format
+	 * @param string $format The format of the documentation ("html", "json" or "pdf")
 	 * @param string $referenceType
 	 * @return string
 	 */

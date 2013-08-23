@@ -42,8 +42,8 @@ class OpenOfficeConverter {
 	 * Converts an OpenOffice document to Sphinx using the online
 	 * converter on http://docs.typo3.org/getthedocs/service-convert.html.
 	 *
-	 * @param string $sxwFilename
-	 * @param string $outputDirectory
+	 * @param string $sxwFilename Absolute path to the OpenOffice document (*.sxw)
+	 * @param string $outputDirectory Absolute path to the directory where the Sphinx project should be created
 	 * @return void
 	 * @throws \RuntimeException
 	 */

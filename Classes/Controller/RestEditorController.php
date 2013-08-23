@@ -39,8 +39,8 @@ class RestEditorController extends AbstractActionController {
 	/**
 	 * Edit action.
 	 *
-	 * @param string $reference
-	 * @param string $document
+	 * @param string $reference Reference of a documentation
+	 * @param string $document The document
 	 * @return void
 	 * @throws \RuntimeException
 	 */
@@ -79,9 +79,9 @@ class RestEditorController extends AbstractActionController {
 	/**
 	 * Saves the contents and recompiles the whole documentation if needed.
 	 *
-	 * @param string $reference
-	 * @param string $document
-	 * @param string $contents
+	 * @param string $reference Reference of a documentation
+	 * @param string $document The document
+	 * @param string $contents New contents to be saved
 	 * @param boolean $compile
 	 * @return void
 	 */
@@ -159,9 +159,9 @@ class RestEditorController extends AbstractActionController {
 	/**
 	 * Returns the ReST filename corresponding to a given document.
 	 *
-	 * @param string $extensionKey
-	 * @param string $document
-	 * @param string $locale
+	 * @param string $extensionKey The TYPO3 extension key
+	 * @param string $document The document
+	 * @param string $locale The locale to use
 	 * @return string
 	 * @throws \RuntimeException
 	 */

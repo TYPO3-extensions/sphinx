@@ -45,7 +45,7 @@ class SphinxBuilder {
 	/**
 	 * Returns TRUE if the version of Sphinx used for building documentation is system.
 	 *
-	 * @return boolean
+	 * @return boolean TRUE if selected version of Sphinx is system, otherwise FALSE
 	 */
 	static public function isSystemVersion() {
 		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
@@ -55,7 +55,7 @@ class SphinxBuilder {
 	/**
 	 * Returns the version of Sphinx used for building documentation.
 	 *
-	 * @return string
+	 * @return string The version of sphinx
 	 */
 	static public function getSphinxVersion() {
 		$version = NULL;
@@ -78,10 +78,10 @@ class SphinxBuilder {
 	/**
 	 * Builds a Sphinx project as HTML.
 	 *
-	 * @param string $basePath
-	 * @param string $sourceDirectory
-	 * @param string $buildDirectory
-	 * @param string $conf
+	 * @param string $basePath Absolute path to the root directory of the Sphinx project
+	 * @param string $sourceDirectory Relative path to the source directory
+	 * @param string $buildDirectory Relative path to the build directory
+	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
@@ -144,10 +144,10 @@ class SphinxBuilder {
 	/**
 	 * Builds a Sphinx project as JSON.
 	 *
-	 * @param string $basePath
-	 * @param string $sourceDirectory
-	 * @param string $buildDirectory
-	 * @param string $conf
+	 * @param string $basePath Absolute path to the root directory of the Sphinx project
+	 * @param string $sourceDirectory Relative path to the source directory
+	 * @param string $buildDirectory Relative path to the build directory
+	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
@@ -207,10 +207,10 @@ class SphinxBuilder {
 	/**
 	 * Builds a Sphinx project as LaTeX.
 	 *
-	 * @param string $basePath
-	 * @param string $sourceDirectory
-	 * @param string $buildDirectory
-	 * @param string $conf
+	 * @param string $basePath Absolute path to the root directory of the Sphinx project
+	 * @param string $sourceDirectory Relative path to the source directory
+	 * @param string $buildDirectory Relative path to the build directory
+	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
@@ -283,10 +283,10 @@ class SphinxBuilder {
 	/**
 	 * Builds a Sphinx project as PDF.
 	 *
-	 * @param string $basePath
-	 * @param string $sourceDirectory
-	 * @param string $buildDirectory
-	 * @param string $conf
+	 * @param string $basePath Absolute path to the root directory of the Sphinx project
+	 * @param string $sourceDirectory Relative path to the source directory
+	 * @param string $buildDirectory Relative path to the build directory
+	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
@@ -310,12 +310,12 @@ class SphinxBuilder {
 	/**
 	 * Builds a Sphinx project as PDF using pdflatex on a LaTeX project.
 	 *
-	 * @param string $basePath
-	 * @param string $sourceDirectory
-	 * @param string $buildDirectory
-	 * @param string $conf
+	 * @param string $basePath Absolute path to the root directory of the Sphinx project
+	 * @param string $sourceDirectory Relative path to the source directory
+	 * @param string $buildDirectory Relative path to the build directory
+	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
-	 * @return string
+	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
 	static protected function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
@@ -404,12 +404,12 @@ class SphinxBuilder {
 	/**
 	 * Builds a Sphinx project as PDF using rst2pdf.
 	 *
-	 * @param string $basePath
-	 * @param string $sourceDirectory
-	 * @param string $buildDirectory
-	 * @param string $conf
+	 * @param string $basePath Absolute path to the root directory of the Sphinx project
+	 * @param string $sourceDirectory Relative path to the source directory
+	 * @param string $buildDirectory Relative path to the build directory
+	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
-	 * @return string
+	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
 	static protected function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
@@ -471,10 +471,10 @@ class SphinxBuilder {
 	/**
 	 * Checks links of a Sphinx project.
 	 *
-	 * @param string $basePath
-	 * @param string $sourceDirectory
-	 * @param string $buildDirectory
-	 * @param string $conf
+	 * @param string $basePath Absolute path to the root directory of the Sphinx project
+	 * @param string $sourceDirectory Relative path to the source directory
+	 * @param string $buildDirectory Relative path to the build directory
+	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
 	 * @return string Output of the check process (if succeeded)
 	 * @throws \RuntimeException if check process failed
@@ -535,7 +535,7 @@ class SphinxBuilder {
 	/**
 	 * Returns the SphinxBuilder command.
 	 *
-	 * @return string
+	 * @return string Command(s) to run sphinx-build
 	 * @throws \RuntimeException
 	 */
 	static protected function getSphinxBuilder() {
@@ -589,8 +589,8 @@ class SphinxBuilder {
 	/**
 	 * Colorizes a shell output using HTML markers.
 	 *
-	 * @param string $output
-	 * @return string
+	 * @param string $output Shell output
+	 * @return string Colorized shell output
 	 */
 	static protected function colorize($output) {
 		# Shell colors
@@ -627,7 +627,7 @@ class SphinxBuilder {
 	/**
 	 * Returns the list of supported locales for Sphinx.
 	 *
-	 * @return array
+	 * @return array Array of locale names, indexed by language code/locale
 	 * @see http://sphinx-doc.org/latest/config.html#intl-options
 	 */
 	static public function getSupportedLocales() {
@@ -670,8 +670,9 @@ class SphinxBuilder {
 	/**
 	 * Returns a language compilation command option for Sphinx.
 	 *
-	 * @param string $languageCode
-	 * @return string
+	 * @param string $languageCode Language code or locale supported by Sphinx
+	 * @return string Command option to use the language code with sphinx-build
+	 * @see \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales()
 	 */
 	static protected function getLanguageOption($languageCode) {
 		$locale = '';
@@ -692,8 +693,8 @@ class SphinxBuilder {
 	/**
 	 * Escape a string to be used as a shell argument
 	 *
-	 * @param string $arg
-	 * @return string
+	 * @param string $arg String to be escaped
+	 * @return string Escaped string
 	 */
 	static protected function safeEscapeshellarg($arg) {
 		if (!(TYPO3_OS === 'WIN' && strpos($arg, ' ') === FALSE)) {
@@ -705,10 +706,10 @@ class SphinxBuilder {
 	/**
 	 * Wrapper function for TYPO3 exec function.
 	 *
-	 * @param string $command
-	 * @param NULL|array $output
-	 * @param integer $returnValue
-	 * @return NULL|array
+	 * @param string $command Command to execute
+	 * @param NULL|array $output Shell output
+	 * @param integer $returnValue Return code of the command
+	 * @return void
 	 */
 	static protected function safeExec($command, &$output = NULL, &$returnValue = 0) {
 		if (TYPO3_OS === 'WIN' && strpos($command, ' && ') !== FALSE) {

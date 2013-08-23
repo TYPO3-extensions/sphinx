@@ -49,7 +49,7 @@ class GeneralUtility {
 	/**
 	 * Returns meta-data for a given extension.
 	 *
-	 * @param string $extensionKey
+	 * @param string $extensionKey The TYPO3 extension key
 	 * @return array
 	 */
 	static public function getExtensionMetaData($extensionKey) {
@@ -75,8 +75,8 @@ class GeneralUtility {
 	 * Returns the type of the master documentation document of a given
 	 * loaded extension as one of the DOCUMENTATION_TYPE_* constants.
 	 *
-	 * @param string $extensionKey
-	 * @return integer DOCUMENTATION_TYPE_* constant
+	 * @param string $extensionKey The TYPO3 extension key
+	 * @return integer One of the DOCUMENTATION_TYPE_* constants
 	 */
 	static public function getDocumentationType($extensionKey) {
 		$supportedDocuments = array(
@@ -99,8 +99,8 @@ class GeneralUtility {
 	 * Returns an array of localization directories along with the
 	 * mapping to an official locale supported by Sphinx.
 	 *
-	 * @param string $extensionKey
-	 * @return array
+	 * @param string $extensionKey The TYPO3 extension key
+	 * @return array Array of localization directories (relative to the extension's directory)
 	 * @see \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales()
 	 */
 	static public function getLocalizationDirectories($extensionKey) {
@@ -150,9 +150,9 @@ class GeneralUtility {
 	 * in a given language/locale, of a given loaded extension as one of
 	 * the DOCUMENTATION_TYPE_* constants.
 	 *
-	 * @param string $extensionKey
-	 * @param string $locale
-	 * @return integer DOCUMENTATION_TYPE_* constant
+	 * @param string $extensionKey The TYPO3 extension key
+	 * @param string $locale The locale to use
+	 * @return integer One of the DOCUMENTATION_TYPE_* constants
 	 */
 	static public function getLocalizedDocumentationType($extensionKey, $locale) {
 		$localizationDirectories = self::getLocalizationDirectories($extensionKey);
@@ -170,9 +170,9 @@ class GeneralUtility {
 	/**
 	 * Returns the documentation project title for a given extension.
 	 *
-	 * @param string $extensionKey
-	 * @param string $locale
-	 * @return string
+	 * @param string $extensionKey The TYPO3 extension key
+	 * @param string $locale The locale to use
+	 * @return string The project title
 	 */
 	static public function getDocumentationProjectTitle($extensionKey, $locale = '') {
 		$projectTitle = '';
@@ -201,8 +201,8 @@ class GeneralUtility {
 	/**
 	 * Post-processes the property tables.
 	 *
-	 * @param string $contents
-	 * @return string
+	 * @param string $contents Contents to be processed
+	 * @return string Contents with processed property tables
 	 * @see https://forge.typo3.org/issues/48771
 	 */
 	static public function postProcessPropertyTables($contents) {
@@ -256,11 +256,12 @@ HTML;
 	 * is not (yet?) compatible with JSON rendering and thus its directive
 	 * ".. ref-targets-list::" is bypassed.
 	 *
-	 * @param string $contents
-	 * @param array $references
+	 * @param @param string $contents Contents to be processed
+	 * @param array $references Array of references (extracted from objects.inv)
 	 * @param callback $callbackLinks Callback to generate Links in current context
-	 * @return string
+	 * @return string Processed contents
 	 * @throws \RuntimeException
+	 * @see \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences()
 	 * @see http://forge.typo3.org/issues/48313
 	 */
 	static public function populateCrossReferencingLabels($contents, array $references, $callbackLinks) {
@@ -357,10 +358,10 @@ HTML;
 	}
 
 	/**
-	 * Returns the intersphinx references of a given extension.
+	 * Returns the Intersphinx references of a given extension.
 	 *
-	 * @param string $extensionKey
-	 * @return array
+	 * @param string $extensionKey The TYPO3 extension key
+	 * @return array Intersphinx references extracted from objects.inv
 	 * @throws \RuntimeException
 	 */
 	static public function getIntersphinxReferences($extensionKey) {
@@ -401,10 +402,10 @@ HTML;
 	/**
 	 * Generates the documentation for a given extension.
 	 *
-	 * @param string $extensionKey
-	 * @param string $format
-	 * @param boolean $force
-	 * @param string $locale
+	 * @param string $extensionKey The TYPO3 extension key
+	 * @param string $format The format of the documentation ("html", "json" or "pdf")
+	 * @param boolean $force TRUE if generation should be forced, otherwise FALSE to use cached version, if available
+	 * @param string $locale The locale to use
 	 * @return string The documentation URL
 	 */
 	static public function generateDocumentation($extensionKey, $format = 'html', $force = FALSE, $locale = '') {
@@ -545,7 +546,7 @@ HTML;
 	 * Creates a special-crafted conf.py for JSON output when using
 	 * t3sphinx as HTML theme.
 	 *
-	 * @param string $basePath
+	 * @param string $basePath Absolute path to the root directory of the Sphinx project
 	 * @return void
 	 * @see \Causal\Sphinx\Controller\ConsoleController::overrideThemeT3Sphinx()
 	 * @see http://forge.typo3.org/issues/48311
@@ -570,8 +571,8 @@ HTML;
 	/**
 	 * Recursively copy content from one directory to another.
 	 *
-	 * @param string $source
-	 * @param string $target
+	 * @param string $source Absolute path to the source directory
+	 * @param string $target Absolute path to the target directory
 	 * @return void
 	 */
 	static public function recursiveCopy($source, $target) {
@@ -599,8 +600,8 @@ HTML;
 	 *            needed by Unix-like OS), it will be rewritten for the
 	 *            current OS.
 	 *
-	 * @param string $variable
-	 * @param string $value
+	 * @param string $variable The name of the environment variable
+	 * @param string $value The value of the environment variable
 	 * @return string
 	 */
 	static public function getExportCommand($variable, $value) {
@@ -623,8 +624,8 @@ HTML;
 	 *
 	 * but none of them were able to parse our Settings.yml Sphinx configuration files.
 	 *
-	 * @param string $filename
-	 * @return string
+	 * @param string $filename Absolute filename to Settings.yml
+	 * @return string Python instruction set
 	 */
 	static public function yamlToPython($filename) {
 		$contents = file_get_contents($filename);

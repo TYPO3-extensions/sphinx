@@ -104,7 +104,7 @@ class Setup {
 	 *
 	 * @param string $version Version name (e.g., 1.0.0)
 	 * @param string $url Complete URL of the zip file containing the sphinx sources
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 * @see https://bitbucket.org/birkenfeld/sphinx/
@@ -158,7 +158,7 @@ class Setup {
 	 * Builds and installs Sphinx locally.
 	 *
 	 * @param string $version Version name (e.g., 1.0.0)
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
@@ -257,8 +257,8 @@ EOT;
 	/**
 	 * Removes a local version of Sphinx (sources + build).
 	 *
-	 * @param string $version
-	 * @param NULL|array $output
+	 * @param string $version Version name (e.g., "1.0.0")
+	 * @param NULL|array $output Log of operations
 	 * @return void
 	 */
 	static public function removeSphinx($version, array &$output = NULL) {
@@ -311,7 +311,7 @@ EOT;
 	/**
 	 * Downloads the source files of the TYPO3 ReST tools.
 	 *
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 * @see http://forge.typo3.org/projects/tools-rest
@@ -368,7 +368,7 @@ EOT;
 	 * Builds and installs TYPO3 ReST tools locally.
 	 *
 	 * @param string $sphinxVersion The Sphinx version to build the ReST tools for
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
@@ -467,7 +467,7 @@ EOT;
 	/**
 	 * Downloads the source files of PyYAML.
 	 *
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 * @see http://pyyaml.org/
@@ -510,7 +510,7 @@ EOT;
 	 * Builds and installs PyYAML locally.
 	 *
 	 * @param string $sphinxVersion The Sphinx version to build PyYAML for
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
@@ -562,7 +562,7 @@ EOT;
 	/**
 	 * Downloads the source files of Python Imaging Library.
 	 *
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 * @see https://pypi.python.org/pypi/PIL
@@ -605,7 +605,7 @@ EOT;
 	 * Builds and installs Python Imaging Library locally.
 	 *
 	 * @param string $sphinxVersion The Sphinx version to build Python Imaging Library for
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
@@ -657,7 +657,7 @@ EOT;
 	/**
 	 * Downloads the source files of Pygments.
 	 *
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 * @see http://pygments.org/
@@ -700,7 +700,7 @@ EOT;
 	 * Builds and installs Pygments locally.
 	 *
 	 * @param string $sphinxVersion The Sphinx version to build Pygments for
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
@@ -743,7 +743,7 @@ EOT;
 	/**
 	 * Configures TypoScript support for Pygments.
 	 *
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return void
 	 */
 	static private function configureTyposcriptForPygments(array &$output = NULL) {
@@ -790,7 +790,7 @@ EOT;
 	/**
 	 * Downloads the source files of rst2pdf.
 	 *
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 * @see http://rst2pdf.ralsina.com.ar/
@@ -833,7 +833,7 @@ EOT;
 	 * Builds and installs rst2pdf locally.
 	 *
 	 * @param string $sphinxVersion The Sphinx version to build rst2pdf for
-	 * @param NULL|array $output
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 */
@@ -948,10 +948,10 @@ EOT;
 	/**
 	 * Logs and executes a command.
 	 *
-	 * @param string $cmd
-	 * @param NULL|array $output
-	 * @param integer $returnValue
-	 * @return NULL|array
+	 * @param string $cmd Command to be executed
+	 * @param NULL|array $output Log of operations
+	 * @param integer $returnValue Return code
+	 * @return NULL|array Last line of the shell output
 	 */
 	static protected function exec($cmd, &$output = NULL, &$returnValue = 0) {
 		self::$log[] = '[CMD] ' . $cmd;
@@ -964,13 +964,13 @@ EOT;
 	/**
 	 * Untars/Unzips an archive into a given target directory.
 	 *
-	 * @param string $archiveFilename
-	 * @param string $targetDirectory
-	 * @param string|NULL $moveContentOutsideOfDirectoryPrefix
-	 * @param array &$out
+	 * @param string $archiveFilename Absolute path to the zip or tar.gz archive
+	 * @param string $targetDirectory Absolute path to the target directory
+	 * @param string|NULL $moveContentOutsideOfDirectoryPrefix Directory prefix to remove
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 */
-	static public function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = NULL, array &$out = NULL) {
+	static public function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = NULL, array &$output = NULL) {
 		$success = FALSE;
 
 		self::$log[] = '[INFO] Recreating directory ' . $targetDirectory;
@@ -984,7 +984,7 @@ EOT;
 			$tar = escapeshellarg(CommandUtility::getCommand('tar'));
 			$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetDirectory) . ' 2>&1';
 		}
-		self::exec($cmd, $out, $ret);
+		self::exec($cmd, $output, $ret);
 		if ($ret === 0) {
 			$success = TRUE;
 			if ($moveContentOutsideOfDirectoryPrefix !== NULL) {
@@ -1009,11 +1009,11 @@ EOT;
 	/**
 	 * Builds a library with Python.
 	 *
-	 * @param string $name
-	 * @param string $setupFile
-	 * @param string $pythonHome
-	 * @param string $pythonLib
-	 * @param array $output
+	 * @param string $name Name of the library
+	 * @param string $setupFile Absolute path to the setup file
+	 * @param string $pythonHome Absolute path to Python HOME
+	 * @param string $pythonLib Absolute path to Python libraries
+	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 */
 	static protected function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, array &$output = NULL) {
@@ -1073,7 +1073,7 @@ EOT;
 	/**
 	 * Returns the path to Sphinx sources base directory.
 	 *
-	 * @return string
+	 * @return string Absolute path to the Sphinx sources
 	 */
 	static private function getSphinxSourcesPath() {
 		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
@@ -1086,7 +1086,7 @@ EOT;
 	/**
 	 * Returns the path to Sphinx binaries.
 	 *
-	 * @return string
+	 * @return string Absolute path to the Sphinx binaries
 	 */
 	static private function getSphinxPath() {
 		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
@@ -1099,7 +1099,7 @@ EOT;
 	/**
 	 * Returns the path to the website's temporary directory.
 	 *
-	 * @return string
+	 * @return string Absolute path to typo3temp/
 	 */
 	static private function getTemporaryPath() {
 		$temporaryPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/');

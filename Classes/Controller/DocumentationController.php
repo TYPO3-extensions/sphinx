@@ -37,6 +37,8 @@ namespace Causal\Sphinx\Controller;
 class DocumentationController extends AbstractActionController {
 
 	/**
+	 * Extension repository
+	 *
 	 * @var \Causal\Sphinx\Domain\Repository\ExtensionRepository
 	 * @inject
 	 */
@@ -115,10 +117,10 @@ class DocumentationController extends AbstractActionController {
 	/**
 	 * Render action.
 	 *
-	 * @param string $reference
-	 * @param string $layout
-	 * @param boolean $force
-	 * @return string
+	 * @param string $reference Reference of a documentation
+	 * @param string $layout Layout to use
+	 * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
+	 * @return void
 	 * @throws \RuntimeException
 	 */
 	protected function renderAction($reference = '', $layout = 'html', $force = FALSE) {
@@ -172,7 +174,7 @@ class DocumentationController extends AbstractActionController {
 	/**
 	 * Converts an OpenOffice manual into a Sphinx project.
 	 *
-	 * @param string $extensionKey
+	 * @param string $extensionKey The TYPO3 extension key
 	 * @return void
 	 */
 	protected function convertAction($extensionKey) {
@@ -205,7 +207,7 @@ class DocumentationController extends AbstractActionController {
 	/**
 	 * Creates a Sphinx documentation project for a given extension.
 	 *
-	 * @param string $extensionKey
+	 * @param string $extensionKey The TYPO3 extension key
 	 * @return void
 	 */
 	protected function createExtensionProjectAction($extensionKey) {

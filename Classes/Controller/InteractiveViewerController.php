@@ -74,9 +74,9 @@ class InteractiveViewerController extends AbstractActionController {
 	/**
 	 * Main action.
 	 *
-	 * @param string $reference
-	 * @param string $document
-	 * @param string $documentationFilename
+	 * @param string $reference Reference of a documentation
+	 * @param string $document Name of the document/chapter to show
+	 * @param string $documentationFilename Absolute path to the corresponding documentation source file
 	 * @return void
 	 * @throws \RuntimeException
 	 */
@@ -226,8 +226,8 @@ class InteractiveViewerController extends AbstractActionController {
 	/**
 	 * Processes an image.
 	 *
-	 * @param array $data
-	 * @return string
+	 * @param array $data Image information
+	 * @return string HTML image tag
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
 	public function processImage(array $data) {
