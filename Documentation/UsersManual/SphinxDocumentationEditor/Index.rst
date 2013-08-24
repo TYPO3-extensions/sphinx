@@ -22,7 +22,7 @@ When showing an extension's manual using the :ref:`interactive layout <layouts>`
 Editing a document
 ^^^^^^^^^^^^^^^^^^
 
-The pencil icon loads the online version from the "Ace editor" (http://ace.ajax.org/). Thus it currently requires an active Internet connection and prevents you from offline-editing documentation.
+The pencil icon loads the the "Ace editor" (http://ace.ajax.org/).
 
 This editor lets you quickly update the corresponding chapter and recompile the documentation if you click on toolbar icon "save and close":
 

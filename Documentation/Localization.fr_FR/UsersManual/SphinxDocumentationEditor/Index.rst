@@ -23,8 +23,7 @@ standard de TYPO3 affiche une icône de crayon pour vous permettre de modifier l
 Modification d'un document
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-L'icône de crayon charge une version en ligne de l'éditeur "Ace" (http://ace.ajax.org/). Par conséquent ce module
-nécessite une connexion à Internet et il n'est pas actuellement possible de modifier les fichiers en étant déconnecté.
+L'icône de crayon charge l'éditeur "Ace" (http://ace.ajax.org/).
 
 Cet éditeur vous permet de mettre à jour rapidement le chapitre correspondant et de générer à nouveau la documentation
 lorsque vous cliquez sur l'icône "enregistrer et fermer" :
