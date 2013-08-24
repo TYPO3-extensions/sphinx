@@ -141,6 +141,7 @@ class InteractiveViewerController extends AbstractActionController {
 		$this->view->assign('reference', $reference);
 		$this->view->assign('document', $document);
 		$this->view->assign('canEdit', $canEdit);
+		$this->view->assign('oldTYPO3', version_compare(TYPO3_version, '6.1.99', '<='));
 	}
 
 	/**

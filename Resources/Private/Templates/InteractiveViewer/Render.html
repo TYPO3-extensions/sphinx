@@ -6,10 +6,20 @@
 	<title>{documentation.title}</title>
 
 	<!-- Styles for the toolbar -->
-	<link rel="stylesheet" type="text/css" href="stylesheets/visual/main_content.css" />
-	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/structure/element_docheader.css" />
-	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/visual/element_docheader.css" />
-	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
+	<f:if condition="{oldTYPO3}">
+		<f:then>
+			<link rel="stylesheet" type="text/css" href="stylesheets/visual/main_content.css" />
+			<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/structure/element_docheader.css" />
+			<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/visual/element_docheader.css" />
+			<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
+		</f:then>
+		<f:else>
+			<link rel="stylesheet" type="text/css" href="sysext/backend/Resources/Public/Css/visual/main_content.css" />
+			<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/structure/element_docheader.css" />
+			<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/visual/element_docheader.css" />
+			<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
+		</f:else>
+	</f:if>
 
 	<style>
 		#typo3-docheader {

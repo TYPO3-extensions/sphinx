@@ -74,6 +74,7 @@ class RestEditorController extends AbstractActionController {
 		$this->view->assign('reference', $reference);
 		$this->view->assign('document', $document);
 		$this->view->assign('contents', $contents);
+		$this->view->assign('oldTYPO3', version_compare(TYPO3_version, '6.1.99', '<='));
 	}
 
 	/**
