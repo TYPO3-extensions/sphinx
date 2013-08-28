@@ -19,7 +19,7 @@ automatiquement installé et configuré lorsque vous installez cette extension. 
 pas aussi bon que lorsque vous utilisez LaTeX mais il a le net avantage de ne pas nécessiter d'installer un environnement
 LaTeX complet sur votre machine.
 
-.. warning::
+.. caution::
 	**Utilisateurs MS Windows :** L'installation automatique de ``rst2pdf`` n'est malheureusement pas possible pour le
 	moment car elle nécessite des composants supplémentaires tels qu'un compilateur GCC. Veuillez consulter
 	http://forge.typo3.org/issues/49530 pour plus d'information.

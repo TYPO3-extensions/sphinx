@@ -15,7 +15,7 @@ Advanced cross-links
 	single: Intersphinx
 
 .. admonition:: Disclaimer
-	:class: warning
+	:class: caution
 
 	This is an advanced topic that you should skip unless you want to enable cross-link to virtually any website.
 
@@ -72,6 +72,9 @@ The ZLIB-compressed list of reference has following structure:
 		Automatic title: :ref:`prefix:my-anchor`
 		Alternative title: :ref:`My alternative title <prefix:my-anchor>`
 
+.. warning::
+	Make sure the last entry of the ZLIB-compressed content ends with a trailing linefeed as well.
+
 
 Doxygen documentation
 ^^^^^^^^^^^^^^^^^^^^^
@@ -122,7 +125,7 @@ Then run following script:
 .. literalinclude:: prepare-objects-inv.sh
 	:language: bash
 
-.. warning::
+.. caution::
 	Dependencies for this script are:
 
 	* xmlstarlet_

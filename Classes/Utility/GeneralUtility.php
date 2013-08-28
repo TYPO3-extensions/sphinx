@@ -273,7 +273,7 @@ HTML;
 		if (preg_match('#(.*)(<div class="section"[^>]*>.<span id="labels-for-crossreferencing"></span>[^\n]*.)([^\n]+)(.*)#s', $contents, $matches)) {
 			// Pattern matches:
 			// #1: beginning up to:
-			// #2: <div id="index-labels-for-cross-referencing" class="section">
+			// #2: <div class="section" id="index-labels-for-cross-referencing">
 			//     <span id="labels-for-crossreferencing"></span><h1>Index: Labels for Cross-referencing</h1>
 			// #3: </div>
 			// #4: to the end

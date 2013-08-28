@@ -30,7 +30,7 @@ La liste des archives disponibles peut être récupérée simplement depuis l'UR
 http://docs.typo3.org/typo3cms/extensions/sphinx/packages/packages.xml (vous pouvez bien évidemment remplacer le segment
 ``/sphinx/`` par n'importe quelle autre clé d'extension).
 
-.. warning::
+.. caution::
 	Les noms de fichiers et les URIs sont générés en minuscules et avec des tirets en lieu et place de traits de
 	soulignement. Cela signifie qu'une documentation avec la langue (ou pour être exacte la *locale*) ``fr_FR`` sera
 	en fait accessible en utilisant ``fr-fr``.
@@ -221,7 +221,7 @@ documentation française (préfixe ``fr``) devrait être étendue soit en ``fr_F
 Votre manuel d'extension traduit sera généré sur http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) et
 http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
 
-.. warning::
+.. caution::
 	Les noms de fichiers et les URIs sont générés en minuscules et avec des tirets en lieu et place de traits de
 	soulignement. Cela signifie qu'une documentation avec la locale ``fr_FR`` sera en fait accessible en
 	utilisant ``fr-fr``.
@@ -274,7 +274,7 @@ devriez la clé d'extension comme préfixe vers d'autres manuels :
 
 * :ref:`Journal des modifications pour EXT:restdoc <restdoc:changelog>`
 
-.. warning::
+.. caution::
 	Dès lors que vous définissez des correspondances Intersphinx dans le fichier de configuration ``Settings.yml``,
 	la liste de références vers les manuels officiels est supprimée. Si vous souhaitez créer des références croisées
 	vers une documentation officielle TYPO3 en plus d'autres documentation arbitraires, assurez-vous de définir les

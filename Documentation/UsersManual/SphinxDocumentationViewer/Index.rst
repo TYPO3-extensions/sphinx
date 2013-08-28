@@ -139,7 +139,7 @@ create with your preferred text editor:
 When you do so, your project will appear in the list of documents and you will be able to render it just as any
 documentation of an extension.
 
-.. warning::
+.. caution::
 	MS Windows users may experience that their list of custom projects "is not loaded". This may due to the file
 	``typo3conf/sphinx-projects.json`` being encoded as UTF-8 with `BOM <http://en.wikipedia.org/wiki/Byte_order_mark>`_
 	whereas your web server expects it *not* to contain BOM.

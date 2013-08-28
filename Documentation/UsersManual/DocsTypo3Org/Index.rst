@@ -29,7 +29,7 @@ E.g.,
 The list of available packages can be seen on http://docs.typo3.org/typo3cms/extensions/sphinx/packages/packages.xml
 (you may of course replace segment ``/sphinx/`` with any other extension key).
 
-.. warning::
+.. caution::
 	Files and URIs are generated lower-case and with dashes instead of underscores. This means that a documentation
 	with language (or to be exact *locale*) ``fr_FR`` will be accessible using ``fr-fr`` instead.
 
@@ -213,7 +213,7 @@ extended either to ``fr_FR`` (French France) or ``fr_CA`` (French Canada).
 Your translated exension manual will get rendered to http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) and
 http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
 
-.. warning::
+.. caution::
 	Files and URIs are generated lower-case and with dashes instead of underscores. This means that a documentation
 	with locale ``fr_FR`` will be accessible using ``fr-fr`` instead.
 
@@ -263,7 +263,7 @@ other manuals:
 
 * :ref:`ChangeLog for EXT:restdoc <restdoc:changelog>`
 
-.. warning::
+.. caution::
 	Once you define some Intersphinx mapping within configuration file ``Settings.yml``, it empties the list of
 	official manual references. If you want to cross-link to an official documentation as well, make sure to define the
 	corresponding mapping as well.

@@ -15,7 +15,7 @@ Références croisées avancées
 	single: Intersphinx
 
 .. admonition:: Avertissement
-	:class: warning
+	:class: caution
 
 	Cette section aborde un sujet difficile que vous pouvez ignorer à moins de vouloir faire des références croisées
 	vers (virtuellement) n'importe quel site.
@@ -76,6 +76,9 @@ La liste de références compressée avec ZLIB a la structure suivante :
 		Titre automatique : :ref:`préfixe:mon-ancre`
 		Titre de remplacement : :ref:`Mon titre de remplacement <préfixe:mon-ancre>`
 
+.. warning::
+	Assurez-vous que la dernière entrée du contenu compressé en ZLIB se termine par un retour ligne.
+
 
 Documentation Doxygen
 ^^^^^^^^^^^^^^^^^^^^^
@@ -127,7 +130,7 @@ Exécutez ensuite le script suivant :
 .. literalinclude:: ../../../UsersManual/AdvancedCrossLinks/prepare-objects-inv.sh
 	:language: bash
 
-.. warning::
+.. caution::
 	Le script a des dépendances vers deux programmes :
 
 	* xmlstarlet_
