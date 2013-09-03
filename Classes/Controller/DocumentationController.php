@@ -64,6 +64,7 @@ class DocumentationController extends AbstractActionController {
 
 		$this->view->assign('extensionsEmpty', $extensionsWithoutDocumentation);
 		$this->view->assign('extensionsOpenOffice', $extensionWithOpenOfficeDocumentation);
+		$this->view->assign('oldTYPO3', version_compare(TYPO3_version, '6.1.99', '<='));
 	}
 
 	/**
