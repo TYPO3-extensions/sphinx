@@ -1,0 +1,61 @@
+{namespace sphinx=Causal\Sphinx\ViewHelpers}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
+	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
+
+	<sphinx:includeJs.jQuery version="1.8"/>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
+	<script type="text/javascript"><![CDATA[
+		var myLayout; // a var is required because this page utilizes: myLayout.allowOverflow() method
+
+		$(document).ready(function() {
+			myLayout = $('body').layout({
+				north__size:				27
+				,	north__spacing_open:		0
+				,	north__initClosed:			false
+				,	north__initHidden:			false
+				,	center__paneSelector:		".outer-center"
+
+				// MIDDLE-LAYOUT (child of outer-center-pane)
+				,	center__childOptions: {
+					north__size:			22
+					,	north__spacing_open:	0
+					,	center__maskContents:	true // IMPORTANT - enable iframe masking
+				}
+			});
+		});
+
+		function getContentIframe() {
+			var $iframe = $('#tx-sphinx-documentation-content');
+			var fd = $iframe[0].contentWindow || $iframe[0];
+			return fd;
+		}
+	]]></script>
+
+	<style type="text/css">
+			/* remove padding & scrolling from panes that are 'containers' for nested layouts */
+		.outer-center {
+			border:			0; /* cosmetic */
+			padding:		0;
+			overflow:		hidden;
+		}
+	</style>
+</head>
+<body>
+
+<div class="outer-center">
+	<f:render section="content-area" />
+
+	<div class="ui-layout-north layout-child-container" id="tx-sphinx-toolbar">
+		<!-- Dynamically updated by "content" controllers -->
+	</div>
+</div>
+
+<div class="ui-layout-north layout-child-container" id="tx-sphinx-menu">
+	<f:render partial="Documentation/HeaderTop" arguments="{_all}" />
+</div>
+
+</body>
+</html>

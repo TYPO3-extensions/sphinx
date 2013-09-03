@@ -1,13 +1,6 @@
 {namespace sphinx=Causal\Sphinx\ViewHelpers}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
-</head>
-<body class="tiny-vertical-padding">
 
-<sphinx:form action="render" id="tx-sphinx-form-render" target="tx-sphinx-documentation-content">
+<sphinx:form action="index" id="tx-sphinx-form-render">
 	<label for="reference">
 		<f:translate key="showDocumentation">Show documentation:</f:translate>
 	</label>
@@ -21,16 +14,7 @@
 	<f:form.submit value="{f:translate(key:'loadDocumentation')}" />
 
 	<div class="right">
-		<f:form.checkbox id="force" name="force" value="1" />
+		<f:form.checkbox id="force" name="force" value="1" checked="{force}==1" />
 		<label for="force"><f:translate key="alwaysRender">Always render documentation</f:translate></label>
 	</div>
 </sphinx:form>
-
-<script type="text/javascript">
-if ("{currentReference}" != "") {
-	document.getElementById("tx-sphinx-form-render").submit();
-}
-</script>
-
-</body>
-</html>

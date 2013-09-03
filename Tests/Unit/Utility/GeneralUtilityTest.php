@@ -43,8 +43,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame('Causal Sàrl', $metadata['author_company']);
 		$this->assertSame('xavier@causal.ch', $metadata['author_email']);
 		$this->assertSame('6.0.0-6.1.99', $metadata['constraints']['depends']['typo3']);
-		$this->assertSame('1.1.2-dev', $metadata['release']);
-		$this->assertSame('1.1', $metadata['version']);
+		$this->assertSame('1.2.0-dev', $metadata['release']);
+		$this->assertSame('1.2', $metadata['version']);
 	}
 
 	/**
@@ -155,8 +155,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 conf.py:
   copyright: 2013
   project: Sphinx Python Documentation Generator and Viewer
-  version: 1.1
-  release: 1.1.1-dev
+  version: 1.2
+  release: 1.2.0-dev
 YAML;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
 
@@ -165,8 +165,8 @@ YAML;
 		$expected = array(
 			'copyright = u\'2013\'',
 			'project = u\'Sphinx Python Documentation Generator and Viewer\'',
-			'version = u\'1.1\'',
-			'release = u\'1.1.1-dev\'',
+			'version = u\'1.2\'',
+			'release = u\'1.2.0-dev\'',
 		);
 		$this->assertSame($expected, $pythonConfiguration);
 

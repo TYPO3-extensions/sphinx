@@ -6,8 +6,8 @@
 conf.py:
   copyright: 2013
   project: Générateur et visionneuse de documentation Sphinx Python
-  version: 1.1
-  release: 1.1.2-dev
+  version: 1.2
+  release: 1.2.0-dev
   latex_documents:
   - - Index
     - sphinx.tex

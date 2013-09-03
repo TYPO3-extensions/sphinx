@@ -47,10 +47,49 @@ class DocumentationController extends AbstractActionController {
 	/**
 	 * Main action.
 	 *
+	 * @param string $reference Reference of a documentation
+	 * @param string $layout Layout to use
+	 * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
 	 * @return void
 	 */
-	protected function indexAction() {
-		// Nothing to do
+	protected function indexAction($reference = NULL, $layout = '', $force = FALSE) {
+		$references = $this->getReferences();
+		$layouts = $this->getLayouts();
+
+		if ($reference === NULL) {
+			$currentReference = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference');
+		} else {
+			// Store preferences
+			$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', $reference);
+			$currentReference = $reference;
+		}
+		if (empty($layout)) {
+			$currentLayout = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/layout');
+		} else {
+			// Store preferences
+			$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/layout', $layout);
+			$currentLayout = $layout;
+		}
+
+		if (empty($currentReference)) {
+			$contentActionUrl = $this->uriBuilder->uriFor('kickstart');
+		} else {
+			$contentActionUrl = $this->uriBuilder->uriFor(
+				'render',
+				array(
+					'reference' => $currentReference,
+					'layout' => $currentLayout,
+					'force' => $force,
+				)
+			);
+		}
+
+		$this->view->assign('references', $references);
+		$this->view->assign('layouts', $layouts);
+		$this->view->assign('force', $force);
+		$this->view->assign('currentReference', $currentReference);
+		$this->view->assign('currentLayout', $currentLayout);
+		$this->view->assign('contentActionUrl', $contentActionUrl);
 	}
 
 	/**
@@ -68,54 +107,6 @@ class DocumentationController extends AbstractActionController {
 	}
 
 	/**
-	 * Menu action.
-	 *
-	 * @return void
-	 */
-	protected function menuAction() {
-		$extensions = $this->extensionRepository->findByHasSphinxDocumentation();
-		$references = array();
-		foreach ($extensions as $extension) {
-			$typeLabel = $this->translate('extensionType_' . $extension->getInstallType());
-			$references[$typeLabel]['EXT:' . $extension->getExtensionKey()] = sprintf('%s (%s)', $extension->getTitle(), $extension->getExtensionKey());
-		}
-
-		$this->signalSlotDispatcher->dispatch(
-			__CLASS__,
-			'afterInitializeReferences',
-			array(
-				'references' => &$references,
-			)
-		);
-
-		$this->view->assign('references', $references);
-
-		$layouts = array(
-			'html' => $this->translate('documentationLayout_static'),
-			'json' => $this->translate('documentationLayout_interactive'),
-		);
-
-		switch ($this->settings['pdf_builder']) {
-			case 'pdflatex':
-				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
-				break;
-			case 'rst2pdf':
-			default:
-				$renderPdf = TRUE;
-				break;
-		}
-		if ($renderPdf) {
-			$layouts['pdf'] = $this->translate('documentationLayout_pdf');
-		}
-		$this->view->assign('layouts', $layouts);
-
-		$currentReference = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference');
-		$currentLayout = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/layout');
-		$this->view->assign('currentReference', $currentReference);
-		$this->view->assign('currentLayout', $currentLayout);
-	}
-
-	/**
 	 * Render action.
 	 *
 	 * @param string $reference Reference of a documentation
@@ -125,14 +116,6 @@ class DocumentationController extends AbstractActionController {
 	 * @throws \RuntimeException
 	 */
 	protected function renderAction($reference = '', $layout = 'html', $force = FALSE) {
-		// Store preferences
-		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', $reference);
-		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/layout', $layout);
-
-		if ($reference === '') {
-			$this->redirect('kickstart');
-		}
-
 		list($type, $identifier) = explode(':', $reference, 2);
 		switch ($type) {
 			case 'EXT':
@@ -167,9 +150,22 @@ class DocumentationController extends AbstractActionController {
 			} else {
 				$documentationFilename = '';
 			}
-			$this->forward('render', 'InteractiveViewer', NULL, array('reference' => $reference, 'documentationFilename' => $documentationFilename));
+
+			$document = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference-' . $reference);
+
+			$this->forward(
+				'render',
+				'InteractiveViewer',
+				NULL,
+				array(
+					'reference' => $reference,
+					'document' => $document,
+					'documentationFilename' => $documentationFilename
+				)
+			);
 		}
-		$this->view->assign('documentationUrl', $documentationUrl);
+
+		$this->redirectToUri($documentationUrl);
 	}
 
 	/**
@@ -182,13 +178,12 @@ class DocumentationController extends AbstractActionController {
 		$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 		$sxwFilename = $extensionPath . 'doc/manual.sxw';
 		$documentationDirectory = $extensionPath . 'Documentation';
+		$reference = NULL;
 
 		if (is_file($sxwFilename)) {
 			try {
 				\Causal\Sphinx\Utility\OpenOfficeConverter::convert($sxwFilename, $documentationDirectory);
-
-				// Open converted documentation
-				$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', 'EXT:' . $extensionKey);
+				$reference = 'EXT:' . $extensionKey;
 			} catch (\RuntimeException $exception) {
 				$this->controllerContext->getFlashMessageQueue()->enqueue(
 					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
@@ -202,7 +197,8 @@ class DocumentationController extends AbstractActionController {
 			}
 		}
 
-		$this->redirect('index');
+		// Open converted documentation
+		$this->redirect('index', NULL, NULL, array('reference' => $reference));
 	}
 
 	/**
@@ -214,6 +210,7 @@ class DocumentationController extends AbstractActionController {
 	protected function createExtensionProjectAction($extensionKey) {
 		$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 		$documentationDirectory = $extensionPath . 'Documentation';
+		$reference = NULL;
 
 		try {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($documentationDirectory . DIRECTORY_SEPARATOR);
@@ -228,9 +225,6 @@ class DocumentationController extends AbstractActionController {
 				$metadata['version'],
 				$metadata['release']
 			);
-
-			// Open freshly created documentation
-			$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', 'EXT:' . $extensionKey);
 		} catch (\RuntimeException $exception) {
 			$this->controllerContext->getFlashMessageQueue()->enqueue(
 				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
@@ -243,7 +237,59 @@ class DocumentationController extends AbstractActionController {
 			);
 		}
 
-		$this->redirect('index');
+		// Open freshly created documentation
+		$this->redirect('index', NULL, NULL, array('reference' => $reference));
+	}
+
+	/**
+	 * Returns the available references.
+	 *
+	 * @return array
+	 */
+	protected function getReferences() {
+		$extensions = $this->extensionRepository->findByHasSphinxDocumentation();
+		$references = array();
+		foreach ($extensions as $extension) {
+			$typeLabel = $this->translate('extensionType_' . $extension->getInstallType());
+			$references[$typeLabel]['EXT:' . $extension->getExtensionKey()] = sprintf('%s (%s)', $extension->getTitle(), $extension->getExtensionKey());
+		}
+
+		$this->signalSlotDispatcher->dispatch(
+			__CLASS__,
+			'afterInitializeReferences',
+			array(
+				'references' => &$references,
+			)
+		);
+
+		return $references;
+	}
+
+	/**
+	 * Returns the available layouts.
+	 *
+	 * @return array
+	 */
+	public function getLayouts() {
+		$layouts = array(
+			'html' => $this->translate('documentationLayout_static'),
+			'json' => $this->translate('documentationLayout_interactive'),
+		);
+
+		switch ($this->settings['pdf_builder']) {
+			case 'pdflatex':
+				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
+				break;
+			case 'rst2pdf':
+			default:
+				$renderPdf = TRUE;
+				break;
+		}
+		if ($renderPdf) {
+			$layouts['pdf'] = $this->translate('documentationLayout_pdf');
+		}
+
+		return $layouts;
 	}
 
 }

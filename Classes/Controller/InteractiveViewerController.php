@@ -48,14 +48,6 @@ class InteractiveViewerController extends AbstractActionController {
 	/** @var string */
 	protected $languageDirectory = 'default';
 
-	///**
-	// * @param \Tx_Restdoc_Reader_SphinxJson $sphinxReader
-	// * @return void
-	// */
-	//public function injectSphinxReader(\Tx_Restdoc_Reader_SphinxJson $sphinxReader) {
-	//	$this->sphinxReader = $sphinxReader;
-	//}
-
 	/**
 	 * Unfortunately cannot use inject method as EXT:restdoc may not be loaded.
 	 *
@@ -72,7 +64,7 @@ class InteractiveViewerController extends AbstractActionController {
 	}
 
 	/**
-	 * Main action.
+	 * Render action.
 	 *
 	 * @param string $reference Reference of a documentation
 	 * @param string $document Name of the document/chapter to show
@@ -132,16 +124,12 @@ class InteractiveViewerController extends AbstractActionController {
 		$documentation->setCallbackLinks(array($this, 'getLink'));
 		$documentation->setCallbackImages(array($this, 'processImage'));
 
-		$canEdit = TRUE;
-		if ($document === 'genindex/') {
-			$canEdit = FALSE;
-		}
-
 		$this->view->assign('documentation', $documentation);
 		$this->view->assign('reference', $reference);
 		$this->view->assign('document', $document);
-		$this->view->assign('canEdit', $canEdit);
-		$this->view->assign('oldTYPO3', version_compare(TYPO3_version, '6.1.99', '<='));
+
+		$buttons = $this->getButtons($reference, $document);
+		$this->view->assign('buttons', $buttons);
 	}
 
 	/**
@@ -238,6 +226,34 @@ class InteractiveViewerController extends AbstractActionController {
 			htmlspecialchars($data['alt']),
 			htmlspecialchars($data['style'])
 		);
+	}
+
+	/**
+	 * Returns the toolbar buttons.
+	 *
+	 * @param string $reference
+	 * @param string $document
+	 * @return string
+	 */
+	protected function getButtons($reference, $document) {
+		$buttons = array();
+
+		if ($document !== 'genindex/') {
+			$buttons[] = $this->createToolbarButton(
+				$this->uriBuilder->uriFor(
+					'edit',
+					array(
+						'reference' => $reference,
+						'document' => $document,
+					),
+					'RestEditor'
+				),
+				'Edit document',
+				't3-icon-actions-page t3-icon-page-open'
+			);
+		}
+
+		return implode(' ', $buttons);
 	}
 
 }

@@ -51,7 +51,9 @@ class RestEditorController extends AbstractActionController {
 		$this->view->assign('reference', $reference);
 		$this->view->assign('document', $document);
 		$this->view->assign('contents', $contents);
-		$this->view->assign('oldTYPO3', version_compare(TYPO3_version, '6.1.99', '<='));
+
+		$buttons = $this->getButtons();
+		$this->view->assign('buttons', $buttons);
 	}
 
 	/**
@@ -202,6 +204,44 @@ class RestEditorController extends AbstractActionController {
 		}
 
 		return $filename;
+	}
+
+	/**
+	 * Returns the toolbar buttons.
+	 *
+	 * @return string
+	 */
+	protected function getButtons() {
+		$buttons = array();
+
+		$buttons[] = $this->createToolbarButton(
+			'#',
+			'Close document',
+			't3-icon-actions-document t3-icon-document-close',
+			'getContentIframe().closeEditor()'
+		);
+		$buttons[] = '&nbsp;';
+
+		$buttons[] = $this->createToolbarButton(
+			'#',
+			'Save document',
+			't3-icon-actions-document t3-icon-document-save',
+			'getContentIframe().save()'
+		);
+		$buttons[] = $this->createToolbarButton(
+			'#',
+			'Save and close document',
+			't3-icon-actions-document t3-icon-document-save-close',
+			'getContentIframe().saveAndClose()'
+		);
+
+		$buttons[] = '<div style="float:right">';
+		$buttons[] = '<input type="checkbox" id="tx-sphinx-showinvisibles" onclick="getContentIframe().editor.setShowInvisibles(this.checked)" value="1" />' .
+			'<label for="tx-sphinx-showinvisibles">' .
+			$this->translate('showInvisibles') . '</label>';
+		$buttons[] = '</div>';
+
+		return implode(' ', $buttons);
 	}
 
 }

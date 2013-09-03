@@ -196,7 +196,7 @@ class SphinxDocumentation {
 		$uriBuilder->setRequest($request);
 
 		$link = 'typo3/' . $uriBuilder->uriFor(
-			'render',
+			'index',
 			array(
 				'reference' => $referenceType . ':' . $reference,
 				'layout' => $format,

@@ -5,34 +5,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>{documentation.title}</title>
 
-	<!-- Styles for the toolbar -->
-	<f:if condition="{oldTYPO3}">
-		<f:then>
-			<link rel="stylesheet" type="text/css" href="stylesheets/visual/main_content.css" />
-			<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/structure/element_docheader.css" />
-			<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/visual/element_docheader.css" />
-			<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
-		</f:then>
-		<f:else>
-			<link rel="stylesheet" type="text/css" href="sysext/backend/Resources/Public/Css/visual/main_content.css" />
-			<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/structure/element_docheader.css" />
-			<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/visual/element_docheader.css" />
-			<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
-		</f:else>
-	</f:if>
-
-	<style>
-		#typo3-docheader {
-			position: fixed;
-			width: 100%;
-			z-index: 99;
-		}
-		span.t3-icon {
-			display: inherit;
-			float: left;
-		}
-	</style>
-
 	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/share.css')}" media="all"/>
 	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/reset.css')}" media="all"/>
 	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/grid.css')}" media="all"/>
@@ -67,20 +39,7 @@
 
 <body class="js-off">
 
-<div id="typo3-docheader">
-	<div class="typo3-docheader-buttons">
-		<div class="left">
-			<div class="buttongroup">
-				<f:if condition="{canEdit}">
-					<f:link.action title="Edit source" action="edit" controller="RestEditor" arguments="{reference: reference, document: document}"><!--
-					--><span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open">&nbsp;</span><!--
-				--></f:link.action>
-				</f:if>
-			</div>
-		</div>
-		<div class="right"></div>
-	</div>
-</div>
+<f:render partial="Documentation/HeaderToolbar" arguments="{buttons: buttons}" />
 
 <div class="p doc" id="page">
 	<div class="c cl" id="content">

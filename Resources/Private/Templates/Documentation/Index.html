@@ -1,10 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Frameset//EN" "http://www.w3.org/TR/REC-html40/frameset.dtd">
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
-<frameset rows="27,*" frameborder="no" framespacing="0" border="0">
-	<frame src="{f:uri.action(action:'menu')}" frameborder="0" noresize="noresize" scrolling="no" />
-	<frame name="tx-sphinx-documentation-content" src="{f:uri.action(action:'kickstart')}" frameborder="0" noresize="noresize" />
-</frameset>
-</html>
+<f:layout name="Default" />
+
+<f:section name="content-area">
+	<iframe id="tx-sphinx-documentation-content" name="tx-sphinx-documentation-content" class="ui-layout-center layout-child-container"
+		width="100%" height="600" frameborder="0" scrolling="auto"
+		src="{contentActionUrl}"></iframe>
+</f:section>
+

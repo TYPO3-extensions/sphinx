@@ -76,6 +76,27 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 		return $GLOBALS['BE_USER'];
 	}
 
+	/**
+	 * Creates a toolbar button.
+	 *
+	 * @param string $link
+	 * @param string $title
+	 * @param string $iconClasses
+	 * @param string $onClick
+	 * @return string
+	 */
+	protected function createToolbarButton($link, $title, $iconClasses, $onClick = '') {
+		$button =
+			'<a href="' . htmlspecialchars($link) . '"' .
+			($onClick ? ' onclick="' . $onClick . ';return false;"' : '') .
+			' title="' . htmlspecialchars($title) . '"' .
+				' target="tx-sphinx-documentation-content">' .
+				'<span class="t3-icon t3-icon-actions ' . $iconClasses . '">&nbsp;</span>' .
+			'</a>';
+		// Replacement of single quotes to be compatible with the dynamic update of the toolbar
+		return str_replace('\'', '\\\'', $button);
+	}
+
 }
 
 ?>
