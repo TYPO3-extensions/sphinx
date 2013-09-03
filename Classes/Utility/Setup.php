@@ -398,7 +398,7 @@ EOT;
 		$globalSettingsFilename = str_replace('/', DIRECTORY_SEPARATOR, $globalSettingsFilename);
 		$isPatched = FALSE;
 
-		if (TYPO3_OS !== 'WIN' && \Causal\Sphinx\Utility\Setup::hasLibrary('rst2pdf', $sphinxVersion)) {
+		if (TYPO3_OS !== 'WIN' && static::hasLibrary('rst2pdf', $sphinxVersion)) {
 			if (is_file($globalSettingsFilename)) {
 				$globalSettings = file_get_contents($globalSettingsFilename);
 				$rst2pdfLibrary = 'rst2pdf.pdfbuilder';
@@ -408,7 +408,8 @@ EOT;
 					if (strpos($globalSettings, '- ' . $rst2pdfLibrary) === FALSE) {
 						$globalSettingsLines = explode(LF, $globalSettings);
 						$buffer = array();
-						for ($i = 0; $i < count($globalSettingsLines); $i++) {
+						$numberOfLines = count($globalSettingsLines);
+						for ($i = 0; $i < $numberOfLines; $i++) {
 							if (trim($globalSettingsLines[$i]) === 'extensions:') {
 								while (!empty($globalSettingsLines[$i])) {
 									$buffer[] = $globalSettingsLines[$i];
@@ -662,7 +663,7 @@ EOT;
 	 * @throws \Exception
 	 * @see http://pygments.org/
 	 */
-	static public function downloadPygments() {
+	static public function downloadPygments(array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = self::getTemporaryPath();
 		$sphinxSourcesPath = self::getSphinxSourcesPath();

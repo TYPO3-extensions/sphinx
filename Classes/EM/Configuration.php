@@ -48,6 +48,7 @@ class Configuration {
 	 */
 	public function getVersions(array $params, \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj) {
 		$out = array();
+		$globalVersion = NULL;
 
 		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/sphinx';
 		$versions = array();

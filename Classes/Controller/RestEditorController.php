@@ -45,6 +45,87 @@ class RestEditorController extends AbstractActionController {
 	 * @throws \RuntimeException
 	 */
 	protected function editAction($reference, $document) {
+		$parts = $this->parseReferenceDocument($reference, $document);
+		$contents = file_get_contents($parts['filename']);
+
+		$this->view->assign('reference', $reference);
+		$this->view->assign('document', $document);
+		$this->view->assign('contents', $contents);
+		$this->view->assign('oldTYPO3', version_compare(TYPO3_version, '6.1.99', '<='));
+	}
+
+	/**
+	 * Saves the contents and recompiles the whole documentation if needed.
+	 *
+	 * @param string $reference Reference of a documentation
+	 * @param string $document The document
+	 * @param string $contents New contents to be saved
+	 * @param boolean $compile
+	 * @return void
+	 */
+	protected function saveAction($reference, $document, $contents, $compile = FALSE) {
+		$response = array();
+		try {
+			$parts = $this->parseReferenceDocument($reference, $document);
+
+			$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($parts['filename'], $contents);
+			if (!$success) {
+				throw new \RuntimeException('File could not be written: ' . $parts['filename'], 1370011487);
+			}
+
+			if ($compile) {
+				$layout = 'json';
+				$force = TRUE;
+				$outputFilename = NULL;
+
+				switch ($parts['type']) {
+					case 'EXT':
+						$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($parts['extensionKey'], $layout, $force, $parts['locale']);
+						break;
+					case 'USER':
+						$outputFilename = NULL;
+						$this->signalSlotDispatcher->dispatch(
+							'Causal\\Sphinx\\Controller\\DocumentationController',
+							'renderUserDocumentation',
+							array(
+								'identifier' => $parts['identifier'],
+								'layout' => $layout,
+								'force' => $force,
+								'documentationUrl' => &$outputFilename,
+							)
+						);
+						break;
+				}
+				if (substr($outputFilename, -4) === '.log') {
+					throw new \RuntimeException('Could not compile documentation', 1370011537);
+				}
+			}
+
+			$response['status'] = 'success';
+		} catch (\RuntimeException $e) {
+			$response['status'] = 'error';
+			$response['statusText'] = 'Error ' . $e->getCode() . ': ' . $e->getMessage();
+		}
+
+		header('Content-type: application/json');
+		echo json_encode($response);
+		exit;
+	}
+
+	/**
+	 * Parses a reference and a document and returns the corresponding filename,
+	 * the type of reference, its identifier, the extension key (if available)
+	 * and the locale (if available).
+	 *
+	 * @param string $reference
+	 * @param string $document
+	 * @return array
+	 * @throws \RuntimeException
+	 */
+	protected function parseReferenceDocument($reference, $document) {
+		$extensionKey = NULL;
+		$locale = NULL;
+
 		list($type, $identifier) = explode(':', $reference, 2);
 		switch ($type) {
 			case 'EXT':
@@ -69,92 +150,14 @@ class RestEditorController extends AbstractActionController {
 			default:
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163472);
 		}
-		$contents = file_get_contents($filename);
 
-		$this->view->assign('reference', $reference);
-		$this->view->assign('document', $document);
-		$this->view->assign('contents', $contents);
-		$this->view->assign('oldTYPO3', version_compare(TYPO3_version, '6.1.99', '<='));
-	}
-
-	/**
-	 * Saves the contents and recompiles the whole documentation if needed.
-	 *
-	 * @param string $reference Reference of a documentation
-	 * @param string $document The document
-	 * @param string $contents New contents to be saved
-	 * @param boolean $compile
-	 * @return void
-	 */
-	protected function saveAction($reference, $document, $contents, $compile = FALSE) {
-		$response = array();
-		try {
-			list($type, $identifier) = explode(':', $reference, 2);
-			switch ($type) {
-				case 'EXT':
-					list($extensionKey, $locale) = explode('.', $identifier, 2);
-					$filename = $this->getFilename($extensionKey, $document, $locale);
-					break;
-				case 'USER':
-					$filename = NULL;
-					$this->signalSlotDispatcher->dispatch(
-						__CLASS__,
-						'retrieveRestFilename',
-						array(
-							'identifier' => $identifier,
-							'document' => $document,
-							'filename' => &$filename,
-						)
-					);
-					if ($filename === NULL) {
-						throw new \RuntimeException('No slot found to retrieve filename with identifier "' . $identifier . '"', 1371418203);
-					}
-					break;
-				default:
-					throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163472);
-			}
-
-			$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $contents);
-			if (!$success) {
-				throw new \RuntimeException('File could not be written: ' . $filename, 1370011487);
-			}
-
-			if ($compile) {
-				$layout = 'json';
-				$force = TRUE;
-
-				switch ($type) {
-					case 'EXT':
-						$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
-						break;
-					case 'USER':
-						$outputFilename = NULL;
-						$this->signalSlotDispatcher->dispatch(
-							'Causal\\Sphinx\\Controller\\DocumentationController',
-							'renderUserDocumentation',
-							array(
-								'identifier' => $identifier,
-								'layout' => $layout,
-								'force' => $force,
-								'documentationUrl' => &$outputFilename,
-							)
-						);
-						break;
-				}
-				if (substr($outputFilename, -4) === '.log') {
-					throw new \RuntimeException('Could not compile documentation', 1370011537);
-				}
-			}
-
-			$response['status'] = 'success';
-		} catch (\RuntimeException $e) {
-			$response['status'] = 'error';
-			$response['statusText'] = 'Error ' . $e->getCode() . ': ' . $e->getMessage();
-		}
-
-		header('Content-type: application/json');
-		echo json_encode($response);
-		exit;
+		return array(
+			'filename'     => $filename,
+			'type'         => $type,
+			'identifier'   => $identifier,
+			'extensionKey' => $extensionKey,
+			'locale'       => $locale
+		);
 	}
 
 	/**

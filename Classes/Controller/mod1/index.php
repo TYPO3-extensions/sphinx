@@ -82,7 +82,10 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
 				// Disallow the rendering of the processing folder (e.g. could be called manually)
 				// and all folders without any defined storage
-				if ($this->folderObject && ($this->folderObject->getStorage()->getUid() == 0 || trim($this->folderObject->getStorage()->getProcessingFolder()->getIdentifier(), '/') === trim($this->folderObject->getIdentifier(), '/'))) {
+				if ($this->folderObject && (
+						$this->folderObject->getStorage()->getUid() == 0
+						|| trim($this->folderObject->getStorage()->getProcessingFolder()->getIdentifier(), '/') === trim($this->folderObject->getIdentifier(), '/'))
+				) {
 					$storage = $fileFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
 					$this->folderObject = $storage->getRootLevelFolder();
 				}
@@ -146,8 +149,10 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// Generate the list
 		$filelist->generateList();
-		// Write the footer
-		$filelist->writeBottom();
+		if (version_compare(TYPO3_version, '6.1.99', '<=')) {
+			// Write the footer
+			$filelist->writeBottom();
+		}
 
 		// Setting up the buttons and markers for docheader
 		list($buttons, $markers) = $filelist->getButtonsAndOtherMarkers($this->folderObject);
@@ -470,7 +475,9 @@ HTML;
 		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
 		// SAVE button
-		$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
+		$buttons['save'] = '<input type="image" class="c-inputButton" name="submit" value="Update"' .
+			\TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' .
+			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
 
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {

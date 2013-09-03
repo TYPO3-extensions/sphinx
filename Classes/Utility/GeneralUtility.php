@@ -314,7 +314,8 @@ HTML;
 
 					foreach ($anchors as $anchor) {
 						$lineNumber = 1;
-						for ($i = 0; $i < count($lines); $i++) {
+						$numberOfLines = count($lines);
+						for ($i = 0; $i < $numberOfLines; $i++) {
 							if (preg_match('/^\s*\.\. _`?' . preg_quote($anchor['name']) . '`?:/', $lines[$i])) {
 								$lineNumber = $i + 1;
 								break;
@@ -337,8 +338,6 @@ HTML;
 						$documentUrl = call_user_func($callbackLinks, $document);
 						$documentUrl = str_replace('&amp;', '&', $documentUrl);
 						$documentUrl = str_replace('&', '&amp;', $documentUrl);
-
-						$sourceLinkPattern =
 
 						$listOfLabels[] = '<li><span class="e1">[</span>' .
 							$sourceLink .
@@ -639,7 +638,6 @@ HTML;
 		while ($i < count($lines)) {
 			$i++;
 			if (preg_match('/^(\s+)([^:]+):\s*(.*)$/', $lines[$i], $matches)) {
-				$pythonLine = '';
 				switch ($matches[2]) {
 					case 'latex_documents':
 						$pythonLine = 'latex_documents = [(' . LF;

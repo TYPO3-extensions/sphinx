@@ -593,7 +593,7 @@ class SphinxBuilder {
 	 * @return string Colorized shell output
 	 */
 	static protected function colorize($output) {
-		# Shell colors
+		// Shell colors
 		$ESC_SEQ     = '/[\x00-\x1F\x7F]\[';
 		$COL_BLACK   = $ESC_SEQ . '30(;01)?m/';
 		$COL_RED     = $ESC_SEQ . '31(;01)?m/';
