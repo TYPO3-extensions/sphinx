@@ -105,14 +105,12 @@ Le but de référencer Doxygen est d'être en mesure d'écrire quelque chose com
 
 Le résultat escompté est  :
 
-	Veuillez regarder la classe `\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility`_ pour les détails.
+	Veuillez regarder la classe :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility`
+	pour les détails.
 
-	Lorsque vous instanciez une classe depuis une extension TYPO3, vous ne devriez pas utiliser le mot-clé
-	``new`` mais faire un appel à `\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance()`_.
-
-
-.. _`\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility`: http://typo3.org/api/typo3cms/class_t_y_p_o3_1_1_c_m_s_1_1_core_1_1_utility_1_1_general_utility.html
-.. _`\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance()`: http://typo3.org/api/typo3cms/class_t_y_p_o3_1_1_c_m_s_1_1_core_1_1_utility_1_1_general_utility.html#a99623a1a2f1f8369d19d0e58c7feb4b0
+	Lorsque vous instanciez une classe depuis une extension TYPO3, vous ne devriez pas
+	utiliser le mot-clé ``new`` mais faire un appel
+	à :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility::makeInstance`.
 
 Le problème de Doxygen est qu'il génère des noms de fichiers cryptiques qui sont très difficiles à référencer
 manuellement. Fort heureusement, nous avons trouvé un moyen de générer un fichier d'index ``objects.inv`` en parcourant

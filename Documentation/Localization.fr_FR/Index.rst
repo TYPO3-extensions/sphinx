@@ -54,10 +54,10 @@ Générateur et visionneuse de documentation Sphinx Python
 	**Autres versions de ce document**
 
 	:PDF:
-			http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/latest/_pdf/
+		http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/latest/_pdf/
 
 	:Manuel anglais:
-			http://docs.typo3.org/typo3cms/extensions/sphinx/latest/
+		http://docs.typo3.org/typo3cms/extensions/sphinx/latest/
 
 
 	**Sommaire**

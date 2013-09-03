@@ -19,10 +19,13 @@ conf.py:
     pointsize: 10pt
     preamble: \usepackage{typo3}
   intersphinx_mapping:
+    restdoc:
+    - http://docs.typo3.org/typo3cms/extensions/restdoc/latest/
+    - null
     t3tsref:
     - http://docs.typo3.org/typo3cms/TyposcriptReference/
     - null
-    restdoc:
-    - http://docs.typo3.org/typo3cms/extensions/restdoc/latest/
+    t3cmsapi:
+    - http://typo3.org/api/typo3cms/
     - null
 ...
