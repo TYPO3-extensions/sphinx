@@ -1,33 +1,44 @@
 {namespace sphinx=Causal\Sphinx\ViewHelpers}
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>{document}</title>
 
-	<style type="text/css" media="screen">
-		body {
-			margin: 0;
-			padding: 0;
-			font-family: Verdana,Arial,Helvetica,sans-serif;
-			font-size: 10px;
-		}
-		#editor {
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
+	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/jquery-ui.smoothness/jquery-ui-1.10.3.custom.min.css')}" />
 
 	<sphinx:includeJs.jQuery version="1.10"/>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-migrate-1.2.1.min.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.10.3.custom.min.js')}"></script>
+	<script type="text/javascript"><![CDATA[
+		var myLayout; // a var is required because this page utilizes: myLayout.allowOverflow() method
+
+		$(document).ready(function() {
+			myLayout = $('body').layout({
+					east__size:					300
+				,	east__minSize:				200
+				,	east__maxSize:				.5 // 50% of layout width
+				,	east__initClosed:			false
+				,	east__initHidden:			false
+				,	east__slidable:				true
+				,	east__resizable:			true
+
+				//	Enable state management
+				,	stateManagement__enabled:	true // automatic cookie load & save enabled by default
+			});
+		});
+	]]></script>
 </head>
 <body>
 
 <f:render partial="Documentation/HeaderToolbar" arguments="{buttons: buttons}" />
 
-<div id="editor">{contents}</div>
+<div id="editor" class="ui-layout-center">{contents}</div>
+
+<div class="ui-layout-east layout-content-container">
+	<sphinx:objectsInvBrowser reference="{reference}" aceEditor="editor" />
+</div>
 
 <script src="{f:uri.resource(path:'JavaScript/Ace/ace.js')}" type="text/javascript" charset="utf-8"></script>
 <script>

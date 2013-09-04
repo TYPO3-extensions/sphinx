@@ -248,7 +248,7 @@ class InteractiveViewerController extends AbstractActionController {
 					),
 					'RestEditor'
 				),
-				'Edit document',
+				$this->translate('toolbar.interactive.edit'),
 				't3-icon-actions-page t3-icon-page-open'
 			);
 		}

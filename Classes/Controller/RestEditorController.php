@@ -216,7 +216,7 @@ class RestEditorController extends AbstractActionController {
 
 		$buttons[] = $this->createToolbarButton(
 			'#',
-			'Close document',
+			$this->translate('toolbar.editor.close'),
 			't3-icon-actions-document t3-icon-document-close',
 			'getContentIframe().closeEditor()'
 		);
@@ -224,13 +224,13 @@ class RestEditorController extends AbstractActionController {
 
 		$buttons[] = $this->createToolbarButton(
 			'#',
-			'Save document',
+			$this->translate('toolbar.editor.save'),
 			't3-icon-actions-document t3-icon-document-save',
 			'getContentIframe().save()'
 		);
 		$buttons[] = $this->createToolbarButton(
 			'#',
-			'Save and close document',
+			$this->translate('toolbar.editor.saveclose'),
 			't3-icon-actions-document t3-icon-document-save-close',
 			'getContentIframe().saveAndClose()'
 		);
@@ -238,7 +238,7 @@ class RestEditorController extends AbstractActionController {
 		$buttons[] = '<div style="float:right">';
 		$buttons[] = '<input type="checkbox" id="tx-sphinx-showinvisibles" onclick="getContentIframe().editor.setShowInvisibles(this.checked)" value="1" />' .
 			'<label for="tx-sphinx-showinvisibles">' .
-			$this->translate('showInvisibles') . '</label>';
+			$this->translate('toolbar.editor.showInvisibles') . '</label>';
 		$buttons[] = '</div>';
 
 		return implode(' ', $buttons);

@@ -30,12 +30,6 @@
 			<trans-unit id="documentationLayout_pdf" xml:space="preserve">
 				<source>PDF</source>
 			</trans-unit>
-			<trans-unit id="alwaysRender" xml:space="preserve">
-				<source>Always render documentation</source>
-			</trans-unit>
-			<trans-unit id="showInvisibles" xml:space="preserve">
-				<source>Show Invisibles</source>
-			</trans-unit>
 			<trans-unit id="extensionType_S" xml:space="preserve">
 				<source>System Extensions</source>
 			</trans-unit>
@@ -62,6 +56,24 @@
 			</trans-unit>
 			<trans-unit id="kickstart.action.convert" xml:space="preserve">
 				<source>Convert OpenOffice manual to Sphinx</source>
+			</trans-unit>
+			<trans-unit id="toolbar.alwaysRender" xml:space="preserve">
+				<source>Always render documentation</source>
+			</trans-unit>
+			<trans-unit id="toolbar.interactive.edit" xml:space="preserve">
+				<source>Edit document</source>
+			</trans-unit>
+			<trans-unit id="toolbar.editor.close" xml:space="preserve">
+				<source>Close document</source>
+			</trans-unit>
+			<trans-unit id="toolbar.editor.save" xml:space="preserve">
+				<source>Save document</source>
+			</trans-unit>
+			<trans-unit id="toolbar.editor.saveclose" xml:space="preserve">
+				<source>Save and close document</source>
+			</trans-unit>
+			<trans-unit id="toolbar.editor.showInvisibles" xml:space="preserve">
+				<source>Show Invisibles</source>
 			</trans-unit>
 		</body>
 	</file>
