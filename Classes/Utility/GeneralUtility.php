@@ -614,6 +614,64 @@ HTML;
 	}
 
 	/**
+	 * Adds an Intersphinx mapping.
+	 *
+	 * @param string $filename Absolute filename to Settings.yml
+	 * @param string $identifier Unique identifier (prefix) for Intersphinx
+	 * @param string $target Base URI of the foreign Sphinx documentation
+	 * @return boolean TRUE if operation succeeded (Settings.yml could be updated, if needed), otherwise FALSE
+	 */
+	static public function addIntersphinxMapping($filename, $identifier, $target) {
+		$indent = '  ';
+		$contents = file_get_contents($filename);
+		// Fix line breaks if needed as we rely on Linux line breaks
+		$contents = str_replace(array(CR . LF, CR), LF, $contents);
+		$lines = explode(LF, $contents);
+		$isDirty = FALSE;
+
+		$startLine = 0;
+		$hasIntersphinxMapping = FALSE;
+		while ($startLine < count($lines)) {
+			if ($lines[$startLine] === $indent . 'intersphinx_mapping:') {
+				$hasIntersphinxMapping = TRUE;
+				break;
+			}
+			$startLine++;
+		}
+		if (!$hasIntersphinxMapping) {
+			$lines[] = $indent . 'intersphinx_mapping:';
+		}
+
+		// Search if mapping is already present
+		$mappingAlreadyExists = FALSE;
+		for ($i = $startLine + 1; $i < count($lines); $i += 3) {
+			if ($lines[$i] === $indent . $indent . $identifier . ':') {
+				$mappingAlreadyExists = TRUE;
+				break;
+			}
+		}
+		if (!$mappingAlreadyExists) {
+			// Add the mapping at the beginning of the list
+			$startLines = array_slice($lines, 0, $startLine + 1);
+			$endLines = array_slice($lines, $startLine + 1);
+			$lines = array_merge(
+				$startLines,
+				array(
+					$indent . $indent . $identifier . ':',
+					$indent . $indent . '- ' . rtrim($target, '/') . '/',
+					$indent . $indent . '- null',
+				),
+				$endLines
+			);
+			$isDirty = TRUE;
+		}
+
+		return $isDirty
+			? \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, implode(LF, $lines))
+			: TRUE;
+	}
+
+	/**
 	 * Converts a (simple) YAML file to Python instructions.
 	 *
 	 * Note: First tried to use 3rd party libraries:

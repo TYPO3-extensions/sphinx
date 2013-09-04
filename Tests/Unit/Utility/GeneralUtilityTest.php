@@ -177,6 +177,124 @@ YAML;
 	/**
 	 * @test
 	 */
+	public function canCreateInitialIntersphinxMapping() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  copyright: 2013
+  project: Sphinx Python Documentation Generator and Viewer
+  version: 1.2
+  release: 1.2.0-dev
+YAML;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		GeneralUtility::addIntersphinxMapping(
+			$fixtureFilename,
+			'restdoc',
+			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
+		);
+		$configuration = file_get_contents($fixtureFilename);
+		$expected = <<<YAML
+conf.py:
+  copyright: 2013
+  project: Sphinx Python Documentation Generator and Viewer
+  version: 1.2
+  release: 1.2.0-dev
+  intersphinx_mapping:
+    restdoc:
+    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - null
+YAML;
+		$this->assertSame($expected, $configuration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canAddNewIntersphinxMapping() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  copyright: 2013
+  project: Sphinx Python Documentation Generator and Viewer
+  version: 1.2
+  release: 1.2.0-dev
+  intersphinx_mapping:
+    restdoc:
+    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - null
+YAML;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		GeneralUtility::addIntersphinxMapping(
+			$fixtureFilename,
+			't3cmsapi',
+			'http://typo3.org/api/typo3cms'
+		);
+		$configuration = file_get_contents($fixtureFilename);
+		$expected = <<<YAML
+conf.py:
+  copyright: 2013
+  project: Sphinx Python Documentation Generator and Viewer
+  version: 1.2
+  release: 1.2.0-dev
+  intersphinx_mapping:
+    t3cmsapi:
+    - http://typo3.org/api/typo3cms/
+    - null
+    restdoc:
+    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - null
+YAML;
+		$this->assertSame($expected, $configuration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
+	public function existingMappingIsNotAddedAgain() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  copyright: 2013
+  project: Sphinx Python Documentation Generator and Viewer
+  version: 1.2
+  release: 1.2.0-dev
+  intersphinx_mapping:
+    restdoc:
+    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - null
+YAML;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		GeneralUtility::addIntersphinxMapping(
+			$fixtureFilename,
+			'restdoc',
+			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
+		);
+		$configuration = file_get_contents($fixtureFilename);
+		$expected = $yaml;
+		$this->assertSame($expected, $configuration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
 	public function canParseLaTeXYamlConfiguration() {
 		// Setup
 		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
