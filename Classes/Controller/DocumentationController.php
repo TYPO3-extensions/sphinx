@@ -225,6 +225,7 @@ class DocumentationController extends AbstractActionController {
 				$metadata['version'],
 				$metadata['release']
 			);
+			$reference = 'EXT:' . $extensionKey;
 		} catch (\RuntimeException $exception) {
 			$this->controllerContext->getFlashMessageQueue()->enqueue(
 				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
