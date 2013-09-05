@@ -38,60 +38,47 @@ class ObjectsInvBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	/**
 	 * Renders an objects.inv browser.
 	 *
+	 * @param string $id
 	 * @param string $reference Reference to the documentation project
 	 * @param string $aceEditor Reference to the Ace editor
+	 * @param \Causal\Sphinx\Controller\RestEditorController $controller
 	 * @return string
 	 */
-	public function render($reference, $aceEditor) {
+	public function render($id, $reference, $aceEditor, \Causal\Sphinx\Controller\RestEditorController $controller) {
 		if (substr($reference, 0, 4) !== 'EXT:') {
 			return 'Sorry, the objects.inv browser currently only supports extension documentation';
 		}
-		$extensionKey = substr($reference, 4);
-
-		$references = \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences($extensionKey);
 
 		$out = array();
-		//$out[] = '<h3 class="ui-widget-header">References</h3>';
-		$out[] = '<div id="accordion-objectsinv" class="basic">';	// Start of accordion
-
-		$lastMainChapter = '';
-		foreach ($references as $chapter => $refs) {
-			if (is_numeric($chapter)
-				|| $chapter === 'genindex'
-				|| $chapter === 'py-modindex'
-				|| $chapter === 'search') {
-
-				continue;
-			}
-
-			list($mainChapter, $_) = explode('/', $chapter, 2);
-			if ($mainChapter !== $lastMainChapter) {
-				if ($lastMainChapter !== '') {
-					$out[] = '</div>';	// End of accordion content panel
-				}
-				$out[] = '<h3><a href="#">' . htmlspecialchars($mainChapter) . '</a></h3>';
-				$out[] = '<div>';	// Start of accordion content panel
-			}
-
-			$out[] = '<h4>' . htmlspecialchars(substr($chapter, strlen($mainChapter))) . '</h4>';
-			$out[] = '<ul>';
-			foreach ($refs as $ref) {
-				$restReference = ':ref:`' . $ref['name'] . '` ';
-				$insertJS = $aceEditor . '.insert(\'' . str_replace(array('\'', '"'), array('\\\'', '\\"'), $restReference) . '\');';
-				$insertJS .= $aceEditor . '.focus()';
-				$out[] = '<li><a href="#" onclick="' . $insertJS . '">' . htmlspecialchars($ref['title']) . '</a></li>';
-			}
-			$out[] = '</ul>';
-
-			$lastMainChapter = $mainChapter;
-		}
-		$out[] = '</div>';	// End of accordion content panel
+		$out[] = '<div id="' . $id . '" class="basic">';	// Start of accordion
+		$out[] = $controller->accordionReferencesAction($reference, '', FALSE, FALSE);
 		$out[] = '</div>';	// End of accordion
+
+		$uriBuilder = $this->controllerContext->getUriBuilder();
+		$intersphinxAction = $uriBuilder->reset()->uriFor(
+			'updateIntersphinx',
+			array(
+				'reference' => $reference,
+				'prefix' => 'PREFIX',
+				'remoteUrl' => 'URL',
+			)
+		);
 
 		$out[] = '<script type="text/javascript">';
 		$out[] = <<<JS
+function EditorInsert(str, prefix, url) {
+	${aceEditor}.insert(str);
+	${aceEditor}.focus();
+
+	if (prefix) {
+		// Fire and forget!
+		$.ajax({
+			url: "${intersphinxAction}".replace(/PREFIX/, prefix).replace(/URL/, url)
+		})
+	}
+}
 $(document).ready(function() {
-	$("#accordion-objectsinv").accordion({ heightStyle: "fill" });
+	$('#$id').accordion({ heightStyle: 'fill' });
 });
 JS;
 		$out[] = '</script>';

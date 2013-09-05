@@ -11,10 +11,51 @@
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-migrate-1.2.1.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.10.3.custom.min.js')}"></script>
+	<script type="text/javascript">
+		var autocompleteAction = "{f:uri.action(action:'autocomplete')}";
+		var referencesAction = "{f:uri.action(action:'accordionReferences',arguments:{reference:'REFERENCE', remoteUrl:'URL', usePrefix:'USE_PREFIX'})}";
+		var currentReference = "EXT:{extensionKey}";
+	</script>
 	<script type="text/javascript"><![CDATA[
 		var myLayout; // a var is required because this page utilizes: myLayout.allowOverflow() method
+		var editor;
 
 		$(document).ready(function() {
+			$("#extension-key")
+				.bind('loadReferences', function(event, reference, url) {
+					$.ajax({
+						url: referencesAction
+								.replace(/REFERENCE/, reference)
+								.replace(/URL/, url)
+								.replace(/USE_PREFIX/, reference != currentReference ? '1' : '0')
+					}).done(function(data) {
+						$('#accordion-objectsinv')
+							.accordion('destroy')
+							.html(data['html'])
+							.accordion({ heightStyle: 'fill' });	// Problem if too many chapters (e.g., TYPO3 API)
+						$('#tx-sphinx-accordion-header').html(reference);
+					});
+				})
+				.autocomplete({
+					source: autocompleteAction,
+					minLength: 2,
+					position: { my : "right top", at: "right bottom" },
+					select: function(event, ui) {
+						if (ui.item) {
+							$(this).trigger('loadReferences', [ui.item.value, ui.item.id]);
+						}
+					},
+					change: function(event, ui) {
+						if ($(this).val().length == 0) {
+							// Reset the references to current document
+							$(this).trigger('loadReferences', currentReference);
+						}
+					}
+				});
+
+			// Initializes tooltips
+			$(document).tooltip();
+
 			myLayout = $('body').layout({
 					east__size:					300
 				,	east__minSize:				200
@@ -27,6 +68,16 @@
 				//	Enable state management
 				,	stateManagement__enabled:	true // automatic cookie load & save enabled by default
 			});
+
+			editor = ace.edit("editor");
+			var session = editor.getSession()
+
+			editor.setTheme("ace/theme/github");
+			session.setMode("ace/mode/markdown");
+
+			editor.setPrintMarginColumn(120);
+			session.setUseWrapMode(true);
+			session.setWrapLimitRange(120, 120);
 		});
 	]]></script>
 </head>
@@ -37,21 +88,23 @@
 <div id="editor" class="ui-layout-center">{contents}</div>
 
 <div class="ui-layout-east layout-content-container">
-	<sphinx:objectsInvBrowser reference="{reference}" aceEditor="editor" />
+	<div class="ui-widget-header no-scrollbar add-padding">
+		<f:translate key="editor.header.references"/>
+		<span id="tx-sphinx-accordion-header">EXT:{extensionKey}</span>
+	</div>
+	<div class="ui-widget">
+		<label for="extension-key" title="{f:translate(key:'editor.tooltip.input')}"><f:translate key="editor.label.loadReference"/></label>
+		<input id="extension-key" style="width:180px" />
+	</div>
+	<sphinx:objectsInvBrowser id="accordion-objectsinv" reference="{reference}" aceEditor="editor" controller="{controller}" />
+</div>
+
+<div class="ui-layout-south">
+	<f:translate key="editor.label.filename"/> {filename}
 </div>
 
 <script src="{f:uri.resource(path:'JavaScript/Ace/ace.js')}" type="text/javascript" charset="utf-8"></script>
 <script>
-var editor = ace.edit("editor");
-var session = editor.getSession()
-
-editor.setTheme("ace/theme/github");
-session.setMode("ace/mode/markdown");
-
-editor.setPrintMarginColumn(120);
-session.setUseWrapMode(true);
-session.setWrapLimitRange(120, 120);
-
 var reference = "{reference}";
 var doc = "{document}";
 var redirectUrl = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{reference:reference, document:document})}";

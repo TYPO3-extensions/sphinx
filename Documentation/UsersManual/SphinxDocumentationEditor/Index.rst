@@ -32,3 +32,20 @@ This editor lets you quickly update the corresponding chapter and recompile the 
 
 .. note::
 	The Ace editor currently lacks syntax highlighting for reStructuredText and is configured with Markdown instead.
+
+On the right side, a panel provides a browser of references within your documentation. The references are
+grouped by chapter using a accordion widget:
+
+|reference-browser|
+
+At the beginning an input box lets you show the references of any other extension or official manual providing
+a reStructuredText/Sphinx-based documentation. Just type an extension key, part of the extension title or some
+words from its description and selects it using the autocompletion mechanism.
+
+Once you have found the reference you are interested in, using it is just a matter of clicking on its name
+to insert it using the proper reStructuredText syntax in your document.
+
+In case the reference you insert is not coming from your documentation (that is, you are referencing another
+chapter or section) but is a cross-reference to another document, the Intersphinx mapping of your configuration
+file ``Settings.yml`` will be automatically updated. You may want to read section
+:ref:`docs-typo3-org-crosslink` for additional information.

@@ -35,3 +35,21 @@ lorsque vous cliquez sur l'icône "enregistrer et fermer" :
 .. note::
 	L'éditeur Ace ne propose pas pour l'instant de coloration syntaxique pour reStructuredText et est par conséquent
 	configuré pour utiliser Markdown à la place.
+
+Sur le côté droit, un panneau vous montre un navigateur de références au sein de votre documentation. Les
+références sont groupées par chapitre sous la forme d'un accordéon :
+
+|reference-browser|
+
+Tout en haut, vous trouvez une zone de texte qui vous permet d'afficher les références de toutes les extensions
+et les manuels officiels dotés d'une documentation basée sur reStructuredText/Sphinx. Il vous suffit de taper
+une clé d'extension, une partie du titre d'une extension ou quelques mots issus de sa description et de
+sélectionner l'entrée correspondante grâce au mécanisme de complètement automatique.
+
+Une fois que vous avez trouvé la référence qui vous intéresse, il vous suffit de cliquer sur celle-ci pour
+l'insérer avec la syntaxe reStructuredText correcte dans votre document.
+
+Si la référence que vous insérez n'est pas issue de votre documentation (c.-à-d. que vous référencez un autre
+chapitre ou section) mais est une référence croisée vers un autre document, la partie Intersphinx de votre
+fichier de configuration ``Settings.yml`` sera automatiquement mise à jour. Au besoin, veuillez lire la
+section :ref:`docs-typo3-org-crosslink` pour plus d'informations.

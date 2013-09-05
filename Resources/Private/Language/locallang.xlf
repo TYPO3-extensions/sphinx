@@ -3,77 +3,101 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-04-18T14:34:34Z" product-name="sphinx">
 		<header/>
 		<body>
-			<trans-unit id="mod1Title" xml:space="preserve">
+			<trans-unit id="mod1Title">
 				<source>Sphinx Python Documentation Generator</source>
 			</trans-unit>
-			<trans-unit id="folderNotFoundTitle" xml:space="preserve">
+			<trans-unit id="folderNotFoundTitle">
 				<source>Folder not found.</source>
 			</trans-unit>
-			<trans-unit id="folderNotFoundMessage" xml:space="preserve">
+			<trans-unit id="folderNotFoundMessage">
 				<source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
 			</trans-unit>
-			<trans-unit id="showDocumentation" xml:space="preserve">
+			<trans-unit id="showDocumentation">
 				<source>Show documentation:</source>
 			</trans-unit>
-			<trans-unit id="loadDocumentation" xml:space="preserve">
+			<trans-unit id="loadDocumentation">
 				<source>Go</source>
 			</trans-unit>
-			<trans-unit id="documentationLayout" xml:space="preserve">
+			<trans-unit id="documentationLayout">
 				<source>Layout:</source>
 			</trans-unit>
-			<trans-unit id="documentationLayout_static" xml:space="preserve">
+			<trans-unit id="documentationLayout_static">
 				<source>Static</source>
 			</trans-unit>
-			<trans-unit id="documentationLayout_interactive" xml:space="preserve">
+			<trans-unit id="documentationLayout_interactive">
 				<source>Interactive</source>
 			</trans-unit>
-			<trans-unit id="documentationLayout_pdf" xml:space="preserve">
+			<trans-unit id="documentationLayout_pdf">
 				<source>PDF</source>
 			</trans-unit>
-			<trans-unit id="extensionType_S" xml:space="preserve">
+			<trans-unit id="extensionType_S">
 				<source>System Extensions</source>
 			</trans-unit>
-			<trans-unit id="extensionType_L" xml:space="preserve">
+			<trans-unit id="extensionType_L">
 				<source>Local Extensions</source>
 			</trans-unit>
-			<trans-unit id="extensionType_G" xml:space="preserve">
+			<trans-unit id="extensionType_G">
 				<source>Global Extensions</source>
 			</trans-unit>
-			<trans-unit id="tx_sphinx_domain_model_extension.title" xml:space="preserve">
+			<trans-unit id="tx_sphinx_domain_model_extension.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="tx_sphinx_domain_model_extension.description" xml:space="preserve">
+			<trans-unit id="tx_sphinx_domain_model_extension.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="kickstart.title" xml:space="preserve">
+			<trans-unit id="kickstart.title">
 				<source>Kickstart Sphinx Documentation</source>
 			</trans-unit>
-			<trans-unit id="kickstart.action" xml:space="preserve">
+			<trans-unit id="kickstart.action">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="kickstart.action.createExtensionProject" xml:space="preserve">
+			<trans-unit id="kickstart.action.createExtensionProject">
 				<source>Create documentation project</source>
 			</trans-unit>
-			<trans-unit id="kickstart.action.convert" xml:space="preserve">
+			<trans-unit id="kickstart.action.convert">
 				<source>Convert OpenOffice manual to Sphinx</source>
 			</trans-unit>
-			<trans-unit id="toolbar.alwaysRender" xml:space="preserve">
+			<trans-unit id="toolbar.alwaysRender">
 				<source>Always render documentation</source>
 			</trans-unit>
-			<trans-unit id="toolbar.interactive.edit" xml:space="preserve">
+			<trans-unit id="toolbar.interactive.edit">
 				<source>Edit document</source>
 			</trans-unit>
-			<trans-unit id="toolbar.editor.close" xml:space="preserve">
+			<trans-unit id="toolbar.editor.close">
 				<source>Close document</source>
 			</trans-unit>
-			<trans-unit id="toolbar.editor.save" xml:space="preserve">
+			<trans-unit id="toolbar.editor.save">
 				<source>Save document</source>
 			</trans-unit>
-			<trans-unit id="toolbar.editor.saveclose" xml:space="preserve">
+			<trans-unit id="toolbar.editor.saveclose">
 				<source>Save and close document</source>
 			</trans-unit>
-			<trans-unit id="toolbar.editor.showInvisibles" xml:space="preserve">
+			<trans-unit id="toolbar.editor.showInvisibles">
 				<source>Show Invisibles</source>
+			</trans-unit>
+			<trans-unit id="editor.message.save.failure">
+				<source>File could not be written: %s</source>
+			</trans-unit>
+			<trans-unit id="editor.message.compile.failure">
+				<source>Could not compile documentation</source>
+			</trans-unit>
+			<trans-unit id="editor.header.references">
+				<source>References Browser:</source>
+			</trans-unit>
+			<trans-unit id="editor.label.loadReference">
+				<source>Load:</source>
+			</trans-unit>
+			<trans-unit id="editor.label.filename">
+				<source>File:</source>
+			</trans-unit>
+			<trans-unit id="editor.tooltip.input">
+				<source>Search an extension to load corresponding references. You may enter an extension key, part of a title or description.</source>
+			</trans-unit>
+			<trans-unit id="editor.tooltip.references.chapter">
+				<source>Show references of chapter %s</source>
+			</trans-unit>
+			<trans-unit id="editor.tooltip.references.insert">
+				<source>Click to insert a cross-link to this section</source>
 			</trans-unit>
 		</body>
 	</file>

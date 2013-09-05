@@ -3,3 +3,6 @@
 
 .. |save_compile| image:: ../../Images/save_compile.png
 	:alt: Save and compile your reStructuredText chapter
+
+.. |reference-browser| image:: ../../Images/references-browser.png
+	:alt: Browser of references

@@ -36,6 +36,10 @@ namespace Causal\Sphinx\Controller;
  */
 class RestEditorController extends AbstractActionController {
 
+	// -----------------------------------------------
+	// STANDARD ACTIONS
+	// -----------------------------------------------
+
 	/**
 	 * Edit action.
 	 *
@@ -49,12 +53,20 @@ class RestEditorController extends AbstractActionController {
 		$contents = file_get_contents($parts['filename']);
 
 		$this->view->assign('reference', $reference);
+		$this->view->assign('extensionKey', $parts['extensionKey']);
 		$this->view->assign('document', $document);
 		$this->view->assign('contents', $contents);
+		$this->view->assign('filename', $parts['filename']);
 
 		$buttons = $this->getButtons();
 		$this->view->assign('buttons', $buttons);
+
+		$this->view->assign('controller', $this);
 	}
+
+	// -----------------------------------------------
+	// AJAX ACTIONS
+	// -----------------------------------------------
 
 	/**
 	 * Saves the contents and recompiles the whole documentation if needed.
@@ -72,7 +84,10 @@ class RestEditorController extends AbstractActionController {
 
 			$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($parts['filename'], $contents);
 			if (!$success) {
-				throw new \RuntimeException('File could not be written: ' . $parts['filename'], 1370011487);
+				throw new \RuntimeException(sprintf(
+					$this->translate('editor.message.save.failure'),
+					$parts['filename']
+				), 1370011487);
 			}
 
 			if ($compile) {
@@ -99,20 +114,192 @@ class RestEditorController extends AbstractActionController {
 						break;
 				}
 				if (substr($outputFilename, -4) === '.log') {
-					throw new \RuntimeException('Could not compile documentation', 1370011537);
+					throw new \RuntimeException($this->translate('editor.message.compile.failure'), 1370011537);
 				}
 			}
 
 			$response['status'] = 'success';
 		} catch (\RuntimeException $e) {
 			$response['status'] = 'error';
-			$response['statusText'] = 'Error ' . $e->getCode() . ': ' . $e->getMessage();
+			$response['statusText'] = $e->getMessage();
 		}
 
 		header('Content-type: application/json');
 		echo json_encode($response);
 		exit;
 	}
+
+	/**
+	 * Autocomplete action to retrieve an documentation key.
+	 *
+	 * @return void
+	 */
+	protected function autocompleteAction() {
+		// no term passed - just exit early with no response
+		if (empty($_GET['term'])) exit;
+		$q = strtolower($_GET['term']);
+
+		$extensionTable = 'tx_extensionmanager_domain_model_extension';
+		$items = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'uid, extension_key, title',
+			$extensionTable,
+			'last_updated>1370296800 AND ' .	// After 04.06.2013
+				$GLOBALS['TYPO3_DB']->searchQuery(
+					array($q),
+					array('extension_key', 'title', 'description'),
+					$extensionTable
+				),
+			'',
+			'last_updated DESC',
+			15
+		);
+
+		$result = array();
+		foreach ($items as $item) {
+			$reference = 'EXT:' . $item['extension_key'];
+			if (isset($result[$reference])) continue;
+			$result[$reference] = array(
+				'id' => 'http://docs.typo3.org/typo3cms/extensions/' . $item['extension_key'],
+				'label' => $item['title'] . ' (' . $item['extension_key'] . ')',
+				'value' => $reference,
+			);
+		}
+
+		// Official documents
+		// See \TYPO3\CMS\Documentation\Service\DocumentationService::getOfficialDocuments()
+		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+			'typo3temp/documents.json'
+		);
+		if (!is_file($cacheFile) || filemtime($cacheFile) < time() - 86400) {
+			$json = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl('http://docs.typo3.org/typo3cms/documents.json');
+			if ($json) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $json);
+			}
+		}
+		if (is_file($cacheFile)) {
+			$documents = json_decode(file_get_contents($cacheFile), TRUE);
+			foreach ($documents as $document) {
+				if (stripos($document['shortcut'] . ' ' . $document['title'], $q) !== FALSE) {
+					$result[] = array(
+						'id' => $document['url'],
+						'label' => $document['title'],
+						'value' => $document['key'],
+					);
+				}
+			}
+		}
+
+		header('Content-type: application/json');
+		echo json_encode(array_values($result));
+		exit;
+	}
+
+	/**
+	 * Returns the references from the objects.inv index of a given
+	 * extension.
+	 *
+	 * @param string $reference
+	 * @param string $remoteUrl
+	 * @param boolean $usePrefix
+	 * @param boolean $json
+	 * @return void|string
+	 */
+	public function accordionReferencesAction($reference, $remoteUrl = '', $usePrefix = TRUE, $json = TRUE) {
+		if (substr($reference, 0, 4) === 'EXT:') {
+			list($prefix, $locale) = explode('.', substr($reference, 4));
+			$reference = $prefix;
+		} else {
+			$locale = '';
+			// Use last segment of reference as prefix
+			$segments = explode('.', $reference);
+			$prefix = end($segments);
+		}
+		$references = \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences($reference, $locale, $remoteUrl);
+		$out = array();
+
+		$lastMainChapter = '';
+		foreach ($references as $chapter => $refs) {
+			if (is_numeric($chapter)
+				|| $chapter === 'genindex'    || $chapter === 'genindex.htm'
+				|| $chapter === 'py-modindex' || $chapter === 'py-modindex.htm'
+				|| $chapter === 'search'      || $chapter === 'search.htm') {
+
+				continue;
+			}
+
+			list($mainChapter, $_) = explode('/', $chapter, 2);
+			if ($mainChapter !== $lastMainChapter) {
+				if ($lastMainChapter !== '') {
+					$out[] = '</div>';	// End of accordion content panel
+				}
+
+				// UpperCamelCase to separate words
+				$titleMainChapter = implode(' ', preg_split('/(?=[A-Z])/', $mainChapter));
+
+				$out[] = '<h3><a href="#"'.
+						' title="' . htmlspecialchars(sprintf(
+						$this->translate('editor.tooltip.references.chapter'), $titleMainChapter))
+					. '">' . htmlspecialchars($titleMainChapter) . '</a></h3>';
+				$out[] = '<div>';	// Start of accordion content panel
+			}
+
+			$out[] = '<h4>' . htmlspecialchars(substr($chapter, strlen($mainChapter))) . '</h4>';
+			$out[] = '<ul>';
+			foreach ($refs as $ref) {
+				$restReference = ':ref:`' . ($usePrefix ? $prefix . ':' : '') . $ref['name'] . '` ';
+				$arg1 = '\'' . str_replace(array('\'', '"'), array('\\\'', '\\"'), $restReference) . '\'';
+				$arg2 = '\'' . ($usePrefix ? $prefix : '') . '\'';
+				$arg3 = '\'' . $remoteUrl . '\'';
+				$insertJS = 'EditorInsert(' . $arg1 . ',' . $arg2 . ',' . $arg3 . ');';
+				$out[] = '<li><a href="#" title="' . htmlspecialchars($this->translate('editor.tooltip.references.insert')) .
+				 '" onclick="' . $insertJS . '">' . htmlspecialchars($ref['title']) . '</a></li>';
+			}
+			$out[] = '</ul>';
+
+			$lastMainChapter = $mainChapter;
+		}
+		$out[] = '</div>';	// End of accordion content panel
+		$html = implode(LF, $out);
+
+		if (!$json) {
+			return $html;
+		}
+
+		header('Content-type: application/json');
+		echo json_encode(array('html' => $html));
+		exit;
+	}
+
+	/**
+	 * Updates Intersphinx mapping by adding a reference to the
+	 * documentation of $extensionKey.
+	 *
+	 * @param string $reference Reference of a documentation
+	 * @param string $prefix
+	 * @param string $remoteUrl
+	 * @return void
+	 * @throws \RuntimeException
+	 */
+	protected function updateIntersphinxAction($reference, $prefix, $remoteUrl = '') {
+		if (substr($reference, 0, 4) !== 'EXT:') {
+			throw new \RuntimeException('Sorry this action currently only supports extension references', 1378419136);
+		}
+		list($documentationExtension, $locale) = explode('.', substr($reference, 4));
+		$settingsFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($documentationExtension) .
+			'Documentation/' . ($locale ? 'Localization.' . $locale . '/' : '') . 'Settings.yml';
+
+		\Causal\Sphinx\Utility\GeneralUtility::addIntersphinxMapping(
+			$settingsFilename,
+			$prefix,
+			$remoteUrl ?: 'http://docs.typo3.org/typo3cms/extensions/' . $prefix
+		);
+
+		exit;
+	}
+
+	// -----------------------------------------------
+	// INTERNAL METHODS
+	// -----------------------------------------------
 
 	/**
 	 * Parses a reference and a document and returns the corresponding filename,

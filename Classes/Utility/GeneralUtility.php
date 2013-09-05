@@ -357,27 +357,55 @@ HTML;
 	}
 
 	/**
-	 * Returns the Intersphinx references of a given extension.
+	 * Returns the Intersphinx references of a given documentation reference.
 	 *
-	 * @param string $extensionKey The TYPO3 extension key
+	 * @param string $reference Reference of a documentation or an extension key
+	 * @param string $locale The locale to use
+	 * @param string $remoteUrl The remote URL to retrieve objects.inv
 	 * @return array Intersphinx references extracted from objects.inv
 	 * @throws \RuntimeException
 	 */
-	static public function getIntersphinxReferences($extensionKey) {
+	static public function getIntersphinxReferences($reference, $locale = '', $remoteUrl = '') {
 		if (!ExtensionManagementUtility::isLoaded('restdoc')) {
 			throw new \RuntimeException('Extension restdoc is not loaded', 1370809705);
 		}
 
-		$localFile = PATH_site . 'typo3conf/Documentation/' . $extensionKey . '/default/json/objects.inv';
-		$cacheFile = PATH_site . 'typo3temp/tx_' . self::$extKey . '/' . $extensionKey . '/_make/build/json/objects.inv';
-		$remoteUrl = 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/latest/objects.inv';
+		if (strpos($reference, '.') === FALSE) {
+			// Extension key has been provided
+			$extensionKey = $reference;
+			$reference = 'typo3cms.extensions.' . $extensionKey;
+			$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+				'typo3temp/tx_' . self::$extKey . '/' . $extensionKey . '/_make/build/json/objects.inv'
+			);
+			$remoteUrl = 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey;
+			if ($locale) {
+				$remoteUrl .= '/' . strtolower(str_replace('_', '-', $locale));
+			}
+		} else {
+			$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+				'typo3temp/tx_' . self::$extKey . '/' . $reference . '/objects.inv'
+			);
+		}
+		if ($remoteUrl && substr($remoteUrl, -12) !== '/objects.inv') {
+			$remoteUrl = rtrim($remoteUrl, '/') . '/objects.inv';
+		}
+
+		$localFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+			'typo3conf/Documentation/' . $reference . '/' . ($locale ?: 'default') . '/json/objects.inv'
+		);
 		$path = '';
+
+		$useCache = TRUE;
+		if ($remoteUrl && is_file($cacheFile) && filemtime($cacheFile) < time() - 86400) {
+			// Cache file is more than 7 days old and we have an URL to fetch a fresh version: DO IT!
+			$useCache = FALSE;
+		}
 
 		if (is_file($localFile)) {
 			$path = dirname($localFile);
-		} elseif (is_file($cacheFile)) {
+		} elseif ($useCache && is_file($cacheFile)) {
 			$path = dirname($cacheFile);
-		} else {
+		} elseif ($remoteUrl) {
 			$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteUrl);
 			if ($content) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($cacheFile) . '/');

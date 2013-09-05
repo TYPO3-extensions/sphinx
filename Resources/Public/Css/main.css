@@ -321,6 +321,21 @@ p {
 /* standard mask for iframes */
 /* extra mask for objects/applets */
 /*
+ * Adjustments
+ */
+.no-scrollbar {
+  overflow: hidden; }
+
+.add-padding {
+  padding: 10px !important; }
+
+.ui-accordion-content {
+  padding: 0 1em !important; }
+
+.ui-widget {
+  padding: .5em 1em; }
+
+/*
  *	Default printing styles
  */
 @media print {
