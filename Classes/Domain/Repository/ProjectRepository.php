@@ -68,7 +68,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function loadProjects() {
 		$projects = array();
-		$filename = GeneralUtility::getFileAbsFileName(self::PROJECTS_FILENAME);
+		$filename = GeneralUtility::getFileAbsFileName(static::PROJECTS_FILENAME);
 		if (is_file($filename)) {
 			$contents = file_get_contents($filename);
 			$projects = json_decode($contents, TRUE);
@@ -86,7 +86,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function persistProjects(array $projects) {
-		$filename = GeneralUtility::getFileAbsFileName(self::PROJECTS_FILENAME);
+		$filename = GeneralUtility::getFileAbsFileName(static::PROJECTS_FILENAME);
 		GeneralUtility::writeFile($filename, json_encode($projects));
 	}
 

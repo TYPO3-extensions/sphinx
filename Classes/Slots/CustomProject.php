@@ -54,7 +54,7 @@ class CustomProject {
 	 * Default constructor.
 	 */
 	public function __construct() {
-		$this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+		$this->settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
 	}
 
 	/**

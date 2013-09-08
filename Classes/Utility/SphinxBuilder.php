@@ -48,7 +48,7 @@ class SphinxBuilder {
 	 * @return boolean TRUE if selected version of Sphinx is system, otherwise FALSE
 	 */
 	static public function isSystemVersion() {
-		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
 		return $configuration['version'] === 'SYSTEM';
 	}
 
@@ -59,7 +59,7 @@ class SphinxBuilder {
 	 */
 	static public function getSphinxVersion() {
 		$version = NULL;
-		if (self::isSystemVersion()) {
+		if (static::isSystemVersion()) {
 			$sphinxBuilder = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build'));
 			if ($sphinxBuilder) {
 				$output = array();
@@ -69,7 +69,7 @@ class SphinxBuilder {
 				$version = end($versionParts);
 			}
 		} else {
-			$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+			$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
 			$version = $configuration['version'];
 		}
 		return $version;
@@ -87,7 +87,7 @@ class SphinxBuilder {
 	 * @throws \RuntimeException if build process failed
 	 */
 	static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
-		$sphinxBuilder = self::getSphinxBuilder();
+		$sphinxBuilder = static::getSphinxBuilder();
 
 		if (empty($conf)) {
 			$conf = './conf.py';
@@ -110,18 +110,18 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'html';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b html' .								// output format
-			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
-			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-			(!empty($language) ? ' ' . self::getLanguageOption($language) : '') .
-			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
-			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
+			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
+			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
+			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
+			' ' . static::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
-		self::safeExec($cmd, $output, $ret);
+		static::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
-		if (self::$htmlConsole) {
-			$output = self::colorize($output);
+		if (static::$htmlConsole) {
+			$output = static::colorize($output);
 		}
 		if ($ret !== 0) {
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
@@ -129,7 +129,7 @@ class SphinxBuilder {
 
 		$output .= LF;
 		$link = $buildPath;
-		if (self::$htmlConsole) {
+		if (static::$htmlConsole) {
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['master_doc']) {
 				$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/html/' . $properties['master_doc'] . '.html';
@@ -153,7 +153,7 @@ class SphinxBuilder {
 	 * @throws \RuntimeException if build process failed
 	 */
 	static public function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
-		$sphinxBuilder = self::getSphinxBuilder();
+		$sphinxBuilder = static::getSphinxBuilder();
 
 		if (empty($conf)) {
 			$conf = './conf.py';
@@ -176,18 +176,18 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'json';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b json' .								// output format
-			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
-			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-			(!empty($language) ? ' ' . self::getLanguageOption($language) : '') .
-			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
-			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
+			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
+			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
+			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
+			' ' . static::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
-		self::safeExec($cmd, $output, $ret);
+		static::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
-		if (self::$htmlConsole) {
-			$output = self::colorize($output);
+		if (static::$htmlConsole) {
+			$output = static::colorize($output);
 		}
 		if ($ret !== 0) {
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
@@ -195,7 +195,7 @@ class SphinxBuilder {
 
 		$output .= LF;
 		$link = $buildPath;
-		if (self::$htmlConsole) {
+		if (static::$htmlConsole) {
 			$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/json/';
 			$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
 		}
@@ -216,7 +216,7 @@ class SphinxBuilder {
 	 * @throws \RuntimeException if build process failed
 	 */
 	static public function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
-		$sphinxBuilder = self::getSphinxBuilder();
+		$sphinxBuilder = static::getSphinxBuilder();
 
 		if (empty($conf)) {
 			$conf = './conf.py';
@@ -225,7 +225,7 @@ class SphinxBuilder {
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 		$paperSize = 'a4';
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/sphinx-sources/';
 		$templatePath = $sphinxSourcesPath . 'RestTools/LaTeX/';
 		$templateFiles = array(
 			'typo3.sty',
@@ -247,19 +247,19 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b latex' .								// output format
-			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
-			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-			(!empty($language) ? ' ' . self::getLanguageOption($language) : '') .
+			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
+			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
 			' -D latex_paper_size=' . $paperSize .						// paper size for LaTeX output
-			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
-			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
+			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
+			' ' . static::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
-		self::safeExec($cmd, $output, $ret);
+		static::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
-		if (self::$htmlConsole) {
-			$output = self::colorize($output);
+		if (static::$htmlConsole) {
+			$output = static::colorize($output);
 		}
 		foreach ($templateFiles as $templateFile) {
 			copy($templatePath . $templateFile, $basePath . $buildPath . DIRECTORY_SEPARATOR . $templateFile);
@@ -270,7 +270,7 @@ class SphinxBuilder {
 
 		$output .= LF;
 		$link = $buildPath;
-		if (self::$htmlConsole) {
+		if (static::$htmlConsole) {
 			$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/latex/';
 			$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '</a>';
 		}
@@ -292,15 +292,15 @@ class SphinxBuilder {
 	 * @throws \RuntimeException if build process failed
 	 */
 	static public function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
-		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
 
 		switch ($configuration['pdf_builder']) {
 			case 'pdflatex':
-				$output = self::buildPdfWithLaTeX($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
+				$output = static::buildPdfWithLaTeX($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
 				break;
 			case 'rst2pdf':
 			default:
-				$output = self::buildPdfWithRst2Pdf($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
+				$output = static::buildPdfWithRst2Pdf($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
 				break;
 		}
 
@@ -346,13 +346,13 @@ class SphinxBuilder {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
 		}
 
-		$outputLaTeX = self::buildLatex($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
+		$outputLaTeX = static::buildLatex($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
 
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
 		if (!empty($make)) {
 			$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 				\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . dirname($pdflatex) . '"') . ' && ' .
-				$make . ' -C ' . self::safeEscapeshellarg($buildDirectory . '/latex') . ' all-pdf' .
+				$make . ' -C ' . static::safeEscapeshellarg($buildDirectory . '/latex') . ' all-pdf' .
 				' 2>&1';	// redirect errors to STDOUT
 		} else {
 			// We are on Windows and "make" is not available,
@@ -375,10 +375,10 @@ class SphinxBuilder {
 		}
 
 		$output = array('Running LaTeX files through pdflatex...');
-		self::safeExec($cmd, $output, $ret);
+		static::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
-		if (self::$htmlConsole) {
-			$output = self::colorize($output);
+		if (static::$htmlConsole) {
+			$output = static::colorize($output);
 		}
 		// Prepend previous command output
 		$output = $outputLaTeX . LF . $output;
@@ -388,7 +388,7 @@ class SphinxBuilder {
 
 		$output .= LF;
 		$link = $buildPath;
-		if (self::$htmlConsole) {
+		if (static::$htmlConsole) {
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['project']) {
 				$latexProject = str_replace(' ', '', $properties['project']);
@@ -413,7 +413,7 @@ class SphinxBuilder {
 	 * @throws \RuntimeException if build process failed
 	 */
 	static protected function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
-		$sphinxBuilder = self::getSphinxBuilder();
+		$sphinxBuilder = static::getSphinxBuilder();
 
 		if (empty($conf)) {
 			$conf = './conf.py';
@@ -436,18 +436,18 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'pdf';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b pdf' .								// output format
-			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
-			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-			(!empty($language) ? ' ' . self::getLanguageOption($language) : '') .
-			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
-			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
+			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
+			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
+			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
+			' ' . static::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
-		self::safeExec($cmd, $output, $ret);
+		static::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
-		if (self::$htmlConsole) {
-			$output = self::colorize($output);
+		if (static::$htmlConsole) {
+			$output = static::colorize($output);
 		}
 		if ($ret !== 0 || preg_match('/\[ERROR\] pdfbuilder\.py/', $output)) {
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1372003276);
@@ -455,7 +455,7 @@ class SphinxBuilder {
 
 		$output .= LF;
 		$link = $buildPath;
-		if (self::$htmlConsole) {
+		if (static::$htmlConsole) {
 			$properties = \Causal\Sphinx\Utility\Configuration::load($basePath . $conf);
 			if ($properties['project']) {
 				$project = str_replace(' ', '', $properties['project']);
@@ -480,7 +480,7 @@ class SphinxBuilder {
 	 * @throws \RuntimeException if check process failed
 	 */
 	static public function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
-		$sphinxBuilder = self::getSphinxBuilder();
+		$sphinxBuilder = static::getSphinxBuilder();
 
 		if (empty($conf)) {
 			$conf = './conf.py';
@@ -503,18 +503,18 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'linkcheck';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b linkcheck' .							// output format
-			' -c ' . self::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
-			' -d ' . self::safeEscapeshellarg($referencesPath) .		// references
-			(!empty($language) ? ' ' . self::getLanguageOption($language) : '') .
-			' ' . self::safeEscapeshellarg($sourceDirectory) .			// source directory
-			' ' . self::safeEscapeshellarg($buildPath) .				// build directory
+			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
+			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
+			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
+			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
+			' ' . static::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
 
 		$output = array();
-		self::safeExec($cmd, $output, $ret);
+		static::safeExec($cmd, $output, $ret);
 		$output = implode(LF, $output);
-		if (self::$htmlConsole) {
-			$output = self::colorize($output);
+		if (static::$htmlConsole) {
+			$output = static::colorize($output);
 		}
 		if ($ret !== 0) {
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
@@ -522,7 +522,7 @@ class SphinxBuilder {
 
 		$output .= LF;
 		$link = $buildPath . '/output.txt';
-		if (self::$htmlConsole) {
+		if (static::$htmlConsole) {
 			$uri = substr($basePath, strlen(PATH_site)) . $buildDirectory . '/linkcheck/output.txt';
 			$link = '<a href="../' . $uri . '" target="sphinx_preview">' . $buildPath . '/output.txt</a>';
 		}
@@ -539,8 +539,8 @@ class SphinxBuilder {
 	 * @throws \RuntimeException
 	 */
 	static protected function getSphinxBuilder() {
-		$sphinxVersion = self::getSphinxVersion();
-		if (self::isSystemVersion()) {
+		$sphinxVersion = static::getSphinxVersion();
+		if (static::isSystemVersion()) {
 			$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
 			while (is_link($sphinxBuilder)) {
 				$link = readlink($sphinxBuilder);
@@ -554,7 +554,7 @@ class SphinxBuilder {
 			}
 			$sphinxPath = substr($sphinxBuilder, 0, strrpos($sphinxBuilder, '/bin/') + 1);
 		} else {
-			$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/' . $sphinxVersion . '/';
+			$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/sphinx/' . $sphinxVersion . '/';
 			$sphinxBuilder = $sphinxPath . 'bin/sphinx-build';
 
 			if (TYPO3_OS === 'WIN') {
@@ -579,7 +579,7 @@ class SphinxBuilder {
 		$exports = array(
 			\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonPath)
 		);
-		if (self::$htmlConsole) {
+		if (static::$htmlConsole) {
 			$exports[] = \Causal\Sphinx\Utility\GeneralUtility::getExportCommand('COLORTERM', '1');
 		}
 		$cmd = implode(' && ', $exports) . ' && ' . escapeshellarg($sphinxBuilder);
@@ -676,7 +676,7 @@ class SphinxBuilder {
 	 */
 	static protected function getLanguageOption($languageCode) {
 		$locale = '';
-		$supportedLocales = self::getSupportedLocales();
+		$supportedLocales = static::getSupportedLocales();
 
 		if (isset($supportedLocales[$languageCode])) {
 			$locale = $languageCode;
@@ -715,7 +715,7 @@ class SphinxBuilder {
 		if (TYPO3_OS === 'WIN' && strpos($command, ' && ') !== FALSE) {
 			// Multiple commands are not supported on Windows
 			// We use an intermediate batch file instead
-			$relativeBatchFilename = 'typo3temp/tx_' . self::$extKey . '/build-' . $GLOBALS['EXEC_TIME'] . '.bat';
+			$relativeBatchFilename = 'typo3temp/tx_' . static::$extKey . '/build-' . $GLOBALS['EXEC_TIME'] . '.bat';
 			$absoluteBatchFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($relativeBatchFilename);
 			$batchScript = '@ECHO OFF' . CR . LF . str_replace(' && ', CR . LF, $command);
 

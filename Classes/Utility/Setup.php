@@ -70,7 +70,7 @@ class Setup {
 			'Resources/Private/sphinx/bin/',
 			'Resources/Private/sphinx-sources/',
 		);
-		$basePath = ExtensionManagementUtility::extPath(self::$extKey);
+		$basePath = ExtensionManagementUtility::extPath(static::$extKey);
 		foreach ($directories as $directory) {
 			if (!is_dir($basePath . $directory)) {
 				GeneralUtility::mkdir_deep($basePath, $directory);
@@ -94,7 +94,7 @@ class Setup {
 	 * @return boolean
 	 */
 	static public function hasSphinxSources($version) {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcesPath . $version . '/setup.py';
 		return is_file($setupFile);
 	}
@@ -111,11 +111,11 @@ class Setup {
 	 */
 	static public function downloadSphinxSources($version, $url, array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = self::getTemporaryPath();
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$tempPath = static::getTemporaryPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		$zipFilename = $tempPath . $version . '.zip';
-		self::$log[] = '[INFO] Fetching ' . $url;
+		static::$log[] = '[INFO] Fetching ' . $url;
 		$zipContent = GeneralUtility::getUrl($url);
 		if ($zipContent && GeneralUtility::writeFile($zipFilename, $zipContent)) {
 			$output[] = '[INFO] Sphinx ' . $version . ' has been downloaded.';
@@ -123,7 +123,7 @@ class Setup {
 
 			// Unzip the Sphinx archive
 			$out = array();
-			if (self::unarchive($zipFilename, $targetPath, 'birkenfeld-sphinx-')) {
+			if (static::unarchive($zipFilename, $targetPath, 'birkenfeld-sphinx-')) {
 				$output[] = '[INFO] Sphinx ' . $version . ' has been unpacked.';
 
 				// Patch Sphinx to let us get colored output
@@ -133,7 +133,7 @@ class Setup {
 				$sourceFilename = str_replace('/', DIRECTORY_SEPARATOR, $sourceFilename);
 
 				if (file_exists($sourceFilename)) {
-					self::$log[] = '[INFO] Patching file ' . $sourceFilename;
+					static::$log[] = '[INFO] Patching file ' . $sourceFilename;
 					$contents = file_get_contents($sourceFilename);
 					$contents = str_replace(
 						'def color_terminal():',
@@ -164,8 +164,8 @@ class Setup {
 	 */
 	static public function buildSphinx($version, array &$output = NULL) {
 		$success = TRUE;
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
-		$sphinxPath = self::getSphinxPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$sphinxPath = static::getSphinxPath();
 
 		$pythonHome = NULL;
 		$pythonLib = NULL;
@@ -177,7 +177,7 @@ class Setup {
 				$python . ' setup.py clean 2>&1 && ' .
 				$python . ' setup.py build 2>&1';
 			$out = array();
-			self::exec($cmd, $out, $ret);
+			static::exec($cmd, $out, $ret);
 			if ($ret === 0) {
 				$pythonHome = $sphinxPath . $version;
 				$pythonLib = $pythonHome . '/lib/python';
@@ -185,7 +185,7 @@ class Setup {
 				// Compatibility with Windows platform
 				$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
-				self::$log[] = '[INFO] Recreating directory ' . $pythonHome;
+				static::$log[] = '[INFO] Recreating directory ' . $pythonHome;
 				GeneralUtility::rmdir($pythonHome, TRUE);
 				GeneralUtility::mkdir_deep($pythonLib . DIRECTORY_SEPARATOR);
 
@@ -193,7 +193,7 @@ class Setup {
 					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
 					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 				$out = array();
-				self::exec($cmd, $out, $ret);
+				static::exec($cmd, $out, $ret);
 				if ($ret === 0) {
 					$output[] = '[OK] Sphinx ' . $version . ' has been successfully installed.';
 				} else {
@@ -262,8 +262,8 @@ EOT;
 	 * @return void
 	 */
 	static public function removeSphinx($version, array &$output = NULL) {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
-		$sphinxPath = self::getSphinxPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$sphinxPath = static::getSphinxPath();
 
 		if (is_dir($sphinxSourcesPath . $version)) {
 			if (GeneralUtility::rmdir($sphinxSourcesPath . $version, TRUE)) {
@@ -303,7 +303,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasRestTools() {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
 		return is_file($setupFile);
 	}
@@ -318,8 +318,8 @@ EOT;
 	 */
 	static public function downloadRestTools(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = self::getTemporaryPath();
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$tempPath = static::getTemporaryPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -328,13 +328,13 @@ EOT;
 			$url = 'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3';
 			/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
 			$http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\HttpRequest', $url);
-			self::$log[] = '[INFO] Fetching ' . $url;
+			static::$log[] = '[INFO] Fetching ' . $url;
 			$body = $http->send()->getBody();
 			if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">snapshot</a>#', $body, $matches)) {
 				$commit = $matches[1];
 				$url = 'https://git.typo3.org/Documentation/RestTools.git/snapshot/' . $commit . '.tar.gz';
 				$archiveFilename = $tempPath . 'RestTools.tar.gz';
-				self::$log[] = '[INFO] Fetching ' . $url;
+				static::$log[] = '[INFO] Fetching ' . $url;
 				$archiveContent = $http->setUrl($url)->send()->getBody();
 				if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 					$output[] = '[INFO] TYPO3 ReStructuredText Tools (' . $commit . ') have been downloaded.';
@@ -345,7 +345,7 @@ EOT;
 
 					// Unpack TYPO3 ReST Tools archive
 					$out = array();
-					if (self::unarchive($archiveFilename, $targetPath, 'RestTools-' . substr($commit, 0, 7), $out)) {
+					if (static::unarchive($archiveFilename, $targetPath, 'RestTools-' . substr($commit, 0, 7), $out)) {
 						$output[] = '[INFO] TYPO3 ReStructuredText Tools have been unpacked.';
 					} else {
 						$success = FALSE;
@@ -373,8 +373,8 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildRestTools($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
-		$sphinxPath = self::getSphinxPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$sphinxPath = static::getSphinxPath();
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -439,7 +439,7 @@ EOT;
 		$setupFile = str_replace('/', DIRECTORY_SEPARATOR, $setupFile);
 
 		if (is_file($setupFile)) {
-			$success = self::buildWithPython(
+			$success = static::buildWithPython(
 				'TYPO3 RestructuredText Tools',
 				$setupFile,
 				$pythonHome,
@@ -460,7 +460,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasPyYaml() {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcesPath . 'PyYAML/setup.py';
 		return is_file($setupFile);
 	}
@@ -475,8 +475,8 @@ EOT;
 	 */
 	static public function downloadPyYaml(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = self::getTemporaryPath();
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$tempPath = static::getTemporaryPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -492,7 +492,7 @@ EOT;
 
 				// Unpack PyYAML archive
 				$out = array();
-				if (self::unarchive($archiveFilename, $targetPath, 'PyYAML-3.10', $out)) {
+				if (static::unarchive($archiveFilename, $targetPath, 'PyYAML-3.10', $out)) {
 					$output[] = '[INFO] PyYAML has been unpacked.';
 				} else {
 					$success = FALSE;
@@ -516,8 +516,8 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildPyYaml($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
-		$sphinxPath = self::getSphinxPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$sphinxPath = static::getSphinxPath();
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -534,7 +534,7 @@ EOT;
 
 		$setupFile = $sphinxSourcesPath . 'PyYAML' . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
-			$success = self::buildWithPython(
+			$success = static::buildWithPython(
 				'PyYAML',
 				$setupFile,
 				$pythonHome,
@@ -555,7 +555,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasPIL() {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcesPath . 'Imaging/setup.py';
 		return is_file($setupFile);
 	}
@@ -570,8 +570,8 @@ EOT;
 	 */
 	static public function downloadPIL(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = self::getTemporaryPath();
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$tempPath = static::getTemporaryPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -587,7 +587,7 @@ EOT;
 
 				// Unpack Python Imaging Library archive
 				$out = array();
-				if (self::unarchive($archiveFilename, $targetPath, 'Imaging-1.1.7', $out)) {
+				if (static::unarchive($archiveFilename, $targetPath, 'Imaging-1.1.7', $out)) {
 					$output[] = '[INFO] Python Imaging Library has been unpacked.';
 				} else {
 					$success = FALSE;
@@ -611,8 +611,8 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildPIL($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
-		$sphinxPath = self::getSphinxPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$sphinxPath = static::getSphinxPath();
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -629,7 +629,7 @@ EOT;
 
 		$setupFile = $sphinxSourcesPath . 'Imaging' . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
-			$success = self::buildWithPython(
+			$success = static::buildWithPython(
 				'Python Imaging Library',
 				$setupFile,
 				$pythonHome,
@@ -650,7 +650,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasPygments() {
-		$sphinxSourcePath = self::getSphinxSourcesPath();
+		$sphinxSourcePath = static::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcePath . 'Pygments/setup.py';
 		return is_file($setupFile);
 	}
@@ -665,8 +665,8 @@ EOT;
 	 */
 	static public function downloadPygments(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = self::getTemporaryPath();
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$tempPath = static::getTemporaryPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -682,7 +682,7 @@ EOT;
 
 				// Unpack Pygments archive
 				$out = array();
-				if (self::unarchive($archiveFilename, $targetPath, 'birkenfeld-pygments-main-', $out)) {
+				if (static::unarchive($archiveFilename, $targetPath, 'birkenfeld-pygments-main-', $out)) {
 					$output[] = '[INFO] Pygments has been unpacked.';
 				} else {
 					$success = FALSE;
@@ -706,8 +706,8 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildPygments($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
-		$sphinxPath = self::getSphinxPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$sphinxPath = static::getSphinxPath();
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -724,9 +724,9 @@ EOT;
 
 		$setupFile = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
-			self::configureTyposcriptForPygments($output);
+			static::configureTyposcriptForPygments($output);
 
-			$success = self::buildWithPython(
+			$success = static::buildWithPython(
 				'Pygments',
 				$setupFile,
 				$pythonHome,
@@ -748,7 +748,7 @@ EOT;
 	 * @return void
 	 */
 	static private function configureTyposcriptForPygments(array &$output = NULL) {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 		$lexersPath = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . 'pygments' . DIRECTORY_SEPARATOR . 'lexers' . DIRECTORY_SEPARATOR;
 
 		$url = 'https://git.typo3.org/Documentation/RestTools.git/blob_plain/HEAD:/ExtendingPygmentsForTYPO3/_incoming/typoscript.py';
@@ -767,7 +767,7 @@ EOT;
 				$cmd = 'cd ' . escapeshellarg($lexersPath) . ' && ' .
 					$python . ' _mapping.py 2>&1';
 				$out = array();
-				self::exec($cmd, $out, $ret);
+				static::exec($cmd, $out, $ret);
 				if ($ret === 0) {
 					$output[] = '[OK] TypoScript library successfully registered with Pygments.';
 				} else {
@@ -783,7 +783,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasRst2Pdf() {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 		$setupFile = $sphinxSourcesPath . 'rst2pdf/setup.py';
 		return is_file($setupFile);
 	}
@@ -798,8 +798,8 @@ EOT;
 	 */
 	static public function downloadRst2Pdf(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = self::getTemporaryPath();
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
+		$tempPath = static::getTemporaryPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		if (!CommandUtility::checkCommand('tar')) {
 			$success = FALSE;
@@ -815,7 +815,7 @@ EOT;
 
 				// Unpack rst2pdf archive
 				$out = array();
-				if (self::unarchive($archiveFilename, $targetPath, 'rst2pdf-0.93', $out)) {
+				if (static::unarchive($archiveFilename, $targetPath, 'rst2pdf-0.93', $out)) {
 					$output[] = '[INFO] rst2pdf has been unpacked.';
 				} else {
 					$success = FALSE;
@@ -839,8 +839,8 @@ EOT;
 	 * @throws \Exception
 	 */
 	static public function buildRst2Pdf($sphinxVersion, array &$output = NULL) {
-		$sphinxSourcesPath = self::getSphinxSourcesPath();
-		$sphinxPath = self::getSphinxPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$sphinxPath = static::getSphinxPath();
 
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
@@ -857,7 +857,7 @@ EOT;
 
 		$setupFile = $sphinxSourcesPath . 'rst2pdf' . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
-			$success = self::buildWithPython(
+			$success = static::buildWithPython(
 				'rst2pdf',
 				$setupFile,
 				$pythonHome,
@@ -880,7 +880,7 @@ EOT;
 	 * @return boolean
 	 */
 	static public function hasLibrary($library, $sphinxVersion) {
-		$sphinxPath = self::getSphinxPath();
+		$sphinxPath = static::getSphinxPath();
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
 
@@ -903,7 +903,7 @@ EOT;
 	static public function getSphinxAvailableVersions() {
 		$sphinxUrl = 'https://bitbucket.org/birkenfeld/sphinx/downloads';
 
-		$cacheFilename = self::getTemporaryPath() . self::$extKey . '.' . md5($sphinxUrl) . '.html';
+		$cacheFilename = static::getTemporaryPath() . static::$extKey . '.' . md5($sphinxUrl) . '.html';
 		if (!file_exists($cacheFilename) || filemtime($cacheFilename) < (time() - 86400) || filesize($cacheFilename) == 0) {
 			$html = GeneralUtility::getURL($sphinxUrl);
 			GeneralUtility::writeFile($cacheFilename, $html);
@@ -938,7 +938,7 @@ EOT;
 	 * @return array
 	 */
 	static public function getSphinxLocalVersions() {
-		$sphinxPath = self::getSphinxPath();
+		$sphinxPath = static::getSphinxPath();
 		$versions = array();
 		if (is_dir($sphinxPath)) {
 			$versions = GeneralUtility::get_dirs($sphinxPath);
@@ -955,9 +955,9 @@ EOT;
 	 * @return NULL|array Last line of the shell output
 	 */
 	static protected function exec($cmd, &$output = NULL, &$returnValue = 0) {
-		self::$log[] = '[CMD] ' . $cmd;
+		static::$log[] = '[CMD] ' . $cmd;
 		$lastLine = CommandUtility::exec($cmd, $out, $returnValue);
-		self::$log = array_merge(self::$log, $out);
+		static::$log = array_merge(static::$log, $out);
 		$output = $out;
 		return $lastLine;
 	}
@@ -974,7 +974,7 @@ EOT;
 	static public function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = NULL, array &$output = NULL) {
 		$success = FALSE;
 
-		self::$log[] = '[INFO] Recreating directory ' . $targetDirectory;
+		static::$log[] = '[INFO] Recreating directory ' . $targetDirectory;
 		GeneralUtility::rmdir($targetDirectory, TRUE);
 		GeneralUtility::mkdir_deep($targetDirectory . DIRECTORY_SEPARATOR);
 
@@ -985,7 +985,7 @@ EOT;
 			$tar = escapeshellarg(CommandUtility::getCommand('tar'));
 			$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetDirectory) . ' 2>&1';
 		}
-		self::exec($cmd, $output, $ret);
+		static::exec($cmd, $output, $ret);
 		if ($ret === 0) {
 			$success = TRUE;
 			if ($moveContentOutsideOfDirectoryPrefix !== NULL) {
@@ -1023,13 +1023,13 @@ EOT;
 			$python . ' setup.py clean 2>&1 && ' .
 			$python . ' setup.py build 2>&1';
 		$out = array();
-		self::exec($cmd, $out, $ret);
+		static::exec($cmd, $out, $ret);
 		if ($ret === 0) {
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
 				\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
 				$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 			$out = array();
-			self::exec($cmd, $out, $ret);
+			static::exec($cmd, $out, $ret);
 			if ($ret === 0) {
 				$success = TRUE;
 				$output[] = '[OK] ' . $name . ' successfully installed.';
@@ -1051,7 +1051,7 @@ EOT;
 	 * @return void
 	 */
 	static public function clearLog() {
-		self::$log = array();
+		static::$log = array();
 	}
 
 	/**
@@ -1061,7 +1061,7 @@ EOT;
 	 * @return void|string
 	 */
 	static public function dumpLog($filename = '') {
-		$content = implode(LF, self::$log);
+		$content = implode(LF, static::$log);
 		if ($filename) {
 			$directory = dirname($filename);
 			GeneralUtility::mkdir($directory);
@@ -1077,7 +1077,7 @@ EOT;
 	 * @return string Absolute path to the Sphinx sources
 	 */
 	static private function getSphinxSourcesPath() {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/sphinx-sources/';
 		// Compatibility with Windows platform
 		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
@@ -1090,7 +1090,7 @@ EOT;
 	 * @return string Absolute path to the Sphinx binaries
 	 */
 	static private function getSphinxPath() {
-		$sphinxPath = ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxPath = ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/sphinx/';
 		// Compatibility with Windows platform
 		$sphinxPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxPath);
 

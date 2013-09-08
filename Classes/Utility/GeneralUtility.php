@@ -80,9 +80,9 @@ class GeneralUtility {
 	 */
 	static public function getDocumentationType($extensionKey) {
 		$supportedDocuments = array(
-			'Documentation/Index.rst' => self::DOCUMENTATION_TYPE_SPHINX,
-			'README.rst'              => self::DOCUMENTATION_TYPE_README,
-			'doc/manual.sxw'          => self::DOCUMENTATION_TYPE_OPENOFFICE,
+			'Documentation/Index.rst' => static::DOCUMENTATION_TYPE_SPHINX,
+			'README.rst'              => static::DOCUMENTATION_TYPE_README,
+			'doc/manual.sxw'          => static::DOCUMENTATION_TYPE_OPENOFFICE,
 		);
 		$extPath = ExtensionManagementUtility::extPath($extensionKey);
 
@@ -92,7 +92,7 @@ class GeneralUtility {
 			}
 		}
 
-		return self::DOCUMENTATION_TYPE_UNKNOWN;
+		return static::DOCUMENTATION_TYPE_UNKNOWN;
 	}
 
 	/**
@@ -155,16 +155,16 @@ class GeneralUtility {
 	 * @return integer One of the DOCUMENTATION_TYPE_* constants
 	 */
 	static public function getLocalizedDocumentationType($extensionKey, $locale) {
-		$localizationDirectories = self::getLocalizationDirectories($extensionKey);
+		$localizationDirectories = static::getLocalizationDirectories($extensionKey);
 
 		if (isset($localizationDirectories[$locale])) {
 			$extPath = ExtensionManagementUtility::extPath($extensionKey);
 			if (is_file($extPath . $localizationDirectories[$locale]['directory'] . '/Index.rst')) {
-				return self::DOCUMENTATION_TYPE_SPHINX;
+				return static::DOCUMENTATION_TYPE_SPHINX;
 			}
 		}
 
-		return self::DOCUMENTATION_TYPE_UNKNOWN;
+		return static::DOCUMENTATION_TYPE_UNKNOWN;
 	}
 
 	/**
@@ -180,7 +180,7 @@ class GeneralUtility {
 		if (empty($locale)) {
 			$settingsFilename = 'Documentation/Settings.yml';
 		} else {
-			$localizationDirectories = self::getLocalizationDirectories($extensionKey);
+			$localizationDirectories = static::getLocalizationDirectories($extensionKey);
 			if (!isset($localizationDirectories[$locale])) {
 				return $projectTitle;
 			}
@@ -375,7 +375,7 @@ HTML;
 			$extensionKey = $reference;
 			$reference = 'typo3cms.extensions.' . $extensionKey;
 			$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-				'typo3temp/tx_' . self::$extKey . '/' . $extensionKey . '/_make/build/json/objects.inv'
+				'typo3temp/tx_' . static::$extKey . '/' . $extensionKey . '/_make/build/json/objects.inv'
 			);
 			$remoteUrl = 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey;
 			if ($locale) {
@@ -383,7 +383,7 @@ HTML;
 			}
 		} else {
 			$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-				'typo3temp/tx_' . self::$extKey . '/' . $reference . '/objects.inv'
+				'typo3temp/tx_' . static::$extKey . '/' . $reference . '/objects.inv'
 			);
 		}
 		if ($remoteUrl && substr($remoteUrl, -12) !== '/objects.inv') {
@@ -437,18 +437,18 @@ HTML;
 	 */
 	static public function generateDocumentation($extensionKey, $format = 'html', $force = FALSE, $locale = '') {
 		if (empty($locale)) {
-			$documentationType = self::getDocumentationType($extensionKey);
-			$projectTitle = self::getDocumentationProjectTitle($extensionKey);
+			$documentationType = static::getDocumentationType($extensionKey);
+			$projectTitle = static::getDocumentationProjectTitle($extensionKey);
 			$languageDirectory = 'default';
 		} else {
-			$documentationType = self::getLocalizedDocumentationType($extensionKey, $locale);
-			$projectTitle = self::getDocumentationProjectTitle($extensionKey, $locale);
+			$documentationType = static::getLocalizedDocumentationType($extensionKey, $locale);
+			$projectTitle = static::getDocumentationProjectTitle($extensionKey, $locale);
 			$languageDirectory = $locale;
 		}
-		if (!($documentationType === self::DOCUMENTATION_TYPE_SPHINX
-			|| $documentationType === self::DOCUMENTATION_TYPE_README)) {
+		if (!($documentationType === static::DOCUMENTATION_TYPE_SPHINX
+			|| $documentationType === static::DOCUMENTATION_TYPE_README)) {
 
-			$filename = 'typo3temp/tx_' . self::$extKey . '/1369679343.log';
+			$filename = 'typo3temp/tx_' . static::$extKey . '/1369679343.log';
 			$content = 'ERROR 1369679343: No documentation found for extension "' . $extensionKey . '"';
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
 			return '../' . $filename;
@@ -479,7 +479,7 @@ HTML;
 		}
 
 		$metadata = GeneralUtility::getExtensionMetaData($extensionKey);
-		$basePath = PATH_site . 'typo3temp/tx_' . self::$extKey . '/' . $extensionKey;
+		$basePath = PATH_site . 'typo3temp/tx_' . static::$extKey . '/' . $extensionKey;
 		$documentationBasePath = $basePath;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
 		if (!empty($locale)) {
@@ -499,14 +499,14 @@ HTML;
 
 		// Recursively instantiate template files
 		switch ($documentationType) {
-			case self::DOCUMENTATION_TYPE_SPHINX:
+			case static::DOCUMENTATION_TYPE_SPHINX:
 				$source = ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
-				self::recursiveCopy($source, $basePath);
+				static::recursiveCopy($source, $basePath);
 
 				// Remove Localization.* directories to prevent clash with references
 				// @see https://forge.typo3.org/issues/51066
 				if (empty($locale)) {
-					$localizationDirectories = self::getLocalizationDirectories($extensionKey);
+					$localizationDirectories = static::getLocalizationDirectories($extensionKey);
 					foreach ($localizationDirectories as $info) {
 						$localizationDirectory = $basePath . DIRECTORY_SEPARATOR . basename($info['directory']);
 						if (is_dir($localizationDirectory)) {
@@ -515,18 +515,19 @@ HTML;
 					}
 				}
 				break;
-			case self::DOCUMENTATION_TYPE_README:
+			case static::DOCUMENTATION_TYPE_README:
 				$source = ExtensionManagementUtility::extPath($extensionKey) . 'README.rst';
 				copy($source, $basePath . '/Index.rst');
 		}
 
+		// Theme t3sphinx is still incompatible with JSON output
 		if ($format === 'json') {
-			self::overrideThemeT3Sphinx($documentationBasePath);
+			static::overrideThemeT3Sphinx($documentationBasePath);
 			$settingsYamlFilename = $documentationBasePath . '/Settings.yml';
 			if (is_file($settingsYamlFilename)) {
 				$confpyFilename = $documentationBasePath . '/_make/conf.py';
 				$confpy = file_get_contents($confpyFilename);
-				$pythonConfiguration = self::yamlToPython($settingsYamlFilename);
+				$pythonConfiguration = static::yamlToPython($settingsYamlFilename);
 				$confpy .= LF . '# Additional options from Settings.yml' . LF . implode(LF, $pythonConfiguration);
 				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($confpyFilename, $confpy);
 			}
@@ -541,7 +542,7 @@ HTML;
 				SphinxBuilder::buildHtml($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale);
 			}
 		} catch (\RuntimeException $e) {
-			$relativeFilename = 'typo3temp/tx_' . self::$extKey . '/' . $e->getCode() . '.log';
+			$relativeFilename = 'typo3temp/tx_' . static::$extKey . '/' . $e->getCode() . '.log';
 			$absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($relativeFilename);
 			$content = $e->getMessage();
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($absoluteFilename, $content);
@@ -551,10 +552,10 @@ HTML;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($absoluteOutputDirectory, TRUE);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($absoluteOutputDirectory . '/');
 		if ($format !== 'pdf') {
-			self::recursiveCopy($documentationBasePath . '/_make/build/' . $documentationFormat, $absoluteOutputDirectory);
+			static::recursiveCopy($documentationBasePath . '/_make/build/' . $documentationFormat, $absoluteOutputDirectory);
 		} else {
 			// Only copy PDF output
-			$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][self::$extKey]);
+			$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
 			switch ($configuration['pdf_builder']) {
 				case 'pdflatex':
 					copy($documentationBasePath . '/_make/build/latex/' . $extensionKey . '.pdf', $absoluteOutputDirectory . '/' . $extensionKey . '.pdf');

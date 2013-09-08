@@ -86,7 +86,7 @@ class SphinxQuickstart {
 		$pathRoot = rtrim($pathRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pathRoot);
 
-		$isTypo3Documentation = is_dir(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/Templates/Projects/' . $template . '/_make');
+		$isTypo3Documentation = is_dir(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/Templates/Projects/' . $template . '/_make');
 
 		if ($isTypo3Documentation) {
 			$separateSourceBuild = FALSE;
@@ -119,7 +119,7 @@ class SphinxQuickstart {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pathRoot . $directory);
 		}
 
-		$binDirectory = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/sphinx/bin/';
+		$binDirectory = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/sphinx/bin/';
 
 		// Compatibility with Windows platform
 		$binDirectory = str_replace('/', DIRECTORY_SEPARATOR, $binDirectory);
@@ -149,7 +149,7 @@ class SphinxQuickstart {
 			'markers'          => $markers,
 		);
 
-		return self::createFromTemplate($config);
+		return static::createFromTemplate($config);
 	}
 
 	/**
@@ -164,7 +164,7 @@ class SphinxQuickstart {
 		$contentObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
 		// Recursively instantiate template files
-		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(self::$extKey) . 'Resources/Private/Templates/Projects/' . $config['template'] . '/';
+		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/Templates/Projects/' . $config['template'] . '/';
 		if (!is_dir($source)) {
 			throw new \RuntimeException('Template directory was not found: ' . $source, 1367044890);
 		}
