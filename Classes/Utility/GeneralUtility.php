@@ -520,6 +520,12 @@ HTML;
 				copy($source, $basePath . '/Index.rst');
 		}
 
+		// Cache Intersphinx references to speed-up rendering
+		$settingsYamlFilename = $documentationBasePath . '/Settings.yml';
+		if (is_file($settingsYamlFilename)) {
+			static::cacheIntersphinxMapping($documentationBasePath . '/Settings.yml');
+		}
+
 		// Theme t3sphinx is still incompatible with JSON output
 		if ($format === 'json') {
 			static::overrideThemeT3Sphinx($documentationBasePath);
@@ -698,6 +704,69 @@ HTML;
 		return $isDirty
 			? \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, implode(LF, $lines))
 			: TRUE;
+	}
+
+	/**
+	 * Caches the Intersphinx mapping.
+	 *
+	 * @param string $filename Absolute filename to Settings.yml
+	 * @return void
+	 * @see http://forge.typo3.org/issues/51275
+	 */
+	static public function cacheIntersphinxMapping($filename) {
+		$cacheDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+			'typo3temp/tx_' . static::$extKey . '/intersphinx/'
+		);
+
+		// Clean-up caches
+		$cacheFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($cacheDirectory);
+		foreach ($cacheFiles as $cacheFile) {
+			if (filemtime($cacheDirectory . $cacheFile) < time() - 28800) {	// 8 hours of cache
+				@unlink($cacheDirectory . $cacheFile);
+			}
+		}
+
+		$indent = '  ';
+		$contents = file_get_contents($filename);
+		// Fix line breaks if needed as we rely on Linux line breaks
+		$contents = str_replace(array(CR . LF, CR), LF, $contents);
+		$lines = explode(LF, $contents);
+		$isDirty = FALSE;
+
+		$startLine = 0;
+		$hasIntersphinxMapping = FALSE;
+		while ($startLine < count($lines)) {
+			if ($lines[$startLine] === $indent . 'intersphinx_mapping:') {
+				$hasIntersphinxMapping = TRUE;
+				break;
+			}
+			$startLine++;
+		}
+
+		if ($hasIntersphinxMapping) {
+			for ($i = $startLine + 1; $i < count($lines); $i += 3) {
+				if (!preg_match('/^' . $indent . $indent . '(.+):/', $lines[$i], $matches)) {
+					break;
+				}
+				$prefix = $matches[1];
+				$remoteUrl = trim(substr($lines[$i + 1], strlen($indent . $indent . '- ')));
+				$remoteUrl = rtrim($remoteUrl, '/') . '/objects.inv';
+				$cacheFile = $cacheDirectory . $prefix . '-' . md5($remoteUrl) . '-objects.inv';
+				if (!is_file($cacheFile)) {
+					$objectsInv = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteUrl);
+					if ($objectsInv) {
+						\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($cacheFile) . '/');
+						\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $objectsInv);
+					}
+				}
+				$lines[$i + 2] = $indent . $indent . '- ' . $cacheFile;
+				$isDirty = TRUE;
+			}
+		}
+
+		if ($isDirty) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, implode(LF, $lines));
+		}
 	}
 
 	/**
