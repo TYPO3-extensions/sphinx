@@ -277,7 +277,8 @@ class DocumentationController extends AbstractActionController {
 			'json' => $this->translate('documentationLayout_interactive'),
 		);
 
-		switch ($this->settings['pdf_builder']) {
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sphinx']);
+		switch ($configuration['pdf_builder']) {
 			case 'pdflatex':
 				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
 				break;
