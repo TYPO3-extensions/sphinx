@@ -30,5 +30,8 @@ conf.py:
     - null
   extensions:
   - sphinx.ext.intersphinx
+  - t3sphinx.ext.t3extras
+  - t3sphinx.ext.t3tablerows
+  - t3sphinx.ext.targets
   - sphinxcontrib.youtube
 ...
