@@ -25,6 +25,7 @@ Ce qui suit est une vue d'ensemble très haut niveau des changements de cette ex
 =======  ======================================================
 Version  Changements
 =======  ======================================================
+1.2.0    - Éditeur de documentation amélioré avec navigateur de références croisées
 1.1.0    - Support de documentation multilingue
          - Intégration à EXT:documentation (TYPO3 6.2)
          - Pygments avec coloration syntaxique TypoScript
