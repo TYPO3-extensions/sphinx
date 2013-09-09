@@ -833,6 +833,11 @@ HTML;
 							$indent = $matches[1];
 							$firstItem = TRUE;
 							while (preg_match('/^' . $indent . '- (.+)/', $lines[++$i], $matches)) {
+								if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($matches[1], 't3sphinx.')) {
+									// Extension t3sphinx is not compatible with JSON output
+									continue;
+								}
+
 								if (!$firstItem) {
 									$pythonLine .= ', ';
 								}

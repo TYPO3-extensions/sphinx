@@ -377,6 +377,7 @@ YAML;
 conf.py:
   extensions:
   - sphinx.ext.intersphinx
+  - t3sphinx.ext.t3extras
   - sphinxcontrib.youtube
 YAML;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);

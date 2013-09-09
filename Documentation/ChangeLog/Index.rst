@@ -20,9 +20,9 @@ The following is a very high level overview of the changes in this extension. Fo
 
 .. tabularcolumns:: |r|p{13.7cm}|
 
-=======  ====================================================================
+=======  ===========================================================================
 Version  Changes
-=======  ====================================================================
+=======  ===========================================================================
 1.2.0    - Enhanced documentation editor with cross-references browser
          - Support for sphinx-contrib libraries (Youtube inclusion, ...)
 1.1.0    - Support for multilingual documentation
@@ -43,4 +43,4 @@ Version  Changes
 0.2.0    Kickstarter to create a TYPO3 documentation using official template
 0.1.0    First release to the TER (alpha to gather more initial feedback)
 0.0.1    Not released to TER, extension is compatible with TYPO3 4.5-4.7. Can be retrieved from `Subversion's tag 0.0.1 <https://svn.typo3.org/TYPO3v4/Extensions/sphinx/tags/0.0.1/>`_
-=======  ====================================================================
+=======  ===========================================================================
