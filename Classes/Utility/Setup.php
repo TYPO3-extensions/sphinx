@@ -61,9 +61,6 @@ class Setup {
 		if (!CommandUtility::checkCommand('unzip')) {
 			$errors[] = 'Unzip cannot be executed.';
 		}
-		if (!CommandUtility::checkCommand('tar')) {
-			$errors[] = 'Tar cannot be executed.';
-		}
 
 		$directories = array(
 			'Resources/Private/sphinx/',
@@ -321,44 +318,39 @@ EOT;
 		$tempPath = static::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
-		if (!CommandUtility::checkCommand('tar')) {
-			$success = FALSE;
-			$output[] = '[WARNING] Could not find command tar. TYPO3-related commands were not installed.';
-		} else {
-			$url = 'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3';
-			/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
-			$http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\HttpRequest', $url);
+		$url = 'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3';
+		/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
+		$http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\HttpRequest', $url);
+		static::$log[] = '[INFO] Fetching ' . $url;
+		$body = $http->send()->getBody();
+		if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">snapshot</a>#', $body, $matches)) {
+			$commit = $matches[1];
+			$url = 'https://git.typo3.org/Documentation/RestTools.git/snapshot/' . $commit . '.tar.gz';
+			$archiveFilename = $tempPath . 'RestTools.tar.gz';
 			static::$log[] = '[INFO] Fetching ' . $url;
-			$body = $http->send()->getBody();
-			if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">snapshot</a>#', $body, $matches)) {
-				$commit = $matches[1];
-				$url = 'https://git.typo3.org/Documentation/RestTools.git/snapshot/' . $commit . '.tar.gz';
-				$archiveFilename = $tempPath . 'RestTools.tar.gz';
-				static::$log[] = '[INFO] Fetching ' . $url;
-				$archiveContent = $http->setUrl($url)->send()->getBody();
-				if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
-					$output[] = '[INFO] TYPO3 ReStructuredText Tools (' . $commit . ') have been downloaded.';
+			$archiveContent = $http->setUrl($url)->send()->getBody();
+			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+				$output[] = '[INFO] TYPO3 ReStructuredText Tools (' . $commit . ') have been downloaded.';
 
-					// Target path is compatible with directory structure of complete git project
-					// allowing people to use the official git repository instead, if wanted
-					$targetPath = $sphinxSourcesPath . 'RestTools' . DIRECTORY_SEPARATOR . 'ExtendingSphinxForTYPO3';
+				// Target path is compatible with directory structure of complete git project
+				// allowing people to use the official git repository instead, if wanted
+				$targetPath = $sphinxSourcesPath . 'RestTools' . DIRECTORY_SEPARATOR . 'ExtendingSphinxForTYPO3';
 
-					// Unpack TYPO3 ReST Tools archive
-					$out = array();
-					if (static::unarchive($archiveFilename, $targetPath, 'RestTools-' . substr($commit, 0, 7), $out)) {
-						$output[] = '[INFO] TYPO3 ReStructuredText Tools have been unpacked.';
-					} else {
-						$success = FALSE;
-						$output[] = '[ERROR] Could not extract TYPO3 ReStructuredText Tools:' . LF . LF . implode($out, LF);
-					}
+				// Unpack TYPO3 ReST Tools archive
+				$out = array();
+				if (static::unarchive($archiveFilename, $targetPath, 'RestTools-' . substr($commit, 0, 7), $out)) {
+					$output[] = '[INFO] TYPO3 ReStructuredText Tools have been unpacked.';
 				} else {
 					$success = FALSE;
-					$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
+					$output[] = '[ERROR] Could not extract TYPO3 ReStructuredText Tools:' . LF . LF . implode($out, LF);
 				}
 			} else {
 				$success = FALSE;
-				$output[] = '[ERROR] Could not download ' . htmlspecialchars('https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3');
+				$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
 			}
+		} else {
+			$success = FALSE;
+			$output[] = '[ERROR] Could not download ' . htmlspecialchars('https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3');
 		}
 
 		return $success;
@@ -528,6 +520,8 @@ EOT;
 	 * @param string $plugin The 3rd-party plugin to build
 	 * @param string $sphinxVersion The Sphinx version to build 3rd-party libraries for
 	 * @param NULL|array $output Log of operations
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 * @throws \Exception
 	 */
 	static public function buildThirdPartyLibraries($plugin, $sphinxVersion, array &$output = NULL) {
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
@@ -664,30 +658,25 @@ EOT;
 		$tempPath = static::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
-		if (!CommandUtility::checkCommand('tar')) {
-			$success = FALSE;
-			$output[] = '[WARNING] Could not find command tar. PyYAML was not installed.';
-		} else {
-			$url = 'http://pyyaml.org/download/pyyaml/PyYAML-3.10.tar.gz';
-			$archiveFilename = $tempPath . 'PyYAML-3.10.tar.gz';
-			$archiveContent = GeneralUtility::getUrl($url);
-			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
-				$output[] = '[INFO] PyYAML 3.10 has been downloaded.';
+		$url = 'http://pyyaml.org/download/pyyaml/PyYAML-3.10.tar.gz';
+		$archiveFilename = $tempPath . 'PyYAML-3.10.tar.gz';
+		$archiveContent = GeneralUtility::getUrl($url);
+		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+			$output[] = '[INFO] PyYAML 3.10 has been downloaded.';
 
-				$targetPath = $sphinxSourcesPath . 'PyYAML';
+			$targetPath = $sphinxSourcesPath . 'PyYAML';
 
-				// Unpack PyYAML archive
-				$out = array();
-				if (static::unarchive($archiveFilename, $targetPath, 'PyYAML-3.10', $out)) {
-					$output[] = '[INFO] PyYAML has been unpacked.';
-				} else {
-					$success = FALSE;
-					$output[] = '[ERROR] Could not extract PyYAML:' . LF . LF . implode($out, LF);
-				}
+			// Unpack PyYAML archive
+			$out = array();
+			if (static::unarchive($archiveFilename, $targetPath, 'PyYAML-3.10', $out)) {
+				$output[] = '[INFO] PyYAML has been unpacked.';
 			} else {
 				$success = FALSE;
-				$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
+				$output[] = '[ERROR] Could not extract PyYAML:' . LF . LF . implode($out, LF);
 			}
+		} else {
+			$success = FALSE;
+			$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
 		}
 
 		return $success;
@@ -759,30 +748,25 @@ EOT;
 		$tempPath = static::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
-		if (!CommandUtility::checkCommand('tar')) {
-			$success = FALSE;
-			$output[] = '[WARNING] Could not find command tar. Python Imaging Library was not installed.';
-		} else {
-			$url = 'http://effbot.org/media/downloads/Imaging-1.1.7.tar.gz';
-			$archiveFilename = $tempPath . 'Imaging-1.1.7.tar.gz';
-			$archiveContent = GeneralUtility::getUrl($url);
-			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
-				$output[] = '[INFO] Python Imaging Library 1.1.7 has been downloaded.';
+		$url = 'http://effbot.org/media/downloads/Imaging-1.1.7.tar.gz';
+		$archiveFilename = $tempPath . 'Imaging-1.1.7.tar.gz';
+		$archiveContent = GeneralUtility::getUrl($url);
+		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+			$output[] = '[INFO] Python Imaging Library 1.1.7 has been downloaded.';
 
-				$targetPath = $sphinxSourcesPath . 'Imaging';
+			$targetPath = $sphinxSourcesPath . 'Imaging';
 
-				// Unpack Python Imaging Library archive
-				$out = array();
-				if (static::unarchive($archiveFilename, $targetPath, 'Imaging-1.1.7', $out)) {
-					$output[] = '[INFO] Python Imaging Library has been unpacked.';
-				} else {
-					$success = FALSE;
-					$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
-				}
+			// Unpack Python Imaging Library archive
+			$out = array();
+			if (static::unarchive($archiveFilename, $targetPath, 'Imaging-1.1.7', $out)) {
+				$output[] = '[INFO] Python Imaging Library has been unpacked.';
 			} else {
 				$success = FALSE;
-				$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
+				$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
 			}
+		} else {
+			$success = FALSE;
+			$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
 		}
 
 		return $success;
@@ -854,30 +838,25 @@ EOT;
 		$tempPath = static::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
-		if (!CommandUtility::checkCommand('tar')) {
-			$success = FALSE;
-			$output[] = '[WARNING] Could not find command tar. Pygments was not installed.';
-		} else {
-			$url = 'https://bitbucket.org/birkenfeld/pygments-main/get/1.6.tar.gz';
-			$archiveFilename = $tempPath . 'pygments-1.6.tar.gz';
-			$archiveContent = GeneralUtility::getUrl($url);
-			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
-				$output[] = '[INFO] Pygments 1.6 has been downloaded.';
+		$url = 'https://bitbucket.org/birkenfeld/pygments-main/get/1.6.tar.gz';
+		$archiveFilename = $tempPath . 'pygments-1.6.tar.gz';
+		$archiveContent = GeneralUtility::getUrl($url);
+		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+			$output[] = '[INFO] Pygments 1.6 has been downloaded.';
 
-				$targetPath = $sphinxSourcesPath . 'Pygments';
+			$targetPath = $sphinxSourcesPath . 'Pygments';
 
-				// Unpack Pygments archive
-				$out = array();
-				if (static::unarchive($archiveFilename, $targetPath, 'birkenfeld-pygments-main-', $out)) {
-					$output[] = '[INFO] Pygments has been unpacked.';
-				} else {
-					$success = FALSE;
-					$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
-				}
+			// Unpack Pygments archive
+			$out = array();
+			if (static::unarchive($archiveFilename, $targetPath, 'birkenfeld-pygments-main-', $out)) {
+				$output[] = '[INFO] Pygments has been unpacked.';
 			} else {
 				$success = FALSE;
-				$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
+				$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
 			}
+		} else {
+			$success = FALSE;
+			$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
 		}
 
 		return $success;
@@ -987,30 +966,25 @@ EOT;
 		$tempPath = static::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
-		if (!CommandUtility::checkCommand('tar')) {
-			$success = FALSE;
-			$output[] = '[WARNING] Could not find command tar. rst2pdf was not installed.';
-		} else {
-			$url = 'http://rst2pdf.googlecode.com/files/rst2pdf-0.93.tar.gz';
-			$archiveFilename = $tempPath . 'rst2pdf-0.93.tar.gz';
-			$archiveContent = GeneralUtility::getUrl($url);
-			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
-				$output[] = '[INFO] rst2pdf 0.93 has been downloaded.';
+		$url = 'http://rst2pdf.googlecode.com/files/rst2pdf-0.93.tar.gz';
+		$archiveFilename = $tempPath . 'rst2pdf-0.93.tar.gz';
+		$archiveContent = GeneralUtility::getUrl($url);
+		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+			$output[] = '[INFO] rst2pdf 0.93 has been downloaded.';
 
-				$targetPath = $sphinxSourcesPath . 'rst2pdf';
+			$targetPath = $sphinxSourcesPath . 'rst2pdf';
 
-				// Unpack rst2pdf archive
-				$out = array();
-				if (static::unarchive($archiveFilename, $targetPath, 'rst2pdf-0.93', $out)) {
-					$output[] = '[INFO] rst2pdf has been unpacked.';
-				} else {
-					$success = FALSE;
-					$output[] = '[ERROR] Could not extract rst2pdf:' . LF . LF . implode($out, LF);
-				}
+			// Unpack rst2pdf archive
+			$out = array();
+			if (static::unarchive($archiveFilename, $targetPath, 'rst2pdf-0.93', $out)) {
+				$output[] = '[INFO] rst2pdf has been unpacked.';
 			} else {
 				$success = FALSE;
-				$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
+				$output[] = '[ERROR] Could not extract rst2pdf:' . LF . LF . implode($out, LF);
 			}
+		} else {
+			$success = FALSE;
+			$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
 		}
 
 		return $success;
@@ -1167,11 +1141,38 @@ EOT;
 		if (substr($archiveFilename, -4) === '.zip') {
 			$unzip = escapeshellarg(CommandUtility::getCommand('unzip'));
 			$cmd = $unzip . ' ' . escapeshellarg($archiveFilename) . ' -d ' . escapeshellarg($targetDirectory) . ' 2>&1';
+			static::exec($cmd, $output, $ret);
 		} else {
-			$tar = escapeshellarg(CommandUtility::getCommand('tar'));
-			$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetDirectory) . ' 2>&1';
+			if (CommandUtility::checkCommand('tar')) {
+				$tar = escapeshellarg(CommandUtility::getCommand('tar'));
+				$cmd = $tar . ' xzvf ' . escapeshellarg($archiveFilename) . ' -C ' . escapeshellarg($targetDirectory) . ' 2>&1';
+				static::exec($cmd, $output, $ret);
+			} else {
+				// Fallback method
+				try {
+					// Remove similar .tar archives (possible garbage from previous run)
+					$tarFilePattern = dirname($archiveFilename) . DIRECTORY_SEPARATOR;
+					$tarFilePattern .= preg_replace('/(-[0-9.]+)?\.tar\.gz$/', '*.tar', basename($archiveFilename));
+					$files = glob($tarFilePattern);
+					foreach ($files as $file) {
+						@unlink($file);
+					}
+					// Decompress from .gz
+					$p = new \PharData($archiveFilename);
+					$phar = $p->decompress();
+					$phar->extractTo($targetDirectory);
+					// Remove garbage
+					$files = glob($tarFilePattern);
+					foreach ($files as $file) {
+						@unlink($file);
+					}
+					$ret = 0;
+				} catch (\Exception $e) {
+					$output[] = $e->getMessage();
+					$ret = 1;
+				}
+			}
 		}
-		static::exec($cmd, $output, $ret);
 		if ($ret === 0) {
 			$success = TRUE;
 			if ($moveContentOutsideOfDirectoryPrefix !== NULL) {
