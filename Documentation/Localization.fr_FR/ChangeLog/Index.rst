@@ -22,9 +22,9 @@ Ce qui suit est une vue d'ensemble très haut niveau des changements de cette ex
 
 .. tabularcolumns:: |r|p{13.7cm}|
 
-=======  ======================================================
+=======  ====================================================================
 Version  Changements
-=======  ======================================================
+=======  ====================================================================
 1.2.0    - Éditeur de documentation amélioré avec navigateur de références croisées
          - Support for des bibliothèques sphinx-contrib (inclusion Youtube, ...)
 1.1.0    - Support de documentation multilingue
@@ -45,4 +45,4 @@ Version  Changements
 0.2.0    Assistant pour créer une documentation TYPO3 avec le modèle officiel
 0.1.0    Première publication sur le TER (alpha pour un premier retour d'expérience)
 0.0.1    Non publiée sur le TER, l'extension est compatible avec TYPO3 4.5-4.7 et peut être récupérée depuis `le tag Subversion 0.0.1 <https://svn.typo3.org/TYPO3v4/Extensions/sphinx/tags/0.0.1/>`_
-=======  ======================================================
+=======  ====================================================================
