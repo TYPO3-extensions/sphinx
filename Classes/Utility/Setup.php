@@ -396,9 +396,12 @@ EOT;
 
 		// Compatibility with Windows platform
 		$globalSettingsFilename = str_replace('/', DIRECTORY_SEPARATOR, $globalSettingsFilename);
-		$isPatched = FALSE;
 
-		if (TYPO3_OS !== 'WIN' && static::hasLibrary('rst2pdf', $sphinxVersion)) {
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
+		$installRst2Pdf = TYPO3_OS !== 'WIN' && $configuration['install_rst2pdf'] === '1';
+		$isPatched = !$installRst2Pdf;
+
+		if ($installRst2Pdf && static::hasLibrary('rst2pdf', $sphinxVersion)) {
 			if (is_file($globalSettingsFilename)) {
 				$globalSettings = file_get_contents($globalSettingsFilename);
 				$rst2pdfLibrary = 'rst2pdf.pdfbuilder';

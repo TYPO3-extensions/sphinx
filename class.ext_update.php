@@ -235,14 +235,15 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected function buildSphinx(array $data, array &$output) {
 		$success = FALSE;
 		$version = $data['name'];
+		$installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
 
 		if (Setup::hasSphinxSources($version)) {
 			$success = Setup::buildSphinx($version, $output);
 			if ($success) {
-				if (TYPO3_OS !== 'WIN' && Setup::hasPIL()) {
+				if ($installRst2Pdf && Setup::hasPIL()) {
 					$success &= Setup::buildPIL($version, $output);
 				}
-				if (TYPO3_OS !== 'WIN' && Setup::hasRst2Pdf()) {
+				if ($installRst2Pdf && Setup::hasRst2Pdf()) {
 					$success &= Setup::buildRst2Pdf($version, $output);
 				}
 				if (Setup::hasPyYaml()) {
