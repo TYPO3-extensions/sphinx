@@ -164,7 +164,8 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$hasSources = Setup::hasSphinxSources($version['name']);
 			$hasLibraries = Setup::hasPyYaml()
 				&& Setup::hasPygments()
-				&& Setup::hasRestTools();
+				&& Setup::hasRestTools()
+				&& Setup::hasThirdPartyLibraries();
 			if ($installRst2Pdf) {
 				$hasLibraries &= Setup::hasPIL();
 				$hasLibraries &= Setup::hasRst2Pdf();
@@ -218,6 +219,9 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		if (!Setup::hasRestTools()) {
 			$success &= Setup::downloadRestTools($output);
 		}
+		if (!Setup::hasThirdPartyLibraries()) {
+			$success &= Setup::downloadThirdPartyLibraries($output);
+		}
 		if (!Setup::hasPygments()) {
 			$success &= Setup::downloadPygments($output);
 		}
@@ -254,6 +258,12 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				}
 				if (Setup::hasRestTools()) {
 					$success &= Setup::buildRestTools($version, $output);
+				}
+				if (Setup::hasThirdPartyLibraries()) {
+					$selectedPlugins = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->configuration['plugins'], TRUE);
+					foreach ($selectedPlugins as $selectedPlugin) {
+						$success &= Setup::buildThirdPartyLibraries($selectedPlugin, $version, $output);
+					}
 				}
 			}
 		}

@@ -827,6 +827,21 @@ HTML;
 						$pythonLine .= LF . '}';
 						$i--;
 						break;
+					case 'extensions':
+						$pythonLine = 'extensions = [';
+						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
+							$indent = $matches[1];
+							$firstItem = TRUE;
+							while (preg_match('/^' . $indent . '- (.+)/', $lines[++$i], $matches)) {
+								if (!$firstItem) {
+									$pythonLine .= ', ';
+								}
+								$pythonLine .= sprintf('\'%s\'', $matches[1]);
+								$firstItem = FALSE;
+							}
+						}
+						$pythonLine .= ']';
+						break;
 					case 'intersphinx_mapping':
 						$pythonLine = 'intersphinx_mapping = {' . LF;
 						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {

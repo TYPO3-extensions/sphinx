@@ -28,4 +28,7 @@ conf.py:
     t3cmsapi:
     - http://typo3.org/api/typo3cms/
     - null
+  extensions:
+  - sphinx.ext.intersphinx
+  - sphinxcontrib.youtube
 ...

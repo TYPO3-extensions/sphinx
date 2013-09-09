@@ -24,6 +24,7 @@ The following is a very high level overview of the changes in this extension. Fo
 Version  Changes
 =======  ======================================================
 1.2.0    - Enhanced documentation editor with cross-references browser
+         - Support for sphinx-contrib libraries (Youtube inclusion, ...)
 1.1.0    - Support for multilingual documentation
          - Extend EXT:documentation (TYPO3 6.2)
          - Pygments with TypoScript highlighting

@@ -46,8 +46,20 @@ et les manuels officiels dotés d'une documentation basée sur reStructuredText/
 une clé d'extension, une partie du titre d'une extension ou quelques mots issus de sa description et de
 sélectionner l'entrée correspondante grâce au mécanisme de complètement automatique.
 
-Une fois que vous avez trouvé la référence qui vous intéresse, il vous suffit de cliquer sur celle-ci pour
-l'insérer avec la syntaxe reStructuredText correcte dans votre document.
+.. only:: latex
+
+	Une fois que vous avez trouvé la référence qui vous intéresse, il vous suffit de cliquer sur celle-ci pour
+	l'insérer avec la syntaxe reStructuredText correcte dans votre document.
+
+.. only:: html
+
+	Une fois que vous avez trouvé la référence qui vous intéresse, il vous suffit de cliquer sur celle-ci pour
+	l'insérer avec la syntaxe reStructuredText correcte dans votre document :
+
+	.. youtube:: TShEf6YkREA
+		:width: 100%
+
+	|
 
 Si la référence que vous insérez n'est pas issue de votre documentation (c.-à-d. que vous référencez un autre
 chapitre ou section) mais est une référence croisée vers un autre document, la partie Intersphinx de votre

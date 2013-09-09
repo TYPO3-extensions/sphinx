@@ -6,3 +6,6 @@ pdf_builder =
 
 # cat=basic//30; type=boolean; label=Install rst2pdf: Locally build rst2pdf, additional gcc libraries are needed
 install_rst2pdf = 0
+
+# cat=3rd-party Plugins; type=user[EXT:sphinx/Classes/EM/Configuration.php:Causal\Sphinx\EM\Configuration->getPlugins]; label=Activate plugins: 3rd-party plugins you may use in your documents.
+plugins =

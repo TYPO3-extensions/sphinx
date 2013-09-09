@@ -458,6 +458,189 @@ EOT;
 	}
 
 	/**
+	 * Returns TRUE if the source files of 3rd-party libraries are available locally.
+	 *
+	 * @return boolean
+	 */
+	static public function hasThirdPartyLibraries() {
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$setupFile = $sphinxSourcesPath . 'sphinx-contrib/make-ext.py';
+		return is_file($setupFile);
+	}
+
+	/**
+	 * Downloads the source files of 3rd-party libraries.
+	 *
+	 * @param NULL|array $output Log of operations
+	 * @return boolean TRUE if operation succeeded, otherwise FALSE
+	 * @throws \Exception
+	 * @see https://bitbucket.org/birkenfeld/sphinx-contrib/
+	 */
+	static public function downloadThirdPartyLibraries(array &$output = NULL) {
+		$success = TRUE;
+		$tempPath = static::getTemporaryPath();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+
+		if (!CommandUtility::checkCommand('unzip')) {
+			$success = FALSE;
+			$output[] = '[WARNING] Could not find command unzip. 3rd-party libraries were not installed.';
+		} else {
+			$url = 'https://bitbucket.org/birkenfeld/sphinx-contrib/overview';
+			$content = GeneralUtility::getUrl($url);
+			$content = substr($content, strpos($content, '<dl class="metadata">'));
+			// Search for the download link
+			// <a rel="nofollow"
+			// 			href="/birkenfeld/sphinx-contrib/get/a3d904f8ab24.zip"
+			//		>(download)</a>
+			if (preg_match('#href="(/birkenfeld/sphinx-contrib/get/[0-9a-f]+\.zip)"#', $content, $matches)) {
+				$url = 'https://bitbucket.org' . $matches[1];
+				$archiveFilename = $tempPath . 'sphinx-contrib.zip';
+				$archiveContent = GeneralUtility::getUrl($url);
+				if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+					$output[] = '[INFO] 3rd-party libraries for Sphinx have been downloaded.';
+
+					$targetPath = $sphinxSourcesPath . 'sphinx-contrib';
+
+					// Unpack 3rd-party libraries archive
+					$out = array();
+					if (static::unarchive($archiveFilename, $targetPath, 'birkenfeld-sphinx-contrib-', $out)) {
+						$output[] = '[INFO] 3rd-party libraries for Sphinx have been unpacked.';
+					} else {
+						$success = FALSE;
+						$output[] = '[ERROR] Could not extract 3rd-party libraries for Sphinx:' . LF . LF . implode($out, LF);
+					}
+				} else {
+					$success = FALSE;
+					$output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
+				}
+			} else {
+				$success = FALSE;
+				$output[] = '[ERROR] Could not fetch ' . htmlspecialchars($url);
+			}
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Builds and installs 3rd-party libraries locally.
+	 *
+	 * @param string $plugin The 3rd-party plugin to build
+	 * @param string $sphinxVersion The Sphinx version to build 3rd-party libraries for
+	 * @param NULL|array $output Log of operations
+	 */
+	static public function buildThirdPartyLibraries($plugin, $sphinxVersion, array &$output = NULL) {
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$sphinxPath = static::getSphinxPath();
+
+		$pythonHome = $sphinxPath . $sphinxVersion;
+		$pythonLib = $pythonHome . '/lib/python';
+
+		// Compatibility with Windows platform
+		$pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
+		$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
+
+		if (!is_dir($pythonLib)) {
+			$success = FALSE;
+			$output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
+			return $success;
+		}
+
+		$setupFile = $sphinxSourcesPath . 'sphinx-contrib' . DIRECTORY_SEPARATOR . $plugin . DIRECTORY_SEPARATOR . 'setup.py';
+		if (is_file($setupFile)) {
+			$success = static::buildWithPython(
+				'3rd-party extension "sphinxcontrib.' . $plugin . '"',
+				$setupFile,
+				$pythonHome,
+				$pythonLib,
+				$output
+			);
+		} else {
+			$success = FALSE;
+			$output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
+		}
+
+		return $success;
+	}
+
+	/**
+	 * Returns a list of available 3rd-party plugins.
+	 *
+	 * @return array
+	 */
+	static public function getAvailableThirdPartyPlugins() {
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$pluginsPath = $sphinxSourcesPath . 'sphinx-contrib/';
+		$plugins = array();
+
+		$descriptions = array(
+			'aafig' => 'render embeded ASCII art as nice images using aafigure.',
+			'actdiag' => 'embed activity diagrams by using actdiag',
+			'adadomain' => 'an extension for Ada support (Sphinx 1.0 needed)',
+			'ansi' => 'parse ANSI color sequences inside documents',
+			'autorun' => 'Execute code in a runblock directive.',
+			'blockdiag' => 'embed block diagrams by using blockdiag',
+			'cheeseshop' => 'easily link to PyPI packages',
+			'clearquest' => 'create tables from ClearQuest queries.',
+			'coffeedomain' => 'a domain for (auto)documenting CoffeeScript source code.',
+			'context' => 'a builder for ConTeXt.',
+			'doxylink' => 'Link to external Doxygen-generated HTML documentation',
+			'email' => 'obfuscate email addresses',
+			'erlangdomain' => 'an extension for Erlang support (Sphinx 1.0 needed)',
+			'exceltable' => 'embed Excel spreadsheets into documents using exceltable',
+			'feed' => 'an extension for creating syndication feeds and time-based overviews from your site content',
+			'findanything' => 'an extension to add Sublime Text 2 like findanything panel to your documentation to find pages, sections and index entries while typing',
+			'gnuplot' => 'produces images using gnuplot language.',
+			'googleanalytics' => 'track html visitors statistics',
+			'googlechart' => 'embed charts by using Google Chart_',
+			'googlemaps' => 'embed maps by using Google Maps_',
+			'httpdomain' => 'a domain for documenting RESTful HTTP APIs.',
+			'hyphenator' => 'client-side hyphenation of HTML using hyphenator',
+			'lilypond' => 'an extension inserting music scripts from Lilypond in PNG format.',
+			'matlabdomain' => 'document MATLAB code.',
+			'mockautodoc' => 'mock imports.',
+			'mscgen' => 'embed mscgen-formatted MSC (Message Sequence Chart)s.',
+			'napoleon' => 'supports Google style and NumPy style docstrings.',
+			'nicoviceo' => 'embed videos from nicovideo',
+			'nwdiag' => 'embed network diagrams by using nwdiag',
+			'omegat' => 'support tools to collaborate with OmegaT (Sphinx 1.1 needed)',
+			'osaka' => 'convert standard Japanese doc to Osaka dialect (it is joke extension)',
+			'paverutils' => 'an alternate integration of Sphinx with Paver.',
+			'phpdomain' => 'an extension for PHP support',
+			'plantuml' => 'embed UML diagram by using PlantUML',
+			'rawfiles' => 'copy raw files, like a CNAME.',
+			'requirements' => 'declare requirements wherever you need (e.g. in test docstrings), mark statuses and collect them in a single list',
+			'restbuilder' => 'a builder for reST (reStructuredText) files.',
+			'rubydomain' => 'an extension for Ruby support (Sphinx 1.0 needed)',
+			'sadisplay' => 'display SqlAlchemy model sadisplay',
+			'sdedit' => 'an extension inserting sequence diagram by using Quick Sequence. Diagram Editor (sdedit)',
+			'seqdiag' => 'embed sequence diagrams by using seqdiag',
+			'slide' => 'embed presentation slides on slideshare and other sites.',
+			'swf' => 'embed flash files',
+			'sword' => 'an extension inserting Bible verses from Sword.',
+			'tikz' => 'draw pictures with the TikZ/PGF LaTeX package.',
+			'traclinks' => 'create TracLinks to a Trac instance from within Sphinx',
+			'whooshindex' => 'whoosh indexer extension',
+			'youtube' => 'embed videos from YouTube',
+			'zopeext' => 'provide an autointerface directive for using Zope interfaces.',
+		);
+
+		$directories = GeneralUtility::get_dirs($pluginsPath);
+		foreach ($directories as $directory) {
+			if ($directory{0} === '_' || !is_file($pluginsPath . $directory . '/README.rst')) {
+				continue;
+			}
+			$plugins[] = array(
+				'name' => $directory,
+				'description' => isset($descriptions[$directory]) ? $descriptions[$directory] : '',
+				'readme' => substr($pluginsPath . $directory . '/README.rst', strlen(PATH_site) - 1),
+			);
+		}
+
+		return $plugins;
+	}
+
+	/**
 	 * Returns TRUE if the source files of PyYAML are available locally.
 	 *
 	 * @return boolean

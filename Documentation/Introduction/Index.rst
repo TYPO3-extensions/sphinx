@@ -18,7 +18,21 @@ Introduction
 What does it do?
 ----------------
 
-This extension lets you build documentation projects written with Sphinx_ (the Python Documentation Generator used by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend. Watch `5 min tutorial video`_.
+.. only:: latex
+
+	This extension lets you build documentation projects written with Sphinx_ (the Python Documentation Generator used
+	by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend.
+	Watch `5 min tutorial video`_.
+
+.. only:: html
+
+	This extension lets you build documentation projects written with Sphinx_ (the Python Documentation Generator used
+	by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend:
+
+	.. youtube:: YeGqHMDT7R8
+		:width: 100%
+
+	|
 
 Sphinx was originally created for the Python documentation and a few features are worth highlighting:
 

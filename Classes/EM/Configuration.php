@@ -131,6 +131,71 @@ JS;
 		return implode(LF, $out);
 	}
 
+	/**
+	 * Returns an Extension Manager field for selecting the 3rd-party Sphinx plugins to use.
+	 *
+	 * @param array $params
+	 * @param \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj
+	 * @return string
+	 */
+	public function getPlugins(array $params, \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj) {
+		$out = array();
+		$plugins = \Causal\Sphinx\Utility\Setup::getAvailableThirdPartyPlugins();
+
+		$out[] = '<div class="typo3-message message-warning">';
+		//$out[] = '<div class="message-header">Message head</div>';
+		$out[] = '<div class="message-body">';
+		$out[] = '<strong>Beware:</strong> Make sure to use only plugins available on docs.typo3.org if you plan to publish documents.';
+		$out[] = '</div>';
+		$out[] = '</div>';
+
+		$out[] = '<div class="typo3-message message-information">';
+		//$out[] = '<div class="message-header">Message head</div>';
+		$out[] = '<div class="message-body">';
+		$out[] = 'Please rebuild your Sphinx environment after activating plugins.';
+		$out[] = '</div>';
+		$out[] = '</div>';
+
+		$selectedPlugins = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $params['fieldValue'], TRUE);
+
+		$i = 0;
+		foreach ($plugins as $plugin) {
+			$out[] = '<div style="margin-top:1ex">';
+			$label = 'sphinxcontrib.' . $plugin['name'];
+			$checked = in_array($plugin['name'], $selectedPlugins) ? ' checked="checked"' : '';
+
+			$out[] = '<input type="checkbox" id="sphinx_plugin_' . $i . '" name="sphinx_plugin" value="' . htmlspecialchars($plugin['name']) . '"' . $checked . ' onclick="toggleSphinxPlugin();" />';
+			$out[] = '<label for="sphinx_plugin_' . $i . '" style="display:inline"><strong>' . $label . '</strong></label>';
+			$out[] = '<div style="margin-left:1.5em">';
+			$out[] = htmlspecialchars($plugin['description'] ?: 'n/a');
+			$out[] = '<br /><a href="' . $plugin['readme'] . '" target="_sphinx-plugin" title="Read documentation">documentation</a>';
+			$out[] = '</div>';
+			$out[] = '</div>';
+			$i++;
+		}
+
+		$fieldId = str_replace(array('[', ']'), '_', $params['fieldName']);
+		$out[] = '<script type="text/javascript">';
+		$out[] = <<<JS
+
+function toggleSphinxPlugin() {
+	var plugins = document.getElementsByName('sphinx_plugin');
+	var selectedPlugins = [];
+	for (var i = 0; i < plugins.length; i++) {
+		if (plugins[i].checked) {
+			selectedPlugins.push(plugins[i].value);
+		}
+	}
+	document.getElementById("{$fieldId}").value = selectedPlugins.join(',');
+}
+
+JS;
+		$out[] = '</script>';
+		$out[] = '<input type="hidden" id="' . $fieldId . '" name="' . $params['fieldName'] .  '" value="' . $params['fieldValue'] . '" />';
+
+		return implode(LF, $out);
+	}
+
 }
 
 ?>

@@ -18,9 +18,22 @@ Présentation
 Qu'est-ce que ça fait ?
 -----------------------
 
-Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (the générateur de documentation
-Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le Backend de TYPO3.
-Regarder le `tutoriel vidéo de 5 min`_ (anglais).
+.. only:: latex
+
+	Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (the générateur de
+	documentation Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le
+	Backend de TYPO3. Regarder le `tutoriel vidéo de 5 min`_ (anglais).
+
+.. only:: html
+
+	Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (the générateur de
+	documentation Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le
+	Backend de TYPO3 :
+
+	.. youtube:: YeGqHMDT7R8
+		:width: 100%
+
+	|
 
 Sphinx a été créé à l'origine pour préparer la documentation Python et certaines caractéristiques valent la peine d'être
 mises en évidence :

@@ -367,6 +367,31 @@ YAML;
 		@unlink($fixtureFilename);
 	}
 
+	/**
+	 * @test
+	 */
+	public function canParseExtensionsConfiguration() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  extensions:
+  - sphinx.ext.intersphinx
+  - sphinxcontrib.youtube
+YAML;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		$pythonConfiguration = GeneralUtility::yamlToPython($fixtureFilename);
+		$expected = array(
+			"extensions = ['sphinx.ext.intersphinx', 'sphinxcontrib.youtube']"
+		);
+		$this->assertSame($expected, $pythonConfiguration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
 }
 
 ?>

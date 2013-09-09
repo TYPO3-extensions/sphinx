@@ -42,8 +42,20 @@ At the beginning an input box lets you show the references of any other extensio
 a reStructuredText/Sphinx-based documentation. Just type an extension key, part of the extension title or some
 words from its description and selects it using the autocompletion mechanism.
 
-Once you have found the reference you are interested in, using it is just a matter of clicking on its name
-to insert it using the proper reStructuredText syntax in your document.
+.. only:: latex
+
+	Once you have found the reference you are interested in, using it is just a matter of clicking on its name
+	to insert it using the proper reStructuredText syntax in your document.
+
+.. only:: html
+
+	Once you have found the reference you are interested in, using it is just a matter of clicking on its name
+	to insert it using the proper reStructuredText syntax in your document:
+
+	.. youtube:: TShEf6YkREA
+		:width: 100%
+
+	|
 
 In case the reference you insert is not coming from your documentation (that is, you are referencing another
 chapter or section) but is a cross-reference to another document, the Intersphinx mapping of your configuration

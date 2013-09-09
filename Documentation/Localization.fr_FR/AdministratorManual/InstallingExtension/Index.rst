@@ -76,6 +76,8 @@ général d'importation de Sphinx est le suivant :
 
 #. Installation des commandes liées à TYPO3 fournies par l'équipe de documentation (utilitaires ReST TYPO3)
 
+#. Récupération des extensions facultatives pour Sphinx: https://bitbucket.org/birkenfeld/sphinx-contrib/
+
 Les boutons d'installation manuelle vous permettent de modifier les fichiers et de recompiler votre environnement. C'est
 particulièrement pratique si vous souhaitez utiliser le `dépôt git des utilitaires ReST TYPO3`_ au lieu d'un instantané
 (*snapshot*).
