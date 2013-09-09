@@ -55,9 +55,9 @@ Everything should work out-of-the-box. Possible problems will be reported as Fla
 
 #. Build the Python libraries into directory ``EXT:sphinx/Resources/Private/sphinx/<version>/``
 
-#. *[Not on MS Windows]* Install Python Imaging Library (https://pypi.python.org/pypi/PIL), needed for supporting common image types with ``rst2pdf``
+#. *[Not on MS Windows, other OS : if activated]* Install Python Imaging Library (https://pypi.python.org/pypi/PIL), needed for supporting common image types with ``rst2pdf``
 
-#. *[Not on MS Windows]* Install ``rst2pdf`` (http://rst2pdf.ralsina.com.ar/), as a simple way of building PDF
+#. *[Not on MS Windows, other OS : if activated]* Install ``rst2pdf`` (http://rst2pdf.ralsina.com.ar/), as a simple way of building PDF
 
 #. Install PyYAML library (http://pyyaml.org/wiki/PyYAML), needed for building TYPO3 documentation
 

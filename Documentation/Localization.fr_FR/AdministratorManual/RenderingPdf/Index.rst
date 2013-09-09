@@ -14,7 +14,7 @@ Rendu PDF depuis reStructuredText
 Sphinx utilise des *générateurs* pour préparer le rendu. Le "nom" du générateur pour un rendu PDF est soit ``latex``
 (meilleur rendu) soit ``rst2pdf``.
 
-``rst2pdf`` est un utilitaire écrit en Python et disponible sur http://rst2pdf.ralsina.com.ar/. Cet utilitaire est
+``rst2pdf`` est un utilitaire écrit en Python et disponible sur http://rst2pdf.ralsina.com.ar/. Cet utilitaire peut être
 automatiquement installé et configuré lorsque vous installez cette extension. Le rendu PDF avec ``rst2pdf`` n'est de loin
 pas aussi bon que lorsque vous utilisez LaTeX mais il a le net avantage de ne pas nécessiter d'installer un environnement
 LaTeX complet sur votre machine.

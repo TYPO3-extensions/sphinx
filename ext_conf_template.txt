@@ -1,5 +1,8 @@
 # cat=basic//10; type=user[EXT:sphinx/Classes/EM/Configuration.php:Causal\Sphinx\EM\Configuration->getVersions]; label=Sphinx version: Please select the Sphinx version to be used:
 version =
 
-# cat=basic//20; type=options[rst2pdf=rst2pdf,LaTeX (better output)=pdflatex]; label=PDF Builder: Please select the builder to use to render PDF
-pdf_builder = rst2pdf
+# cat=basic//20; type=options[- none -=,rst2pdf=rst2pdf,LaTeX (better output)=pdflatex]; label=PDF Builder: Please select the builder to use to render PDF
+pdf_builder =
+
+# cat=basic//30; type=boolean; label=Install rst2pdf: Locally build rst2pdf, additional gcc libraries are needed
+install_rst2pdf = 0

@@ -44,6 +44,16 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	/** @var string */
 	protected $extKey = 'sphinx';
 
+	/** @var array */
+	protected $configuration;
+
+	/**
+	 * Default constructor.
+	 */
+	public function __construct() {
+		$this->configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
+	}
+
 	/**
 	 * Checks whether the "UPDATE!" menu item should be
 	 * shown.
@@ -146,6 +156,8 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$out[] = '<td>Manual Process</td>';
 		$out[] = '</tr>';
 
+		$installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
+
 		$i = 0;
 		foreach ($availableVersions as $version) {
 			$isInstalled = GeneralUtility::inArray($localVersions, $version['name']);
@@ -153,7 +165,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$hasLibraries = Setup::hasPyYaml()
 				&& Setup::hasPygments()
 				&& Setup::hasRestTools();
-			if (TYPO3_OS !== 'WIN') {
+			if ($installRst2Pdf) {
 				$hasLibraries &= Setup::hasPIL();
 				$hasLibraries &= Setup::hasRst2Pdf();
 			}
@@ -187,16 +199,17 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function downloadSphinx(array $data, array &$output) {
 		$success = TRUE;
+		$installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
 		$version = $data['name'];
 		$url = 'https://bitbucket.org' . $data['url'];
 
 		if (!Setup::hasSphinxSources($version)) {
 			$success &= Setup::downloadSphinxSources($version, $url, $output);
 		}
-		if (TYPO3_OS !== 'WIN' && !Setup::hasPIL()) {
+		if ($installRst2Pdf && !Setup::hasPIL()) {
 			$success &= Setup::downloadPIL($output);
 		}
-		if (TYPO3_OS !== 'WIN' && !Setup::hasRst2Pdf()) {
+		if ($installRst2Pdf && !Setup::hasRst2Pdf()) {
 			$success &= Setup::downloadRst2Pdf($output);
 		}
 		if (!Setup::hasPyYaml()) {

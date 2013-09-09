@@ -282,8 +282,10 @@ class DocumentationController extends AbstractActionController {
 				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
 				break;
 			case 'rst2pdf':
-			default:
 				$renderPdf = TRUE;
+				break;
+			default:
+				$renderPdf = FALSE;
 				break;
 		}
 		if ($renderPdf) {

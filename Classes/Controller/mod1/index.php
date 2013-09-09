@@ -263,6 +263,9 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			case 'rst2pdf':
 				$renderPdf = TRUE;
 				break;
+			default:
+				$renderPdf = FALSE;
+				break;
 		}
 		$values = array(
 			'project' => $this->project,

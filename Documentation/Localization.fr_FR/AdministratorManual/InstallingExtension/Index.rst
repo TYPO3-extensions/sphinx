@@ -63,10 +63,10 @@ général d'importation de Sphinx est le suivant :
 
 #. Compilation des bibliothèques Python dans le répertoire ``EXT:sphinx/Resources/Private/sphinx/<version>/``
 
-#. *[Pas sous MS Windows]* Installation de la bibliothèque graphique Python (https://pypi.python.org/pypi/PIL),
+#. *[Pas sous MS Windows, autres systèmes : si activé]* Installation de la bibliothèque graphique Python (https://pypi.python.org/pypi/PIL),
    nécessaire pour supporter les formats d'images courants avec ``rst2pdf``
 
-#. *[Pas sous MS Windows]* Installation de ``rst2pdf`` (http://rst2pdf.ralsina.com.ar/), comme méthode simple pour générer
+#. *[Pas sous MS Windows, autres systèmes : si activé]* Installation de ``rst2pdf`` (http://rst2pdf.ralsina.com.ar/), comme méthode simple pour générer
    des PDF
 
 #. Installation de la bibliothèque PyYAML (http://pyyaml.org/wiki/PyYAML), nécessaire pour générer la documentation TYPO3
