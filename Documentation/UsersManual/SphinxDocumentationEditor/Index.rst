@@ -42,7 +42,7 @@ At the beginning an input box lets you show the references of any other extensio
 a reStructuredText/Sphinx-based documentation. Just type an extension key, part of the extension title or some
 words from its description and selects it using the autocompletion mechanism.
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_youtube
 
 	Once you have found the reference you are interested in, using it is just a matter of clicking on its name
 	to insert it using the proper reStructuredText syntax in your document.

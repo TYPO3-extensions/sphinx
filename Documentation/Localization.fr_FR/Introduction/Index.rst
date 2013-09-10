@@ -18,7 +18,7 @@ Présentation
 Qu'est-ce que ça fait ?
 -----------------------
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_youtube
 
 	Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (the générateur de
 	documentation Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le

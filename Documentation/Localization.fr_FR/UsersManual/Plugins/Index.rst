@@ -88,7 +88,7 @@ Extension Sphinx qui génère des graphiques et des graphes à l'aide de
 
 **Rendered:**
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_googlechart
 
 	|sphinxcontrib-googlechart|
 
@@ -117,7 +117,7 @@ Extension Sphinx qui intègre des cartes `Google Maps <http://maps.google.com/>`
 
 **Rendu :**
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_googlemaps
 
 	|sphinxcontrib-googlemaps|
 
@@ -141,7 +141,7 @@ Extension Sphinx qui intègre des diapositives de présentation.
 
 **Rendu :**
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_slide
 
 	|sphinxcontrib-slide|
 
@@ -163,7 +163,7 @@ Extension Sphinx qui intègre une vidéo YouTube en utilisant son ID.
 
 **Rendu :**
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_youtube
 
 	|sphinxcontrib-youtube|
 

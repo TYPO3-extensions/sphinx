@@ -1,6 +1,9 @@
 # cat=basic//10; type=user[EXT:sphinx/Classes/EM/Configuration.php:Causal\Sphinx\EM\Configuration->getVersions]; label=Sphinx version: Please select the Sphinx version to be used:
 version =
 
+# cat=basic//20; type=boolean; label=Deactivate unknown extensions: If ticked, faulty extensions will be deactivated to let the Sphinx compilation continue anyway
+auto_continue = 1
+
 # cat=pdf//10; type=options[- none -=,rst2pdf=rst2pdf,LaTeX (better output)=pdflatex]; label=PDF Builder: Please select the builder to use to render PDF
 pdf_builder =
 

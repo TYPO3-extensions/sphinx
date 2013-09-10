@@ -53,6 +53,17 @@ class SphinxBuilder {
 	}
 
 	/**
+	 * Returns TRUE if sphinx-build should auto-recompile a project with faulty extension
+	 * (after deactivating it of course).
+	 *
+	 * @return boolean
+	 */
+	static protected function autoRecompileWithFaultyExtension() {
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
+		return $configuration['auto_continue'] === '1';
+	}
+
+	/**
 	 * Returns the version of Sphinx used for building documentation.
 	 *
 	 * @return string The version of sphinx
@@ -83,10 +94,11 @@ class SphinxBuilder {
 	 * @param string $buildDirectory Relative path to the build directory
 	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
+	 * @param string $extraTag Optional tag for sphinx-build (to be used with "only" blocks)
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
+	static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', $extraTag = '') {
 		$sphinxBuilder = static::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -110,6 +122,7 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'html';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b html' .								// output format
+			(!empty($extraTag) ? ' -t ' . $extraTag : '') .				// define tag
 			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
@@ -149,10 +162,11 @@ class SphinxBuilder {
 	 * @param string $buildDirectory Relative path to the build directory
 	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
+	 * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static public function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
+	static public function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array()) {
 		$sphinxBuilder = static::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -176,6 +190,7 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'json';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b json' .								// output format
+			(count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') .	// define tags
 			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
@@ -190,6 +205,22 @@ class SphinxBuilder {
 			$output = static::colorize($output);
 		}
 		if ($ret !== 0) {
+			if (is_file($basePath . 'Settings.yml') && static::autoRecompileWithFaultyExtension()) {
+				if (preg_match('/Could not import extension ([^ ]+) /', $output, $matches)) {
+					if (static::deactivateExtension($basePath . $conf, $matches[1])) {
+						$tags[] = 'missing_' . str_replace('.', '_', $matches[1]);
+						return static::buildJson(
+							$basePath,
+							$sourceDirectory,
+							$buildDirectory,
+							$conf,
+							$language,
+							$tags
+						);
+					}
+				}
+			}
+
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
 
@@ -212,10 +243,11 @@ class SphinxBuilder {
 	 * @param string $buildDirectory Relative path to the build directory
 	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
+	 * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static public function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
+	static public function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array()) {
 		$sphinxBuilder = static::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -247,6 +279,7 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b latex' .								// output format
+			(count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') .	// define tags
 			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
@@ -288,18 +321,19 @@ class SphinxBuilder {
 	 * @param string $buildDirectory Relative path to the build directory
 	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
+	 * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static public function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
+	static public function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array()) {
 		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
 
 		switch ($configuration['pdf_builder']) {
 			case 'pdflatex':
-				$output = static::buildPdfWithLaTeX($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
+				$output = static::buildPdfWithLaTeX($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags);
 				break;
 			case 'rst2pdf':
-				$output = static::buildPdfWithRst2Pdf($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
+				$output = static::buildPdfWithRst2Pdf($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags);
 				break;
 			default:
 				throw new \RuntimeException('No available PDF builders.', 1378718863);
@@ -316,10 +350,11 @@ class SphinxBuilder {
 	 * @param string $buildDirectory Relative path to the build directory
 	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
+	 * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static protected function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
+	static protected function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array()) {
 		$make = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make');
 		$pdflatex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex');
 
@@ -347,7 +382,7 @@ class SphinxBuilder {
 			throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
 		}
 
-		$outputLaTeX = static::buildLatex($basePath, $sourceDirectory, $buildDirectory, $conf, $language);
+		$outputLaTeX = static::buildLatex($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags);
 
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
 		if (!empty($make)) {
@@ -410,10 +445,11 @@ class SphinxBuilder {
 	 * @param string $buildDirectory Relative path to the build directory
 	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
+	 * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static protected function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '') {
+	static protected function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array()) {
 		$sphinxBuilder = static::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -437,6 +473,7 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'pdf';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b pdf' .								// output format
+			(count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') .	// define tags
 			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
@@ -689,6 +726,29 @@ class SphinxBuilder {
 		}
 
 		return !empty($locale) ? '-D language=' . $locale : '';
+	}
+
+	/**
+	 * Deactivates an extension.
+	 *
+	 * @param string $filename Absolute filename to conf.py
+	 * @param string $extension Extension to deactivate
+	 * @return boolean TRUE if deactivation succeeded, otherwise FALSE
+	 */
+	static protected function deactivateExtension($filename, $extension) {
+		$contents = file_get_contents($filename);
+
+		$newContents = preg_replace(
+			'/(extensions = \[.*?)\'' . preg_quote($extension) . '\'(,\s*)?(.*?\])/',
+			'\1\3',
+			$contents
+		);
+
+		if ($contents !== $newContents) {
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $newContents);
+		}
+
+		return FALSE;
 	}
 
 	/**

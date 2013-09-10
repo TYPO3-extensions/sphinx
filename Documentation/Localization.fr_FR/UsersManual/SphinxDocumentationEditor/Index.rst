@@ -46,7 +46,7 @@ et les manuels officiels dotés d'une documentation basée sur reStructuredText/
 une clé d'extension, une partie du titre d'une extension ou quelques mots issus de sa description et de
 sélectionner l'entrée correspondante grâce au mécanisme de complètement automatique.
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_youtube
 
 	Une fois que vous avez trouvé la référence qui vous intéresse, il vous suffit de cliquer sur celle-ci pour
 	l'insérer avec la syntaxe reStructuredText correcte dans votre document.

@@ -18,7 +18,7 @@ Introduction
 What does it do?
 ----------------
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_youtube
 
 	This extension lets you build documentation projects written with Sphinx_ (the Python Documentation Generator used
 	by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend.

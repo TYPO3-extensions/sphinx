@@ -87,7 +87,7 @@ This is a Sphinx extension which render charts and graphs by using
 
 **Rendered:**
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_googlechart
 
 	|sphinxcontrib-googlechart|
 
@@ -116,7 +116,7 @@ This is a Sphinx extension which embeds maps using `Google Maps <http://maps.goo
 
 **Rendered:**
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_googlemaps
 
 	|sphinxcontrib-googlemaps|
 
@@ -140,7 +140,7 @@ This is a Sphinx extension for embedding your presentation slides.
 
 **Rendered:**
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_slide
 
 	|sphinxcontrib-slide|
 
@@ -162,7 +162,7 @@ This is a Sphinx extension for embedding a YouTube video using its video ID.
 
 **Rendered:**
 
-.. only:: latex
+.. only:: latex or missing_sphinxcontrib_youtube
 
 	|sphinxcontrib-youtube|
 
