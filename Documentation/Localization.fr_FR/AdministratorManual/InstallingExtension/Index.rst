@@ -114,23 +114,58 @@ Pour terminer, le bouton "remove" supprime à la fois les sources et la version 
 .. Liens :
 .. _`dépôt git des utilitaires ReST TYPO3`: https://git.typo3.org/Documentation/RestTools.git/
 
-Choix de la version de Sphinx à utiliser et de la méthode de génération PDF
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Choix de la version de Sphinx à utiliser
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Depuis le gestionnaire d'extensions, configurez l'extension de façon habituelle :
 
 |em_configure|
 
+Le premier onglet "basic" vous permet de choisir quelle version de Sphinx vous souhaitez utiliser pour
+générer vos documents :
+
+|em-sphinx-version|
+
+
+Choix de la méthode de rendu PDF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 .. index::
 	single: PDF; LaTeX
 	single: PDF; rst2pdf
 
-Et ensuite choisissez quelle version de Sphinx doit être utilisée et quel générateur PDF vous préférez (``rst2pdf`` ou
-LaTeX) :
+Le deuxième onglet "pdf" vous permet de choisir le générateur PDF vous préférez (``rst2pdf`` ou LaTeX) et si vous
+désirez installer et configurer ``rst2pdf`` :
 
-|sphinx_version|
+|em-pdf|
 
 .. tip::
 	**Sauf pour les utilisateurs MS Windows,** ``rst2pdf`` est disponible par défaut avec cette extension. Cependant,
 	si vous souhaitez un meilleur rendu, vous devriez plutôt utiliser LaTeX. Veuillez consulter le
 	chapitre :ref:`admin-rendering-pdf` pour plus d'information.
+
+
+.. _install-plugins:
+
+Choix des modules complémentaires à installer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	pair: Modules; Google Chart
+	pair: Modules; Google Maps
+	pair: Modules; HTTP Domain
+	pair: Modules; YouTube
+	pair: Modules; Slideshare
+
+Le troisième onglet "3rd-party plugins" vous permet d'activer des extensions Sphinx complémentaires. Certaines
+de ces extensions (ou modules) sont disponibles sur docs.typo3.org et conviennent donc à une utilisation dans vos
+manuels d'extensions :
+
+|em-plugins|
+
+Veuillez lire le chapitre :ref:`third-party-plugins` pour comprendre comment les utiliser dans vos documents.
+
+.. important::
+	Assurez-vous de :ref:`régénérer votre environnement Sphinx <configure-sphinx>` après l'activation de nouveaux
+	modules.

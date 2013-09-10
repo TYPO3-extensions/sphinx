@@ -24,6 +24,7 @@ astuces pour se mettre au diapason avec Sphinx et reStructuredText pour vos prop
 	SphinxDocumentationViewer/Index
 	SphinxDocumentationEditor/Index
 	RenderingPdf/Index
+	Plugins/Index
 	SphinxRest/Index
 	DocsTypo3Org/Index
 	AdvancedCrossLinks/Index

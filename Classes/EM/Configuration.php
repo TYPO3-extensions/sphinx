@@ -158,6 +158,17 @@ JS;
 
 		$selectedPlugins = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $params['fieldValue'], TRUE);
 
+		// First show plugins available on docs.typo3.org, then the others
+		$sortedPlugins = array('start' => array(), 'end' => array());
+		foreach ($plugins as $plugin) {
+			if ($plugin['docst3o']) {
+				$sortedPlugins['start'][] = $plugin;
+			} else {
+				$sortedPlugins['end'][] = $plugin;
+			}
+		}
+		$plugins = array_merge($sortedPlugins['start'], $sortedPlugins['end']);
+
 		$i = 0;
 		foreach ($plugins as $plugin) {
 			$out[] = '<div style="margin-top:1ex">';
@@ -166,6 +177,18 @@ JS;
 
 			$out[] = '<input type="checkbox" id="sphinx_plugin_' . $i . '" name="sphinx_plugin" value="' . htmlspecialchars($plugin['name']) . '"' . $checked . ' onclick="toggleSphinxPlugin();" />';
 			$out[] = '<label for="sphinx_plugin_' . $i . '" style="display:inline"><strong>' . $label . '</strong></label>';
+			if ($plugin['docst3o']) {
+				// Plugin is available on docs.typo3.org
+				$imaget3o = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) .
+					'Resources/Public/Images/docst3o.png';
+				$label = 'Plugin is available on docs.typo3.org';
+				$out[] = sprintf(
+					' <img src="%s" alt="%s" title="%s" />',
+					$imaget3o,
+					htmlspecialchars($label),
+					htmlspecialchars($label)
+				);
+			}
 			$out[] = '<div style="margin-left:1.5em">';
 			$out[] = htmlspecialchars($plugin['description'] ?: 'n/a');
 			$out[] = '<br /><a href="' . $plugin['readme'] . '" target="_sphinx-plugin" title="Read documentation">documentation</a>';

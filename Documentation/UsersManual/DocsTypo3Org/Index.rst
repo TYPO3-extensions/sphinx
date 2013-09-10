@@ -53,8 +53,8 @@ A basic ``Settings.yml`` file should define a few basic project information:
 	conf.py:
 	  copyright: 2013
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 1.1
-	  release: 1.1.1
+	  version: 1.2
+	  release: 1.2.0
 
 project
 	The documented project's name.
@@ -249,8 +249,8 @@ within ``Settings.yml``. To do so, add configuration options (lines 6 to 9):
 	conf.py:
 	  copyright: 2013
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 1.1
-	  release: 1.1.1
+	  version: 1.2
+	  release: 1.2.0
 	  intersphinx_mapping:
 	    restdoc:
 	    - http://docs.typo3.org/typo3cms/extensions/restdoc/

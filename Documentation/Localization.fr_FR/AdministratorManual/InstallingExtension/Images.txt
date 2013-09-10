@@ -9,5 +9,11 @@
 .. |import_sphinx| image:: ../../../Images/import_sphinx.png
 	:alt: Importation de Sphinx dans l'environnement local
 
-.. |sphinx_version| image:: ../../../Images/sphinx_version.png
-	:alt: Configuration de la version de Sphinx et du générateur PDF à utiliser par défaut
+.. |em-sphinx-version| image:: ../../../Images/em-sphinx-version.png
+	:alt: Configuration de la version de Sphinx à utiliser par défaut
+
+.. |em-pdf| image:: ../../../Images/em-pdf.png
+	:alt: Configuration du générateur PDF à utiliser
+
+.. |em-plugins| image:: ../../../Images/em-plugins.png
+	:alt: Configuration des extensions à installer

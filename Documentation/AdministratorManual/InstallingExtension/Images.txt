@@ -9,5 +9,11 @@
 .. |import_sphinx| image:: ../../Images/import_sphinx.png
 	:alt: Importing Sphinx to the local environment
 
-.. |sphinx_version| image:: ../../Images/sphinx_version.png
-	:alt: Configuring the version of Sphinx to be used by default and the PDF builder
+.. |em-sphinx-version| image:: ../../Images/em-sphinx-version.png
+	:alt: Configuring the version of Sphinx to be used by default
+
+.. |em-pdf| image:: ../../Images/em-pdf.png
+	:alt: Configuring how to render PDF
+
+.. |em-plugins| image:: ../../Images/em-plugins.png
+	:alt: Configuring the 3rd-party plugins to install

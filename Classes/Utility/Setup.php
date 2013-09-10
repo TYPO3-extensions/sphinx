@@ -466,7 +466,7 @@ EOT;
 	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
-	 * @see https://bitbucket.org/birkenfeld/sphinx-contrib/
+	 * @see https://bitbucket.org/xperseguers/sphinx-contrib/
 	 */
 	static public function downloadThirdPartyLibraries(array &$output = NULL) {
 		$success = TRUE;
@@ -477,14 +477,14 @@ EOT;
 			$success = FALSE;
 			$output[] = '[WARNING] Could not find command unzip. 3rd-party libraries were not installed.';
 		} else {
-			$url = 'https://bitbucket.org/birkenfeld/sphinx-contrib/overview';
+			$url = 'https://bitbucket.org/xperseguers/sphinx-contrib/overview';
 			$content = GeneralUtility::getUrl($url);
 			$content = substr($content, strpos($content, '<dl class="metadata">'));
 			// Search for the download link
 			// <a rel="nofollow"
-			// 			href="/birkenfeld/sphinx-contrib/get/a3d904f8ab24.zip"
+			// 			href="/xperseguers/sphinx-contrib/get/a3d904f8ab24.zip"
 			//		>(download)</a>
-			if (preg_match('#href="(/birkenfeld/sphinx-contrib/get/[0-9a-f]+\.zip)"#', $content, $matches)) {
+			if (preg_match('#href="(/xperseguers/sphinx-contrib/get/[0-9a-f]+\.zip)"#', $content, $matches)) {
 				$url = 'https://bitbucket.org' . $matches[1];
 				$archiveFilename = $tempPath . 'sphinx-contrib.zip';
 				$archiveContent = GeneralUtility::getUrl($url);
@@ -495,7 +495,7 @@ EOT;
 
 					// Unpack 3rd-party libraries archive
 					$out = array();
-					if (static::unarchive($archiveFilename, $targetPath, 'birkenfeld-sphinx-contrib-', $out)) {
+					if (static::unarchive($archiveFilename, $targetPath, 'xperseguers-sphinx-contrib-', $out)) {
 						$output[] = '[INFO] 3rd-party libraries for Sphinx have been unpacked.';
 					} else {
 						$success = FALSE;
@@ -619,6 +619,16 @@ EOT;
 			'zopeext' => 'provide an autointerface directive for using Zope interfaces.',
 		);
 
+		// We have no official list but Xavier Perseguers (@xperseguers) takes care
+		// of maintaining this list
+		$availableOnDocsTypo3Org = array(
+			'googlechart',
+			'googlemaps',
+			'httpdomain',
+			'slide',
+			'youtube',
+		);
+
 		$directories = GeneralUtility::get_dirs($pluginsPath);
 		foreach ($directories as $directory) {
 			if ($directory{0} === '_' || !is_file($pluginsPath . $directory . '/README.rst')) {
@@ -628,6 +638,7 @@ EOT;
 				'name' => $directory,
 				'description' => isset($descriptions[$directory]) ? $descriptions[$directory] : '',
 				'readme' => substr($pluginsPath . $directory . '/README.rst', strlen(PATH_site) - 1),
+				'docst3o' => in_array($directory, $availableOnDocsTypo3Org),
 			);
 		}
 

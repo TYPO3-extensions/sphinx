@@ -93,21 +93,53 @@ Finally, the "remove" button removes both the sources and the corresponding vers
 	Library or ``rst2pdf``.
 
 
-Choosing the version of Sphinx to use and how to render PDF
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Choosing the version of Sphinx
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the Extension Manager, configure this extension as usual:
 
 |em_configure|
 
+The first tab "basic" lets you choose which version of Sphinx should be used to render your documents:
+
+|em-sphinx-version|
+
+
+Choosing how to render PDF
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 .. index::
 	single: PDF; LaTeX
 	single: PDF; rst2pdf
 
-And then choose which version of Sphinx should be used and the PDF builder you prefer (either ``rst2pdf`` or LaTeX):
+The second tab "pdf" lets you choose which PDF builder you prefer (either ``rst2pdf`` or LaTeX) and whether you want
+to install and configure ``rst2pdf``:
 
-|sphinx_version|
+|em-pdf|
 
 .. tip::
 	**Except for MS Windows users,** ``rst2pdf`` is available by default with this extension. However, if you want
 	better output, you should consider using LaTeX instead. Please read chapter :ref:`admin-rendering-pdf` for instructions.
+
+
+.. _install-plugins:
+
+Choosing the 3rd-party plugins to install
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	pair: Plugins; Google Chart
+	pair: Plugins; Google Maps
+	pair: Plugins; HTTP Domain
+	pair: Plugins; YouTube
+	pair: Plugins; Slideshare
+
+The third tab "3rd-party plugins" lets you activate additional Sphinx extensions. Some of them are available on
+docs.typo3.org, and are as such suited for use with your extension manuals:
+
+|em-plugins|
+
+Please read chapter :ref:`third-party-plugins` for instructions on how to use them in your documents.
+
+.. important::
+	Make sure to :ref:`rebuild your Sphinx environment <configure-sphinx>` after activating new plugins.

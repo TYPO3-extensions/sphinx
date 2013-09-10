@@ -56,8 +56,8 @@ Un fichier standard ``Settings.yml`` devrait définir certaines informations gé
 	conf.py:
 	  copyright: 2013
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 1.1
-	  release: 1.1.1
+	  version: 1.2
+	  release: 1.2.0
 
 project
 	Le nom du projet de documentation.
@@ -260,8 +260,8 @@ la correspondance Intersphinx dans ``Settings.yml``. Pour se faire, ajoutez des 
 	conf.py:
 	  copyright: 2013
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 1.1
-	  release: 1.1.1
+	  version: 1.2
+	  release: 1.2.0
 	  intersphinx_mapping:
 	    restdoc:
 	    - http://docs.typo3.org/typo3cms/extensions/restdoc/
