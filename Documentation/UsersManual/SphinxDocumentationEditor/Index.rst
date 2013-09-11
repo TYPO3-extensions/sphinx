@@ -47,7 +47,7 @@ words from its description and selects it using the autocompletion mechanism.
 	Once you have found the reference you are interested in, using it is just a matter of clicking on its name
 	to insert it using the proper reStructuredText syntax in your document.
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_youtube
 
 	Once you have found the reference you are interested in, using it is just a matter of clicking on its name
 	to insert it using the proper reStructuredText syntax in your document:

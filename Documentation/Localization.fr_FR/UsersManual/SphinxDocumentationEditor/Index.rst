@@ -51,7 +51,7 @@ sélectionner l'entrée correspondante grâce au mécanisme de complètement aut
 	Une fois que vous avez trouvé la référence qui vous intéresse, il vous suffit de cliquer sur celle-ci pour
 	l'insérer avec la syntaxe reStructuredText correcte dans votre document.
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_youtube
 
 	Une fois que vous avez trouvé la référence qui vous intéresse, il vous suffit de cliquer sur celle-ci pour
 	l'insérer avec la syntaxe reStructuredText correcte dans votre document :

@@ -24,7 +24,7 @@ What does it do?
 	by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend.
 	Watch `5 min tutorial video`_.
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_youtube
 
 	This extension lets you build documentation projects written with Sphinx_ (the Python Documentation Generator used
 	by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend:

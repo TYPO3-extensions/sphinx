@@ -24,7 +24,7 @@ Qu'est-ce que ça fait ?
 	documentation Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le
 	Backend de TYPO3. Regarder le `tutoriel vidéo de 5 min`_ (anglais).
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_youtube
 
 	Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (the générateur de
 	documentation Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le

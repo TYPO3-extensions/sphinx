@@ -60,7 +60,7 @@ class SphinxBuilder {
 	 */
 	static protected function autoRecompileWithFaultyExtension() {
 		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
-		return $configuration['auto_continue'] === '1';
+		return $configuration['auto_continue'] !== '0';
 	}
 
 	/**
@@ -94,11 +94,11 @@ class SphinxBuilder {
 	 * @param string $buildDirectory Relative path to the build directory
 	 * @param string $conf Relative path to the configuration file conf.py
 	 * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
-	 * @param string $extraTag Optional tag for sphinx-build (to be used with "only" blocks)
+	 * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
 	 * @return string Output of the build process (if succeeded)
 	 * @throws \RuntimeException if build process failed
 	 */
-	static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', $extraTag = '') {
+	static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array()) {
 		$sphinxBuilder = static::getSphinxBuilder();
 
 		if (empty($conf)) {
@@ -122,7 +122,7 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'html';
 		$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 			$sphinxBuilder . ' -b html' .								// output format
-			(!empty($extraTag) ? ' -t ' . $extraTag : '') .				// define tag
+			(count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') .	// define tags
 			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
@@ -137,6 +137,22 @@ class SphinxBuilder {
 			$output = static::colorize($output);
 		}
 		if ($ret !== 0) {
+			if (static::autoRecompileWithFaultyExtension() && static::isTemporaryPath($basePath)) {
+				if (preg_match('/Could not import extension ([^ ]+) /', $output, $matches)) {
+					if (static::deactivateExtension($basePath . $conf, $matches[1])) {
+						$tags[] = 'missing_' . str_replace('.', '_', $matches[1]);
+						return static::buildHtml(
+							$basePath,
+							$sourceDirectory,
+							$buildDirectory,
+							$conf,
+							$language,
+							$tags
+						);
+					}
+				}
+			}
+
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
 
@@ -205,7 +221,7 @@ class SphinxBuilder {
 			$output = static::colorize($output);
 		}
 		if ($ret !== 0) {
-			if (is_file($basePath . 'Settings.yml') && static::autoRecompileWithFaultyExtension()) {
+			if (static::autoRecompileWithFaultyExtension() && static::isTemporaryPath($basePath)) {
 				if (preg_match('/Could not import extension ([^ ]+) /', $output, $matches)) {
 					if (static::deactivateExtension($basePath . $conf, $matches[1])) {
 						$tags[] = 'missing_' . str_replace('.', '_', $matches[1]);
@@ -298,6 +314,22 @@ class SphinxBuilder {
 			copy($templatePath . $templateFile, $basePath . $buildPath . DIRECTORY_SEPARATOR . $templateFile);
 		}
 		if ($ret !== 0) {
+			if (static::autoRecompileWithFaultyExtension() && static::isTemporaryPath($basePath)) {
+				if (preg_match('/Could not import extension ([^ ]+) /', $output, $matches)) {
+					if (static::deactivateExtension($basePath . $conf, $matches[1])) {
+						$tags[] = 'missing_' . str_replace('.', '_', $matches[1]);
+						return static::buildLatex(
+							$basePath,
+							$sourceDirectory,
+							$buildDirectory,
+							$conf,
+							$language,
+							$tags
+						);
+					}
+				}
+			}
+
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
 		}
 
@@ -488,6 +520,22 @@ class SphinxBuilder {
 			$output = static::colorize($output);
 		}
 		if ($ret !== 0 || preg_match('/\[ERROR\] pdfbuilder\.py/', $output)) {
+			if (static::autoRecompileWithFaultyExtension() && static::isTemporaryPath($basePath)) {
+				if (preg_match('/Could not import extension ([^ ]+) /', $output, $matches)) {
+					if (static::deactivateExtension($basePath . $conf, $matches[1])) {
+						$tags[] = 'missing_' . str_replace('.', '_', $matches[1]);
+						return static::buildPdfWithRst2Pdf(
+							$basePath,
+							$sourceDirectory,
+							$buildDirectory,
+							$conf,
+							$language,
+							$tags
+						);
+					}
+				}
+			}
+
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1372003276);
 		}
 
@@ -729,13 +777,14 @@ class SphinxBuilder {
 	}
 
 	/**
-	 * Deactivates an extension.
+	 * Deactivates an extension both in conf.py and Settings.yml.
 	 *
 	 * @param string $filename Absolute filename to conf.py
 	 * @param string $extension Extension to deactivate
 	 * @return boolean TRUE if deactivation succeeded, otherwise FALSE
 	 */
 	static protected function deactivateExtension($filename, $extension) {
+		$extensionIsDeactivated = FALSE;
 		$contents = file_get_contents($filename);
 
 		$newContents = preg_replace(
@@ -745,10 +794,35 @@ class SphinxBuilder {
 		);
 
 		if ($contents !== $newContents) {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $newContents);
+			$extensionIsDeactivated = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $newContents);
 		}
 
-		return FALSE;
+		$settingsYmlFilename = dirname($filename) . '/../Settings.yml';
+		if (is_file($settingsYmlFilename)) {
+			$contents = file_get_contents($settingsYmlFilename);
+			$newContents = preg_replace(
+				'/\s+- ' . preg_quote($extension) . '/',
+				'',
+				$contents
+			);
+
+			if ($contents !== $newContents) {
+				$extensionIsDeactivated = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($settingsYmlFilename, $newContents);
+			}
+		}
+
+		return $extensionIsDeactivated;
+	}
+
+	/**
+	 * Returns TRUE if $path is within the TYPO3 temporary path.
+	 *
+	 * @param string $path
+	 * @return boolean
+	 */
+	static protected function isTemporaryPath($path) {
+		$temporaryPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $temporaryPath);
 	}
 
 	/**
