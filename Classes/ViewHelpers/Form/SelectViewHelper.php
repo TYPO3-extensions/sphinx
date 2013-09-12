@@ -35,8 +35,11 @@ namespace Causal\Sphinx\ViewHelpers\Form;
  */
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper {
 
+	/** @var string */
+	protected $extKey = 'sphinx';
+
 	/**
-	 * Initialize arguments.
+	 * Initializes arguments.
 	 *
 	 * @return void
 	 */
@@ -52,7 +55,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 	}
 
 	/**
-	 * Render the option tags.
+	 * Renders the option tags.
 	 *
 	 * @param array $options the options for the form.
 	 * @return string rendered tags.
@@ -62,23 +65,51 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 		if ($this->hasArgument('prependOptionLabel')) {
 			$value = $this->hasArgument('prependOptionValue') ? $this->arguments['prependOptionValue'] : '';
 			$label = $this->arguments['prependOptionLabel'];
-			$output .= $this->renderOptionTag($value, $label, FALSE) . chr(10);
+			$output .= $this->renderOptionTag($value, $label, '', FALSE) . LF;
 		}
 		if ($this->arguments['groupOptions']) {
 			foreach ($options as $group => $valueLabel) {
-				$output .= '<optgroup label="' . htmlentities($group) . '">';
+				$output .= '<optgroup label="' . htmlspecialchars($group) . '">';
 				foreach ($valueLabel as $value => $label) {
+					if (substr($value, 0, 4) === 'EXT:') {
+						list($extensionKey, $locale) = explode('.', substr($value, 4), 2);
+						$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey) . 'ext_icon.gif';
+					} else {
+						$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) .
+							'Resources/Public/Images/default_icon.gif';
+					}
 					$isSelected = $this->isSelected($value);
-					$output .= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
+					$output .= $this->renderOptionTag($value, $label, $icon, $isSelected) . LF;
 				}
 				$output .= '</optgroup>';
 			}
 		} else {
 			foreach ($options as $value => $label) {
 				$isSelected = $this->isSelected($value);
-				$output .= $this->renderOptionTag($value, $label, $isSelected) . chr(10);
+				$output .= $this->renderOptionTag($value, $label, '', $isSelected) . LF;
 			}
 		}
+		return $output;
+	}
+
+	/**
+	 * Renders one option tag.
+	 *
+	 * @param string $value value attribute of the option tag (will be escaped)
+	 * @param string $label content of the option tag (will be escaped)
+	 * @param string $icon icon to show
+	 * @param boolean $isSelected specifies wheter or not to add selected attribute
+	 * @return string the rendered option tag
+	 */
+	protected function renderOptionTag($value, $label, $icon, $isSelected) {
+		$output = '<option value="' . htmlspecialchars($value) . '"';
+		if ($icon) {
+			$output .= ' data-iconurl="' . $icon . '"';
+		}
+		if ($isSelected) {
+			$output .= ' selected="selected"';
+		}
+		$output .= '>' . htmlspecialchars($label) . '</option>';
 		return $output;
 	}
 
