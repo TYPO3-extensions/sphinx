@@ -51,9 +51,9 @@ Everything should work out-of-the-box. Possible problems will be reported as Fla
 #. Fetch the version as a zip archive from https://bitbucket.org/birkenfeld/sphinx/downloads ("Tags") into
    directory ``typo3temp/``
 
-#. Unpack the zip archive into directory ``EXT:sphinx/Resources/Private/sphinx-sources/<version>/``
+#. Unpack the zip archive into directory ``uploads/tx_sphinx/<version>/``
 
-#. Build the Python libraries into directory ``EXT:sphinx/Resources/Private/sphinx/<version>/``
+#. Build the Python libraries into directory ``typo3temp/tx_sphinx/sphinx-doc/<version>/``
 
 #. *[Not on MS Windows, other OS : if activated]* Install Python Imaging Library (https://pypi.python.org/pypi/PIL), needed for supporting common image types with ``rst2pdf``
 
@@ -80,7 +80,7 @@ Pygments library, ... if they are not available locally.
 
 	.. code-block:: bash
 
-		$ cd /path/to/typo3conf/ext/sphinx/Resources/Private/sphinx-sources/
+		$ cd /path/to/uploads/tx_sphinx/
 		$ sudo rm -rf RestTools
 		$ git clone git://git.typo3.org/Documentation/RestTools.git
 

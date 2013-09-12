@@ -24,7 +24,7 @@ complètement le répertoire ``RestTools`` et d'utiliser un clone du dépôt git
 
 .. code-block:: bash
 
-	$ cd /path/to/typo3conf/ext/sphinx/Resources/Private/sphinx-sources/
+	$ cd /path/to/uploads/tx_sphinx/
 	$ sudo rm -rf RestTools
 	$ git clone git://git.typo3.org/Documentation/RestTools.git
 
@@ -33,7 +33,7 @@ est lié à l'utilisation de ``sudo`` ; c'est donc votre propre mot de passe) :
 
 .. code-block:: bash
 
-	$ cd /path/to/typo3conf/ext/sphinx/Resources/Private/sphinx-sources/RestTools/LaTeX/
+	$ cd /path/to/uploads/tx_sphinx/RestTools/LaTeX/
 	$ cd font/
 	$ ./convert-share.sh
 

@@ -59,9 +59,9 @@ général d'importation de Sphinx est le suivant :
 #. Récupération de la version comme archive zip depuis https://bitbucket.org/birkenfeld/sphinx/downloads ("Tags") dans
    le répertoire ``typo3temp/``
 
-#. Extraction de l'archive zip dans le répertoire ``EXT:sphinx/Resources/Private/sphinx-sources/<version>/``
+#. Extraction de l'archive zip dans le répertoire ``uploads/tx_sphinx/<version>/``
 
-#. Compilation des bibliothèques Python dans le répertoire ``EXT:sphinx/Resources/Private/sphinx/<version>/``
+#. Compilation des bibliothèques Python dans le répertoire ``typo3temp/tx_sphinx/sphinx-doc/<version>/``
 
 #. *[Pas sous MS Windows, autres systèmes : si activé]* Installation de la bibliothèque graphique Python (https://pypi.python.org/pypi/PIL),
    nécessaire pour supporter les formats d'images courants avec ``rst2pdf``
@@ -97,7 +97,7 @@ la bibliothèque Pygments, ... si elles ne sont pas disponibles localement.
 
 	.. code-block:: bash
 
-		$ cd /path/to/typo3conf/ext/sphinx/Resources/Private/sphinx-sources/
+		$ cd /path/to/uploads/tx_sphinx/
 		$ sudo rm -rf RestTools
 		$ git clone git://git.typo3.org/Documentation/RestTools.git
 

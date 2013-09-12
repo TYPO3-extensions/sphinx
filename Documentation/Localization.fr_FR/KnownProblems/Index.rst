@@ -41,7 +41,7 @@ Problèmes connus
 
 - La génération d'un PDF peut échouer avec "Builder name pdf not registered" lorsque vous utilisez ``rst2pdf``. Cela
   est provoqué par l'impossibilité de modifier le fichier de configuration global
-  ``Resources/Private/sphinx-sources/RestTools/`` ``ExtendingSphinxForTYPO3/src/t3sphinx/settings/GlobalSettings.yml``
+  ``uploads/tx_sphinx/RestTools/`` ``ExtendingSphinxForTYPO3/src/t3sphinx/settings/GlobalSettings.yml``
   par le serveur web. Ce fichier est modifié pour autoriser ``rst2pdf`` à être utilisé lors de mise en place de
   l'environnement Sphinx depuis le gestionnaire d'extensions. Si ce fichier ne peut pas être modifié par l'utilisateur
   utilisé par serveur web, vous pouvez le patcher manuellement en ajoutant une référence à l'extension

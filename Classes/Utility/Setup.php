@@ -63,21 +63,21 @@ class Setup {
 		}
 
 		$directories = array(
-			'Resources/Private/sphinx/',
-			'Resources/Private/sphinx/bin/',
-			'Resources/Private/sphinx-sources/',
+			'typo3temp/tx_sphinx/sphinx-doc/',
+			'typo3temp/tx_sphinx/sphinx-doc/bin/',
+			'uploads/tx_sphinx/',
 		);
-		$basePath = ExtensionManagementUtility::extPath(static::$extKey);
 		foreach ($directories as $directory) {
-			if (!is_dir($basePath . $directory)) {
-				GeneralUtility::mkdir_deep($basePath, $directory);
+			$absoluteDirectory = GeneralUtility::getFileAbsFileName($directory);
+			if (!is_dir($absoluteDirectory)) {
+				GeneralUtility::mkdir_deep($absoluteDirectory);
 			}
-			if (is_dir($basePath . $directory)) {
-				if (!is_writable($basePath . $directory)) {
-					$errors[] = 'Directory ' . $basePath . $directory . ' is read-only.';
+			if (is_dir($absoluteDirectory)) {
+				if (!is_writable($absoluteDirectory)) {
+					$errors[] = 'Directory ' . $absoluteDirectory . ' is read-only.';
 				}
 			} else {
-				$errors[] = 'Cannot create directory ' . $basePath . $directory . '.';
+				$errors[] = 'Cannot create directory ' . $absoluteDirectory . '.';
 			}
 		}
 
@@ -1275,7 +1275,7 @@ EOT;
 	 * @return string Absolute path to the Sphinx sources
 	 */
 	static private function getSphinxSourcesPath() {
-		$sphinxSourcesPath = ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = GeneralUtility::getFileAbsFileName('uploads/tx_sphinx/');
 		// Compatibility with Windows platform
 		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
@@ -1288,7 +1288,7 @@ EOT;
 	 * @return string Absolute path to the Sphinx binaries
 	 */
 	static private function getSphinxPath() {
-		$sphinxPath = ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/sphinx/';
+		$sphinxPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc/');
 		// Compatibility with Windows platform
 		$sphinxPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxPath);
 

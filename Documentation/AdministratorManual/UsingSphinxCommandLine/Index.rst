@@ -16,7 +16,7 @@ Using Sphinx from a command line
 Although this extension is primarily meant at providing a full-fledged environment to build documentation from a TYPO3
 Backend, it is likely that a few users will use it to easily set up a Sphinx environment on their local machine.
 
-This extension automatically generates shortcut scripts within directory ``EXT:sphinx/Resources/Private/sphinx/bin/``:
+This extension automatically generates shortcut scripts within directory ``typo3temp/tx_sphinx/sphinx-doc/bin/``:
 
 .. code-block:: none
 
@@ -36,4 +36,4 @@ This extension automatically generates shortcut scripts within directory ``EXT:s
 The selected version of Sphinx (script without any version number) is the one you select in the Extension Manager.
 
 .. tip::
-	Makefile generally refer to ``sphinx-build`` to build your documentation. As such, if you plan to use Sphinx from the command line, you should consider adding directory ``EXT:sphinx/Resources/Private/sphinx/bin`` to your ``PATH`` environment variable.
+	Makefile generally refer to ``sphinx-build`` to build your documentation. As such, if you plan to use Sphinx from the command line, you should consider adding directory ``typo3temp/tx_sphinx/sphinx-doc/bin`` to your ``PATH`` environment variable.

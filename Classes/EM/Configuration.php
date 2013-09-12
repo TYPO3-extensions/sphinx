@@ -50,7 +50,7 @@ class Configuration {
 		$out = array();
 		$globalVersion = NULL;
 
-		$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/sphinx';
+		$sphinxPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc');
 		$versions = array();
 		if (is_dir($sphinxPath)) {
 			$versions = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($sphinxPath);
@@ -77,7 +77,7 @@ class Configuration {
 
 		if ($selectedVersion && $selectedVersion !== 'SYSTEM') {
 			// Recreate the shortcut links to selected version
-			// /path/to/sphinx/sphinx-build -> /path/to/sphinx/sphinx-build-1.2b1
+			// /path/to/sphinx-doc/sphinx-build -> /path/to/sphinx-doc/sphinx-build-1.2b1
 			$scripts = array(
 				'sphinx-build',
 				'sphinx-quickstart',

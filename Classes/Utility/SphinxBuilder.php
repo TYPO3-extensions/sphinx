@@ -273,7 +273,7 @@ class SphinxBuilder {
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 		$paperSize = 'a4';
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/sphinx-sources/';
+		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_sphinx/');
 		$templatePath = $sphinxSourcesPath . 'RestTools/LaTeX/';
 		$templateFiles = array(
 			'typo3.sty',
@@ -640,7 +640,9 @@ class SphinxBuilder {
 			}
 			$sphinxPath = substr($sphinxBuilder, 0, strrpos($sphinxBuilder, '/bin/') + 1);
 		} else {
-			$sphinxPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/sphinx/' . $sphinxVersion . '/';
+			$sphinxPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+					'typo3temp/tx_sphinx/sphinx-doc/' . $sphinxVersion . '/'
+			);
 			$sphinxBuilder = $sphinxPath . 'bin/sphinx-build';
 
 			if (TYPO3_OS === 'WIN') {

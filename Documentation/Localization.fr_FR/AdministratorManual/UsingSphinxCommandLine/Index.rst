@@ -18,7 +18,7 @@ depuis le Backend de TYPO3, il est probable que certains utilisateurs vont l'ins
 environnement Sphinx sur leur machine locale.
 
 Cette extension crée automatiquement des scripts de raccourci dans le répertoire
-``EXT:sphinx/Resources/Private/sphinx/bin/`` :
+``typo3temp/tx_sphinx/sphinx-doc/bin/`` :
 
 .. code-block:: none
 
@@ -41,4 +41,4 @@ gestionnaire d'extensions.
 .. tip::
 	Les fichiers Makefile font généralement référence à ``sphinx-build`` pour générer votre documentation. Si vous
 	envisagez d'utiliser Sphinx manuellement depuis la ligne de commande, vous devriez ajouter le répertoire
-	``EXT:sphinx/Resources/Private/sphinx/bin`` à votre variable d'environnement ``PATH``.
+	``typo3temp/tx_sphinx/sphinx-doc/bin`` à votre variable d'environnement ``PATH``.

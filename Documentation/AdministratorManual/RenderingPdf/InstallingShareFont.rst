@@ -21,7 +21,7 @@ Instead of just fetching this ``LaTeX`` directory from the official repository, 
 
 .. code-block:: bash
 
-	$ cd /path/to/typo3conf/ext/sphinx/Resources/Private/sphinx-sources/
+	$ cd /path/to/uploads/tx_sphinx/
 	$ sudo rm -rf RestTools
 	$ git clone git://git.typo3.org/Documentation/RestTools.git
 
@@ -29,7 +29,7 @@ Then go to directory ``RestTools/LaTeX`` and convert the Share font (the passwor
 
 .. code-block:: bash
 
-	$ cd /path/to/typo3conf/ext/sphinx/Resources/Private/sphinx-sources/RestTools/LaTeX/
+	$ cd /path/to/uploads/tx_sphinx/RestTools/LaTeX/
 	$ cd font/
 	$ ./convert-share.sh
 
