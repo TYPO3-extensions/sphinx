@@ -9,8 +9,8 @@
 
 	<sphinx:includeJs.jQuery version="1.10"/>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-migrate-1.2.1.min.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.10.3.custom.min.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
 	<script type="text/javascript">
 		var autocompleteAction = "{f:uri.action(action:'autocomplete')}";
 		var referencesAction = "{f:uri.action(action:'accordionReferences',arguments:{reference:'REFERENCE', remoteUrl:'URL', usePrefix:'USE_PREFIX'})}";
@@ -58,12 +58,13 @@
 
 			myLayout = $('body').layout({
 					east__size:					300
-				,	east__minSize:				200
+				,	east__minSize:				300
 				,	east__maxSize:				.5 // 50% of layout width
 				,	east__initClosed:			false
 				,	east__initHidden:			false
 				,	east__slidable:				true
 				,	east__resizable:			true
+				,	south__resizable:			false
 
 				//	Enable state management
 				,	stateManagement__enabled:	true // automatic cookie load & save enabled by default
