@@ -56,7 +56,8 @@ class RestEditorController extends AbstractActionController {
 		$this->view->assign('extensionKey', $parts['extensionKey']);
 		$this->view->assign('document', $document);
 		$this->view->assign('contents', $contents);
-		$this->view->assign('filename', $parts['filename']);
+		$this->view->assign('projectPath', $parts['basePath']);
+		$this->view->assign('filename', substr($parts['filename'], strlen($parts['basePath']) + 1));
 
 		$buttons = $this->getButtons();
 		$this->view->assign('buttons', $buttons);
@@ -69,18 +70,42 @@ class RestEditorController extends AbstractActionController {
 	// -----------------------------------------------
 
 	/**
+	 * Opens a file and returns its contents.
+	 *
+	 * @param string $reference Reference of a documentation
+	 * @param string $filename The filename (relative to basePath)
+	 * @return string Contents of the file
+	 */
+	protected function openAction($reference, $filename) {
+		$response = array();
+		try {
+			$parts = $this->parseReferenceDocument($reference, '', $filename);
+
+			$response['contents'] = file_get_contents($parts['filename']);
+			$response['status'] = 'success';
+		} catch (\RuntimeException $e) {
+			$response['status'] = 'error';
+			$response['statusText'] = $e->getMessage();
+		}
+
+		header('Content-type: application/json');
+		echo json_encode($response);
+		exit;
+	}
+
+	/**
 	 * Saves the contents and recompiles the whole documentation if needed.
 	 *
 	 * @param string $reference Reference of a documentation
-	 * @param string $document The document
+	 * @param string $filename The filename (relative to basePath)
 	 * @param string $contents New contents to be saved
 	 * @param boolean $compile
 	 * @return void
 	 */
-	protected function saveAction($reference, $document, $contents, $compile = FALSE) {
+	protected function saveAction($reference, $filename, $contents, $compile = FALSE) {
 		$response = array();
 		try {
-			$parts = $this->parseReferenceDocument($reference, $document);
+			$parts = $this->parseReferenceDocument($reference, '', $filename);
 
 			$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($parts['filename'], $contents);
 			if (!$success) {
@@ -308,10 +333,11 @@ class RestEditorController extends AbstractActionController {
 	 *
 	 * @param string $reference
 	 * @param string $document
+	 * @param string $filename Optional relative filename
 	 * @return array
 	 * @throws \RuntimeException
 	 */
-	protected function parseReferenceDocument($reference, $document) {
+	protected function parseReferenceDocument($reference, $document, $filename = '') {
 		$extensionKey = NULL;
 		$locale = NULL;
 
@@ -319,21 +345,43 @@ class RestEditorController extends AbstractActionController {
 		switch ($type) {
 			case 'EXT':
 				list($extensionKey, $locale) = explode('.', $identifier, 2);
-				$filename = $this->getFilename($extensionKey, $document, $locale);
+				if (empty($locale)) {
+					$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
+				} else {
+					$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getLocalizedDocumentationType($extensionKey, $locale);
+				}
+				switch ($documentationType) {
+					case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX:
+						$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
+						break;
+					case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_README:
+						$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+						break;
+					default:
+						throw new \RuntimeException('Unsupported documentation type for extension "' . $extensionKey . '"', 1379086939);
+				}
+				$filename = $this->getFilename($extensionKey, $document, $filename, $locale);
 				break;
 			case 'USER':
-				$filename = NULL;
+				$basePath = NULL;
+				$slotFilename = NULL;
 				$this->signalSlotDispatcher->dispatch(
 					__CLASS__,
 					'retrieveRestFilename',
 					array(
 						'identifier' => $identifier,
 						'document' => $document,
-						'filename' => &$filename,
+						'basePath' => &$basePath,
+						'filename' => &$slotFilename,
 					)
 				);
-				if ($filename === NULL) {
+				if ($slotFilename === NULL) {
 					throw new \RuntimeException('No slot found to retrieve filename with identifier "' . $identifier . '"', 1371418203);
+				}
+				if (empty($filename)) {
+					$filename = $slotFilename;
+				} else {
+					$filename = $basePath . $filename;
 				}
 				break;
 			default:
@@ -341,7 +389,8 @@ class RestEditorController extends AbstractActionController {
 		}
 
 		return array(
-			'filename'     => $filename,
+			'basePath'     => realpath($basePath),
+			'filename'     => realpath($filename),
 			'type'         => $type,
 			'identifier'   => $identifier,
 			'extensionKey' => $extensionKey,
@@ -354,11 +403,12 @@ class RestEditorController extends AbstractActionController {
 	 *
 	 * @param string $extensionKey The TYPO3 extension key
 	 * @param string $document The document
+	 * @param string $filename The relative filename (if given instead of $document)
 	 * @param string $locale The locale to use
 	 * @return string
 	 * @throws \RuntimeException
 	 */
-	protected function getFilename($extensionKey, $document, $locale) {
+	protected function getFilename($extensionKey, $document, $filename, $locale) {
 		if (empty($locale)) {
 			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
 		} else {
@@ -367,13 +417,18 @@ class RestEditorController extends AbstractActionController {
 		switch ($documentationType) {
 			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX:
 				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
-				if (empty($locale)) {
+				// Authorize access to whole Documentation project, including other locales
+				//if (empty($locale)) {
 					$path .= 'Documentation/';
+				//} else {
+				//	$localizationDirectories = \Causal\Sphinx\Utility\GeneralUtility::getLocalizationDirectories($extensionKey);
+				//	$path .= $localizationDirectories[$locale]['directory'] . '/';
+				//}
+				if (!empty($document)) {
+					$filename = $path . ($document ? substr($document, 0, -1) : 'Index') . '.rst';
 				} else {
-					$localizationDirectories = \Causal\Sphinx\Utility\GeneralUtility::getLocalizationDirectories($extensionKey);
-					$path .= $localizationDirectories[$locale]['directory'] . '/';
+					$filename = $path . $filename;
 				}
-				$filename = $path . ($document ? substr($document, 0, -1) : 'Index') . '.rst';
 				break;
 			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_README:
 				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);

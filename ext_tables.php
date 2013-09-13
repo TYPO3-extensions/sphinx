@@ -15,7 +15,7 @@ if (TYPO3_MODE === 'BE') {
 		array(
 			'Documentation' => 'index,kickstart,render,convert,createExtensionProject',
 			'InteractiveViewer' => 'render,missingRestdoc,outdatedRestdoc',
-			'RestEditor' => 'edit,save,autocomplete,accordionReferences,updateIntersphinx',
+			'RestEditor' => 'edit,open,save,autocomplete,accordionReferences,updateIntersphinx',
 		),
 		array(
 			'access' => 'user,group',

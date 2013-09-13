@@ -186,13 +186,15 @@ class CustomProject {
 	 *
 	 * @param string $identifier
 	 * @param string $document
+	 * @param string &$basePath
 	 * @param string &$filename
 	 * @return void
 	 */
-	public function retrieveRestFilename($identifier, $document, &$filename) {
+	public function retrieveRestFilename($identifier, $document, &$basePath, &$filename) {
 		$projects = $this->projectRepository->findAll();
 		$directory = $projects[$identifier]->getDirectory();
 		$jsonFilename = substr($document, 0, strlen($document) - 1) . '.rst';
+		$basePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory);
 		$filename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory . $jsonFilename);
 	}
 

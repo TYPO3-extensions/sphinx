@@ -90,7 +90,7 @@ Your  slot should implement a method of the form:
 
 .. code-block:: php
 
-	public function retrieveRestFilename($identifier, $document, &$filename) {
+	public function retrieveRestFilename($identifier, $document, &$basePath, &$filename) {
 	    // Custom code
 	}
 

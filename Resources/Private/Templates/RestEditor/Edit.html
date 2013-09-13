@@ -10,6 +10,7 @@
 	<sphinx:includeJs.jQuery version="1.10"/>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-migrate-1.2.1.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.10.3.custom.min.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.treetable-3.0.2.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
 	<script type="text/javascript">
 		var autocompleteAction = "{f:uri.action(action:'autocomplete')}";
@@ -18,6 +19,7 @@
 	</script>
 	<script type="text/javascript"><![CDATA[
 		var myLayout; // a var is required because this page utilizes: myLayout.allowOverflow() method
+		var isDirty = false;
 		var editor;
 
 		$(document).ready(function() {
@@ -57,9 +59,12 @@
 			$(document).tooltip();
 
 			myLayout = $('body').layout({
-					east__size:					300
+					west__size:					250
+				,	west__minSize:				200
+				,	west__maxSize:				.3 // 30% of layout width
+				,	east__size:					300
 				,	east__minSize:				300
-				,	east__maxSize:				.5 // 50% of layout width
+				,	east__maxSize:				.4 // 40% of layout width
 				,	east__initClosed:			false
 				,	east__initHidden:			false
 				,	east__slidable:				true
@@ -76,6 +81,10 @@
 			editor.setTheme("ace/theme/github");
 			session.setMode("ace/mode/markdown");
 
+			editor.on("change", function(e) {
+				isDirty = true;
+			});
+
 			editor.setPrintMarginColumn(120);
 			session.setUseWrapMode(true);
 			session.setWrapLimitRange(120, 120);
@@ -86,7 +95,7 @@
 
 <f:render partial="Documentation/HeaderToolbar" arguments="{buttons: buttons}" />
 
-<div id="editor" class="ui-layout-center">{contents}</div>
+<pre id="editor" class="ui-layout-center">{contents}</pre>
 
 <div class="ui-layout-east layout-content-container">
 	<div class="ui-widget-header no-scrollbar add-padding">
@@ -100,18 +109,57 @@
 	<sphinx:objectsInvBrowser id="accordion-objectsinv" reference="{reference}" aceEditor="editor" controller="{controller}" />
 </div>
 
+<div class="ui-layout-west layout-content-container layout-scroll">
+	<sphinx:projectTree projectPath="{projectPath}" reveal="{filename}" />
+</div>
+
 <div class="ui-layout-south">
-	<f:translate key="editor.label.filename"/> {filename}
+	<f:translate key="editor.label.filename"/> <span id="filename">{filename}</span>
 </div>
 
 <script src="{f:uri.resource(path:'JavaScript/Ace/ace.js')}" type="text/javascript" charset="utf-8"></script>
 <script>
 var reference = "{reference}";
-var doc = "{document}";
+var filename = "{file}";
 var redirectUrl = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{reference:reference, document:document})}";
 
+function openFile(file) {
+	if (isDirty) {
+		var r = confirm('Your current document has been modified. Are you sure you want to open document “' + file + '”?');
+		if (!r) {
+			return;
+		}
+	}
+
+	var openUrl = "{f:uri.action(action:'open')}";
+
+	$.post(openUrl,
+		{
+			'tx_sphinx_help_sphinxdocumentation[reference]': reference,
+			'tx_sphinx_help_sphinxdocumentation[filename]': file,
+		},
+		function(data) {
+			if (data.status == 'success') {
+				editor.setValue(data.contents);
+				editor.gotoLine(1);
+				filename = file;
+				$("#filename").html(file);
+				isDirty = false;
+			} else {
+				alert(data.statusText);
+			}
+		}
+	);
+}
+
 function closeEditor() {
-	// TODO: check if file was modified
+	if (isDirty) {
+		var r = confirm('Do you want to save the changes you made in the document “' + filename + '”?');
+		if (r) {
+			saveAndClose();
+			return;
+		}
+	}
 	document.location.href = redirectUrl;
 }
 
@@ -120,19 +168,20 @@ function save() {
 	var saveUrl = "{f:uri.action(action:'save')}";
 
 	$.post(saveUrl,
-			{
-				'tx_sphinx_help_sphinxdocumentation[reference]': reference,
-				'tx_sphinx_help_sphinxdocumentation[document]': doc,
-				'tx_sphinx_help_sphinxdocumentation[contents]': contents,
-				'tx_sphinx_help_sphinxdocumentation[compile]': 0
-			},
-			function(data) {
-				if (data.status == 'success') {
-					alert('successful save');
-				} else {
-					alert(data.statusText);
-				}
+		{
+			'tx_sphinx_help_sphinxdocumentation[reference]': reference,
+			'tx_sphinx_help_sphinxdocumentation[filename]': filename,
+			'tx_sphinx_help_sphinxdocumentation[contents]': contents,
+			'tx_sphinx_help_sphinxdocumentation[compile]': 0
+		},
+		function(data) {
+			if (data.status == 'success') {
+				isDirty = false;
+				alert('successful save');
+			} else {
+				alert(data.statusText);
 			}
+		}
 	);
 }
 
@@ -141,19 +190,19 @@ function saveAndClose() {
 	var saveUrl = "{f:uri.action(action:'save')}";
 
 	$.post(saveUrl,
-			{
-				'tx_sphinx_help_sphinxdocumentation[reference]': reference,
-				'tx_sphinx_help_sphinxdocumentation[document]': doc,
-				'tx_sphinx_help_sphinxdocumentation[contents]': contents,
-				'tx_sphinx_help_sphinxdocumentation[compile]': 1
-			},
-			function(data) {
-				if (data.status == 'success') {
-					document.location.href = redirectUrl;
-				} else {
-					alert(data.statusText);
-				}
+		{
+			'tx_sphinx_help_sphinxdocumentation[reference]': reference,
+			'tx_sphinx_help_sphinxdocumentation[filename]': filename,
+			'tx_sphinx_help_sphinxdocumentation[contents]': contents,
+			'tx_sphinx_help_sphinxdocumentation[compile]': 1
+		},
+		function(data) {
+			if (data.status == 'success') {
+				document.location.href = redirectUrl;
+			} else {
+				alert(data.statusText);
 			}
+		}
 	);
 }
 </script>
