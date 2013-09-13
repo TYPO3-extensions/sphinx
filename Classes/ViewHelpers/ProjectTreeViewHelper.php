@@ -116,7 +116,7 @@ $(document).ready(function() {
 	// Open selected file on double-click
 	$("#$pluginId td span[class='file']").on("dblclick", function(e) {
 		var file = $(event.target).closest("td").attr('data-path');
-		openFile(file);
+		CausalSphinxEditor.openFile(file);
 	});
 
 	try {

@@ -417,13 +417,15 @@ class RestEditorController extends AbstractActionController {
 		switch ($documentationType) {
 			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX:
 				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
-				// Authorize access to whole Documentation project, including other locales
-				//if (empty($locale)) {
+				if (empty($locale)) {
 					$path .= 'Documentation/';
-				//} else {
-				//	$localizationDirectories = \Causal\Sphinx\Utility\GeneralUtility::getLocalizationDirectories($extensionKey);
-				//	$path .= $localizationDirectories[$locale]['directory'] . '/';
-				//}
+				} elseif (!empty($filename)) {
+					// Allow to write in main directory even if working on translation
+					$path .= 'Documentation/';
+				} else {
+					$localizationDirectories = \Causal\Sphinx\Utility\GeneralUtility::getLocalizationDirectories($extensionKey);
+					$path .= $localizationDirectories[$locale]['directory'] . '/';
+				}
 				if (!empty($document)) {
 					$filename = $path . ($document ? substr($document, 0, -1) : 'Index') . '.rst';
 				} else {
@@ -460,7 +462,7 @@ class RestEditorController extends AbstractActionController {
 			'#',
 			$this->translate('toolbar.editor.close'),
 			't3-icon-actions-document t3-icon-document-close',
-			'getContentIframe().closeEditor()'
+			'getContentIframe().CausalSphinxEditor.closeEditor()'
 		);
 		$buttons[] = '&nbsp;';
 
@@ -468,17 +470,17 @@ class RestEditorController extends AbstractActionController {
 			'#',
 			$this->translate('toolbar.editor.save'),
 			't3-icon-actions-document t3-icon-document-save',
-			'getContentIframe().save()'
+			'getContentIframe().CausalSphinxEditor.save()'
 		);
 		$buttons[] = $this->createToolbarButton(
 			'#',
 			$this->translate('toolbar.editor.saveclose'),
 			't3-icon-actions-document t3-icon-document-save-close',
-			'getContentIframe().saveAndClose()'
+			'getContentIframe().CausalSphinxEditor.saveAndClose()'
 		);
 
 		$buttons[] = '<div style="float:right">';
-		$buttons[] = '<input type="checkbox" id="tx-sphinx-showinvisibles" onclick="getContentIframe().editor.setShowInvisibles(this.checked)" value="1" />' .
+		$buttons[] = '<input type="checkbox" id="tx-sphinx-showinvisibles" onclick="getContentIframe().CausalSphinxEditor.editor.setShowInvisibles(this.checked)" value="1" />' .
 			'<label for="tx-sphinx-showinvisibles">' .
 			$this->translate('toolbar.editor.showInvisibles') . '</label>';
 		$buttons[] = '</div>';

@@ -655,7 +655,23 @@ table.treetable {
 table.treetable caption {
   font-size: .9em;
   font-weight: bold;
-  margin-bottom: .4em; }
+  margin-bottom: .8em;
+  margin-left: 1em;
+  text-align: left; }
+
+div.force-wrap {
+  white-space: -moz-pre-wrap !important;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  white-space: pre-wrap;
+  /* css-3 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
+  word-break: break-all;
+  white-space: normal; }
 
 table.treetable thead {
   background: #aaaaaa url(../Images/jquery-treetable/bg-table-thead.png) repeat-x top left;
