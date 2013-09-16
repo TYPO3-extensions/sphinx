@@ -56,10 +56,12 @@ class Setup {
 		$errors = array();
 
 		if (!CommandUtility::checkCommand('python')) {
-			$errors[] = 'Python interpreter was not found.';
+			$errors[] = 'Python interpreter was not found. Hint: You probably should double-check '.
+				'$TYPO3_CONF_VARS[\'SYS\'][\'binPath\'] and/or $TYPO3_CONF_VARS[\'SYS\'][\'binSetup\'].';
 		}
 		if (!CommandUtility::checkCommand('unzip')) {
-			$errors[] = 'Unzip cannot be executed.';
+			$errors[] = 'Unzip cannot be executed. Hint: You probably should double-check '.
+				'$TYPO3_CONF_VARS[\'SYS\'][\'binPath\'] and/or $TYPO3_CONF_VARS[\'SYS\'][\'binSetup\'].';
 		}
 
 		$directories = array(
