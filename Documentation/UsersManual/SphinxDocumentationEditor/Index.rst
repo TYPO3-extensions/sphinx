@@ -22,7 +22,7 @@ When showing an extension's manual using the :ref:`interactive layout <layouts>`
 Editing a document
 ^^^^^^^^^^^^^^^^^^
 
-The pencil icon loads the the "Ace editor" (http://ace.ajax.org/).
+The pencil icon loads the "Ace editor" (http://ace.ajax.org/).
 
 This editor lets you quickly update the corresponding chapter and recompile the documentation if you click on toolbar icon "save and close":
 

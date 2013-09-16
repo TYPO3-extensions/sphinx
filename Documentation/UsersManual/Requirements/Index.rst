@@ -19,7 +19,7 @@ documentation written in reStructuredText and as a Sphinx project.
 	Please visit http://wiki.typo3.org/ReST for further information on reStructuredText.
 
 .. tip::
-	This extension automatically installs and configure ``rst2pdf`` to build PDF. However, if you want better output,
+	This extension may automatically install and configure ``rst2pdf`` to build PDF. However, if you want better output,
 	you should consider using LaTeX instead. Please read chapter :ref:`rendering-pdf` for instructions.
 
 The extension supports single directory projects:

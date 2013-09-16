@@ -36,4 +36,6 @@ This extension automatically generates shortcut scripts within directory ``typo3
 The selected version of Sphinx (script without any version number) is the one you select in the Extension Manager.
 
 .. tip::
-	Makefile generally refer to ``sphinx-build`` to build your documentation. As such, if you plan to use Sphinx from the command line, you should consider adding directory ``typo3temp/tx_sphinx/sphinx-doc/bin`` to your ``PATH`` environment variable.
+	Makefile generally refer to ``sphinx-build`` to build your documentation. As such, if you plan to use Sphinx from
+	the command line, you should consider adding directory ``typo3temp/tx_sphinx/sphinx-doc/bin`` to your ``PATH``
+	environment variable.

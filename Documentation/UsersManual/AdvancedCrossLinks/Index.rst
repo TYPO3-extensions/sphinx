@@ -79,6 +79,9 @@ The ZLIB-compressed list of reference has following structure:
 Doxygen documentation
 ^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	single: Doxygen
+
 What is Doxygen?
 
 	Doxygen is the de facto standard tool for generating documentation from annotated C++ sources, but it also supports

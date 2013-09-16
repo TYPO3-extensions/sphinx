@@ -19,9 +19,9 @@ documentation écrite en reStructuredText sous forme d'un projet Sphinx.
 	Allez sur http://wiki.typo3.org/ReST pour plus d'informations sur reStructuredText.
 
 .. tip::
-	Cette extension installe et configure automatiquement ``rst2pdf`` pour le rendu PDF. Cependant, si vous désirez un
-	meilleur rendu, vous devriez installer plutôt LaTeX. Veuillez lire le chapitre :ref:`rendering-pdf` pour les
-	instructions.
+	Cette extension permet d'installer et de configurer automatiquement ``rst2pdf`` pour le rendu PDF. Cependant, si
+	vous désirez un meilleur rendu, vous devriez installer plutôt LaTeX. Veuillez lire le chapitre :ref:`rendering-pdf`
+	pour les instructions.
 
 Cette extension supporte des projets dans un répertoire unique :
 
@@ -42,7 +42,7 @@ des projets avec répertoires source/build séparés :
 	    |-- conf.py
 	    `-- ...
 
-et une structure de répertoire de documentation TYPO3 :
+et une structure de répertoires de documentation TYPO3 :
 
 .. code-block:: none
 

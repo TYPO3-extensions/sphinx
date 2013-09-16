@@ -29,7 +29,7 @@ Générateur et visionneuse de documentation Sphinx Python
 		et fournit un éditeur intégré pour les manuels de vos extensions et vos propres documents.
 
 	:Mots-clés:
-		reStructuredText, reST, sphinx, documentation
+		reStructuredText, reST, sphinx, LaTex, documentation
 
 	:Copyright:
 		2013

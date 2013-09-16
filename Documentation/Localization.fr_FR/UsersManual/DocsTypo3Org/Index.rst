@@ -39,6 +39,9 @@ http://docs.typo3.org/typo3cms/extensions/sphinx/packages/packages.xml (vous pou
 Titre, mention de copyright et version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	single: Settings.yml (format)
+
 Un projet Sphinx valide pour un manuel d'extension doit contenir un fichier de configuration ``Settings.yml`` au même
 niveau que le document principal ``Index.rst``. Ce fichier est votre passe pour surcharger les paramètres par défaut du
 fichier de configuration Sphinx réel ``conf.py`` qui ne fait pas partie de votre projet (étant donné qu'il va contenir
@@ -85,6 +88,10 @@ release
 		bonnes pratiques sont de suivre les mêmes règles que pour le noyau TYPO3 et de ne pas introduire de changements
 		majeurs ou de nouvelles fonctionalités pour les sorties de nouvelles versions de correction de votre extension
 		(lorsque seul le dernier chiffre de la version change).
+
+		Puisque les auteurs d'extensions ont une grande chance d'oublier de mettre à jour la version avant la publication
+		de leur extension sur le TER, le moteur de rendu sur http://docs.typo3.org surcharge automatiquement les
+		paramètres *version* et *release* en utilisant la valeur effective telle que vue sur le TER.
 
 
 .. _docs-typo3-org-pdf:
@@ -163,6 +170,9 @@ LaTeX.
 Documentation multilingue
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	single: Manuel multilingue
+
 Les manuels d'extensions multilingues sont supportés à la fois par cette extension et par http://docs.typo3.org. Si vous
 souhaitez traduire votre documentation, démarrez un nouveau projet Sphinx complet (y.c. ``Settings.yml``) dans le
 répertoire ``Documentation/Localization.<locale>``.
@@ -174,6 +184,9 @@ répertoire ``Documentation/Localization.<locale>``.
 
 Locales
 """""""
+
+.. index::
+	single: Locales
 
 La liste des langues supportées par Sphinx est :
 
@@ -248,8 +261,14 @@ Derrière les coulisses, voici ce qui se passe :
   grâce à l'option de configuration ``intersphinx_mapping``. La correspondance sera ensuite utilisée pour résoudre des
   références à des objets sinon manquants vers une autre documentation.
 
-La liste des manuels officiels et leur préfixes correspondants peut être trouvée sur
+La liste des manuels officiels et leurs préfixes correspondants peut être trouvée sur
 http://docs.typo3.org/typo3cms/Index.html.
+
+.. caution::
+	Bien que Sphinx sur http://docs.typo3.org vous permette de façon automatique et magique de créer des références
+	croisées vers les manuels officiels, il est considéré comme mauvaise pratique de se baser dessus. Il est même
+	question de changer ce comportement par défaut. C'est pourquoi vous devriez **toujours** charger explicitement les
+	références vers lesquelles vous souhaitez créer des références croisées, comme décrit ci-après.
 
 Vous êtes en mesure de créer des liens vers d'autres documentations de http://docs.typo3.org (ou ailleurs) en configurant
 la correspondance Intersphinx dans ``Settings.yml``. Pour se faire, ajoutez des options de configuration (lignes 6 à 9) :

@@ -37,6 +37,9 @@ The list of available packages can be seen on http://docs.typo3.org/typo3cms/ext
 Title, copyright and version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	single: Settings.yml (format)
+
 A valid Sphinx project for an extension manual should contain a configuration file ``Settings.yml`` next to the main
 document ``Index.rst``. This file is your key to override default settings from the real Sphinx configuration file
 ``conf.py`` which is not part of your project (because it contains settings related to the build environment on
@@ -81,6 +84,10 @@ release
 		This is of course up to the extension's author to decide on a version numbering scheme but best practices follow
 		the same rules as for TYPO3 core and do not introduce breaking changes or new features in patch-release
 		versions (when the last of the three digits changes).
+
+		As extension authors are very likely to forget to update the version prior to uploading their extension to TER,
+		the rendering engine on http://docs.typo3.org automatically overrides the *version* and *release* parameter
+		to the actual version as seen on TER.
 
 
 .. _docs-typo3-org-pdf:
@@ -156,6 +163,9 @@ Please read chapter :ref:`customizing-rendering` for further information on LaTe
 Multilingual documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	single: Multilingual manual
+
 Multilingual exension manuals are supported by both this extension and http://docs.typo3.org. If you want to translate
 your documentation, kickstart a new Sphinx project (incl. ``Settings.yml``) within directory
 ``Documentation/Localization.<locale>``.
@@ -167,6 +177,9 @@ your documentation, kickstart a new Sphinx project (incl. ``Settings.yml``) with
 
 Locales
 """""""
+
+.. index::
+	single: Locales
 
 The list of supported languages for Sphinx is:
 
@@ -239,6 +252,11 @@ Behind the scenes, this works as follows:
   documentation.
 
 The list of official manuals and corresponding prefixes may be found on http://docs.typo3.org/typo3cms/Index.html.
+
+.. caution::
+	Although Sphinx on http://docs.typo3.org automagically lets you cross-link to official manuals, it is considered
+	bad practice to rely on it. It is even planned to change this behavior altogether. As such, please **always**
+	explicitly load the references you would like to cross-link to, as explained hereafter.
 
 You may link to any other documentation on http://docs.typo3.org (or elsewhere) by configuring the Intersphinx mapping
 within ``Settings.yml``. To do so, add configuration options (lines 6 to 9):
