@@ -12,9 +12,20 @@ Known problems
 ==============
 
 .. index::
+	single: Error Message; Python interpreter was not found
+	single: Error Message; Unzip cannot be executed
 	single: Error Message; ImportError: No module named setuptools
 	single: Error Message; Builder name pdf not registered
 	single: Error Message; LaTeX Error: File 'typo3.sty' not found
+
+- If TYPO3 keeps failing with e.g., "Python interpreter was not found" or "Unzip cannot be executed", you should
+  check your local configuration for ``$TYPO3_CONF_VARS['SYS']['binPath']`` and ``$TYPO3_CONF_VARS['SYS']['binSetup']``.
+  A user reported having fixed this problem by changing lines to:
+
+  .. code-block:: php
+
+      $TYPO3_CONF_VARS['SYS']['binPath'] = '/usr/bin/';
+      $TYPO3_CONF_VARS['SYS']['binSetup'] = 'python=/usr/bin/python,unzip=/usr/bin/unzip,tar=/bin/tar';
 
 - A few Linux distributions (such as Fedora) do not provide ``docutils`` or the header files and libraries to develop Python
   extensions. With a vanilla Fedora, you may install missing components with:
