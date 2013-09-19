@@ -4,7 +4,7 @@
 	<label for="reference">
 		<f:translate key="showDocumentation">Show documentation:</f:translate>
 	</label>
-	<sphinx:form.select id="reference" name="reference" groupOptions="1" prependOptionLabel="" options="{references}" value="{currentReference}" onchange="this.form.submit();" />
+	<sphinx:form.select id="reference" name="reference" groupOptions="1" prependOptionLabel="{f:translate(key:'openDashboard')}" options="{references}" value="{currentReference}" onchange="this.form.submit();" />
 
 	<label for="layout">
 		<f:translate key="documentationFormat">Layout:</f:translate>
