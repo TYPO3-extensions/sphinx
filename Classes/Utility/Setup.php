@@ -1077,7 +1077,10 @@ EOT;
 		$sphinxUrl = 'https://bitbucket.org/birkenfeld/sphinx/downloads';
 
 		$cacheFilename = static::getTemporaryPath() . static::$extKey . '.' . md5($sphinxUrl) . '.html';
-		if (!file_exists($cacheFilename) || filemtime($cacheFilename) < (time() - 86400) || filesize($cacheFilename) == 0) {
+		if (!file_exists($cacheFilename)
+			|| $GLOBALS['EXEC_TIME'] - filemtime($cacheFilename) > 86400
+			|| filesize($cacheFilename) == 0) {
+
 			$html = GeneralUtility::getURL($sphinxUrl);
 			GeneralUtility::writeFile($cacheFilename, $html);
 		} else {

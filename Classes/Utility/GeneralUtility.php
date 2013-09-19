@@ -396,8 +396,8 @@ HTML;
 		$path = '';
 
 		$useCache = TRUE;
-		if ($remoteUrl && is_file($cacheFile) && filemtime($cacheFile) < time() - 86400) {
-			// Cache file is more than 7 days old and we have an URL to fetch a fresh version: DO IT!
+		if ($remoteUrl && is_file($cacheFile) && $GLOBALS['EXEC_TIME'] - filemtime($cacheFile) > 86400) {
+			// Cache file is more than 1 day old and we have an URL to fetch a fresh version: DO IT!
 			$useCache = FALSE;
 		}
 
@@ -721,7 +721,7 @@ HTML;
 		// Clean-up caches
 		$cacheFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($cacheDirectory);
 		foreach ($cacheFiles as $cacheFile) {
-			if (filemtime($cacheDirectory . $cacheFile) < time() - 28800) {	// 8 hours of cache
+			if ($GLOBALS['EXEC_TIME'] - filemtime($cacheDirectory . $cacheFile) > 28800) {	// 8 hours of cache
 				@unlink($cacheDirectory . $cacheFile);
 			}
 		}

@@ -36,6 +36,12 @@ namespace Causal\Sphinx\Controller;
  */
 class RestEditorController extends AbstractActionController {
 
+	/**
+	 * @var \Causal\Sphinx\Domain\Repository\DocumentationRepository
+	 * @inject
+	 */
+	protected $documentationRepository;
+
 	// -----------------------------------------------
 	// STANDARD ACTIONS
 	// -----------------------------------------------
@@ -164,58 +170,10 @@ class RestEditorController extends AbstractActionController {
 		if (empty($_GET['term'])) exit;
 		$q = strtolower($_GET['term']);
 
-		$extensionTable = 'tx_extensionmanager_domain_model_extension';
-		$items = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'uid, extension_key, title',
-			$extensionTable,
-			'last_updated>1370296800 AND ' .	// After 04.06.2013
-				$GLOBALS['TYPO3_DB']->searchQuery(
-					array($q),
-					array('extension_key', 'title', 'description'),
-					$extensionTable
-				),
-			'',
-			'last_updated DESC',
-			15
-		);
-
-		$result = array();
-		foreach ($items as $item) {
-			$reference = 'EXT:' . $item['extension_key'];
-			if (isset($result[$reference])) continue;
-			$result[$reference] = array(
-				'id' => 'http://docs.typo3.org/typo3cms/extensions/' . $item['extension_key'],
-				'label' => $item['title'] . ' (' . $item['extension_key'] . ')',
-				'value' => $reference,
-			);
-		}
-
-		// Official documents
-		// See \TYPO3\CMS\Documentation\Service\DocumentationService::getOfficialDocuments()
-		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-			'typo3temp/documents.json'
-		);
-		if (!is_file($cacheFile) || filemtime($cacheFile) < time() - 86400) {
-			$json = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl('http://docs.typo3.org/typo3cms/documents.json');
-			if ($json) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $json);
-			}
-		}
-		if (is_file($cacheFile)) {
-			$documents = json_decode(file_get_contents($cacheFile), TRUE);
-			foreach ($documents as $document) {
-				if (stripos($document['shortcut'] . ' ' . $document['title'], $q) !== FALSE) {
-					$result[] = array(
-						'id' => $document['url'],
-						'label' => $document['title'],
-						'value' => $document['key'],
-					);
-				}
-			}
-		}
+		$manuals = $this->documentationRepository->findManualsBySearchTerm($q);
 
 		header('Content-type: application/json');
-		echo json_encode(array_values($result));
+		echo json_encode(array_values($manuals));
 		exit;
 	}
 
