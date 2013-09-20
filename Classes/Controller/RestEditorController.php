@@ -57,11 +57,13 @@ class RestEditorController extends AbstractActionController {
 	protected function editAction($reference, $document) {
 		$parts = $this->parseReferenceDocument($reference, $document);
 		$contents = file_get_contents($parts['filename']);
+		$readOnly = !is_writable($parts['filename']);
 
 		$this->view->assign('reference', $reference);
 		$this->view->assign('extensionKey', $parts['extensionKey']);
 		$this->view->assign('document', $document);
 		$this->view->assign('contents', $contents);
+		$this->view->assign('readOnly', $readOnly ? 'true' : '');
 		$this->view->assign('projectPath', $parts['basePath']);
 		$this->view->assign('filename', substr($parts['filename'], strlen($parts['basePath']) + 1));
 
@@ -88,6 +90,7 @@ class RestEditorController extends AbstractActionController {
 			$parts = $this->parseReferenceDocument($reference, '', $filename);
 
 			$response['contents'] = file_get_contents($parts['filename']);
+			$response['readOnly'] = !is_writable($parts['filename']);
 			$response['status'] = 'success';
 		} catch (\RuntimeException $e) {
 			$response['status'] = 'error';

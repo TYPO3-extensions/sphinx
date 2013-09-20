@@ -4,6 +4,7 @@ CausalSphinxEditor = {
 	currentReference: null,
 	filename: null,
 	isDirty: false,
+	isReadOnly: false,
 
 	actions: {
 		autocomplete: null,
@@ -34,7 +35,9 @@ CausalSphinxEditor = {
 			},
 			function(data) {
 				if (data.status == 'success') {
+					self.isReadOnly = data.readOnly;
 					self.editor.setValue(data.contents);
+					self.editor.setReadOnly(self.isReadOnly);
 					self.editor.gotoLine(1);
 					self.editor.getSession().setScrollTop(0);
 					self.filename = file;
@@ -144,6 +147,7 @@ CausalSphinxEditor = {
 		this.session = this.editor.getSession()
 
 		this.editor.setTheme("ace/theme/github");
+		this.editor.setReadOnly(this.isReadOnly);
 		this.session.setMode("ace/mode/markdown");
 
 		this.editor.on("change", function(e) {
