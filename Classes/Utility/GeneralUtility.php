@@ -557,6 +557,11 @@ HTML;
 
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($absoluteOutputDirectory, TRUE);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($absoluteOutputDirectory . '/');
+
+		if (is_file($documentationBasePath . '/warnings.txt') && filesize($documentationBasePath . '/warnings.txt') > 0) {
+			copy($documentationBasePath . '/warnings.txt', $absoluteOutputDirectory . '/warnings.txt');
+		}
+
 		if ($format !== 'pdf') {
 			static::recursiveCopy($documentationBasePath . '/_make/build/' . $documentationFormat, $absoluteOutputDirectory);
 		} else {

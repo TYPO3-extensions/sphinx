@@ -91,7 +91,7 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 			($onClick ? ' onclick="' . $onClick . ';return false;"' : '') .
 			' title="' . htmlspecialchars($title) . '"' .
 				' target="tx-sphinx-documentation-content">' .
-				'<span class="t3-icon t3-icon-actions ' . $iconClasses . '">&nbsp;</span>' .
+				'<span class="t3-icon ' . $iconClasses . '">&nbsp;</span>' .
 			'</a>';
 		// Replacement of single quotes to be compatible with the dynamic update of the toolbar
 		return str_replace('\'', '\\\'', $button);

@@ -66,6 +66,9 @@
 			<trans-unit id="toolbar.interactive.edit">
 				<source>Edit document</source>
 			</trans-unit>
+			<trans-unit id="toolbar.interactive.showWarnings">
+				<source>Show compilation warnings and errors</source>
+			</trans-unit>
 			<trans-unit id="toolbar.editor.close">
 				<source>Close document</source>
 			</trans-unit>

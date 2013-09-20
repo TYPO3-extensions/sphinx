@@ -128,7 +128,12 @@ class InteractiveViewerController extends AbstractActionController {
 		$this->view->assign('reference', $reference);
 		$this->view->assign('document', $document);
 
-		$buttons = $this->getButtons($reference, $document);
+		$warningsFilename = '';
+		if (file_exists($path . '/warnings.txt')) {
+			$warningsFilename = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo($path, PATH_site) . 'warnings.txt';
+		}
+
+		$buttons = $this->getButtons($reference, $document, $warningsFilename);
 		$this->view->assign('buttons', $buttons);
 	}
 
@@ -233,9 +238,10 @@ class InteractiveViewerController extends AbstractActionController {
 	 *
 	 * @param string $reference
 	 * @param string $document
+	 * @param string $warningsFilename
 	 * @return string
 	 */
-	protected function getButtons($reference, $document) {
+	protected function getButtons($reference, $document, $warningsFilename) {
 		$buttons = array();
 
 		if ($document !== 'genindex/') {
@@ -249,7 +255,14 @@ class InteractiveViewerController extends AbstractActionController {
 					'RestEditor'
 				),
 				$this->translate('toolbar.interactive.edit'),
-				't3-icon-actions-page t3-icon-page-open'
+				't3-icon-actions t3-icon-actions-page t3-icon-page-open'
+			);
+		}
+		if (!empty($warningsFilename)) {
+			$buttons[] = $this->createToolbarButton(
+				$warningsFilename,
+				$this->translate('toolbar.interactive.showWarnings'),
+				't3-icon-status t3-icon-status-dialog t3-icon-dialog-warning'
 			);
 		}
 
