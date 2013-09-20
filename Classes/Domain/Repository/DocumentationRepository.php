@@ -37,6 +37,12 @@ namespace Causal\Sphinx\Domain\Repository;
 class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
+	 * @var \Causal\Sphinx\Domain\Repository\ExtensionRepository
+	 * @inject
+	 */
+	protected $extensionRepository;
+
+	/**
 	 * Returns a list of remote manuals given an extension query search term.
 	 *
 	 * @param string $searchTerm
@@ -67,21 +73,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 
-		$extensionTable = 'tx_extensionmanager_domain_model_extension';
-		$extensions = $this->getDatabaseConnection()->exec_SELECTgetRows(
-			'DISTINCT extension_key, title',
-			$extensionTable,
-			$this->getSafeInClause('extension_key', array_map(function($e) { return "'$e'"; }, $extensionKeys)) .
-				' AND ' . $this->getDatabaseConnection()->searchQuery(
-					array($searchTerm),
-					array('extension_key', 'title', 'description'),
-					$extensionTable
-				),
-			'',
-			'extension_key, last_updated',
-			'15',
-			'extension_key'
-		);
+		$extensions = $this->extensionRepository->findExtensionsBySearchTerm($extensionKeys, $searchTerm, 15);
 
 		$result = array();
 		foreach ($extensions as $extension) {
@@ -163,36 +155,6 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		return is_array($documents) ? $documents : array();
-	}
-
-	/**
-	 * Returns the database connection.
-	 *
-	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-	 */
-	protected function getDatabaseConnection() {
-		return $GLOBALS['TYPO3_DB'];
-	}
-
-	/**
-	 * Returns a safe IN clause because the number of values is limited by the DBMS.
-	 * BEWARE: currently only works for numeric values!
-	 *
-	 * @param string $column
-	 * @param array $values
-	 * @return string|array
-	 */
-	protected function getSafeInClause($column, array $values) {
-		$chunkSize = 1000;
-		$clauses = array();
-
-		while (count($values) > 0) {
-			$chunk = array_slice($values, 0, $chunkSize);
-			$clauses[] = $column . ' IN (' . implode(',', $chunk) . ')';
-			$values = array_slice($values, count($chunk));
-		}
-
-		return '(' . implode(' OR ', $clauses) . ')';
 	}
 
 }
