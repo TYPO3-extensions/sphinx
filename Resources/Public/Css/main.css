@@ -125,6 +125,13 @@ a:hover {
 p {
   padding-bottom: 20px; }
 
+.file-locked {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  margin-top: -5px;
+  margin-left: 5px; }
+
 /*
  * Default Layout Theme
  *

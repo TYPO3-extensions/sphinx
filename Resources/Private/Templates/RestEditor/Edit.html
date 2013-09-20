@@ -4,6 +4,7 @@
 <head>
 	<title>{document}</title>
 
+	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
 	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
 	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/jquery-ui.smoothness/jquery-ui-1.10.3.custom.min.css')}" />
 
@@ -77,7 +78,9 @@
 
 <div class="outer-west layout-child-container">
 	<div class="ui-layout-north force-wrap">
-		<f:translate key="editor.label.filename"/> <span id="filename">{filename}</span>
+		<f:translate key="editor.label.filename"/>
+		<span id="filename">{filename}</span>
+		<span id="editor-readonly" class="file-locked t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-locked">&nbsp;</span>
 	</div>
 	<div class="ui-layout-center layout-content-container layout-scroll">
 		<sphinx:projectTree projectPath="{projectPath}" reveal="{filename}" />

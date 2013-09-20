@@ -38,6 +38,11 @@ CausalSphinxEditor = {
 					self.isReadOnly = data.readOnly;
 					self.editor.setValue(data.contents);
 					self.editor.setReadOnly(self.isReadOnly);
+					if (self.isReadOnly) {
+						$('#editor-readonly').css('visibility', 'visible');
+					} else {
+						$('#editor-readonly').css('visibility', 'hidden');
+					}
 					self.editor.gotoLine(1);
 					self.editor.getSession().setScrollTop(0);
 					self.filename = file;
@@ -148,6 +153,11 @@ CausalSphinxEditor = {
 
 		this.editor.setTheme("ace/theme/github");
 		this.editor.setReadOnly(this.isReadOnly);
+		if (this.isReadOnly) {
+			$('#editor-readonly').css('visibility', 'visible');
+		} else {
+			$('#editor-readonly').css('visibility', 'hidden');
+		}
 		this.session.setMode("ace/mode/markdown");
 
 		this.editor.on("change", function(e) {
