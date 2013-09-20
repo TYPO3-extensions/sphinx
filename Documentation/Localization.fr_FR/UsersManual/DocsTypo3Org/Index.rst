@@ -206,17 +206,20 @@ fi       Finnois
 fr       Français
 hr       Croate
 hu       Hongrois
+id       Indonésien
 it       Italien
 ja       Japonais
 ko       Coréen
 lt       Lithuanien
 lv       Letton
+mk       Macédonien
 nb_NO    Norvégien
 ne       Nepalien
 nl       Néerlandais
 pl       Polonais
 pt_BR    Portugais du Brésil
 ru       Russe
+si       Cinghalais
 sk       Slovaque
 sl       Slovène
 sv       Suédois
