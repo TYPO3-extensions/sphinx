@@ -671,15 +671,31 @@ HTML;
 
 		$startLine = 0;
 		$hasIntersphinxMapping = FALSE;
+		$hasDelimiter = FALSE;
 		while ($startLine < count($lines)) {
 			if ($lines[$startLine] === $indent . 'intersphinx_mapping:') {
 				$hasIntersphinxMapping = TRUE;
+				break;
+			} elseif ($lines[$startLine] === '...') {
+				$hasDelimiter = TRUE;
 				break;
 			}
 			$startLine++;
 		}
 		if (!$hasIntersphinxMapping) {
-			$lines[] = $indent . 'intersphinx_mapping:';
+			if ($hasDelimiter) {
+				$startLines = array_slice($lines, 0, $startLine);
+				$endLines = array_slice($lines, $startLine);
+				$lines = array_merge(
+					$startLines,
+					array(
+						$indent . 'intersphinx_mapping:'
+					),
+					$endLines
+				);
+			} else {
+				$lines[] = $indent . 'intersphinx_mapping:';
+			}
 		}
 
 		// Search if mapping is already present
