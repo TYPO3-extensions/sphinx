@@ -778,7 +778,7 @@ class SphinxBuilder {
 			$locale = $languageCode;
 		} elseif (($pos = strpos($languageCode, '_')) !== FALSE) {
 			$languageCode = substr($languageCode, 0, $pos);
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inArray($supportedLocales, $languageCode)) {
+			if (isset($supportedLocales[$languageCode])) {
 				$locale = $languageCode;
 			}
 		}
