@@ -1092,7 +1092,7 @@ EOT;
 
 		$versions = array();
 		preg_replace_callback(
-			'#<tr class="iterable-item">.*?<td class="name"><a href="[^>]+>([^<]*)</a></td>.*?<a href="([^"]+)">zip</a>#s',
+			'#<tr class="iterable-item">.*?<td class="name">([^<]*)</td>.*?<a href="([^"]+)">zip</a>#s',
 			function($matches) use (&$versions) {
 				if ($matches[1] !== 'tip' && version_compare($matches[1], '1.0', '>=')) {
 					$versions[$matches[1]] = array(
