@@ -49,10 +49,11 @@ class OpenOfficeConverter {
 	 */
 	static public function convert($sxwFilename, $outputDirectory) {
 		if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('unzip')) {
-			throw new \RuntimeException('Unzip cannot be executed.', 1375443057);
+			throw new \RuntimeException('Unzip cannot be executed. Hint: You probably should double-check '.
+				'$TYPO3_CONF_VARS[\'SYS\'][\'binPath\'] and/or $TYPO3_CONF_VARS[\'SYS\'][\'binSetup\'].', 1375443057);
 		}
 		if (!function_exists('curl_init') || !($ch = curl_init())) {
-			throw new \RuntimeException('Couldn\'t initialize cURL.', 1375438703);
+			throw new \RuntimeException('Couldn\'t initialize cURL. Please load PHP extension curl.', 1375438703);
 		}
 
 		$serviceUrl = 'http://docs.typo3.org/getthedocs/index.php';
