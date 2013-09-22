@@ -25,7 +25,8 @@ Problèmes connus
   .. code-block:: php
 
       $TYPO3_CONF_VARS['SYS']['binPath'] = '/usr/bin/';
-      $TYPO3_CONF_VARS['SYS']['binSetup'] = 'python=/usr/bin/python,unzip=/usr/bin/unzip,tar=/bin/tar';
+      $TYPO3_CONF_VARS['SYS']['binSetup'] = 'python=/usr/bin/python,' .
+                                            'unzip=/usr/bin/unzip,tar=/bin/tar';
 
 - Certaines distributions de Linux (comme Fedora) ne fournissent pas ``docutils`` ou les fichiers d'en-tête (*header files*)
   et les bibliothèques pour développer des extensions Python. Depuis une Fedora en version standard, vous pouvez installer
