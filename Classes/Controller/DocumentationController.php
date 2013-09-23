@@ -121,8 +121,10 @@ class DocumentationController extends AbstractActionController {
 			case 'EXT':
 				list($extensionKey, $locale) = explode('.', $identifier, 2);
 				$documentationUrl = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
-				// Prevent browser-cache issue
-				$documentationUrl .= '?t=' . $GLOBALS['EXEC_TIME'];
+				if (substr($documentationUrl, -4) === '.pdf') {
+					// Prevent browser-cache issue
+					$documentationUrl .= '?t=' . $GLOBALS['EXEC_TIME'];
+				}
 				break;
 			case 'USER':
 				$documentationUrl = NULL;
