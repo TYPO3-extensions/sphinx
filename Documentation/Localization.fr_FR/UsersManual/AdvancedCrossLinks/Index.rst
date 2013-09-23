@@ -25,7 +25,7 @@ détaille ensuite comment générer automatiquement un tel fichier pour une docu
 
 .. _Intersphinx: http://sphinx-doc.org/ext/intersphinx.html
 
-.. _Doxygen: www.doxygen.org/
+.. _Doxygen: http://www.doxygen.org/
 
 
 Format de ``objects.inv``

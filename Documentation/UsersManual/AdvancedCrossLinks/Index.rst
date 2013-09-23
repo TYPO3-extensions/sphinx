@@ -24,7 +24,7 @@ automatically generate such a file for a Doxygen_-based API documentation.
 
 .. _Intersphinx: http://sphinx-doc.org/ext/intersphinx.html
 
-.. _Doxygen: www.doxygen.org/
+.. _Doxygen: http://www.doxygen.org/
 
 
 Format of ``objects.inv``
