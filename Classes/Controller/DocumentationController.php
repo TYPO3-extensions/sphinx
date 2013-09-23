@@ -169,6 +169,13 @@ class DocumentationController extends AbstractActionController {
 			);
 		}
 
+		if (substr(preg_replace('/\?t=\d+$/', '', $documentationUrl), -4) === '.pdf') {
+			$referer = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER');
+			if (substr($referer, strpos($referer, '?M=') + 3) === 'help_SphinxDocumentation') {
+				$this->view->assign('documentationUrl', $documentationUrl);
+				return;
+			}
+		}
 		$this->redirectToUri($documentationUrl);
 	}
 
