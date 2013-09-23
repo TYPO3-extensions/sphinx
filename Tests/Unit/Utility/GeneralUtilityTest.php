@@ -269,6 +269,47 @@ YAML;
 	/**
 	 * @test
 	 */
+	public function canCreateNewSettingsYamlWithIntersphinxMapping() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		if (is_file($fixtureFilename)) {
+			unlink($fixtureFilename);
+		}
+
+		// Test
+		GeneralUtility::addIntersphinxMapping(
+			$fixtureFilename,
+			'restdoc',
+			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
+		);
+		$configuration = file_get_contents($fixtureFilename);
+		$expected = <<<YAML
+# This is the project specific Settings.yml file.
+# Place Sphinx specific build information here.
+# Settings given here will replace the settings of 'conf.py'.
+
+---
+conf.py:
+  copyright: 2013
+  project: No project name
+  version: 1.0
+  release: 1.0.0
+  intersphinx_mapping:
+    restdoc:
+    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - null
+...
+
+YAML;
+		$this->assertSame($expected, $configuration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
 	public function canAddNewIntersphinxMapping() {
 		// Setup
 		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');

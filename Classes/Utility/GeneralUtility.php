@@ -663,6 +663,25 @@ HTML;
 	 */
 	static public function addIntersphinxMapping($filename, $identifier, $target) {
 		$indent = '  ';
+
+		if (!is_file($filename)) {
+			$configuration = <<<YAML
+# This is the project specific Settings.yml file.
+# Place Sphinx specific build information here.
+# Settings given here will replace the settings of 'conf.py'.
+
+---
+conf.py:
+  copyright: 2013
+  project: No project name
+  version: 1.0
+  release: 1.0.0
+...
+
+YAML;
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $configuration);
+		}
+
 		$contents = file_get_contents($filename);
 		// Fix line breaks if needed as we rely on Linux line breaks
 		$contents = str_replace(array(CR . LF, CR), LF, $contents);
