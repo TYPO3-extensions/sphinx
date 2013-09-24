@@ -91,17 +91,27 @@ class CustomProject {
 
 		$basePath = $projects[$identifier]->getDirectory();
 		$absoluteBasePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($basePath);
-		$buildDirectory = '_make/build/';
-		$confFilename = '_make/conf.py';
+
+		if (is_file($absoluteBasePath . 'source/conf.py')) {
+			// Separate source/build directories
+			$sourceDirectory = 'source/';
+			$buildDirectory = 'build/';
+			$confFilename = 'source/conf.py';
+		} else {
+			// TYPO3 documentation project
+			$sourceDirectory = '.';
+			$buildDirectory = '_make/build/';
+			$confFilename = '_make/conf.py';
+		}
 
 		try {
 			switch ($layout) {
 				case 'html':        // Static
-					$masterFile = '_make/build/html/Index.html';
+					$masterFile = $buildDirectory . 'html/Index.html';
 					if ($force || !is_file($absoluteBasePath . $masterFile)) {
 						\Causal\Sphinx\Utility\SphinxBuilder::buildHtml(
 							$absoluteBasePath,
-							'.',
+							$sourceDirectory,
 							$buildDirectory,
 							$confFilename
 						);
@@ -109,7 +119,7 @@ class CustomProject {
 					$documentationUrl = '../' . $basePath . $masterFile;
 					break;
 				case 'json':        // Interactive
-					$masterFile = '_make/build/json/Index.fjson';
+					$masterFile = $buildDirectory . 'json/Index.fjson';
 					if ($force || !is_file($absoluteBasePath . $masterFile)) {
 						$configurationFilename = $absoluteBasePath . $confFilename;
 						$backupConfigurationFilename = $configurationFilename . '.bak';
@@ -118,7 +128,7 @@ class CustomProject {
 
 							\Causal\Sphinx\Utility\SphinxBuilder::buildJson(
 								$absoluteBasePath,
-								'.',
+								$sourceDirectory,
 								$buildDirectory,
 								$confFilename
 							);
@@ -134,11 +144,11 @@ class CustomProject {
 				case 'pdf':
 					switch ($this->settings['pdf_builder']) {
 						case 'pdflatex':
-							$masterFilePattern = '_make/build/latex/*.pdf';
+							$masterFilePattern = $buildDirectory . 'latex/*.pdf';
 							break;
 						case 'rst2pdf':
 						default:
-							$masterFilePattern = '_make/build/pdf/*.pdf';
+							$masterFilePattern = $buildDirectory . 'pdf/*.pdf';
 							break;
 					}
 
@@ -146,7 +156,7 @@ class CustomProject {
 					if ($force || count($availablePdfs) == 0) {
 						\Causal\Sphinx\Utility\SphinxBuilder::buildPdf(
 							$absoluteBasePath,
-							'.',
+							$sourceDirectory,
 							$buildDirectory,
 							$confFilename
 						);
@@ -177,7 +187,16 @@ class CustomProject {
 	public function retrieveBasePath($identifier, &$path) {
 		$projects = $this->projectRepository->findAll();
 		$directory = $projects[$identifier]->getDirectory();
-		$buildDirectory = '_make/build/json/';
+
+		$absoluteBasePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory);
+		if (is_file($absoluteBasePath . 'source/conf.py')) {
+			// Separate source/build directories
+			$buildDirectory = 'build/json/';
+		} else {
+			// TYPO3 documentation project
+			$buildDirectory = '_make/build/json/';
+		}
+
 		$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory . $buildDirectory);
 	}
 
@@ -193,6 +212,13 @@ class CustomProject {
 	public function retrieveRestFilename($identifier, $document, &$basePath, &$filename) {
 		$projects = $this->projectRepository->findAll();
 		$directory = $projects[$identifier]->getDirectory();
+
+		$absoluteBasePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory);
+		if (is_file($absoluteBasePath . 'source/conf.py')) {
+			// Separate source/build directories
+			$directory = rtrim($directory, '/') . '/source/';
+		}
+
 		$jsonFilename = substr($document, 0, strlen($document) - 1) . '.rst';
 		$basePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory);
 		$filename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory . $jsonFilename);
