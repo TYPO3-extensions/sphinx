@@ -82,12 +82,35 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// Fetch the list of official versions of Sphinx
-		$availableVersions = Setup::getSphinxAvailableVersions();
+		$report = array();
+		$availableVersions = Setup::getSphinxAvailableVersions($report);
 		// Load the list of locally available versions of Sphinx
 		$localVersions = Setup::getSphinxLocalVersions();
 
 		if (count($availableVersions) == 0) {
-			$out[] = $this->formatWarning('Could not find any version of Sphinx. Please check if you are currently offline and if PHP has proper OpenSSL support.');
+			$message = <<<HTML
+Could not find any version of Sphinx:<br /><br />
+<ul>
+	<li>Are you currently offline?</li>
+	<li>Does PHP have proper OpenSSL support?</li>
+HTML;
+
+			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1') {
+				$message .= '<li>You have $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'curlUse\'] == \'1\', ' .
+					'your OpenSSL configuration might be broken</li>';
+			}
+
+			$message .= '</ul><br />';
+			$message .= 'Technical details:<br />' . LF;
+			$message .= nl2br(
+				str_replace(
+					TAB,
+					str_repeat('&nbsp;', 4),
+					\TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($report)
+				)
+			);
+
+			$out[] = $this->formatWarning($message, FALSE);
 		}
 
 		// Handle form operation, if needed
@@ -302,12 +325,16 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Creates a warning message for backend output.
 	 *
 	 * @param string $message
+	 * @param boolean $hsc
 	 * @return string
 	 */
-	protected function formatWarning($message) {
+	protected function formatWarning($message, $hsc = TRUE) {
 		$output = '<div class="typo3-message message-warning">';
 		//$output .= '<div class="message-header">Message head</div>';
-		$output .= '<div class="message-body">' . nl2br(htmlspecialchars($message)) . '</div>';
+		if ($hsc) {
+			$message = nl2br(htmlspecialchars($message));
+		}
+		$output .= '<div class="message-body">' . $message . '</div>';
 		$output .= '</div>';
 
 		return $output;
@@ -317,12 +344,16 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Creates an information message for backend output.
 	 *
 	 * @param string $message
+	 * @param boolean $hsc
 	 * @return string
 	 */
-	protected function formatInformation($message) {
+	protected function formatInformation($message, $hsc = TRUE) {
 		$output = '<div class="typo3-message message-information">';
 		//$output .= '<div class="message-header">Message head</div>';
-		$output .= '<div class="message-body">' . nl2br(htmlspecialchars($message)) . '</div>';
+		if ($hsc) {
+			$message = nl2br(htmlspecialchars($message));
+		}
+		$output .= '<div class="message-body">' . $message . '</div>';
 		$output .= '</div>';
 
 		return $output;
@@ -332,12 +363,16 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * Creates an OK message for backend output.
 	 *
 	 * @param string $message
+	 * @param boolean $hsc
 	 * @return string
 	 */
-	protected function formatOk($message) {
+	protected function formatOk($message, $hsc = TRUE) {
 		$output = '<div class="typo3-message message-ok">';
 		//$output .= '<div class="message-header">Message head</div>';
-		$output .= '<div class="message-body">' . nl2br(htmlspecialchars($message)) . '</div>';
+		if ($hsc) {
+			$message = nl2br(htmlspecialchars($message));
+		}
+		$output .= '<div class="message-body">' . $message . '</div>';
 		$output .= '</div>';
 
 		return $output;

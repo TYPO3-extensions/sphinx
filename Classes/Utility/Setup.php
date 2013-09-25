@@ -1071,9 +1071,10 @@ EOT;
 	 * Please note: all versions older than 1.0 are automatically discarded
 	 * as they are most probably of absolutely no use.
 	 *
+	 * @param array &$report
 	 * @return array
 	 */
-	static public function getSphinxAvailableVersions() {
+	static public function getSphinxAvailableVersions(array &$report = array()) {
 		$sphinxUrl = 'https://bitbucket.org/birkenfeld/sphinx/downloads';
 
 		$cacheFilename = static::getTemporaryPath() . static::$extKey . '.' . md5($sphinxUrl) . '.html';
@@ -1081,7 +1082,7 @@ EOT;
 			|| $GLOBALS['EXEC_TIME'] - filemtime($cacheFilename) > 86400
 			|| filesize($cacheFilename) == 0) {
 
-			$html = GeneralUtility::getURL($sphinxUrl);
+			$html = GeneralUtility::getURL($sphinxUrl, 0, FALSE, $report);
 			GeneralUtility::writeFile($cacheFilename, $html);
 		} else {
 			$html = file_get_contents($cacheFilename);
