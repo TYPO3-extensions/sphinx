@@ -832,6 +832,9 @@ class SphinxBuilder {
 	 */
 	static protected function isTemporaryPath($path) {
 		$temporaryPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/');
+		// Compatibility with Windows platform
+		$temporaryPath = str_replace('/', DIRECTORY_SEPARATOR, $temporaryPath);
+
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $temporaryPath);
 	}
 
