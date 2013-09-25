@@ -559,7 +559,13 @@ HTML;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($absoluteOutputDirectory . '/');
 
 		if (is_file($documentationBasePath . '/warnings.txt') && filesize($documentationBasePath . '/warnings.txt') > 0) {
-			copy($documentationBasePath . '/warnings.txt', $absoluteOutputDirectory . '/warnings.txt');
+			$documentationSource = $source;
+			if (!empty($locale)) {
+				$documentationSource .= '/Localization.' . $locale;
+			}
+			$warnings = file_get_contents($documentationBasePath . '/warnings.txt');
+			$warnings = str_replace($documentationBasePath, $documentationSource, $warnings);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($absoluteOutputDirectory . '/warnings.txt', $warnings);
 		}
 
 		if ($format !== 'pdf') {
