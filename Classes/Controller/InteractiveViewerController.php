@@ -48,6 +48,9 @@ class InteractiveViewerController extends AbstractActionController {
 	/** @var string */
 	protected $languageDirectory = 'default';
 
+	// public for use with htmlizeWarnings()
+	public $uriBuilder;
+
 	/**
 	 * Unfortunately cannot use inject method as EXT:restdoc may not be loaded.
 	 *
@@ -130,7 +133,7 @@ class InteractiveViewerController extends AbstractActionController {
 
 		$warningsFilename = '';
 		if (file_exists($path . '/warnings.txt')) {
-			$warningsFilename = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo($path, PATH_site) . 'warnings.txt';
+			$warningsFilename = $this->htmlizeWarnings($path, $reference, $document);
 		}
 
 		$buttons = $this->getButtons($reference, $document, $warningsFilename);
@@ -267,6 +270,122 @@ class InteractiveViewerController extends AbstractActionController {
 		}
 
 		return implode(' ', $buttons);
+	}
+
+	/**
+	 * HTML-ize a warnings.txt file.
+	 *
+	 * @param string $path Directory containing warnings.txt
+	 * @param string $reference
+	 * @param string $document
+	 * @return string
+	 */
+	protected function htmlizeWarnings($path, $reference, $document) {
+		$path = rtrim($path, '/') . '/';
+		$mtime = filemtime($path . 'warnings.txt');
+
+		$cacheDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/');
+		$cacheFiles = glob($cacheDirectory . 'warnings-' . md5($path) . '.*');
+		if (count($cacheFiles) > 0) {
+			list($_, $timestamp) = explode('.', basename($cacheFiles[0]));
+			if ($timestamp == $mtime) {
+				return \TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo(dirname($cacheFiles[0]),
+					PATH_site) . basename($cacheFiles[0]);
+			} else {
+				// Cache file is now outdated
+				@unlink($cacheFiles[0]);
+			}
+		}
+
+		// Cache does not exist or was outdated
+		$contents = file_get_contents($path . 'warnings.txt');
+
+		// Convert new lines for HTML output
+		$contents = nl2br($contents);
+
+		/** @var \Causal\Sphinx\Controller\RestEditorController $restEditorController */
+		$restEditorController = $this->objectManager->get('Causal\\Sphinx\\Controller\\RestEditorController');
+		$parts = $restEditorController->parseReferenceDocument($reference, $document);
+
+		$basePath = $parts['basePath'] . '/';
+		if ($parts['type'] === 'EXT') {
+			// $basePath is potentially the physical path (in case of symbolic link)
+			// but we need a path within PATH_site to be detected and replaced
+			$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($parts['extensionKey']) . 'Documentation/';
+
+			if (!empty($parts['locale'])) {
+				$basePath .= 'Localization.' . $parts['locale'] . '/';
+			}
+		}
+
+		// Compatibility with Windows platform
+		$basePath = str_replace('/', DIRECTORY_SEPARATOR, $basePath);
+
+		$self = $this;
+		$contents = preg_replace_callback(
+			'#' . preg_quote($basePath, '#') . '([^: ]+)(<br />|:(\d*):)#m',
+			function($matches) use ($reference, $self) {
+				$filename = $matches[1];
+				if (count($matches) == 4) {
+					$line = max(1, intval($matches[3]));
+					$linkPattern = '<a href="%s">%s</a>:%s:';
+				} else {
+					$line = 1;
+					$linkPattern = '<a href="%s">%s</a><br />';
+				}
+
+				if (substr($filename, -4) === '.rst') {
+					$document = substr($filename, 0, -4) . '/';
+					$actionUrl = $self->uriBuilder->uriFor(
+						'edit',
+						array(
+							'reference' => $reference,
+							'document' => $document,
+							'filename' => $filename,
+							'startLine' => $line,
+						),
+						'RestEditor'
+					);
+
+					$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
+					return sprintf(
+							$linkPattern,
+							$baseUrl . $actionUrl,
+							htmlspecialchars($filename),
+							$line
+					);
+				} else {
+					// No change to contents
+					return $matches[0];
+				}
+			},
+			$contents
+		);
+
+		$htmlTemplate = <<<HTML
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>$reference: warnings.txt</title>
+	<style type="text/css">
+		body {
+			font-family: Verdana,Arial,Helvetica,sans-serif;
+			font-size: 11px;
+			line-height: 14px;
+		}
+	</style>
+</head>
+<body>
+###CONTENTS###
+</body>
+</html>
+HTML;
+
+		$contents = str_replace('###CONTENTS###', $contents, $htmlTemplate);
+		$cacheFile = $cacheDirectory . 'warnings-' . md5($path) . '.' . $mtime . '.html';
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $contents);
+
+		return \TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo(dirname($cacheFile), PATH_site) . basename($cacheFile);
 	}
 
 }

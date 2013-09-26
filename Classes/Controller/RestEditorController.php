@@ -51,11 +51,16 @@ class RestEditorController extends AbstractActionController {
 	 *
 	 * @param string $reference Reference of a documentation
 	 * @param string $document The document
+	 * @param string $filename
+	 * @param integer $startLine
 	 * @return void
 	 * @throws \RuntimeException
 	 */
-	protected function editAction($reference, $document) {
+	protected function editAction($reference, $document, $filename = '', $startLine = 1) {
 		$parts = $this->parseReferenceDocument($reference, $document);
+		if (!empty($filename)) {
+			$parts['filename'];
+		}
 		$contents = file_get_contents($parts['filename']);
 		$readOnly = !is_writable($parts['filename']);
 
@@ -63,6 +68,7 @@ class RestEditorController extends AbstractActionController {
 		$this->view->assign('extensionKey', $parts['extensionKey']);
 		$this->view->assign('document', $document);
 		$this->view->assign('contents', $contents);
+		$this->view->assign('startLine', $startLine);
 		$this->view->assign('readOnly', $readOnly ? 'true' : '');
 		$this->view->assign('projectPath', $parts['basePath']);
 		$this->view->assign('filename', substr($parts['filename'], strlen($parts['basePath']) + 1));
@@ -297,8 +303,9 @@ class RestEditorController extends AbstractActionController {
 	 * @param string $filename Optional relative filename
 	 * @return array
 	 * @throws \RuntimeException
+	 * @internal Used only by InteractiveViewerController
 	 */
-	protected function parseReferenceDocument($reference, $document, $filename = '') {
+	public function parseReferenceDocument($reference, $document, $filename = '') {
 		$extensionKey = NULL;
 		$locale = NULL;
 

@@ -91,6 +91,7 @@ class CustomProject {
 
 		$basePath = $projects[$identifier]->getDirectory();
 		$absoluteBasePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($basePath);
+		$warningsFilename = $absoluteBasePath . 'warnings.txt';
 
 		if (is_file($absoluteBasePath . 'source/conf.py')) {
 			// Separate source/build directories
@@ -109,12 +110,18 @@ class CustomProject {
 				case 'html':        // Static
 					$masterFile = $buildDirectory . 'html/Index.html';
 					if ($force || !is_file($absoluteBasePath . $masterFile)) {
+						if (is_file($warningsFilename)) {
+							@unlink($warningsFilename);
+						}
 						\Causal\Sphinx\Utility\SphinxBuilder::buildHtml(
 							$absoluteBasePath,
 							$sourceDirectory,
 							$buildDirectory,
 							$confFilename
 						);
+						if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
+							copy($warningsFilename, $absoluteBasePath . $buildDirectory . 'json/warnings.txt');
+						}
 					}
 					$documentationUrl = '../' . $basePath . $masterFile;
 					break;
@@ -126,12 +133,18 @@ class CustomProject {
 						if (copy($configurationFilename, $backupConfigurationFilename)) {
 							\Causal\Sphinx\Utility\GeneralUtility::overrideThemeT3Sphinx($absoluteBasePath);
 
+							if (is_file($warningsFilename)) {
+								@unlink($warningsFilename);
+							}
 							\Causal\Sphinx\Utility\SphinxBuilder::buildJson(
 								$absoluteBasePath,
 								$sourceDirectory,
 								$buildDirectory,
 								$confFilename
 							);
+							if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
+								copy($warningsFilename, $absoluteBasePath . $buildDirectory . 'json/warnings.txt');
+							}
 
 							if (file_exists($backupConfigurationFilename)) {
 								// Replace special-crafted conf.py by the backup version
@@ -154,12 +167,18 @@ class CustomProject {
 
 					$availablePdfs = glob($absoluteBasePath . $masterFilePattern);
 					if ($force || count($availablePdfs) == 0) {
+						if (is_file($warningsFilename)) {
+							@unlink($warningsFilename);
+						}
 						\Causal\Sphinx\Utility\SphinxBuilder::buildPdf(
 							$absoluteBasePath,
 							$sourceDirectory,
 							$buildDirectory,
 							$confFilename
 						);
+						if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
+							copy($warningsFilename, $absoluteBasePath . $buildDirectory . 'json/warnings.txt');
+						}
 						$availablePdfs = glob($absoluteBasePath . $masterFilePattern);
 					}
 					$documentationUrl = '../' . substr($availablePdfs[0], strlen(PATH_site));

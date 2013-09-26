@@ -3,6 +3,7 @@ CausalSphinxEditor = {
 	reference: null,
 	currentReference: null,
 	filename: null,
+	startLine: 1,
 	isDirty: false,
 	isReadOnly: false,
 
@@ -167,6 +168,8 @@ CausalSphinxEditor = {
 		this.editor.setPrintMarginColumn(120);
 		this.session.setUseWrapMode(true);
 		this.session.setWrapLimitRange(120, 120);
+		this.editor.gotoLine(this.startLine);
+		this.editor.focus();
 	}
 
 }
