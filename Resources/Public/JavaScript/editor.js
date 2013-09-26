@@ -170,6 +170,7 @@ CausalSphinxEditor = {
 		this.session.setWrapLimitRange(120, 120);
 		this.editor.gotoLine(this.startLine);
 		this.editor.focus();
+		this.editor.renderer.scrollToRow(this.startLine);
 	}
 
 }
