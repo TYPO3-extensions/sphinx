@@ -565,7 +565,13 @@ HTML;
 				$documentationSource .= '/Localization.' . $locale;
 			}
 			$warnings = file_get_contents($warningsFilename);
-			$warnings = str_replace($documentationBasePath, $documentationSource, $warnings);
+
+			// Compatibility with Windows platform
+			$warnings = str_replace(
+				str_replace('/', DIRECTORY_SEPARATOR, $documentationBasePath),
+				str_replace('/', DIRECTORY_SEPARATOR, $documentationSource),
+				$warnings
+			);
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($absoluteOutputDirectory . '/warnings.txt', $warnings);
 		}
 
