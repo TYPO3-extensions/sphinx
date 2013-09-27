@@ -341,7 +341,6 @@ class InteractiveViewerController extends AbstractActionController {
 						array(
 							'reference' => $reference,
 							'document' => $document,
-							'filename' => $filename,
 							'startLine' => $line,
 						),
 						'RestEditor'

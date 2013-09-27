@@ -51,16 +51,12 @@ class RestEditorController extends AbstractActionController {
 	 *
 	 * @param string $reference Reference of a documentation
 	 * @param string $document The document
-	 * @param string $filename
 	 * @param integer $startLine
 	 * @return void
 	 * @throws \RuntimeException
 	 */
-	protected function editAction($reference, $document, $filename = '', $startLine = 1) {
+	protected function editAction($reference, $document, $startLine = 1) {
 		$parts = $this->parseReferenceDocument($reference, $document);
-		if (!empty($filename)) {
-			$parts['filename'];
-		}
 		$contents = file_get_contents($parts['filename']);
 		$readOnly = !is_writable($parts['filename']);
 
