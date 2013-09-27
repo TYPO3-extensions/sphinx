@@ -27,7 +27,7 @@ A drop-down menu on top lists all loaded extensions that are featuring a Sphinx-
 Welcome screen
 ^^^^^^^^^^^^^^
 
-If no documentation has been selected in the drop-down menu:
+If no documentation has been selected in the drop-down menu; that is, "Dashboard" is selected:
 
 |kickstart|
 

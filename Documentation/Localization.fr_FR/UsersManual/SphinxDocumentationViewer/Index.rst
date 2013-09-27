@@ -29,7 +29,7 @@ vous permet de rapidement l'afficher **localement** :
 Écran d'accueil
 ^^^^^^^^^^^^^^^
 
-Si aucune documentation n'est sélectionnée dans la liste déroulante :
+Si aucune documentation n'est sélectionnée dans la liste déroulante, c.-à-d. que "Tableau de bord" (*Dashboard*) est sélectionné :
 
 |kickstart|
 
