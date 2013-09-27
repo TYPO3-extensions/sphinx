@@ -10,6 +10,9 @@ if (!in_array('rst', $textFileExtensions)) {
 if (!in_array('py', $textFileExtensions)) {
 	$textFileExtensions[] = 'py';
 }
+if (!in_array('yml', $textFileExtensions)) {
+	$textFileExtensions[] = 'yml';
+}
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'] = implode(',', $textFileExtensions);
 
 /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */

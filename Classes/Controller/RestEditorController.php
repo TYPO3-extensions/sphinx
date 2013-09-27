@@ -58,7 +58,7 @@ class RestEditorController extends AbstractActionController {
 	protected function editAction($reference, $document, $startLine = 1) {
 		$parts = $this->parseReferenceDocument($reference, $document);
 		$contents = file_get_contents($parts['filename']);
-		$readOnly = !is_writable($parts['filename']);
+		$readOnly = !(is_writable($parts['filename']) && $this->isEditableFiletype($parts['filename']));
 
 		$this->view->assign('reference', $reference);
 		$this->view->assign('extensionKey', $parts['extensionKey']);
@@ -92,7 +92,7 @@ class RestEditorController extends AbstractActionController {
 			$parts = $this->parseReferenceDocument($reference, '', $filename);
 
 			$response['contents'] = file_get_contents($parts['filename']);
-			$response['readOnly'] = !is_writable($parts['filename']);
+			$response['readOnly'] = !(is_writable($parts['filename']) && $this->isEditableFiletype($parts['filename']));
 			$response['status'] = 'success';
 		} catch (\RuntimeException $e) {
 			$response['status'] = 'error';
@@ -116,6 +116,9 @@ class RestEditorController extends AbstractActionController {
 	protected function saveAction($reference, $filename, $contents, $compile = FALSE) {
 		$response = array();
 		try {
+			if (!$this->isEditableFiletype($filename)) {
+				throw new \RuntimeException('Cannot write file: Invalid file type.', 1380269075);
+			}
 			$parts = $this->parseReferenceDocument($reference, '', $filename);
 
 			$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($parts['filename'], $contents);
@@ -288,6 +291,25 @@ class RestEditorController extends AbstractActionController {
 	// -----------------------------------------------
 	// INTERNAL METHODS
 	// -----------------------------------------------
+
+	/**
+	 * Returns TRUE if the given filename is allowed to be edited.
+	 *
+	 * @param string $filename
+	 * @return boolean
+	 */
+	protected function isEditableFiletype($filename) {
+		$filename = basename($filename);
+		if (($pos = strrpos($filename, '.')) !== FALSE) {
+			$extension = strtolower(substr($filename, $pos + 1));
+		} else {
+			$extension = '';
+		}
+		return empty($extension) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList(
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],
+			$extension
+		);
+	}
 
 	/**
 	 * Parses a reference and a document and returns the corresponding filename,

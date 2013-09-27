@@ -79,7 +79,11 @@ HTML;
 			if ($item->isDir()) {
 				$out[] = '<td><span class="folder">' . htmlspecialchars(basename($path)) . '</span></td>';
 			} else {
-				$extension = strtolower(substr($path, strrpos($path, '.') + 1));
+				if (($pos = strrpos($path, '.')) !== FALSE) {
+					$extension = strtolower(substr($path, $pos + 1));
+				} else {
+					$extension = '';
+				}
 				switch ($extension) {
 					case 'gif':
 					case 'jpg':
