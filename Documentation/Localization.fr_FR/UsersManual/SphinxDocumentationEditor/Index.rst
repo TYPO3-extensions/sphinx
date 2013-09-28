@@ -25,8 +25,9 @@ Modification d'un document
 
 L'icône de crayon charge l'éditeur "Ace" (http://ace.ajax.org/).
 
-Cet éditeur vous permet de mettre à jour rapidement le chapitre correspondant et de générer à nouveau la documentation
-lorsque vous cliquez sur l'icône "enregistrer et fermer" :
+Cet éditeur vous permet de mettre à jour rapidement le chapitre correspondant ou, par la suite, n'importe quel fichier
+de votre project Sphinx, et de générer à nouveau la documentation lorsque vous cliquez sur l'icône "enregistrer et
+fermer" :
 
 |
 
@@ -34,7 +35,7 @@ lorsque vous cliquez sur l'icône "enregistrer et fermer" :
 
 .. note::
 	L'éditeur Ace ne propose pas pour l'instant de coloration syntaxique pour reStructuredText et est par conséquent
-	configuré pour utiliser Markdown à la place.
+	configuré pour utiliser Markdown à la place. Vous pouvez surveiller http://forge.typo3.org/issues/51841.
 
 Sur le côté droit, un panneau vous montre un navigateur de références au sein de votre documentation. Les
 références sont groupées par chapitre sous la forme d'un accordéon :
@@ -63,5 +64,5 @@ sélectionner l'entrée correspondante grâce au mécanisme de complètement aut
 
 Si la référence que vous insérez n'est pas issue de votre documentation (c.-à-d. que vous référencez un autre
 chapitre ou section) mais est une référence croisée vers un autre document, la partie Intersphinx de votre
-fichier de configuration ``Settings.yml`` sera automatiquement mise à jour. Au besoin, veuillez lire la
-section :ref:`docs-typo3-org-crosslink` pour plus d'informations.
+fichier de configuration ``Settings.yml`` sera automatiquement mise à jour afin que la génération s'effectue avec succès.
+Au besoin, veuillez lire la section :ref:`docs-typo3-org-crosslink` pour plus d'informations.

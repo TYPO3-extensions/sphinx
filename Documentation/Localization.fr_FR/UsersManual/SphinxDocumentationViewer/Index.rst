@@ -120,9 +120,9 @@ En fonction du gabarit choisi, le document principal est :
 Référencement d'un projet personnel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Si vous avez un projet Sphinx complet (c'est-à-dire avec un fichier de configuration ``_make/conf.py``) quelque part dans
-votre site. comme un projet démarré avec la :ref:`Console Sphinx <kickstart_sphinx_project>`, vous pouvez l'enregistrer
-avec la visionneuse de documentation Sphinx.
+Si vous avez un projet Sphinx complet quelque part dans votre site. comme un projet démarré avec
+la :ref:`Console Sphinx <kickstart_sphinx_project>`, vous pouvez l'enregistrer avec la visionneuse de documentation
+Sphinx.
 
 En effet, nous avons implémenté notre propre signal pour :ref:`enregistrer une documentation personnelle <register-custom-documentation>`.
 

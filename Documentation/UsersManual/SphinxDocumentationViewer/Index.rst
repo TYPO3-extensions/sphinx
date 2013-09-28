@@ -76,7 +76,7 @@ Otherwise:
 #. The Sphinx project is built as HTML, JSON or PDF, according to selected layout
 
 #. HTML, JSON or PDF output is copied to ``typo3conf/documentation/<extension-key>/`` ``<language>/<format>/`` (``language``
-   is always "default" for English, unless a multilingual documentation is found, just as this very extensions does for
+   is always "default" for English, unless a multilingual documentation is found, just as this extension does for
    French)
 
 #. The viewer loads the main document (e.g., ``Index.html`` with HTML output)
@@ -108,14 +108,13 @@ According to the selected layout, the main document is:
 Registering a custom project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you have a complete Sphinx project (that is with a configuration file ``_make/conf.py``) somewhere in your website,
-such as project you kickstarted with the :ref:`Sphinx Console <kickstart_sphinx_project>`, you may register it with the
-Sphinx Documentation Viewer.
+If you have a complete Sphinx project somewhere in your website, such as project you kickstarted with
+the :ref:`Sphinx Console <kickstart_sphinx_project>`, you may register it with the Sphinx Documentation Viewer.
 
 In fact, we implemented our own signal for :ref:`registering custom documentation <register-custom-documentation>`.
 
 The list of custom projects is stored within file ``typo3conf/sphinx-projects.json``. If this file does not exist, simply
-create with your preferred text editor:
+create it with your preferred text editor:
 
 .. code-block:: json
 

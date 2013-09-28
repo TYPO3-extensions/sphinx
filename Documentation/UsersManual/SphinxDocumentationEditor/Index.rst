@@ -24,7 +24,8 @@ Editing a document
 
 The pencil icon loads the "Ace editor" (http://ace.ajax.org/).
 
-This editor lets you quickly update the corresponding chapter and recompile the documentation if you click on toolbar icon "save and close":
+This editor lets you quickly update the corresponding chapter, or then any file within your Spinx project, and recompile
+the documentation if you click on toolbar icon "save and close":
 
 |
 
@@ -32,6 +33,7 @@ This editor lets you quickly update the corresponding chapter and recompile the 
 
 .. note::
 	The Ace editor currently lacks syntax highlighting for reStructuredText and is configured with Markdown instead.
+	You may consider watching http://forge.typo3.org/issues/51841.
 
 On the right side, a panel provides a browser of references within your documentation. The references are
 grouped by chapter using a accordion widget:
@@ -59,5 +61,5 @@ words from its description and selects it using the autocompletion mechanism.
 
 In case the reference you insert is not coming from your documentation (that is, you are referencing another
 chapter or section) but is a cross-reference to another document, the Intersphinx mapping of your configuration
-file ``Settings.yml`` will be automatically updated. You may want to read section
+file ``Settings.yml`` will be automatically updated in order for the rendering to succeed. You may want to read section
 :ref:`docs-typo3-org-crosslink` for additional information.

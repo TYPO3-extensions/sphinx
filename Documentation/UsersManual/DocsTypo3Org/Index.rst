@@ -86,7 +86,7 @@ release
 		versions (when the last of the three digits changes).
 
 		As extension authors are very likely to forget to update the version prior to uploading their extension to TER,
-		the rendering engine on http://docs.typo3.org automatically overrides the *version* and *release* parameter
+		the rendering engine on http://docs.typo3.org automatically overrides the *version* and *release* parameters
 		to the actual version as seen on TER.
 
 
