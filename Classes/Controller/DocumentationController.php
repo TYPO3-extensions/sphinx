@@ -120,6 +120,9 @@ class DocumentationController extends AbstractActionController {
 		switch ($type) {
 			case 'EXT':
 				list($extensionKey, $locale) = explode('.', $identifier, 2);
+				if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
+					$this->redirect('kickstart');
+				}
 				$documentationUrl = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
 				if (substr($documentationUrl, -4) === '.pdf') {
 					// Prevent browser-cache issue
