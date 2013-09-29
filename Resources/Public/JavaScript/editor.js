@@ -21,13 +21,39 @@ CausalSphinxEditor = {
 
 	openFile: function(file) {
 		var self = CausalSphinxEditor;
+		var doOpen = true;
 
 		if (this.isDirty) {
-			var r = confirm('Your current document has been modified. Are you sure you want to open document “' + file + '”?');
-			if (!r) {
-				return;
-			}
+			var NewDialog = $('<div id="MenuDialog">\
+				<p>Your current document has been modified.\
+					Are you sure you want to open document “' + file + '”?</p>\
+			</div>');
+			NewDialog.dialog({
+				modal: true,
+				title: 'Open File',
+				show: 'clip',
+				hide: 'clip',
+				buttons: [
+					{
+						text: 'Yes',
+						click: function() {
+							self._openFile(file);
+						}
+					},
+					{
+						text: 'No',
+						click: function() {
+							$(this).dialog('close');
+						}
+					}
+				]
+			});
+		} else {
+			self._openFile(file);
 		}
+	},
+	_openFile: function(file) {
+		var self = CausalSphinxEditor;
 
 		$.post(this.actions.open,
 			{
@@ -57,14 +83,35 @@ CausalSphinxEditor = {
 	},
 
 	closeEditor: function() {
+		var self = CausalSphinxEditor;
+
 		if (this.isDirty) {
-			var r = confirm('Do you want to save the changes you made in the document “' + this.filename + '”?');
-			if (r) {
-				this.saveAndClose();
-				return;
-			}
+			var NewDialog = $('<div id="MenuDialog">\
+				<p>Do you want to save the changes you made in the document “' + this.filename + '”?</p>\
+			</div>');
+			NewDialog.dialog({
+				modal: true,
+				title: 'Close Editor',
+				show: 'clip',
+				hide: 'clip',
+				buttons: [
+					{
+						text: 'Yes',
+						click: function() {
+							self.saveAndClose();
+						}
+					},
+					{
+						text: 'No',
+						click: function() {
+							document.location.href = self.actions.redirect;
+						}
+					}
+				]
+			});
+		} else {
+			document.location.href = this.actions.redirect;
 		}
-		document.location.href = this.actions.redirect;
 	},
 
 	save: function() {
