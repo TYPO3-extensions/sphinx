@@ -81,11 +81,29 @@
 			<trans-unit id="toolbar.editor.showInvisibles">
 				<source>Show Invisibles</source>
 			</trans-unit>
+			<trans-unit id="editor.message.open.title">
+				<source>Open file</source>
+			</trans-unit>
+			<trans-unit id="editor.message.save.title">
+				<source>Save file</source>
+			</trans-unit>
+			<trans-unit id="editor.message.save.success">
+				<source>File was saved successfuly.</source>
+			</trans-unit>
 			<trans-unit id="editor.message.save.failure">
-				<source>File could not be written: %s</source>
+				<source>File could not be written: %s.</source>
 			</trans-unit>
 			<trans-unit id="editor.message.compile.failure">
-				<source>Could not compile documentation</source>
+				<source>Could not compile documentation.</source>
+			</trans-unit>
+			<trans-unit id="editor.message.intersphinx.title">
+				<source>Update Intersphinx mapping</source>
+			</trans-unit>
+			<trans-unit id="editor.message.intersphinx.success">
+				<source>Intersphinx mapping updated successfuly.</source>
+			</trans-unit>
+			<trans-unit id="editor.message.intersphinx.failure">
+				<source>Could not update Intersphinx mapping. %s is not writable.</source>
 			</trans-unit>
 			<trans-unit id="editor.header.references">
 				<source>References Browser:</source>

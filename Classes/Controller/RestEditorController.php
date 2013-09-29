@@ -88,6 +88,8 @@ class RestEditorController extends AbstractActionController {
 	 */
 	protected function openAction($reference, $filename) {
 		$response = array();
+		$response['statusTitle'] = $this->translate('editor.message.open.title');
+
 		try {
 			$parts = $this->parseReferenceDocument($reference, '', $filename);
 
@@ -115,6 +117,8 @@ class RestEditorController extends AbstractActionController {
 	 */
 	protected function saveAction($reference, $filename, $contents, $compile = FALSE) {
 		$response = array();
+		$response['statusTitle'] = $this->translate('editor.message.save.title');
+
 		try {
 			if (!$this->isEditableFiletype($filename)) {
 				throw new \RuntimeException('Cannot write file: Invalid file type.', 1380269075);
@@ -158,6 +162,7 @@ class RestEditorController extends AbstractActionController {
 			}
 
 			$response['status'] = 'success';
+			$response['statusText'] = $this->translate('editor.message.save.success');
 		} catch (\RuntimeException $e) {
 			$response['status'] = 'error';
 			$response['statusText'] = $e->getMessage();
@@ -279,12 +284,31 @@ class RestEditorController extends AbstractActionController {
 		$settingsFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($documentationExtension) .
 			'Documentation/' . ($locale ? 'Localization.' . $locale . '/' : '') . 'Settings.yml';
 
-		\Causal\Sphinx\Utility\GeneralUtility::addIntersphinxMapping(
+		$ret = \Causal\Sphinx\Utility\GeneralUtility::addIntersphinxMapping(
 			$settingsFilename,
 			$prefix,
 			$remoteUrl ?: 'http://docs.typo3.org/typo3cms/extensions/' . $prefix
 		);
 
+		$response = array();
+		$response['statusTitle'] = $this->translate('editor.message.intersphinx.title');
+
+		if ($ret === NULL) {
+			$response['status'] = 'success';
+			$response['statusText'] = '';
+		} elseif ($ret === TRUE) {
+			$response['status'] = 'success';
+			$response['statusText'] = $this->translate('editor.message.intersphinx.success');
+		} else {
+			$response['status'] = 'error';
+			$response['statusText'] = sprintf(
+				$this->translate('editor.message.intersphinx.failure'),
+				$settingsFilename
+			);
+		}
+
+		header('Content-type: application/json');
+		echo json_encode($response);
 		exit;
 	}
 

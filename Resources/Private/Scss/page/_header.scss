@@ -17,3 +17,13 @@
 	height: 16px;
 	display: inline-block;
 }
+
+#msg-div {
+	z-index: 10000;
+	position: absolute;
+	top: -500px;
+	left: 50%;
+	width: 400px;
+	margin-left: -200px;
+	word-wrap: break-word;
+}

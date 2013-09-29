@@ -672,7 +672,7 @@ HTML;
 	 * @param string $filename Absolute filename to Settings.yml
 	 * @param string $identifier Unique identifier (prefix) for Intersphinx
 	 * @param string $target Base URI of the foreign Sphinx documentation
-	 * @return boolean TRUE if operation succeeded (Settings.yml could be updated, if needed), otherwise FALSE
+	 * @return boolean|NULL TRUE if operation succeeded (Settings.yml could be updated), otherwise FALSE (NULL if no change needed)
 	 */
 	static public function addIntersphinxMapping($filename, $identifier, $target) {
 		$indent = '  ';
@@ -756,7 +756,7 @@ YAML;
 
 		return $isDirty
 			? \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, implode(LF, $lines))
-			: TRUE;
+			: NULL;
 	}
 
 	/**

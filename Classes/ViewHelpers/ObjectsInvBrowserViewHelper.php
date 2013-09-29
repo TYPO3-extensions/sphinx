@@ -71,10 +71,17 @@ function EditorInsert(str, prefix, url) {
 	${aceEditor}.focus();
 
 	if (prefix) {
-		// Fire and forget!
 		$.ajax({
 			url: "${intersphinxAction}".replace(/PREFIX/, prefix).replace(/URL/, url)
-		})
+		}).done(function(data) {
+			if (data.status == 'success') {
+				if (data.statusText) {
+					CausalSphinx.Flashmessage.display(2, data.statusTitle, data.statusText, 2);
+				}
+			} else {
+				CausalSphinx.Flashmessage.display(4, data.statusTitle, data.statusText);
+			}
+		});
 	}
 }
 $(document).ready(function() {

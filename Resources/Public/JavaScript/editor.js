@@ -50,7 +50,7 @@ CausalSphinxEditor = {
 					self.isDirty = false;
 					$("#filename").html(file);
 				} else {
-					alert(data.statusText);
+					CausalSphinx.Flashmessage.display(4, data.statusTitle, data.statusText);
 				}
 			}
 		);
@@ -81,9 +81,9 @@ CausalSphinxEditor = {
 			function(data) {
 				if (data.status == 'success') {
 					self.isDirty = false;
-					alert('successful save');
+					CausalSphinx.Flashmessage.display(2, data.statusTitle, data.statusText, 2);
 				} else {
-					alert(data.statusText);
+					CausalSphinx.Flashmessage.display(4, data.statusTitle, data.statusText);
 				}
 			}
 		);
@@ -104,7 +104,7 @@ CausalSphinxEditor = {
 				if (data.status == 'success') {
 					document.location.href = self.actions.redirect;
 				} else {
-					alert(data.statusText);
+					CausalSphinx.Flashmessage.display(4, data.statusTitle, data.statusText);
 				}
 			}
 		);
@@ -121,12 +121,12 @@ CausalSphinxEditor = {
 						.replace(/URL/, url)
 						.replace(/USE_PREFIX/, reference != self.currentReference ? '1' : '0')
 				}).done(function(data) {
-						$('#accordion-objectsinv')
-							.accordion('destroy')
-							.html(data['html'])
-							.accordion({ heightStyle: 'fill' });	// TODO: Problem if too many chapters (e.g., TYPO3 API)
-						$('#tx-sphinx-accordion-header').html(reference);
-					});
+					$('#accordion-objectsinv')
+						.accordion('destroy')
+						.html(data['html'])
+						.accordion({ heightStyle: 'fill' });	// TODO: Problem if too many chapters (e.g., TYPO3 API)
+					$('#tx-sphinx-accordion-header').html(reference);
+				});
 			})
 			.autocomplete({
 				source: CausalSphinxEditor.actions.autocomplete,
