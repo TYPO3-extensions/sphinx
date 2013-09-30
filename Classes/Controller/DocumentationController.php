@@ -311,5 +311,3 @@ class DocumentationController extends AbstractActionController {
 	}
 
 }
-
-?>

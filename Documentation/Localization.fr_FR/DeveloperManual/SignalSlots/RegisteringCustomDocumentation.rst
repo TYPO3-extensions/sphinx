@@ -205,8 +205,6 @@ Dans votre extension, créez un fichier ``EXT:your-ext/Classes/Slots/CustomDocum
 
 	}
 
-	?>
-
 
 Exemple d'implémentation de la partie TODO
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

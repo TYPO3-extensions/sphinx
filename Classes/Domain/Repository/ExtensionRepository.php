@@ -322,5 +322,3 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

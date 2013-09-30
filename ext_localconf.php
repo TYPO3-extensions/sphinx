@@ -54,5 +54,3 @@ $signalSlotDispatcher->connect(
 	'Causal\\Sphinx\\Slots\\CustomProject',
 	'retrieveRestFilename'
 );
-
-?>

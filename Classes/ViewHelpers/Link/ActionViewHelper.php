@@ -93,5 +93,3 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
 		return $this->tag->render();
 	}
 }
-
-?>

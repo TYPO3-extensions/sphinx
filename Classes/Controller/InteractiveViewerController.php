@@ -176,7 +176,7 @@ class InteractiveViewerController extends AbstractActionController {
 		}
 
 		$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($this->request->getControllerExtensionKey());
-		list($minVersion, $maxVersion) = explode('-', $metadata['constraints']['suggests']['restdoc']);
+		list($minVersion, $_) = explode('-', $metadata['constraints']['suggests']['restdoc']);
 
 		if (version_compare($restdocVersion, $minVersion, '<')) {
 			$this->forward('outdatedRestdoc');
@@ -388,5 +388,3 @@ HTML;
 	}
 
 }
-
-?>

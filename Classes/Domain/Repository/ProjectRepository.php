@@ -91,5 +91,3 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-?>

@@ -155,7 +155,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// Setting up the buttons and markers for docheader
-		list($buttons, $markers) = $filelist->getButtonsAndOtherMarkers($this->folderObject);
+		list($_, $markers) = $filelist->getButtonsAndOtherMarkers($this->folderObject);
 
 		// Add the folder info to the marker array
 		$markers['FOLDER_INFO'] = $filelist->getFolderInfo();
@@ -504,5 +504,3 @@ foreach ($SOBE->include_once as $INC_FILE) {
 
 $SOBE->main();
 $SOBE->printContent();
-
-?>

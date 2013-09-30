@@ -204,8 +204,6 @@ In your extension, create a file ``EXT:your-ext/Classes/Slots/CustomDocumentatio
 
 	}
 
-	?>
-
 
 Example implementation of the TODO
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

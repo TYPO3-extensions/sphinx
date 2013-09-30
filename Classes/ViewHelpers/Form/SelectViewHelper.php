@@ -74,7 +74,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 				$output .= '<optgroup label="' . htmlspecialchars($group) . '">';
 				foreach ($valueLabel as $value => $label) {
 					if (substr($value, 0, 4) === 'EXT:') {
-						list($extensionKey, $locale) = explode('.', substr($value, 4), 2);
+						list($extensionKey, $_) = explode('.', substr($value, 4), 2);
 						$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey) . 'ext_icon.gif';
 					} else {
 						$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) .
@@ -116,5 +116,3 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 	}
 
 }
-
-?>

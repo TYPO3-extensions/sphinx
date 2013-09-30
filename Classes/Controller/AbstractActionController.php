@@ -98,5 +98,3 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 	}
 
 }
-
-?>

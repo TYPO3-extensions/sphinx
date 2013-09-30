@@ -501,5 +501,3 @@ class RestEditorController extends AbstractActionController {
 	}
 
 }
-
-?>
