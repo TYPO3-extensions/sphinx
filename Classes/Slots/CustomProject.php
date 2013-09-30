@@ -131,7 +131,17 @@ class CustomProject {
 						$configurationFilename = $absoluteBasePath . $confFilename;
 						$backupConfigurationFilename = $configurationFilename . '.bak';
 						if (copy($configurationFilename, $backupConfigurationFilename)) {
-							\Causal\Sphinx\Utility\GeneralUtility::overrideThemeT3Sphinx($absoluteBasePath);
+							if ($confFilename === '_make/conf.py') {
+								$settingsYamlFilename = $absoluteBasePath . 'Settings.yml';
+								\Causal\Sphinx\Utility\GeneralUtility::overrideThemeT3Sphinx($absoluteBasePath);
+								if (is_file($settingsYamlFilename)) {
+									$confpyFilename = $absoluteBasePath . $confFilename;
+									$confpy = file_get_contents($confpyFilename);
+									$pythonConfiguration = \Causal\Sphinx\Utility\GeneralUtility::yamlToPython($settingsYamlFilename);
+									$confpy .= LF . '# Additional options from Settings.yml' . LF . implode(LF, $pythonConfiguration);
+									\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($confpyFilename, $confpy);
+								}
+							}
 
 							if (is_file($warningsFilename)) {
 								@unlink($warningsFilename);
