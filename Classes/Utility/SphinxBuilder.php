@@ -125,6 +125,7 @@ class SphinxBuilder {
 			(count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') .	// define tags
 			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
+			' -a -E' .													// always read all files (force compilation)
 			(is_writable($basePath) ? ' -w warnings.txt' : '') .		// store warnings and errors to disk
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
 			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
@@ -210,6 +211,7 @@ class SphinxBuilder {
 			(count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') .	// define tags
 			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
+			' -a -E' .													// always read all files (force compilation)
 			(is_writable($basePath) ? ' -w warnings.txt' : '') .		// store warnings and errors to disk
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
 			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
@@ -300,6 +302,7 @@ class SphinxBuilder {
 			(count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') .	// define tags
 			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
+			' -a -E' .													// always read all files (force compilation)
 			(is_writable($basePath) ? ' -w warnings.txt' : '') .		// store warnings and errors to disk
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
 			' -D latex_paper_size=' . $paperSize .						// paper size for LaTeX output
@@ -511,6 +514,7 @@ class SphinxBuilder {
 			(count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') .	// define tags
 			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
+			' -a -E' .													// always read all files (force compilation)
 			(is_writable($basePath) ? ' -w warnings.txt' : '') .		// store warnings and errors to disk
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
 			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
@@ -595,6 +599,7 @@ class SphinxBuilder {
 			$sphinxBuilder . ' -b linkcheck' .							// output format
 			' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) .	// directory with configuration file conf.py
 			' -d ' . static::safeEscapeshellarg($referencesPath) .		// references
+			' -a -E' .													// always read all files (force compilation)
 			(is_writable($basePath) ? ' -w warnings.txt' : '') .		// store warnings and errors to disk
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
 			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory

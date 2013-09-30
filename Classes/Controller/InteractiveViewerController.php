@@ -72,7 +72,7 @@ class InteractiveViewerController extends AbstractActionController {
 	 * @param string $reference Reference of a documentation
 	 * @param string $document Name of the document/chapter to show
 	 * @param string $documentationFilename Absolute path to the corresponding documentation source file
-	 * @return void
+	 * @return void|string
 	 * @throws \RuntimeException
 	 */
 	protected function renderAction($reference, $document = '', $documentationFilename = '') {
@@ -112,6 +112,10 @@ class InteractiveViewerController extends AbstractActionController {
 
 		if (empty($document)) {
 			$document = $this->sphinxReader->getDefaultFile() . '/';
+		}
+
+		if (!is_dir($path)) {
+			return 'Path ' . $path . ' cannot be resolved. You probably have a write permission issue.';
 		}
 
 		$this->sphinxReader
