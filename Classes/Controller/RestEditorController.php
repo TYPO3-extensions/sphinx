@@ -210,16 +210,40 @@ class RestEditorController extends AbstractActionController {
 	 * @return void|string
 	 */
 	public function accordionReferencesAction($reference, $remoteUrl = '', $usePrefix = TRUE, $json = TRUE) {
-		if (substr($reference, 0, 4) === 'EXT:') {
-			list($prefix, $locale) = explode('.', substr($reference, 4));
-			$reference = $prefix;
-		} else {
-			$locale = '';
-			// Use last segment of reference as prefix
-			$segments = explode('.', $reference);
-			$prefix = end($segments);
+		list($type, $identifier) = explode(':', $reference, 2);
+		$objectsInvFilename = '';
+
+		switch ($type) {
+			case 'EXT':
+				list($prefix, $locale) = explode('.', $identifier, 2);
+				$reference = $prefix;
+				break;
+			case 'USER':
+				$path = '';
+				$this->signalSlotDispatcher->dispatch(
+					'Causal\\Sphinx\\Controller\\InteractiveViewerController',
+					'retrieveBasePath',
+					array(
+						'identifier' => $identifier,
+						'path' => &$path,
+					)
+				);
+				$objectsInvFilename = $path . 'objects.inv';
+				// NO BREAK here, fallback to default section
+			default:
+				$locale = '';
+				// Use last segment of reference as prefix
+				$segments = explode('.', $reference);
+				$prefix = end($segments);
+				break;
 		}
-		$references = \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences($reference, $locale, $remoteUrl);
+
+		$references = \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences(
+			$reference,
+			$locale,
+			$remoteUrl,
+			$objectsInvFilename
+		);
 		$out = array();
 
 		$lastMainChapter = '';
@@ -286,12 +310,19 @@ class RestEditorController extends AbstractActionController {
 	 * @throws \RuntimeException
 	 */
 	protected function updateIntersphinxAction($reference, $prefix, $remoteUrl = '') {
-		if (substr($reference, 0, 4) !== 'EXT:') {
-			throw new \RuntimeException('Sorry this action currently only supports extension references', 1378419136);
+		list($type, $identifier) = explode(':', $reference, 2);
+
+		switch ($type) {
+			case 'EXT':
+				list($documentationExtension, $locale) = explode('.', $identifier, 2);
+				$settingsFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($documentationExtension) .
+					'Documentation/' . ($locale ? 'Localization.' . $locale . '/' : '') . 'Settings.yml';
+				break;
+			default:
+				$parts = $this->parseReferenceDocument($reference, '');
+				$settingsFilename = $parts['basePath'] . '/Settings.yml';
+				break;
 		}
-		list($documentationExtension, $locale) = explode('.', substr($reference, 4));
-		$settingsFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($documentationExtension) .
-			'Documentation/' . ($locale ? 'Localization.' . $locale . '/' : '') . 'Settings.yml';
 
 		$ret = \Causal\Sphinx\Utility\GeneralUtility::addIntersphinxMapping(
 			$settingsFilename,

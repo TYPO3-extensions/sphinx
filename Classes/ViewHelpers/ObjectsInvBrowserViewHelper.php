@@ -45,10 +45,6 @@ class ObjectsInvBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	 * @return string
 	 */
 	public function render($id, $reference, $aceEditor, \Causal\Sphinx\Controller\RestEditorController $controller) {
-		if (substr($reference, 0, 4) !== 'EXT:') {
-			return 'Sorry, the objects.inv browser currently only supports extension documentation';
-		}
-
 		$out = array();
 		$out[] = '<div id="' . $id . '" class="basic">';	// Start of accordion
 		$out[] = $controller->accordionReferencesAction($reference, '', FALSE, FALSE);

@@ -362,10 +362,11 @@ HTML;
 	 * @param string $reference Reference of a documentation or an extension key
 	 * @param string $locale The locale to use
 	 * @param string $remoteUrl The remote URL to retrieve objects.inv
+	 * @param string $localFilename The local objects.inv filename to read
 	 * @return array Intersphinx references extracted from objects.inv
 	 * @throws \RuntimeException
 	 */
-	static public function getIntersphinxReferences($reference, $locale = '', $remoteUrl = '') {
+	static public function getIntersphinxReferences($reference, $locale = '', $remoteUrl = '', $localFilename = '') {
 		if (!ExtensionManagementUtility::isLoaded('restdoc')) {
 			throw new \RuntimeException('Extension restdoc is not loaded', 1370809705);
 		}
@@ -390,9 +391,11 @@ HTML;
 			$remoteUrl = rtrim($remoteUrl, '/') . '/objects.inv';
 		}
 
-		$localFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
-			'typo3conf/Documentation/' . $reference . '/' . ($locale ?: 'default') . '/json/objects.inv'
-		);
+		if (empty($localFilename)) {
+			$localFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+				'typo3conf/Documentation/' . $reference . '/' . ($locale ?: 'default') . '/json/objects.inv'
+			);
+		}
 		$path = '';
 
 		$useCache = TRUE;
@@ -401,8 +404,8 @@ HTML;
 			$useCache = FALSE;
 		}
 
-		if (is_file($localFile)) {
-			$path = dirname($localFile);
+		if (is_file($localFilename)) {
+			$path = dirname($localFilename);
 		} elseif ($useCache && is_file($cacheFile)) {
 			$path = dirname($cacheFile);
 		} elseif ($remoteUrl) {
