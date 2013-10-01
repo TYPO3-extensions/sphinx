@@ -120,7 +120,7 @@ class CustomProject {
 							$confFilename
 						);
 						if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
-							copy($warningsFilename, $absoluteBasePath . $buildDirectory . 'json/warnings.txt');
+							copy($warningsFilename, $absoluteBasePath . $buildDirectory . 'html/warnings.txt');
 						}
 					}
 					$documentationUrl = '../' . $basePath . $masterFile;
@@ -168,10 +168,12 @@ class CustomProject {
 					switch ($this->settings['pdf_builder']) {
 						case 'pdflatex':
 							$masterFilePattern = $buildDirectory . 'latex/*.pdf';
+							$targetWarnings = 'latex/warnings.txt';
 							break;
 						case 'rst2pdf':
 						default:
 							$masterFilePattern = $buildDirectory . 'pdf/*.pdf';
+							$targetWarnings = 'pdf/warnings.txt';
 							break;
 					}
 
@@ -187,7 +189,7 @@ class CustomProject {
 							$confFilename
 						);
 						if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
-							copy($warningsFilename, $absoluteBasePath . $buildDirectory . 'json/warnings.txt');
+							copy($warningsFilename, $absoluteBasePath . $buildDirectory . $targetWarnings);
 						}
 						$availablePdfs = glob($absoluteBasePath . $masterFilePattern);
 					}
