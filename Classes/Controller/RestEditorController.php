@@ -127,6 +127,13 @@ class RestEditorController extends AbstractActionController {
 			}
 			$parts = $this->parseReferenceDocument($reference, '', $filename);
 
+			// Strip trailing spaces using explode/implode instead of a multi-line preg_match to be quicker
+			$lines = explode(LF, $contents);
+			foreach ($lines as &$line) {
+				$line = rtrim($line);
+			}
+			$contents = implode(LF, $lines);
+
 			$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($parts['filename'], $contents);
 			if (!$success) {
 				throw new \RuntimeException(sprintf(
