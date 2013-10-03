@@ -67,7 +67,7 @@ class RestEditorController extends AbstractActionController {
 		$this->view->assign('startLine', $startLine);
 		$this->view->assign('readOnly', $readOnly ? 'true' : '');
 		$this->view->assign('projectPath', $parts['basePath']);
-		$this->view->assign('filename', substr($parts['filename'], strlen($parts['basePath']) + 1));
+		$this->view->assign('filename', str_replace('\\', '/', substr($parts['filename'], strlen($parts['basePath']) + 1)));
 
 		$buttons = $this->getButtons();
 		$this->view->assign('buttons', $buttons);
@@ -431,7 +431,7 @@ class RestEditorController extends AbstractActionController {
 				if (empty($filename)) {
 					$filename = $slotFilename;
 				} else {
-					$filename = $basePath . $filename;
+					$filename = rtrim($basePath, '/') . '/' . $filename;
 				}
 				break;
 			default:

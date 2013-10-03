@@ -95,7 +95,7 @@ HTML;
 						$class = 'file';
 						break;
 				}
-				$out[] = '<td data-path="' . $path . '"><span class="' . $class . '">' . htmlspecialchars(basename($path)) . '</span></td>';
+				$out[] = '<td data-path="' . str_replace('\\', '/', $path) . '"><span class="' . $class . '">' . htmlspecialchars(basename($path)) . '</span></td>';
 			}
 
 			$out[] = '</tr>';
