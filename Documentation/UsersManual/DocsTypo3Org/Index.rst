@@ -183,48 +183,48 @@ Locales
 
 The list of supported languages for Sphinx is:
 
-======  ========================
-Prefix  Name
-======  ========================
-bn      Bengali
-ca      Catalan
-cs      Czech
-da      Danish
-de      German
-es      Spanish
-et      Estonian
-eu      Basque
-fa      Iranian
-fi      Finnish
-fr      French
-hr      Croatian
-hu      Hungarian
-id      Indonesian
-it      Italian
-ja      Japanese
-ko      Korean
-lt      Lithuanian
-lv      Latvian
-mk      Macedonian
-nb_NO   Norwegian Bokmal
-ne      Nepali
-nl      Dutch
-pl      Polish
-pt_BR   Brazilian Portuguese
-ru      Russian
-si      Sinhala
-sk      Slovak
-sl      Slovenian
-sv      Swedish
-tr      Turkish
-uk_UA   Ukrainian
-zh_CN   Simplified Chinese
-zh_TW   Traditional Chinese
-======  ========================
+======  ======================== ================
+Prefix  Name                     Suggested Locale
+======  ======================== ================
+bn      Bengali                  bn_BD
+ca      Catalan                  ca_ES
+cs      Czech                    cs_CZ
+da      Danish                   da_DK
+de      German                   de_DE
+es      Spanish                  es_ES
+et      Estonian                 et_EE
+eu      Basque                   eu_ES
+fa      Iranian                  fa_IR
+fi      Finnish                  fi_FI
+fr      French                   fr_FR, fr_CA
+hr      Croatian                 hr_HR
+hu      Hungarian                hu_HU
+id      Indonesian               id_ID
+it      Italian                  it_IT
+ja      Japanese                 ja_JP
+ko      Korean                   ko_KR
+lt      Lithuanian               lt_LT
+lv      Latvian                  lv_LV
+mk      Macedonian               mk_MK
+nb_NO   Norwegian Bokmal         nb_NO
+ne      Nepali                   ne_NP
+nl      Dutch                    nl_NL
+pl      Polish                   pl_PL
+pt_BR   Brazilian Portuguese     pt_BR
+ru      Russian                  ru_RU
+si      Sinhala                  si_LK
+sk      Slovak                   sk_SK
+sl      Slovenian                sl_SI
+sv      Swedish                  sv_SE
+tr      Turkish                  tr_TR
+uk_UA   Ukrainian                uk_UA
+zh_CN   Simplified Chinese       zh_CN
+zh_TW   Traditional Chinese      zh_TW
+======  ======================== ================
 
 Unless for the few prefixes which are already "locales", http://docs.typo3.org expects a locale and not a language code
 to be used; so make sure to extend the prefix accordingly. E.g., a French documentation (prefix ``fr``) should be
-extended either to ``fr_FR`` (French France) or ``fr_CA`` (French Canada).
+extended either to ``fr_FR`` (French France) or ``fr_CA`` (French Canada). See our suggestions above.
 
 Your translated exension manual will get rendered to http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) and
 http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
