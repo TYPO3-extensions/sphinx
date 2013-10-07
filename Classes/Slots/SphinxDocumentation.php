@@ -63,13 +63,25 @@ class SphinxDocumentation {
 	 */
 	public function postProcessDocuments($language, array &$documents) {
 		$formats = $this->getSupportedFormats();
+		$unsetExtensions = array();
 
 		$extensionsWithSphinxDocumentation = $this->extensionRepository->findByHasSphinxDocumentation();
 		foreach ($extensionsWithSphinxDocumentation as $extension) {
 			/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
 			/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
 
+			list($extensionKey, $locale) = explode('.', $extension->getExtensionKey());
 			$packageKey = $extension->getPackageKey();
+
+			if ($locale !== NULL) {
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($locale, $language)) {
+					// Translated manual but does not match current Backend language
+					continue;
+				}
+
+				// Manual in English should thus be hidden
+				$unsetDocuments[] = 'typo3cms.extensions.' . $extensionKey;
+			}
 
 			if (!isset($documents[$packageKey])) {
 				$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
@@ -90,7 +102,7 @@ class SphinxDocumentation {
 
 			if ($documentTranslation === NULL) {
 				$documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
-					->setLanguage('default')
+					->setLanguage($locale ?: 'default')
 					->setTitle($extension->getTitle())
 					->setDescription($extension->getDescription());
 
@@ -122,6 +134,8 @@ class SphinxDocumentation {
 				}
 			}
 		}
+
+		$documents = array_diff_key($documents, array_flip($unsetDocuments));
 
 		$defaultIcon = '../' . substr(
 			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('documentation') . 'ext_icon.gif',
