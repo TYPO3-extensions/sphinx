@@ -109,7 +109,7 @@ Rendu PDF
 ^^^^^^^^^
 
 La version PDF de votre documentation est générée en utilisant le générateur LaTeX de Sphinx (cf. :ref:`rendering-pdf`
-au besoin) et doit être explicitement activé pour votre extension. Pour se faire, ouvrez le fichier ``Settings.yml``
+au besoin) et doit être explicitement activée pour votre extension. Pour se faire, ouvrez le fichier ``Settings.yml``
 (à la racine de votre dossier de documentation) et assurez-vous qu'il contient les options de configuration suivantes
 (lignes 6 à 15) :
 
