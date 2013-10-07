@@ -63,7 +63,7 @@ class SphinxDocumentation {
 	 */
 	public function postProcessDocuments($language, array &$documents) {
 		$formats = $this->getSupportedFormats();
-		$unsetExtensions = array();
+		$unsetDocuments = array();
 
 		$extensionsWithSphinxDocumentation = $this->extensionRepository->findByHasSphinxDocumentation();
 		foreach ($extensionsWithSphinxDocumentation as $extension) {
