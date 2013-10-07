@@ -4,6 +4,7 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
+.. include:: Images.txt
 
 
 .. _docs-typo3-org:
@@ -23,8 +24,8 @@ PDF a été activé, voir :ref:`ci-après <docs-typo3-org-pdf>`). Les archives s
 ``http://docs.typo3.org/typo3cms/extensions/<extension-key>/packages/`` ``<extension-key>-<version>-<language>.zip``.
 Exemples :
 
-- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.1.0-default.zip
-- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.1.0-fr-fr.zip
+- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-default.zip
+- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-fr-fr.zip
 
 La liste des archives disponibles peut être récupérée simplement depuis l'URL
 http://docs.typo3.org/typo3cms/extensions/sphinx/packages/packages.xml (vous pouvez bien évidemment remplacer le segment
@@ -34,6 +35,14 @@ http://docs.typo3.org/typo3cms/extensions/sphinx/packages/packages.xml (vous pou
 	Les noms de fichiers et les URIs sont générés en minuscules et avec des tirets en lieu et place de traits de
 	soulignement. Cela signifie qu'une documentation avec la langue (ou pour être exacte la *locale*) ``fr_FR`` sera
 	en fait accessible en utilisant ``fr-fr``.
+
+.. only:: html
+
+	**Sujets traités dans ce chapitre**
+
+	.. contents::
+		:local:
+		:depth: 2
 
 
 Titre, mention de copyright et version
@@ -243,6 +252,28 @@ http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
 	utilisant ``fr-fr``.
 
 
+Bonnes pratiques
+""""""""""""""""
+
+Lorsque vous traduisez une documentation, vous pouvez être tenté de traduire un maximum d'éléments, y compris les noms
+de répertoires et de fichiers. Bien que cette idée semble judicieuse de prime abord, nous vous recommandons de **ne pas**
+le faire.
+
+En effet, les bonnes pratiques montrent que si vous gardez les noms de répertoires et de fichiers originaux, vous
+permettez à vos lecteurs de basculer rapidement entre la version originale et une traduction sur http://docs.typo3.org
+puisque le sélecteur de langue (actuellement masqué dans la liste des versions) tente de trouver une URI relative
+identique dans les traductions disponibles. S'il trouve une correspondance vers le *même* document, il basculera sur le
+même chapitre (mais traduit !), sinon il affichera la page d'accueil.
+
+Ce mécanisme est expliqué par la figure suivante. La deuxième barre d'adresse (documentation française) montre que les
+noms de répertoires et de fichiers ont été gardés. Il est donc possible de passer de la version originale, en anglais,
+à la traduction française en préfixant le segment d'URI ``fr-fr/``. En revanche, dans la troisième barre d'adresse, les
+noms des répertoires et de fichiers ont également été traduits et il n'est donc plus possible de faire correspondre les
+chapitres traduits :
+
+|translated-uri-segment|
+
+
 .. _docs-typo3-org-crosslink:
 
 Références croisées vers une autre documentation
@@ -302,13 +333,65 @@ devriez la clé d'extension comme préfixe vers d'autres manuels :
 	vers une documentation officielle TYPO3 en plus d'autres documentation arbitraires, assurez-vous de définir les
 	correspondances correspondantes également.
 
-.. tip::
-	Vous pouvez tirer partie de l'API de cette extension pour récupérer la liste des références de n'importe quelle
-	extension dont la documentation est générée sur http://docs.typo3.org en invoquant la
-	méthode ``getIntersphinxReferences()`` :
 
-	.. code-block:: php
+.. _docs-typo3-org-crosslink-code:
 
-		$extensionKey = 'sphinx';
-		$references = \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences($extensionKey);
-		print_r($references);
+Références croisées vers le code source de TYPO3
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+L'astuce décrite dans le chapitre :ref:`advanced-cross-links` a été implémentée pour l'API du code source TYPO3, ce qui
+permet de façon très facile de faire des références croisées vers le code source de TYPO3, soit pour une classe donnée,
+soit pour une méthode particulière.
+
+Pour être en mesure de créer des références croisées vers l'API de TYPO3, vous devez tout d'abord ajouter une
+correspondance Intersphinx. Pour se faire, ouvrez le fichier de configuration ``Settings.yml`` et ajoutez un bloc
+Intersphinx ``t3cmsapi`` :
+
+.. code-block:: yaml
+	:linenos:
+
+	conf.py:
+	  copyright: 2013
+	  project: Générateur et visionneuse de documentation Sphinx Python
+	  version: 1.2
+	  release: 1.2.0
+	  intersphinx_mapping:
+	    t3cmsapi:
+	    - http://typo3.org/api/typo3cms/
+	    - null
+
+Dans votre documentation, vous pouvez ensuite référencer une classe ou une méthode :
+
+.. code-block:: typoscript
+
+	Consultez :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility` pour les méthodes
+	standards de l'API.
+
+	Vous pouvez envoyer un email avec
+	:ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\MailUtility::mail`.
+
+qui sera rendu comme
+
+	Consultez :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility` pour les méthodes
+	standards de l'API.
+
+	Vous pouvez envoyer un email avec
+	:ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\MailUtility::mail`.
+
+Quelques ancres supplémentaires sont également créées (et sont disponibles comme ``:ref:`t3cmsapi:<ancre>```) :
+
+================== =================================
+Ancre              Cible
+================== =================================
+``modindex``       :ref:`t3cmsapi:modindex`
+``genindex``       :ref:`t3cmsapi:genindex`
+``start``          :ref:`t3cmsapi:start`
+``hierarchy``      :ref:`t3cmsapi:hierarchy`
+``functions``      :ref:`t3cmsapi:functions`
+``functions-func`` :ref:`t3cmsapi:functions-func`
+``variables``      :ref:`t3cmsapi:variables`
+``deprecated``     :ref:`t3cmsapi:deprecated`
+``todo``           :ref:`t3cmsapi:todo`
+``test``           :ref:`t3cmsapi:test`
+``pages``          :ref:`t3cmsapi:pages`
+================== =================================

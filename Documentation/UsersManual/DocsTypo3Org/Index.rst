@@ -4,6 +4,7 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
+.. include:: Images.txt
 
 
 .. _docs-typo3-org:
@@ -23,8 +24,8 @@ the HTML output (aka "static layout" within this extension) and its PDF counterp
 ``http://docs.typo3.org/typo3cms/extensions/<extension-key>/packages/`` ``<extension-key>-<version>-<language>.zip``.
 E.g.,
 
-- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.1.0-default.zip
-- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.1.0-fr-fr.zip
+- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-default.zip
+- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-fr-fr.zip
 
 The list of available packages can be seen on http://docs.typo3.org/typo3cms/extensions/sphinx/packages/packages.xml
 (you may of course replace segment ``/sphinx/`` with any other extension key).
@@ -32,6 +33,14 @@ The list of available packages can be seen on http://docs.typo3.org/typo3cms/ext
 .. caution::
 	Files and URIs are generated lower-case and with dashes instead of underscores. This means that a documentation
 	with language (or to be exact *locale*) ``fr_FR`` will be accessible using ``fr-fr`` instead.
+
+.. only:: html
+
+	**Topics in this chapter**
+
+	.. contents::
+		:local:
+		:depth: 2
 
 
 Title, copyright and version
@@ -175,6 +184,7 @@ your documentation, kickstart a new Sphinx project (incl. ``Settings.yml``) with
 	``Documentation`` but not the other way around, so you cannot reuse assets from a translated manual within the
 	main (English) manual.
 
+
 Locales
 """""""
 
@@ -234,6 +244,25 @@ http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
 	with locale ``fr_FR`` will be accessible using ``fr-fr`` instead.
 
 
+Best practices
+""""""""""""""
+
+When translating a documentation, you may be tempted to translate everything, including directory and file names.
+Although this sounds reasonable at first sight, we advise you **not** to do so.
+
+In fact, best practices show that if you keep the original directory and file names, you let readers quickly switch back
+and forth from a chapter to its translation on http://docs.typo3.org because the language switch (currently hidden in the
+"version" dropdown) simply searches for the same relative URI in the translated documentation. If it finds the *same*
+document, it will go to the very same chapter (but translated!) otherwise it will go to the start page.
+
+This is depicted by the following figure. The second navigation bar (French documentation) shows that directory and file
+names have been preserved. It is thus possible to switch from the original, in English, to the French translation by
+prefixing the URI segment ``fr-fr/``. In the third navigation bar however, the directory and files names have been
+translated as well, making it impossible to match chapters with their translated counterparts:
+
+|translated-uri-segment|
+
+
 .. _docs-typo3-org-crosslink:
 
 Cross-link to other documentation
@@ -289,12 +318,63 @@ other manuals:
 	official manual references. If you want to cross-link to an official documentation as well, make sure to define the
 	corresponding mapping as well.
 
-.. tip::
-	You may take advantage of this extension's API to fetch and retrieve the list of references from any extension
-	rendered on http://docs.typo3.org by invoking method ``getIntersphinxReferences()``:
 
-	.. code-block:: php
+.. _docs-typo3-org-crosslink-code:
 
-		$extensionKey = 'sphinx';
-		$references = \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences($extensionKey);
-		print_r($references);
+Cross-link to TYPO3 source code
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The trick described in chapter :ref:`advanced-cross-links` has been implemented for the TYPO3 source code API, making it
+possible and very easy to cross-link to the TYPO3 source code, either for a given class or even a given method.
+
+To be able to cross-link to the TYPO3 API, you first need to add an Intersphinx mapping. To do so, open configuration
+file ``Settings.yml`` and add an Intersphinx mapping ``t3cmsapi``:
+
+.. code-block:: yaml
+	:linenos:
+
+	conf.py:
+	  copyright: 2013
+	  project: Sphinx Python Documentation Generator and Viewer
+	  version: 1.2
+	  release: 1.2.0
+	  intersphinx_mapping:
+	    t3cmsapi:
+	    - http://typo3.org/api/typo3cms/
+	    - null
+
+In your documentation, you may then either link to a given class or a method:
+
+.. code-block:: typoscript
+
+	See :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility` for
+	standard API methods.
+
+	You may send an email with
+	:ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\MailUtility::mail`.
+
+which will be rendered as
+
+	See :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility` for
+	standard API methods.
+
+	You may send an email with
+	:ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\MailUtility::mail`.
+
+A few additional anchors are created as well (available as ``:ref:`t3cmsapi:<anchor>```):
+
+================== =================================
+Anchor             Target
+================== =================================
+``modindex``       :ref:`t3cmsapi:modindex`
+``genindex``       :ref:`t3cmsapi:genindex`
+``start``          :ref:`t3cmsapi:start`
+``hierarchy``      :ref:`t3cmsapi:hierarchy`
+``functions``      :ref:`t3cmsapi:functions`
+``functions-func`` :ref:`t3cmsapi:functions-func`
+``variables``      :ref:`t3cmsapi:variables`
+``deprecated``     :ref:`t3cmsapi:deprecated`
+``todo``           :ref:`t3cmsapi:todo`
+``test``           :ref:`t3cmsapi:test`
+``pages``          :ref:`t3cmsapi:pages`
+================== =================================

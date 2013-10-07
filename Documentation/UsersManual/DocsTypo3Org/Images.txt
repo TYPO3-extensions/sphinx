@@ -1,0 +1,2 @@
+.. |translated-uri-segment| image:: ../../Images/translated-uri-segments.png
+	:alt: Translating URI segments
