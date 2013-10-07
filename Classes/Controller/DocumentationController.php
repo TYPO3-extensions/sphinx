@@ -48,11 +48,12 @@ class DocumentationController extends AbstractActionController {
 	 * Main action.
 	 *
 	 * @param string $reference Reference of a documentation
+	 * @param string $document The document (used only with $layout = 'json')
 	 * @param string $layout Layout to use
 	 * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
 	 * @return void
 	 */
-	protected function indexAction($reference = NULL, $layout = '', $force = FALSE) {
+	protected function indexAction($reference = NULL, $document = '', $layout = '', $force = FALSE) {
 		$references = $this->getReferences();
 		$layouts = $this->getLayouts();
 
@@ -78,6 +79,7 @@ class DocumentationController extends AbstractActionController {
 				'render',
 				array(
 					'reference' => $currentReference,
+					'document' => $document,
 					'layout' => $currentLayout,
 					'force' => $force,
 				)
@@ -110,12 +112,13 @@ class DocumentationController extends AbstractActionController {
 	 * Render action.
 	 *
 	 * @param string $reference Reference of a documentation
+	 * @param string $document The document (used only with $layout = 'json')
 	 * @param string $layout Layout to use
 	 * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
 	 * @return void
 	 * @throws \RuntimeException
 	 */
-	protected function renderAction($reference = '', $layout = 'html', $force = FALSE) {
+	protected function renderAction($reference = '', $document = '', $layout = 'html', $force = FALSE) {
 		list($type, $identifier) = explode(':', $reference, 2);
 		switch ($type) {
 			case 'EXT':
@@ -158,7 +161,9 @@ class DocumentationController extends AbstractActionController {
 				$documentationFilename = '';
 			}
 
-			$document = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference-' . $reference);
+			if (empty($document)) {
+				$document = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference-' . $reference);
+			}
 
 			$this->forward(
 				'render',

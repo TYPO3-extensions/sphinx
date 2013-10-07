@@ -273,7 +273,103 @@ class InteractiveViewerController extends AbstractActionController {
 			);
 		}
 
+		$translations = $this->getTranslations($reference, $document);
+		if (count($translations) > 0) {
+			$buttons[] = '<div style="float:right">';
+			$numberOfTranslations = count($translations);
+			for ($i = 0; $i < $numberOfTranslations; $i++) {
+				if ($i > 0) {
+					$buttons[] = '|';
+				}
+				if ($translations[$i]['active']) {
+					$buttons[] = sprintf(
+						'<strong>%s</strong>',
+						htmlspecialchars($translations[$i]['name'])
+					);
+				} else {
+					$buttons[] = sprintf(
+						'<a href="%s">%s</a>',
+						$translations[$i]['link'],
+						htmlspecialchars($translations[$i]['name'])
+					);
+				}
+			}
+			$buttons[] = '</div>';
+		}
+
 		return implode(' ', $buttons);
+	}
+
+	/**
+	 * Returns links to translate current document.
+	 * Note: This is currently only implemented for extension manuals.
+	 *
+	 * @param string $reference
+	 * @param string $document
+	 * @return array
+	 */
+	protected function getTranslations($reference, $document) {
+		$translations = array();
+
+		list($type, $identifier) = explode(':', $reference, 2);
+		if ($type === 'EXT') {
+			list($extensionKey, $locale) = explode('.', $identifier, 2);
+
+			if (empty($locale)) {
+				$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
+			} else {
+				$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getLocalizedDocumentationType($extensionKey, $locale);
+			}
+
+			if ($documentationType === \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX) {
+				$localizationDirectories = \Causal\Sphinx\Utility\GeneralUtility::getLocalizationDirectories($extensionKey);
+				$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+
+				$filename = ($document ? substr($document, 0, -1) : 'Index') . '.rst';
+				$absoluteFilename = $extensionPath . 'Documentation/' . $filename;
+				if (is_file($absoluteFilename) && count($localizationDirectories) > 0) {
+					// Current document exists in English, will try to find a match in translated versions
+					foreach ($localizationDirectories as $localizationDirectory) {
+						$absoluteFilename = $extensionPath . $localizationDirectory['directory'] . '/' . $filename;
+						$localizationLocale = $localizationDirectory['locale'];
+
+						if (is_file($absoluteFilename) && !isset($translations[$localizationLocale])) {
+							$translations[$localizationLocale] = array(
+								'name' => $localizationLocale,
+								'link' => $this->uriBuilder->uriFor(
+									'index',
+									array(
+										'reference' => 'EXT:' . $extensionKey . '.' . $localizationLocale,
+										'document' => $document,
+										'layout' => 'json',
+									),
+									'Documentation'
+								),
+								'active' => ($locale === $localizationLocale),
+							);
+						}
+					}
+					if (count($translations) > 0) {
+						// Prepend English version
+						array_unshift($translations, array(
+							'name' => 'en_US',
+							'link' => $this->uriBuilder->uriFor(
+								'index',
+								array(
+									'reference' => 'EXT:' . $extensionKey,
+									'document' => $document,
+									'layout' => 'json',
+								),
+								'Documentation'
+							),
+							'active' => empty($locale),
+						));
+					}
+				}
+			}
+		}
+
+		return array_values($translations);
 	}
 
 	/**
