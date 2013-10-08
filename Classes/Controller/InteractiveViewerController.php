@@ -137,7 +137,7 @@ class InteractiveViewerController extends AbstractActionController {
 
 		$warningsFilename = '';
 		if (file_exists($path . '/warnings.txt')) {
-			$warningsFilename = $this->htmlizeWarnings($path, $reference, $document);
+			$warningsFilename = $this->htmlizeWarnings($path, $reference);
 		}
 
 		$buttons = $this->getButtons($reference, $document, $warningsFilename);
@@ -377,10 +377,9 @@ class InteractiveViewerController extends AbstractActionController {
 	 *
 	 * @param string $path Directory containing warnings.txt
 	 * @param string $reference
-	 * @param string $document
 	 * @return string
 	 */
-	protected function htmlizeWarnings($path, $reference, $document) {
+	protected function htmlizeWarnings($path, $reference) {
 		$path = rtrim($path, '/') . '/';
 		$mtime = filemtime($path . 'warnings.txt');
 
@@ -405,7 +404,7 @@ class InteractiveViewerController extends AbstractActionController {
 
 		/** @var \Causal\Sphinx\Controller\RestEditorController $restEditorController */
 		$restEditorController = $this->objectManager->get('Causal\\Sphinx\\Controller\\RestEditorController');
-		$parts = $restEditorController->parseReferenceDocument($reference, $document);
+		$parts = $restEditorController->parseReferenceDocument($reference, 'Index/');
 
 		$basePath = $parts['basePath'] . '/';
 		if ($parts['type'] === 'EXT') {
