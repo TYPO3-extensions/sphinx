@@ -53,7 +53,7 @@ Les manuels d'extensions peuvent être générés avec différents "gabarits" :
 
 - **Statique:** Génère et affiche une version HTML ;
 
-- **Interactif:** Génère et affiche une version JSON qui nécessite donc l'extension `reST Documentation Viewer (restdoc)`_.
+- **Interactif:** Génère et affiche une version JSON qui nécessite donc l'extension `Sphinx/reStructuredText Documentation Viewer (restdoc)`_.
   Par ailleurs, ce gabarit propose un :ref:`éditeur reStructuredText <sphinx-documentation-editor>` intégré pour vous
   permettre de modifier rapidement et de recompiler un chapitre donné ;
 

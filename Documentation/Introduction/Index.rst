@@ -67,7 +67,8 @@ In addition, this extension comes with a few goodies such as:
 What can I do with a Sphinx project?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A lot! And above all, if you compile your documentation as JSON, you may easily integrate it to your website. Best way is to use TYPO3 extension `reST Documentation Viewer (restdoc)`_.
+A lot! And above all, if you compile your documentation as JSON, you may easily integrate it to your website. Best way
+is to use TYPO3 extension `Sphinx/reStructuredText Documentation Viewer (restdoc)`_.
 
 
 .. _screenshots:

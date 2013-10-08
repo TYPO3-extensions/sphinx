@@ -321,9 +321,9 @@ la correspondance Intersphinx dans ``Settings.yml``. Pour se faire, ajoutez des 
 	    - null
 
 Cela aura pour effet d'enregistrer le préfixe ``restdoc`` et vous permettra de créer des références croisées vers
-n'importe quel chapitre de la documentation de l'extension *reST Documentation Viewer*. Par exemple sont journal des
-modifications avec ``:ref:`Journal des modifications pour EXT:restdoc <restdoc:changelog>```. Par convention, vous
-devriez la clé d'extension comme préfixe vers d'autres manuels :
+n'importe quel chapitre de la documentation de l'extension *Sphinx/reStructuredText Documentation Viewer*. Par exemple
+son journal des modifications avec ``:ref:`Journal des modifications pour EXT:restdoc <restdoc:changelog>```. Par
+convention, vous devriez la clé d'extension comme préfixe vers d'autres manuels :
 
 * :ref:`Journal des modifications pour EXT:restdoc <restdoc:changelog>`
 

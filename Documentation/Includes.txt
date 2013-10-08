@@ -40,7 +40,7 @@
 
 .. _MiKTeX: http://www.miktex.org/download
 
-.. _`reST Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
+.. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
 
 .. _`Share corporate font family`: http://typo3.org/the-brand/style-guide/the-typo3-font/
 

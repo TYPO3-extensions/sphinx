@@ -172,7 +172,7 @@ HTML;
 		$out[] = '<form action="' . GeneralUtility::linkThisScript() . '" method="post">';
 		$out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
 
-		$out[] = '<table class="t3-table">';
+		$out[] = '<table class="typo3-dblist" style="width:auto">';
 		$out[] = '<tr class="t3-row-header">';
 		$out[] = '<td colspan="2">&nbsp;</td>';
 		$out[] = '<td>1-click Process</td>';

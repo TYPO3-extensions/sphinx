@@ -53,8 +53,8 @@ JSON
 
 Ce générateur Sphinx génère un dérivé de HTML dans le répertoire ``_build/json``. Vous devriez utiliser ce générateur
 afin de pouvoir intégrer proprement votre documentation à votre site TYPO3. L'extension
-`reST Documentation Viewer (restdoc) <http://typo3.org/extensions/repository/view/restdoc>`_ peut être utilisée avec un
-rendu JSON.
+`Sphinx/reStructuredText Documentation Viewer (restdoc) <http://typo3.org/extensions/repository/view/restdoc>`_ peut
+être utilisée avec un rendu JSON.
 
 
 LaTeX

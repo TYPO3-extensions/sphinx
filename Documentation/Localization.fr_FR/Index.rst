@@ -30,7 +30,7 @@ Générateur et visionneuse de documentation Sphinx Python
 		Intègre un éditeur reStructuredText doté d'un navigateur de références croisées.
 
 	:Mots-clés:
-		reStructuredText, reST, sphinx, LaTeX, documentation
+		reStructuredText, reST, sphinx-doc, sphinx, LaTeX, documentation
 
 	:Copyright:
 		2013

@@ -30,7 +30,7 @@ Sphinx Python Documentation Generator and Viewer
 		a reStructuredText editor with cross-reference browser.
 
 	:Keywords:
-		reStructuredText, reST, sphinx, LaTeX, documentation
+		reStructuredText, reST, sphinx-doc, sphinx, LaTeX, documentation
 
 	:Copyright:
 		2013
