@@ -6,5 +6,5 @@ $MCONF['script'] = '_DISPATCH';
 
 $MCONF['access'] = 'user,group';
 
-$MLANG['default']['tabs_images']['tab'] = '../../../ext_icon.gif';
+$MLANG['default']['tabs_images']['tab'] = '../../../ext_icon.png';
 $MLANG['default']['ll_ref'] = 'LLL:EXT:sphinx/Resources/Private/Language/locallang_mod1.xlf';

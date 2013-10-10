@@ -75,10 +75,16 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 				foreach ($valueLabel as $value => $label) {
 					if (substr($value, 0, 4) === 'EXT:') {
 						list($extensionKey, $_) = explode('.', substr($value, 4), 2);
-						$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey) . 'ext_icon.gif';
+						$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+						$extRelPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey);
+						$icon = $extRelPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon($extPath);
+						$hiresIcon = 'ext_icon@2x.png';
+						if (is_file($extPath . $hiresIcon)) {
+							$icon = $extRelPath . $hiresIcon;
+						}
 					} else {
 						$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) .
-							'Resources/Public/Images/default_icon.gif';
+							'Resources/Public/Images/default_icon@2x.png';
 					}
 					$isSelected = $this->isSelected($value);
 					$output .= $this->renderOptionTag($value, $label, $icon, $isSelected) . LF;
