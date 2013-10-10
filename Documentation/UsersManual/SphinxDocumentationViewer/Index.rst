@@ -16,12 +16,14 @@ This extension provides another Backend module under section "Help":
 
 |section_help|
 
-A drop-down menu on top lists all loaded extensions that are featuring a Sphinx-based documentation and lets you quickly show it **locally**:
+A drop-down menu on top lists all loaded extensions that are featuring a Sphinx-based documentation and lets you quickly
+show it **locally**:
 
 |viewer_choose_extension|
 
 .. tip::
-	The Sphinx documentation viewer automatically reloads the last manual you selected and if you choose the interactive layout, it will even bring you to the chapter you were reading.
+	The Sphinx documentation viewer automatically reloads the last manual you selected and if you choose the interactive
+	layout, it will even bring you to the chapter you were reading.
 
 
 Welcome screen
@@ -50,7 +52,9 @@ Extension manuals may be rendered with different "layouts":
 
 - **Static:** This renders and shows the HTML version;
 
-- **Interactive:** This renders and shows the JSON version and as such requires extension `reST Documentation Viewer (restdoc)`_. In addition, this layout features an integrated :ref:`reStructuredText editor <sphinx-documentation-editor>` to let you quickly edit and recompile a given chapter;
+- **Interactive:** This renders and shows the JSON version and as such requires extension
+  `Sphinx/reStructuredText Documentation Viewer (restdoc)`_. In addition, this layout features an integrated
+  :ref:`reStructuredText editor <sphinx-documentation-editor>` to let you quickly edit and recompile a given chapter;
 
 - **PDF:** This renders and shows the PDF version and as such requires either ``pdflatex`` or ``rst2pdf``:
 
@@ -58,11 +62,14 @@ Extension manuals may be rendered with different "layouts":
 
   |render_pdf|
 
+.. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
+
 
 Internals
 ^^^^^^^^^
 
-As Sphinx-based extension manuals are meant to be rendered on http://docs.typo3.org using the TYPO3 corporate design, they do not provide the general configuration files needed to be rendered locally.
+As Sphinx-based extension manuals are meant to be rendered on http://docs.typo3.org using the TYPO3 corporate design,
+they do not provide the general configuration files needed to be rendered locally.
 
 When selecting an extension's manual to be shown from the drop-down menu the following process happens:
 
@@ -91,7 +98,8 @@ Otherwise:
 .. note::
 	The Sphinx Documentation Viewer supports two types of extension's manual:
 
-	#. Standard documentation layout with the a whole Sphinx project stored within ``EXT:<extension-key>/Documentation/``, with the master document named ``Index.rst``
+	#. Standard documentation layout with the a whole Sphinx project stored within ``EXT:<extension-key>/Documentation/``,
+	   with the master document named ``Index.rst``
 	#. Simple reStructuredText README file as seen on Github or Bitbucket and saved as ``EXT:<extension-key>/README.rst``
 
 According to the selected layout, the main document is:

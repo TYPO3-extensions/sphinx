@@ -362,7 +362,7 @@ Intersphinx ``t3cmsapi`` :
 
 Dans votre documentation, vous pouvez ensuite référencer une classe ou une méthode :
 
-.. code-block:: typoscript
+.. code-block:: rest
 
 	Consultez :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility` pour les méthodes
 	standards de l'API.

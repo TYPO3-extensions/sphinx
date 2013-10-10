@@ -10,7 +10,12 @@
 Installing LaTeX on MS Windows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Download and run the MiKTeX_ installer to setup a basic TeX/LaTeX system on your computer. You can read the section `Installing MiKTeX`_ in the MiKTeX manual, if you want to learn all the details.
+Download and run the MiKTeX_ installer to setup a basic TeX/LaTeX system on your computer. You can read the section
+`Installing MiKTeX`_ in the MiKTeX manual, if you want to learn all the details.
+
+.. _MiKTeX: http://www.miktex.org/download
+
+.. _`Installing MiKTeX`: http://docs.miktex.org/2.9/manual/installing.html
 
 .. note::
 

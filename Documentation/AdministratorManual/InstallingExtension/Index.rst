@@ -67,7 +67,10 @@ Everything should work out-of-the-box. Possible problems will be reported as Fla
 
 #. Fetch 3rd-party plugins for Sphinx: https://bitbucket.org/birkenfeld/sphinx-contrib/
 
-The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if you want to use the `git repository of the TYPO3 ReST tools`_ instead of a snapshot.
+The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if
+you want to use the `git repository of the TYPO3 ReST tools`_ instead of a snapshot.
+
+.. _`git repository of the TYPO3 ReST tools`: https://git.typo3.org/Documentation/RestTools.git/
 
 The "download" button fetches the corresponding sources of Sphinx, the TYPO3-related commands, the PyYAML library, the
 Pygments library, ... if they are not available locally.

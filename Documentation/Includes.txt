@@ -19,37 +19,3 @@
 .. role::   php(code)
 
 .. highlight:: php
-
-.. ==================================================
-.. EXTERNAL LINKS
-.. --------------------------------------------------
-
-.. _`Donald E. Knuth`: http://en.wikipedia.org/wiki/Donald_Knuth
-
-.. _`git repository of the TYPO3 ReST tools`: https://git.typo3.org/Documentation/RestTools.git/
-
-.. _`Installing MiKTeX`: http://docs.miktex.org/2.9/manual/installing.html
-
-.. _`LaTeX3 Project`: http://latex-project.org/latex3.html
-
-.. _`Leslie Lamport`: http://en.wikipedia.org/wiki/Leslie_Lamport
-
-.. _MacPorts: http://www.macports.org/
-
-.. _MacTeX: http://www.tug.org/mactex/
-
-.. _MiKTeX: http://www.miktex.org/download
-
-.. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
-
-.. _`Share corporate font family`: http://typo3.org/the-brand/style-guide/the-typo3-font/
-
-.. _Sphinx: http://sphinx-doc.org/
-
-.. _`the TYPO3 wiki`: http://wiki.typo3.org/Rendering_reST
-
-.. _TeX: http://en.wikipedia.org/wiki/TeX
-
-.. _`TeX Live`: http://www.tug.org/texlive/
-
-.. _`Tips and Tricks`: http://wiki.typo3.org/Tips_and_Tricks_%28reST%29

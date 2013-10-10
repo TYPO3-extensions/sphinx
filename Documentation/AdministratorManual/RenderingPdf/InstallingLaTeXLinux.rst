@@ -9,7 +9,10 @@
 Installing LaTeX on Linux or Mac OS X
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Your system distribution or vendor has probably provided a TeX system including LaTeX. Check your usual software source for a TeX package; otherwise install `TeX Live`_ directly.
+Your system distribution or vendor has probably provided a TeX system including LaTeX. Check your usual software source
+for a TeX package; otherwise install `TeX Live`_ directly.
+
+.. _`TeX Live`: http://www.tug.org/texlive/
 
 .. note::
 
@@ -44,3 +47,8 @@ You can install the TeX Live environment using package MacTeX_. Alternatively, i
 .. code-block:: bash
 
 	$ sudo port install texlive texlive-latex-extra
+
+
+.. _MacTeX: http://www.tug.org/mactex/
+
+.. _MacPorts: http://www.macports.org/

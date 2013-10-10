@@ -56,6 +56,8 @@ mises en évidence :
 .. Liens :
 .. _`tutoriel vidéo de 5 min`: http://www.youtube.com/watch?v=YeGqHMDT7R8
 
+.. _Sphinx: http://sphinx-doc.org/
+
 
 Et cette extension ?
 ^^^^^^^^^^^^^^^^^^^^
@@ -79,6 +81,8 @@ Que puis-je faire avec un project Sphinx ?
 
 Plein de choses ! Et avant tout, si vous compilez votre documentation en JSON, vous pouvez facilement l'intégrer à votre
 site. Le meilleur moyen est d'utiliser l'extension TYPO3 `Sphinx/reStructuredText Documentation Viewer (restdoc)`_.
+
+.. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
 
 
 .. _screenshots:

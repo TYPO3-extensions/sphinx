@@ -12,6 +12,8 @@ Installation de LaTeX sous Linux ou Mac OS X
 Votre distribution sysème ou vendeur fournit très probablement un paquet TeX comprenant LaTeX. Veuillez rechercher votre
 source de logiciels usuelle pour un paquet TeX ; ou alors installez `TeX Live`_ directement.
 
+.. _`TeX Live`: http://www.tug.org/texlive/
+
 .. note::
 
 	Les fichiers LaTeX produits utilisent plusieurs bibliothèques LaTeX qui peuvent ne pas être disponibles avec une
@@ -48,3 +50,8 @@ MacPorts_, le processus est similaire à un système Debian :
 .. code-block:: bash
 
 	$ sudo port install texlive texlive-latex-extra
+
+
+.. _MacTeX: http://www.tug.org/mactex/
+
+.. _MacPorts: http://www.macports.org/

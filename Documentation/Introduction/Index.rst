@@ -49,6 +49,12 @@ Sphinx was originally created for the Python documentation and a few features ar
 .. Links:
 .. _`5 min tutorial video`: http://www.youtube.com/watch?v=YeGqHMDT7R8
 
+.. _Sphinx: http://sphinx-doc.org/
+
+.. _`the TYPO3 wiki`: http://wiki.typo3.org/Rendering_reST
+
+.. _`Tips and Tricks`: http://wiki.typo3.org/Tips_and_Tricks_%28reST%29
+
 
 And this extension?
 ^^^^^^^^^^^^^^^^^^^
@@ -69,6 +75,8 @@ What can I do with a Sphinx project?
 
 A lot! And above all, if you compile your documentation as JSON, you may easily integrate it to your website. Best way
 is to use TYPO3 extension `Sphinx/reStructuredText Documentation Viewer (restdoc)`_.
+
+.. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
 
 
 .. _screenshots:

@@ -75,3 +75,12 @@ Vous trouvez ci-dessous quelques interviews Donald E. Knuth (en anglais) :
 - `Working on my own typesetting program (Part 1) <http://www.webofstories.com/play/donald.knuth/52>`_
 - `Working on my own typesetting program (Part 2) <http://www.webofstories.com/play/donald.knuth/53>`_
 - `Research into the history of typography <http://www.webofstories.com/play/donald.knuth/54>`_
+
+
+.. _TeX: http://en.wikipedia.org/wiki/TeX
+
+.. _`Donald E. Knuth`: http://en.wikipedia.org/wiki/Donald_Knuth
+
+.. _`Leslie Lamport`: http://en.wikipedia.org/wiki/Leslie_Lamport
+
+.. _`LaTeX3 Project`: http://latex-project.org/latex3.html

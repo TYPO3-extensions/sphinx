@@ -49,7 +49,9 @@ and in LaTeX you would input this document as:
 History
 """""""
 
-LaTeX is based on `Donald E. Knuth`_'s TeX_ typesetting language or certain extensions. LaTeX was first developed in 1985 by `Leslie Lamport`_, and is now being maintained and developed by the `LaTeX3 Project`_. It is worth mentioning that first release of TeX dates back from 1978 and that the current stable release is version 3.1415926 from March 2008!
+LaTeX is based on `Donald E. Knuth`_'s TeX_ typesetting language or certain extensions. LaTeX was first developed in
+1985 by `Leslie Lamport`_, and is now being maintained and developed by the `LaTeX3 Project`_. It is worth mentioning
+that first release of TeX dates back from 1978 and that the current stable release is version 3.1415926 from March 2008!
 
 Here are a few really interesting interviews from Donald E. Knuth:
 
@@ -58,3 +60,12 @@ Here are a few really interesting interviews from Donald E. Knuth:
 - `Working on my own typesetting program (Part 1) <http://www.webofstories.com/play/donald.knuth/52>`_
 - `Working on my own typesetting program (Part 2) <http://www.webofstories.com/play/donald.knuth/53>`_
 - `Research into the history of typography <http://www.webofstories.com/play/donald.knuth/54>`_
+
+
+.. _TeX: http://en.wikipedia.org/wiki/TeX
+
+.. _`Donald E. Knuth`: http://en.wikipedia.org/wiki/Donald_Knuth
+
+.. _`Leslie Lamport`: http://en.wikipedia.org/wiki/Leslie_Lamport
+
+.. _`LaTeX3 Project`: http://latex-project.org/latex3.html

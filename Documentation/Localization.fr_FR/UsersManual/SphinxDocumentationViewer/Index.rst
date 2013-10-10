@@ -63,6 +63,8 @@ Les manuels d'extensions peuvent être générés avec différents "gabarits" :
 
   |render_pdf|
 
+.. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
+
 
 Fonctionnement interne
 ^^^^^^^^^^^^^^^^^^^^^^

@@ -345,7 +345,7 @@ file ``Settings.yml`` and add an Intersphinx mapping ``t3cmsapi``:
 
 In your documentation, you may then either link to a given class or a method:
 
-.. code-block:: typoscript
+.. code-block:: rest
 
 	See :ref:`t3cmsapi:TYPO3\\CMS\\Core\\Utility\\GeneralUtility` for
 	standard API methods.
