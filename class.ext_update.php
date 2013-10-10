@@ -273,6 +273,12 @@ HTML;
 				if ($installRst2Pdf && Setup::hasRst2Pdf()) {
 					$success &= Setup::buildRst2Pdf($version, $output);
 				}
+				if (Setup::hasThirdPartyLibraries()) {
+					$selectedPlugins = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->configuration['plugins'], TRUE);
+					foreach ($selectedPlugins as $selectedPlugin) {
+						$success &= Setup::buildThirdPartyLibraries($selectedPlugin, $version, $output);
+					}
+				}
 				if (Setup::hasPyYaml()) {
 					$success &= Setup::buildPyYaml($version, $output);
 				}
@@ -281,12 +287,6 @@ HTML;
 				}
 				if (Setup::hasRestTools()) {
 					$success &= Setup::buildRestTools($version, $output);
-				}
-				if (Setup::hasThirdPartyLibraries()) {
-					$selectedPlugins = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->configuration['plugins'], TRUE);
-					foreach ($selectedPlugins as $selectedPlugin) {
-						$success &= Setup::buildThirdPartyLibraries($selectedPlugin, $version, $output);
-					}
 				}
 			}
 		}

@@ -59,13 +59,13 @@ Everything should work out-of-the-box. Possible problems will be reported as Fla
 
 #. *[Not on MS Windows, other OS : if activated]* Install ``rst2pdf`` (http://rst2pdf.ralsina.com.ar/), as a simple way of building PDF
 
+#. Fetch 3rd-party plugins for Sphinx: https://bitbucket.org/birkenfeld/sphinx-contrib/
+
 #. Install PyYAML library (http://pyyaml.org/wiki/PyYAML), needed for building TYPO3 documentation
 
 #. Install Pygments library (http://pygments.org/), and configure TypoScript highlighting
 
 #. Install TYPO3-related commands provided by the TYPO3 Documentation Team (TYPO3 ReST tools)
-
-#. Fetch 3rd-party plugins for Sphinx: https://bitbucket.org/birkenfeld/sphinx-contrib/
 
 The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if
 you want to use the `git repository of the TYPO3 ReST tools`_ instead of a snapshot.

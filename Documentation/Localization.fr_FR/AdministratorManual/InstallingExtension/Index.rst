@@ -69,14 +69,14 @@ général d'importation de Sphinx est le suivant :
 #. *[Pas sous MS Windows, autres systèmes : si activé]* Installation de ``rst2pdf`` (http://rst2pdf.ralsina.com.ar/), comme méthode simple pour générer
    des PDF
 
+#. Récupération des extensions facultatives pour Sphinx: https://bitbucket.org/birkenfeld/sphinx-contrib/
+
 #. Installation de la bibliothèque PyYAML (http://pyyaml.org/wiki/PyYAML), nécessaire pour générer la documentation TYPO3
 
 #. Installation de la bibliothèque Pygments (http://pygments.org/), et configuration de la coloration syntaxique pour
    le code TypoScript
 
 #. Installation des commandes liées à TYPO3 fournies par l'équipe de documentation (utilitaires ReST TYPO3)
-
-#. Récupération des extensions facultatives pour Sphinx: https://bitbucket.org/birkenfeld/sphinx-contrib/
 
 Les boutons d'installation manuelle vous permettent de modifier les fichiers et de recompiler votre environnement. C'est
 particulièrement pratique si vous souhaitez utiliser le `dépôt git des utilitaires ReST TYPO3`_ au lieu d'un instantané
