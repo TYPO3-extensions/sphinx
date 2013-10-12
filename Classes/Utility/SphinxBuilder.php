@@ -43,6 +43,20 @@ class SphinxBuilder {
 	static public $htmlConsole = TRUE;
 
 	/**
+	 * Returns TRUE if Sphinx is ready.
+	 *
+	 * @return boolean
+	 */
+	static public function isReady() {
+		try {
+			static::getSphinxBuilder();
+		} catch (\RuntimeException $e) {
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	/**
 	 * Returns TRUE if the version of Sphinx used for building documentation is system.
 	 *
 	 * @return boolean TRUE if selected version of Sphinx is system, otherwise FALSE

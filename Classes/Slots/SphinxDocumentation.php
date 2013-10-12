@@ -65,6 +65,10 @@ class SphinxDocumentation {
 		$formats = $this->getSupportedFormats();
 		$unsetDocuments = array();
 
+		if (count($formats) === 0) {
+			return;
+		}
+
 		$extensionsWithSphinxDocumentation = $this->extensionRepository->findByHasSphinxDocumentation();
 		foreach ($extensionsWithSphinxDocumentation as $extension) {
 			/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
@@ -176,6 +180,9 @@ class SphinxDocumentation {
 	 * @return array
 	 */
 	protected function getSupportedFormats() {
+		if (!\Causal\Sphinx\Utility\SphinxBuilder::isReady()) {
+			return array();
+		}
 		$formats = array('html', 'json');
 
 		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sphinx']);
