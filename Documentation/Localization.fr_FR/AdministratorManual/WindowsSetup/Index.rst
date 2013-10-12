@@ -159,10 +159,10 @@ d'installation. Ensuite lancez-le et suivez les instructions, comme vous l'avez 
 |libarchive_setup|
 
 .. important::
-	Par défaut l'utilitaire d'extraction :program:`bsdtar` est installé dans le répertoire
-	:file:`C:\Program Files (x86)\GnuWin32\bin`, exactement comme :program:`unzip` ; il devrait donc être automatiquement
-	détecté comme vous avez référencé ce chemin dans la variable d'environnement ``%PATH%``. Au besoin, veuillez référencer
-	un autre chemin comme décrit précédemment.
+	Par défaut l'utilitaire d'extraction :program:`bsdtar` est installé dans le répertoire :file:`C:\Program Files (x86)\GnuWin32\bin`,
+	exactement comme :program:`unzip` ; il devrait donc être automatiquement détecté comme vous avez référencé
+	ce chemin dans la variable d'environnement ``%PATH%``. Au besoin, veuillez référencer un autre chemin comme
+	décrit précédemment.
 
 	Néanmoins, l'extension Sphinx recherche une commande :program:`tar` et pas :program:`bsdtar`. De ce fait, vous devriez
 	soit copier :program:`bsdtar.exe` et le renommer en :program:`tar.exe` ou, mieux, créer un lien symbolique vers lui.

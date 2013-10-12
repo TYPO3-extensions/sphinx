@@ -39,6 +39,7 @@ La version sélectionnée de Sphinx (le script sans numéro de version) est cell
 gestionnaire d'extensions.
 
 .. tip::
-	Les fichiers Makefile font généralement référence à :program:`sphinx-build` pour générer votre documentation. Si vous
-	envisagez d'utiliser Sphinx manuellement depuis la ligne de commande, vous devriez ajouter le répertoire
-	:file:`typo3temp/tx_sphinx/sphinx-doc/bin` à votre variable d'environnement ``PATH``.
+	Les fichiers Makefile font généralement référence à :program:`sphinx-build` pour générer votre
+	documentation. Si vous envisagez d'utiliser Sphinx manuellement depuis la ligne de commande, vous
+	devriez ajouter le répertoire :file:`typo3temp/tx_sphinx/sphinx-doc/bin` à votre variable
+	d'environnement ``PATH``.

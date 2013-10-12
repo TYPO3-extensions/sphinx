@@ -180,9 +180,9 @@ your documentation, kickstart a new Sphinx project (incl. :file:`Settings.yml`) 
 :file:`Documentation/Localization.{locale}`.
 
 .. tip::
-	You may reuse assets such as :file:`Includes.txt` or images from the main documentation under directory
-	:file:`Documentation` but not the other way around, so you cannot reuse assets from a translated manual within the
-	main (English) manual.
+	You may reuse assets such as :file:`Includes.txt` or images from the main documentation under
+	directory :file:`Documentation` but not the other way around, so you cannot reuse assets from a
+	translated manual within the main (English) manual.
 
 
 Locales

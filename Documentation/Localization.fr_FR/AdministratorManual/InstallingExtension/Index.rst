@@ -86,10 +86,11 @@ Le bouton "download" récupère les sources correspondantes de Sphinx, les comma
 la bibliothèque Pygments, ... si elles ne sont pas disponibles localement.
 
 .. important::
-	Il est connu que la bibliothèque graphique Python et/ou :program:`rst2pdf` peuvent ne pas s'installer et se configurer
-	avec succès sur certains systèmes. Cependant, comme ces bibliothèques ne sont utilisées que pour générer un PDF avec
-	:program:`rst2pdf` et que de toute façon la méthode recommandée pour générer un PDF et d'utiliser :ref:`LaTeX <rendering-pdf>`,
-	vous ne devriez pas prêter trop attention à cette erreur si vous ne pouvez pas installer :program:`rst2pdf` localement.
+	Il est connu que la bibliothèque graphique Python et/ou :program:`rst2pdf` peuvent ne pas s'installer et
+	se configurer avec succès sur certains systèmes. Cependant, comme ces bibliothèques ne sont utilisées que
+	pour générer un PDF avec :program:`rst2pdf` et que de toute façon la méthode recommandée pour générer un
+	PDF et d'utiliser :ref:`LaTeX <rendering-pdf>`, vous ne devriez pas prêter trop attention à cette erreur
+	si vous ne pouvez pas installer :program:`rst2pdf` localement.
 
 .. tip::
 	Au lieu de télécharger une fois pour toutes les commandes liées à TYPO3, vous pouvez préférer cloner le dépôt git
