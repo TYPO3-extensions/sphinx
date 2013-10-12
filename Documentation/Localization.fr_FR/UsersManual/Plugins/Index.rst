@@ -32,9 +32,9 @@ Chargement d'un plugin
 .. index::
 	single: Plugins; Chargement avec Settings.yml
 
-Afin de charger un plugin, vous devez l'ajouter à la liste des extensions du fichier de configuration ``conf.py``.
+Afin de charger un plugin, vous devez l'ajouter à la liste des extensions du fichier de configuration :file:`conf.py`.
 Cependant, comme ce fichier n'existe pas lorsque vous créez un manuel d'extension, vous devez modifier le fichier
-de configuration ``Settings.yml`` qui est utilisé par docs.typo3.org (et cette extension) pour surcharger les
+de configuration :file:`Settings.yml` qui est utilisé par docs.typo3.org (et cette extension) pour surcharger les
 paramètres par défaut :
 
 .. code-block:: yaml

@@ -56,7 +56,7 @@ Extension manuals may be rendered with different "layouts":
   `Sphinx/reStructuredText Documentation Viewer (restdoc)`_. In addition, this layout features an integrated
   :ref:`reStructuredText editor <sphinx-documentation-editor>` to let you quickly edit and recompile a given chapter;
 
-- **PDF:** This renders and shows the PDF version and as such requires either ``pdflatex`` or ``rst2pdf``:
+- **PDF:** This renders and shows the PDF version and as such requires either :program:`pdflatex` or :program:`rst2pdf`:
 
   |
 
@@ -77,16 +77,16 @@ When selecting an extension's manual to be shown from the drop-down menu the fol
 
 Otherwise:
 
-#. An empty Sphinx project is instantiated within ``typo3temp/tx_sphinx/<extension-key>`` and all files from
-   ``EXT:<extension-key>/Documentation`` are copied in this directory
+#. An empty Sphinx project is instantiated within :file:`typo3temp/tx_sphinx/{extension-key}` and all files from
+   :file:`EXT:{extension-key}/Documentation` are copied in this directory
 
 #. The Sphinx project is built as HTML, JSON or PDF, according to selected layout
 
-#. HTML, JSON or PDF output is copied to ``typo3conf/documentation/<extension-key>/`` ``<language>/<format>/`` (``language``
-   is always "default" for English, unless a multilingual documentation is found, just as this extension does for
-   French)
+#. HTML, JSON or PDF output is copied to :file:`typo3conf/documentation/{extension-key}/` :file:`{language}/{format}/`
+   (``language`` is always "default" for English, unless a multilingual documentation is found, just as this extension
+   does for French)
 
-#. The viewer loads the main document (e.g., ``Index.html`` with HTML output)
+#. The viewer loads the main document (e.g., :file:`Index.html` with HTML output)
 
 |
 
@@ -98,17 +98,17 @@ Otherwise:
 .. note::
 	The Sphinx Documentation Viewer supports two types of extension's manual:
 
-	#. Standard documentation layout with the a whole Sphinx project stored within ``EXT:<extension-key>/Documentation/``,
-	   with the master document named ``Index.rst``
-	#. Simple reStructuredText README file as seen on Github or Bitbucket and saved as ``EXT:<extension-key>/README.rst``
+	#. Standard documentation layout with the a whole Sphinx project stored within :file:`EXT:{extension-key}/Documentation/`,
+	   with the master document named :file:`Index.rst`
+	#. Simple reStructuredText README file as seen on Github or Bitbucket and saved as :file:`EXT:{extension-key}/README.rst`
 
 According to the selected layout, the main document is:
 
-- **Static:** Main document of HTML output is ``typo3conf/Documentation/<extension-key>/`` ``default/html/Index.html``
+- **Static:** Main document of HTML output is :file:`typo3conf/Documentation/{extension-key}/` :file:`default/html/Index.html`
 
-- **Interactive:** Main document of JSON output is ``typo3conf/Documentation/<extension-key>/`` ``default/json/Index.fjson``
+- **Interactive:** Main document of JSON output is :file:`typo3conf/Documentation/{extension-key}/` :file:`default/json/Index.fjson`
 
-- **PDF:** Main document of PDF output is ``typo3conf/Documentation/<extension-key>/`` ``default/pdf/<extension-key>.pdf``
+- **PDF:** Main document of PDF output is :file:`typo3conf/Documentation/{extension-key}/` :file:`default/pdf/{extension-key}.pdf`
 
 
 .. _documentation-viewer-custom-project:
@@ -121,8 +121,8 @@ the :ref:`Sphinx Console <kickstart_sphinx_project>`, you may register it with t
 
 In fact, we implemented our own signal for :ref:`registering custom documentation <register-custom-documentation>`.
 
-The list of custom projects is stored within file ``typo3conf/sphinx-projects.json``. If this file does not exist, simply
-create it with your preferred text editor:
+The list of custom projects is stored within file :file:`typo3conf/sphinx-projects.json`. If this file does not exist,
+simply create it with your preferred text editor:
 
 .. code-block:: json
 

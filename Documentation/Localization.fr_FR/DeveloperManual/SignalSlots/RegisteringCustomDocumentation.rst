@@ -110,7 +110,7 @@ comme "page principale".
 Enregistrement des slots
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Dans votre extension, ouvrez ``EXT:your-ext/ext_localconf.php`` et ajoutez :
+Dans votre extension, ouvrez :file:`EXT:{extension-key}/ext_localconf.php` et ajoutez :
 
 .. code-block:: php
 
@@ -153,7 +153,7 @@ Dans votre extension, ouvrez ``EXT:your-ext/ext_localconf.php`` et ajoutez :
 Impémentation des slots
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Dans votre extension, créez un fichier ``EXT:your-ext/Classes/Slots/CustomDocumentation.php`` :
+Dans votre extension, créez un fichier `EXT:{extension-key}/Classes/Slots/CustomDocumentation.php` :
 
 .. code-block:: php
 
@@ -211,9 +211,9 @@ Exemple d'implémentation de la partie TODO
 
 Dans l'exemple précédent, la génération en tant que telle d'une documentation arbitraire n'est pas montrée. Voici un
 exemple d'une implémentation possible de cette génération. Nous supposons que vous avez un projet de documentation basé
-sur le modèle TYPO3 dans le répertoire ``fileadmin/demo-sphinx`` (p. ex. généré avec
-l':ref:`assistant de nouveau projet Sphinx <kickstart_sphinx_project>`) ; c.-à-d. un projet dont le fichier ``conf.py``
-est stocké dans le répertoire ``_make`` :
+sur le modèle TYPO3 dans le répertoire :file:`fileadmin/demo-sphinx` (p. ex. généré avec
+l':ref:`assistant de nouveau projet Sphinx <kickstart_sphinx_project>`) ; c.-à-d. un projet dont le fichier
+:file:`conf.py` est stocké dans le répertoire :file:`_make` :
 
 .. code-block:: php
 
@@ -266,5 +266,5 @@ est stocké dans le répertoire ``_make`` :
 	    }
 	}
 
-Vous pouvez analyser la méthode ``\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation()`` et la classe
-``\Causal\Sphinx\Slots\CustomProject`` pour d'autres idées d'implémentation.
+Vous pouvez analyser la méthode :php:`\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation()` et la classe
+:php:`\Causal\Sphinx\Slots\CustomProject` pour d'autres idées d'implémentation.

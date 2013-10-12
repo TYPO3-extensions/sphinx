@@ -64,5 +64,5 @@ sélectionner l'entrée correspondante grâce au mécanisme de complètement aut
 
 Si la référence que vous insérez n'est pas issue de votre documentation (c.-à-d. que vous référencez un autre
 chapitre ou section) mais est une référence croisée vers un autre document, la partie Intersphinx de votre
-fichier de configuration ``Settings.yml`` sera automatiquement mise à jour afin que la génération s'effectue avec succès.
-Au besoin, veuillez lire la section :ref:`docs-typo3-org-crosslink` pour plus d'informations.
+fichier de configuration :file:`Settings.yml` sera automatiquement mise à jour afin que la génération s'effectue avec
+succès. Au besoin, veuillez lire la section :ref:`docs-typo3-org-crosslink` pour plus d'informations.

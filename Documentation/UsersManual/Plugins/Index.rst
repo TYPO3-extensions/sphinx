@@ -31,9 +31,9 @@ Loading a plugin
 .. index::
 	single: Plugins; Load in Settings.yml
 
-In order to load a plugin, you need to add it to the list of extensions of configuration file ``conf.py``.
+In order to load a plugin, you need to add it to the list of extensions of configuration file :file:`conf.py`.
 However, as this file does not exist when creating an extension manual, you should change configuration file
-``Settings.yml`` instead as this file is used by docs.typo3.org (and this extension) to override default
+:file:`Settings.yml` instead as this file is used by docs.typo3.org (and this extension) to override default
 parameters:
 
 .. code-block:: yaml

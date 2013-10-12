@@ -57,7 +57,7 @@ Les manuels d'extensions peuvent être générés avec différents "gabarits" :
   Par ailleurs, ce gabarit propose un :ref:`éditeur reStructuredText <sphinx-documentation-editor>` intégré pour vous
   permettre de modifier rapidement et de recompiler un chapitre donné ;
 
-- **PDF:** Génère et affiche une version PDF et de ce fait nécessite soit ``pdflatex`` soit ``rst2pdf`` :
+- **PDF:** Génère et affiche une version PDF et de ce fait nécessite soit :program:`pdflatex` soit :program:`rst2pdf` :
 
   |
 
@@ -80,17 +80,17 @@ Lorsque vous sélectionnez un manuel d'extension à afficher dans la liste déro
 
 Sinon :
 
-#. Un projet Sphinx vide est instancié dans le répertoire ``typo3temp/tx_sphinx/<extension-key>`` et tous les fichiers
-   présents dans le répertoire ``EXT:<extension-key>/Documentation`` y sont recopiés
+#. Un projet Sphinx vide est instancié dans le répertoire :file:`typo3temp/tx_sphinx/{extension-key}` et tous les fichiers
+   présents dans le répertoire :file:`EXT:{extension-key}/Documentation` y sont recopiés
 
 #. Le projet Sphinx est généré en HTML, JSON ou PDF, selon le gabarit sélectionné
 
 #. Le rendu HTML, JSON ou PDF est copié dans le répertoire
-   ``typo3conf/documentation/<extension-key>/`` ``<langue>/<format>/`` (``langue`` est toujours "default" pour l'anglais,
-   sauf si une documentation multilingue est trouvée, comme c'est le cas avec cette extension pour la version française
-   que vous êtes en train de lire)
+   :file:`typo3conf/documentation/{extension-key}/` :file:`{langue}/{format}/` (``langue`` est toujours "default" pour
+   l'anglais, sauf si une documentation multilingue est trouvée, comme c'est le cas avec cette extension pour la version
+   française que vous êtes en train de lire)
 
-#. La visionneuse charge le document principal (p. ex. ``Index.html`` si le rendu est HTML)
+#. La visionneuse charge le document principal (p. ex. :file:`Index.html` si le rendu est HTML)
 
 |
 
@@ -104,17 +104,17 @@ Sinon :
 	La visionneuse de documentation Sphinx supporte deux types de manuels d'extensions :
 
 	#. Structure de documentation standard avec un projet Sphinx complet stocké dans le répertoire
-	   ``EXT:<extension-key>/Documentation/``, et un document principal nommé ``Index.rst``
+	   :file:`EXT:{extension-key}/Documentation/`, et un document principal nommé :file:`Index.rst`
 	#. Simple fichier reStructuredText README comme on le voit sur Github ou Bitbucket et sauvegardé sous
-	   ``EXT:<extension-key>/README.rst``
+	   :file:`EXT:{extension-key}/README.rst`
 
 En fonction du gabarit choisi, le document principal est :
 
-- **Statique:** Le document principal en HTML est ``typo3conf/Documentation/<extension-key>/`` ``default/html/Index.html``
+- **Statique:** Le document principal en HTML est :file:`typo3conf/Documentation/{extension-key}/` :file:`default/html/Index.html`
 
-- **Interactif:** Le document principal en JSON est ``typo3conf/Documentation/<extension-key>/`` ``default/json/Index.fjson``
+- **Interactif:** Le document principal en JSON est :file:`typo3conf/Documentation/{extension-key}/` :file:`default/json/Index.fjson`
 
-- **PDF:** Le document principal en PDF est ``typo3conf/Documentation/<extension-key>/`` ``default/pdf/<extension-key>.pdf``
+- **PDF:** Le document principal en PDF est :file:`typo3conf/Documentation/{extension-key}/` :file:`default/pdf/<extension-key>.pdf`
 
 
 .. _documentation-viewer-custom-project:
@@ -128,7 +128,7 @@ Sphinx.
 
 En effet, nous avons implémenté notre propre signal pour :ref:`enregistrer une documentation personnelle <register-custom-documentation>`.
 
-La liste des projets personnels est stockée dans le fichier ``typo3conf/sphinx-projects.json``. Si ce fichier n'existe
+La liste des projets personnels est stockée dans le fichier :file:`typo3conf/sphinx-projects.json`. Si ce fichier n'existe
 pas, vous pouvez simplement le créer avec votre éditeur de texte préféré :
 
 .. code-block:: json
@@ -155,6 +155,6 @@ documentation de n'importe quelle extension.
 
 .. caution::
 	Les utilisateurs MS Windows auront peut-être à faire face à une liste de documents n'affichant pas leurs propres
-	documents. Ce comportement peut être provoqué par le fichier ``typo3conf/sphinx-projects.json`` qui est encodé en
+	documents. Ce comportement peut être provoqué par le fichier :file:`typo3conf/sphinx-projects.json` qui est encodé en
 	UTF-8 avec `BOM <http://fr.wikipedia.org/wiki/Byte_Order_Mark>`_ alors que votre serveur web ne s'attend pas à avoir
 	ce BOM présent.

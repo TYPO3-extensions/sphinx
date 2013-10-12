@@ -23,8 +23,8 @@ Converting OpenOffice manual to Sphinx
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The RestTools repository (http://git.typo3.org/Documentation/RestTools.git) provides a script in directory
-``T3PythonDocBuilderPackage/src/T3PythonDocBuilder`` to convert your OpenOffice manual to Sphinx/reStructuredText.
-Please read corresponding ``README`` file for instructions.
+:file:`T3PythonDocBuilderPackage/src/T3PythonDocBuilder` to convert your OpenOffice manual to Sphinx/reStructuredText.
+Please read corresponding :file:`README` file for instructions.
 
 If you prefer, you may use an online converter: http://docs.typo3.org/getthedocs/service-convert.html.
 

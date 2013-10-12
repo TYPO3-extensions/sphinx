@@ -14,12 +14,12 @@ Installing the Share font
 
 In order to customize the output of documentation rendered as PDF with LaTeX to match the TYPO3 branding, we first
 need to install the `Share corporate font family`_ and convert it to be compatible with LaTeX. Instructions can be
-found in the repository of the TYPO3-related commands for Sphinx, within directory ``LaTeX``.
+found in the repository of the TYPO3-related commands for Sphinx, within directory :file:`LaTeX`.
 
 .. _`Share corporate font family`: http://typo3.org/the-brand/style-guide/the-typo3-font/
 
-Instead of just fetching this ``LaTeX`` directory from the official repository, we suggest to replace the whole
-``RestTools`` directory and use a clone of the whole git repository:
+Instead of just fetching this :file:`LaTeX` directory from the official repository, we suggest to replace the whole
+:file:`RestTools` directory and use a clone of the whole git repository:
 
 .. code-block:: bash
 
@@ -27,7 +27,8 @@ Instead of just fetching this ``LaTeX`` directory from the official repository, 
 	$ sudo rm -rf RestTools
 	$ git clone git://git.typo3.org/Documentation/RestTools.git
 
-Then go to directory ``RestTools/LaTeX`` and convert the Share font (the password that is being asked is related to ``sudo``; as such it is your own password):
+Then go to directory :file:`RestTools/LaTeX` and convert the Share font (the password that is being asked is related to
+:command:`sudo`; as such it is your own password):
 
 .. code-block:: bash
 
@@ -46,9 +47,12 @@ Then go to directory ``RestTools/LaTeX`` and convert the Share font (the passwor
 	As there is currently no automatic script available for you, when using MikTeX, please follow the instructions
 	from http://www.radamir.com/tex/ttf-tex.htm.
 
-	**Tip:** You may want to use script ``convert-share.sh`` from a Linux machine and set ``INSTALL=0`` near the beginning of the script. Instead of installing the converted fonts on your system, it will only convert them and prepare mapping files within directory ``RestTools/LaTeX/fonts/texmf/``.
+	**Tip:** You may want to use script :program:`convert-share.sh` from a Linux machine and set ``INSTALL=0`` near the
+	beginning of the script. Instead of installing the converted fonts on your system, it will only convert them and
+	prepare mapping files within directory :file:`RestTools/LaTeX/fonts/texmf/`.
 
-Once converted, the font is available as ``typo3share`` within LaTeX documents. To test that it has been properly installed, you may create a sample LaTeX document, (``test-font.tex``):
+Once converted, the font is available as ``typo3share`` within LaTeX documents. To test that it has been properly
+installed, you may create a sample LaTeX document, (:file:`test-font.tex`):
 
 .. code-block:: latex
 
@@ -77,6 +81,6 @@ and compile it:
 
 	$ pdflatex test-font
 
-When you open generated file ``test-font.pdf``, you should see the Share font used locally:
+When you open generated file :file:`test-font.pdf`, you should see the Share font used locally:
 
 |share_font|

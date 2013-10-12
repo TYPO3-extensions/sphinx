@@ -14,14 +14,14 @@ Rendering on docs.typo3.org
 
 When you upload your extension to the :abbr:`TER (TYPO3 Extension Repository)`, the associated
 Sphinx/reStructuredText-based documentation gets automatically rendered on http://docs.typo3.org under
-``http://docs.typo3.org/typo3cms/extensions/<extension-key>/``.
+:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/`.
 
 For instance, this documentation gets rendered to http://docs.typo3.org/typo3cms/extensions/sphinx/.
 
 In addition, a zip archive is automatically created for each combination of version and language and contains a copy of
 the HTML output (aka "static layout" within this extension) and its PDF counterpart (if activated, see
 :ref:`below <docs-typo3-org-pdf>`). Archives are stored within
-``http://docs.typo3.org/typo3cms/extensions/<extension-key>/packages/`` ``<extension-key>-<version>-<language>.zip``.
+:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/packages/` :file:`{extension-key}-{version}-{language}.zip`.
 E.g.,
 
 - http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-default.zip
@@ -49,15 +49,15 @@ Title, copyright and version
 .. index::
 	single: Settings.yml (format)
 
-A valid Sphinx project for an extension manual should contain a configuration file ``Settings.yml`` next to the main
-document ``Index.rst``. This file is your key to override default settings from the real Sphinx configuration file
-``conf.py`` which is not part of your project (because it contains settings related to the build environment on
+A valid Sphinx project for an extension manual should contain a configuration file :file:`Settings.yml` next to the main
+document :file:`Index.rst`. This file is your key to override default settings from the real Sphinx configuration file
+:file:`conf.py` which is not part of your project (because it contains settings related to the build environment on
 http://docs.typo3.org). Instead, this YAML configuration file lets you define project options.
 
-This extension takes care of loading options from ``Settings.yml`` as well, thus ensuring a smooth experience when
+This extension takes care of loading options from :file:`Settings.yml` as well, thus ensuring a smooth experience when
 working locally on your extension manuals before their automatic deployment to http://docs.typo3.org.
 
-A basic ``Settings.yml`` file should define a few basic project information:
+A basic :file:`Settings.yml` file should define a few basic project information:
 
 .. code-block:: yaml
 	:linenos:
@@ -105,7 +105,7 @@ PDF rendering
 ^^^^^^^^^^^^^
 
 The PDF of your documentation is rendered using the LaTeX builder from Sphinx (see :ref:`rendering-pdf` if needed)
-and should be explicitly activated for your extension. To do so, open file ``Settings.yml`` (at the root of your
+and should be explicitly activated for your extension. To do so, open file :file:`Settings.yml` (at the root of your
 documentation folder) and make sure it contains following configuration options (lines 6 to 15):
 
 .. code-block:: yaml
@@ -161,7 +161,7 @@ documentclass
 Lines 12 to 15 should be kept as-this. Line 15 is actually the "trigger" for PDF rendering.
 
 When activated, your PDF gets automatically rendered on http://docs.typo3.org under
-``http://docs.typo3.org/typo3cms/extensions/<extension-key>/_pdf/``. E.g.,
+:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/_pdf/`. E.g.,
 http://docs.typo3.org/typo3cms/extensions/sphinx/_pdf/.
 
 Please read chapter :ref:`customizing-rendering` for further information on LaTeX configuration options.
@@ -176,12 +176,12 @@ Multilingual documentation
 	single: Multilingual manual
 
 Multilingual exension manuals are supported by both this extension and http://docs.typo3.org. If you want to translate
-your documentation, kickstart a new Sphinx project (incl. ``Settings.yml``) within directory
-``Documentation/Localization.<locale>``.
+your documentation, kickstart a new Sphinx project (incl. :file:`Settings.yml`) within directory
+:file:`Documentation/Localization.{locale}`.
 
 .. tip::
-	You may reuse assets such as ``Includes.txt`` or images from the main documentation under directory
-	``Documentation`` but not the other way around, so you cannot reuse assets from a translated manual within the
+	You may reuse assets such as :file:`Includes.txt` or images from the main documentation under directory
+	:file:`Documentation` but not the other way around, so you cannot reuse assets from a translated manual within the
 	main (English) manual.
 
 
@@ -190,6 +190,17 @@ Locales
 
 .. index::
 	single: Locales
+
+Unless for the few prefixes which are already "locales", http://docs.typo3.org expects a locale and not a language code
+to be used; so make sure to extend the prefix accordingly. E.g., a French documentation (prefix ``fr``) should be
+extended either to ``fr_FR`` (French France) or ``fr_CA`` (French Canada). See our list of suggestions below.
+
+Your translated exension manual will get rendered to http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) and
+http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
+
+.. caution::
+	Files and URIs are generated lower-case and with dashes instead of underscores. This means that a documentation
+	with locale ``fr_FR`` will be accessible using ``fr-fr`` instead.
 
 The list of supported languages for Sphinx is:
 
@@ -232,17 +243,6 @@ zh_CN   Simplified Chinese       zh_CN
 zh_TW   Traditional Chinese      zh_TW
 ======  ======================== ================
 
-Unless for the few prefixes which are already "locales", http://docs.typo3.org expects a locale and not a language code
-to be used; so make sure to extend the prefix accordingly. E.g., a French documentation (prefix ``fr``) should be
-extended either to ``fr_FR`` (French France) or ``fr_CA`` (French Canada). See our suggestions above.
-
-Your translated exension manual will get rendered to http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) and
-http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
-
-.. caution::
-	Files and URIs are generated lower-case and with dashes instead of underscores. This means that a documentation
-	with locale ``fr_FR`` will be accessible using ``fr-fr`` instead.
-
 
 Best practices
 """"""""""""""
@@ -276,8 +276,8 @@ create a link to the stable version of the official TYPO3 "TypoScript Reference"
 
 Behind the scenes, this works as follows:
 
-- Each Sphinx HTML build creates a file named ``objects.inv`` that contains a mapping from object names to URIs relative
-  to the HTML set’s root.
+- Each Sphinx HTML build creates a file named :file:`objects.inv` that contains a mapping from object names to URIs
+  relative to the HTML set’s root.
 
 - Projects using the Intersphinx extension can specify the location of such mapping files in the ``intersphinx_mapping``
   config value. The mapping will then be used to resolve otherwise missing references to objects into links to the other
@@ -285,13 +285,25 @@ Behind the scenes, this works as follows:
 
 The list of official manuals and corresponding prefixes may be found on http://docs.typo3.org/typo3cms/Index.html.
 
+.. note::
+	By convention the *start* (or *landing*) page of a documentation should be mapped to anchor ``start``. In short, your
+	main :file:`Index.rst` file should thus read:
+
+	.. code-block:: rest
+
+		.. _start:
+
+		===================================
+		Title of your extension
+		===================================
+
 .. caution::
 	Although Sphinx on http://docs.typo3.org automagically lets you cross-link to official manuals, it is considered
 	bad practice to rely on it. It is even planned to change this behavior altogether. As such, please **always**
 	explicitly load the references you would like to cross-link to, as explained hereafter.
 
 You may link to any other documentation on http://docs.typo3.org (or elsewhere) by configuring the Intersphinx mapping
-within ``Settings.yml``. To do so, add configuration options (lines 6 to 9):
+within :file:`Settings.yml`. To do so, add configuration options (lines 6 to 9):
 
 .. code-block:: yaml
 	:linenos:
@@ -314,7 +326,7 @@ other manuals:
 * :ref:`ChangeLog for EXT:restdoc <restdoc:changelog>`
 
 .. caution::
-	Once you define some Intersphinx mapping within configuration file ``Settings.yml``, it empties the list of
+	Once you define some Intersphinx mapping within configuration file :file:`Settings.yml`, it empties the list of
 	official manual references. If you want to cross-link to an official documentation as well, make sure to define the
 	corresponding mapping as well.
 
@@ -328,7 +340,7 @@ The trick described in chapter :ref:`advanced-cross-links` has been implemented 
 possible and very easy to cross-link to the TYPO3 source code, either for a given class or even a given method.
 
 To be able to cross-link to the TYPO3 API, you first need to add an Intersphinx mapping. To do so, open configuration
-file ``Settings.yml`` and add an Intersphinx mapping ``t3cmsapi``:
+file :file:`Settings.yml` and add an Intersphinx mapping ``t3cmsapi``:
 
 .. code-block:: yaml
 	:linenos:
@@ -366,15 +378,15 @@ A few additional anchors are created as well (available as ``:ref:`t3cmsapi:<anc
 ================== =================================
 Anchor             Target
 ================== =================================
-``modindex``       :ref:`t3cmsapi:modindex`
-``genindex``       :ref:`t3cmsapi:genindex`
-``start``          :ref:`t3cmsapi:start`
-``hierarchy``      :ref:`t3cmsapi:hierarchy`
+``deprecated``     :ref:`t3cmsapi:deprecated`
 ``functions``      :ref:`t3cmsapi:functions`
 ``functions-func`` :ref:`t3cmsapi:functions-func`
-``variables``      :ref:`t3cmsapi:variables`
-``deprecated``     :ref:`t3cmsapi:deprecated`
-``todo``           :ref:`t3cmsapi:todo`
-``test``           :ref:`t3cmsapi:test`
+``genindex``       :ref:`t3cmsapi:genindex`
+``hierarchy``      :ref:`t3cmsapi:hierarchy`
+``modindex``       :ref:`t3cmsapi:modindex`
 ``pages``          :ref:`t3cmsapi:pages`
+``start``          :ref:`t3cmsapi:start`
+``test``           :ref:`t3cmsapi:test`
+``todo``           :ref:`t3cmsapi:todo`
+``variables``      :ref:`t3cmsapi:variables`
 ================== =================================

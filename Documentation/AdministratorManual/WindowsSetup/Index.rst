@@ -12,9 +12,12 @@
 MS Windows environment setup
 ----------------------------
 
-Unlike most :abbr:`UN*X (Unix-like)` operating systems, MS Windows generally lacks a Python interpreter and a few utilities being globally available.
+Unlike most :abbr:`UN*X (Unix-like)` operating systems, MS Windows generally lacks a Python interpreter and a few
+utilities being globally available.
 
-As this extension requires Python, unzip and tar extraction utilities to be present, MS Windows users should first set up their environment with the Python framework. On a vanilla Windows environment, when you run the update script of this extension in Extension Manager by clicking on action icon |update_script| you will see a few error messages:
+As this extension requires Python, unzip and tar extraction utilities to be present, MS Windows users should first set
+up their environment with the Python framework. On a vanilla Windows environment, when you run the update script of this
+extension in Extension Manager by clicking on action icon |update_script| you will see a few error messages:
 
 .. index::
 	single: Error Message; Python interpreter was not found
@@ -44,7 +47,8 @@ Following sections describe how to install:
 
 	|msvcr100dll|
 
-	This cryptic error message means that you need to install the Microsoft Visual C++ Redistributable which can easily be downloaded on the Microsoft website as x86 or x64 edition:
+	This cryptic error message means that you need to install the Microsoft Visual C++ Redistributable which can easily
+	be downloaded on the Microsoft website as x86 or x64 edition:
 
 	- **32 bit:** http://www.microsoft.com/en-us/download/details.aspx?id=5555
 	- **64 bit:** http://www.microsoft.com/en-us/download/details.aspx?id=14632
@@ -53,7 +57,8 @@ Following sections describe how to install:
 	.. index::
 		single: ThreadStackSize
 
-	When installing WampServer, the default ThreadStackSize is only 1 MB, which is not enough for TYPO3 Extension Manager to be loaded. To fix that, open ``httpd.conf`` and append:
+	When installing WampServer, the default ThreadStackSize is only 1 MB, which is not enough for TYPO3 Extension Manager
+	to be loaded. To fix that, open :file:`httpd.conf` and append:
 
 	.. code-block:: apacheconf
 
@@ -69,7 +74,8 @@ Following sections describe how to install:
 Installing Python
 ^^^^^^^^^^^^^^^^^
 
-Please go to http://www.python.org/download/releases/ and download the Python Windows Installer. As of writing, Python 2.7.5 is known to be working properly. Then launch the installer and follow the instructions:
+Please go to http://www.python.org/download/releases/ and download the Python Windows Installer. As of writing,
+Python 2.7.5 is known to be working properly. Then launch the installer and follow the instructions:
 
 |python_setup|
 
@@ -80,7 +86,8 @@ Please go to http://www.python.org/download/releases/ and download the Python Wi
 	single: PATH; Environment Variable (MS Windows)
 	single: Environment Variable
 
-After the setup completed successfully, you should register the ``python`` command in ``%PATH%`` to be globally available.
+After the setup completed successfully, you should register the :program:`python` command in ``%PATH%`` to be globally
+available.
 
 To do so, open Control Panel > System > Advanced system settings > Environment variables:
 
@@ -90,13 +97,15 @@ Find the system variable ``Path`` and edit it:
 
 |system_variables|
 
-You should append the path to ``python``. By default it is stored under directory ``C:\Python27\``
+You should append the path to :program:`python`. By default it is stored under directory :file:`C:\Python27\\`.
 
 .. important::
-	Put the path at the end of the existing list, after having inserted a path separator character which is, under MS Windows, a semi-colon.
+	Put the path at the end of the existing list, after having inserted a path separator character which is, under
+	MS Windows, a semi-colon.
 
 .. tip::
-	You will need to restart Apache in order for TYPO3 to detect ``python`` as Apache reads the ``%PATH%`` only once at startup.
+	You will need to restart Apache in order for TYPO3 to detect :program:`python` as Apache reads the ``%PATH%`` only
+	once at startup.
 
 
 .. _installing_unzip:
@@ -109,8 +118,8 @@ and follow the instructions:
 
 |unzip_setup|
 
-You should now register the ``unzip`` command in ``%PATH%`` to be globally available. By default it is stored under
-directory ``C:\Program Files (x86)\GnuWin32\bin``. Please perform steps as in previous section.
+You should now register the :program:`unzip` command in ``%PATH%`` to be globally available. By default it is stored under
+directory :file:`C:\Program Files (x86)\GnuWin32\bin`. Please perform steps as in previous section.
 
 
 .. _installing_tar:
@@ -122,8 +131,8 @@ Installing Tar
 	.. index::
 		single: Error Message; Cannot fork: Function not implemented
 
-	A quick search for ``tar`` for Windows leads to GNU Tar on http://gnuwin32.sourceforge.net/packages/gtar.htm. However
-	this package will be of no use since it cannot handle ``tar.gz`` files. Instead, it will crash with:
+	A quick search for :program:`tar` for Windows leads to GNU Tar on http://gnuwin32.sourceforge.net/packages/gtar.htm.
+	However this package will be of no use since it cannot handle ``tar.gz`` files. Instead, it will crash with:
 
 	.. code-block:: bat
 
@@ -132,11 +141,11 @@ Installing Tar
 
 	In fact, the Tar package itself recommends using BsdTar:
 
-		The Win32 port can only create ``tar`` archives, but cannot pipe its output to other programs such as ``gzip``
-		or ``compress``, and will not create ``tar.gz`` archives; you will have to use or simulate a batch pipe. BsdTar
-		does have the ability to direcly create and manipulate ``.tar``, ``.tar.gz``, ``tar.bz2``, ``.zip``, ``.gz``
-		and ``.bz2`` archives, understands the most-used options of GNU Tar, and is also much faster; for most purposes
-		it is to be preferred to GNU Tar.
+		The Win32 port can only create ``tar`` archives, but cannot pipe its output to other programs such as
+		:program:`gzip` or :program:`compress`, and will not create ``tar.gz`` archives; you will have to use or simulate
+		a batch pipe. BsdTar does have the ability to direcly create and manipulate ``.tar``, ``.tar.gz``, ``tar.bz2``,
+		``.zip``, ``.gz`` and ``.bz2`` archives, understands the most-used options of GNU Tar, and is also much faster;
+		for most purposes it is to be preferred to GNU Tar.
 
 Please go to http://gnuwin32.sourceforge.net/packages/libarchive.htm (LibArchive contains BsdTar) and download the setup
 file. Then launch the installer and follow the instructions, as you did for :ref:`unzip <installing_unzip>`:
@@ -144,13 +153,13 @@ file. Then launch the installer and follow the instructions, as you did for :ref
 |libarchive_setup|
 
 .. important::
-	By default the ``bsdtar`` extraction utility is stored under directory ``C:\Program Files (x86)\GnuWin32\bin``, just
-	as ``unzip``; it should thus be automatically detected as you already registered this path into the ``%PATH%``
+	By default the :program:`bsdtar` extraction utility is stored under directory :file:`C:\Program Files (x86)\GnuWin32\bin`,
+	just as :program:`unzip`; it should thus be automatically detected as you already registered this path into the ``%PATH%``
 	environment variable. If needed, please register an alternate path as described previously.
 
-	In spite of that, extension Sphinx seeks for command ``tar`` and not ``bsdtar``. As such, you should either copy
-	``bsdtar.exe`` and rename it as ``tar.exe`` or, better, create a symbolic link to it. Do do that, open a command
-	(CMD) prompt *as administrator*:
+	In spite of that, extension Sphinx seeks for command :program:`tar` and not :program:`bsdtar`. As such, you should
+	either copy :program:`bsdtar.exe` and rename it as :program:`tar.exe` or, better, create a symbolic link to it. Do
+	do that, open a command (CMD) prompt *as administrator*:
 
 	.. code-block:: bat
 

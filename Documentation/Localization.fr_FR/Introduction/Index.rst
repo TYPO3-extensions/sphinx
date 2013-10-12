@@ -72,8 +72,8 @@ Par ailleurs, cette extension fournit quelques utilitaires comme :
 - Un module de création rapide d'un project de documentation Sphinx
 - Un module pour compiler un projet Sphinx
 - Un éditeur reStructuredText intégré
-- Un assistant pour convertir un document OpenOffice (``manual.sxw``) en un projet Sphinx (à l'aide d'un utilitaire en
-  ligne disponible sur http://docs.typo3.org)
+- Un assistant pour convertir un document OpenOffice (:file:`manual.sxw`) en un projet Sphinx (à l'aide d'un utilitaire
+  en ligne disponible sur http://docs.typo3.org)
 
 
 Que puis-je faire avec un project Sphinx ?

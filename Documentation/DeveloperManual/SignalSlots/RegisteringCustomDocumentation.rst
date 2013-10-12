@@ -109,7 +109,7 @@ This sample code will register a custom documentation and simply return a public
 Registering the slots
 ~~~~~~~~~~~~~~~~~~~~~
 
-In your extension, open ``EXT:your-ext/ext_localconf.php`` and add:
+In your extension, open :file:`EXT:{extension-key}/ext_localconf.php` and add:
 
 .. code-block:: php
 
@@ -152,7 +152,7 @@ In your extension, open ``EXT:your-ext/ext_localconf.php`` and add:
 Implementing the slots
 ~~~~~~~~~~~~~~~~~~~~~~
 
-In your extension, create a file ``EXT:your-ext/Classes/Slots/CustomDocumentation.php``:
+In your extension, create a file :file:`EXT:{extension-key}/Classes/Slots/CustomDocumentation.php`:
 
 .. code-block:: php
 
@@ -209,9 +209,9 @@ Example implementation of the TODO
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In example above, the actual rendering of an arbitrary documentation is not shown. Here is an example of a possible
-implementation. We suppose that you have a TYPO3-based documentation project within directory ``fileadmin/demo-sphinx``
+implementation. We suppose that you have a TYPO3-based documentation project within directory :file:`fileadmin/demo-sphinx`
 (e.g., generated with the :ref:`Sphinx Project Kickstarter <kickstart_sphinx_project>`); that is, a project where file
-``conf.py`` is stored within a directory ``_make``:
+:file:`conf.py` is stored within a directory :file:`_make`:
 
 .. code-block:: php
 
@@ -264,5 +264,5 @@ implementation. We suppose that you have a TYPO3-based documentation project wit
 	    }
 	}
 
-Please see method ``\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation()`` and class
-``\Causal\Sphinx\Slots\CustomProject`` for further ideas.
+Please see method :php:`\Causal\Sphinx\Utility\GeneralUtility::generateDocumentation()` and class
+:php:`\Causal\Sphinx\Slots\CustomProject` for further ideas.

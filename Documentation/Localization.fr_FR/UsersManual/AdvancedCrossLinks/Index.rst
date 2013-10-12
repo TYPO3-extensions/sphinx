@@ -20,7 +20,7 @@ Références croisées avancées
 	Cette section aborde un sujet difficile que vous pouvez ignorer à moins de vouloir faire des références croisées
 	vers (virtuellement) n'importe quel site.
 
-Cette section commence par décrire le format du fichier d'index ``objects.inv`` qui est utilisé par Intersphinx_ et
+Cette section commence par décrire le format du fichier d'index :file:`objects.inv` qui est utilisé par Intersphinx_ et
 détaille ensuite comment générer automatiquement un tel fichier pour une documentation d'API basée sur Doxygen_.
 
 .. _Intersphinx: http://sphinx-doc.org/ext/intersphinx.html
@@ -124,7 +124,7 @@ Vous avez besoin des versions HTML et XML de la documentation. Pour générer la
 	GENERATE_XML   =   YES
 
 à votre fichier de configuration Doxygen. Générez ensuite votre documentation d'API comme d'habitude. Vous devriez vous
-retrouver avec deux répertoires ``html`` et ``xml`` (en gardant les options de configuration par défaut).
+retrouver avec deux répertoires :file:`html` et :file:`xml` (en gardant les options de configuration par défaut).
 
 Exécutez ensuite le script suivant :
 

@@ -19,8 +19,8 @@ Problèmes connus
 	single: Message d'erreur; LaTeX Error: File 'typo3.sty' not found
 
 - Si malgré vos tentatives de corrections TYPO3 n'arrête pas de vous dire p. ex. "Python interpreter was not found" ou
-  "Unzip cannot be executed", vous devriez vérifier votre configuration locale pour ``$TYPO3_CONF_VARS['SYS']['binPath']``
-  et ``$TYPO3_CONF_VARS['SYS']['binSetup']``. Un utilisateur a pu corriger ce problème en modifiant les lignes en :
+  "Unzip cannot be executed", vous devriez vérifier votre configuration locale pour :php:`$TYPO3_CONF_VARS['SYS']['binPath']`
+  et :php:`$TYPO3_CONF_VARS['SYS']['binSetup']`. Un utilisateur a pu corriger ce problème en modifiant les lignes en :
 
   .. code-block:: php
 

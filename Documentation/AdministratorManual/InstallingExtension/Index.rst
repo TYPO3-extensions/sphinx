@@ -10,16 +10,19 @@
 Installing the extension
 ------------------------
 
-There are a few steps necessary to install the Sphinx Python Documentation Generator extension. If you have installed other extensions in the past, you will run into little new here.
+There are a few steps necessary to install the Sphinx Python Documentation Generator and Viewer extension. If you have
+installed other extensions in the past, you will run into little new here.
 
 .. note::
-	**MS Windows Users:** Please set up your environment with Python first. Instructions are available as :ref:`a separated chapter <windows-setup>`.
+	**MS Windows Users:** Please set up your environment with Python first. Instructions are available
+	as :ref:`a separated chapter <windows-setup>`.
 
 
 Installing the extension from Extension Manager
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Sphinx Python Documentation Generator extension can be installed through the typical TYPO3 installation process using the Extension Manager.
+The Sphinx Python Documentation Generator and Viewer extension can be installed through the typical TYPO3 installation
+process using the Extension Manager.
 
 
 .. _configure-sphinx:
@@ -36,7 +39,8 @@ Select a version of Sphinx you would like to use and start the import process wi
 |import_sphinx|
 
 .. important::
-	If the list of available versions of Sphinx is empty, you most probably lack OpenSSL support in PHP (this is a typical pitfall under MS Windows).
+	If the list of available versions of Sphinx is empty, you most probably lack OpenSSL support in PHP (this is a
+	typical pitfall under MS Windows).
 
 .. index::
 	single: Install; Log
@@ -46,18 +50,21 @@ Select a version of Sphinx you would like to use and start the import process wi
 	single: Install; Pygments
 	single: Install; TYPO3 ReST Tools
 
-Everything should work out-of-the-box. Possible problems will be reported as Flash messages and a log of all operations is stored as ``typo3temp/tx_sphinx/IMPORT-<date>.log``. The general process of importing Sphinx is as follows:
+Everything should work out-of-the-box. Possible problems will be reported as Flash messages and a log of all operations
+is stored as :file:`typo3temp/tx_sphinx/IMPORT-{date}.log`. The general process of importing Sphinx is as follows:
 
 #. Fetch the version as a zip archive from https://bitbucket.org/birkenfeld/sphinx/downloads ("Tags") into
-   directory ``typo3temp/``
+   directory :file:`typo3temp/`
 
-#. Unpack the zip archive into directory ``uploads/tx_sphinx/<version>/``
+#. Unpack the zip archive into directory :file:`uploads/tx_sphinx/{version}/`
 
-#. Build the Python libraries into directory ``typo3temp/tx_sphinx/sphinx-doc/<version>/``
+#. Build the Python libraries into directory :file:`typo3temp/tx_sphinx/sphinx-doc/{version}/`
 
-#. *[Not on MS Windows, other OS : if activated]* Install Python Imaging Library (https://pypi.python.org/pypi/PIL), needed for supporting common image types with ``rst2pdf``
+#. *[Not on MS Windows, other OS : if activated]* Install Python Imaging Library (https://pypi.python.org/pypi/PIL),
+   needed for supporting common image types with :program:`rst2pdf`
 
-#. *[Not on MS Windows, other OS : if activated]* Install ``rst2pdf`` (http://rst2pdf.ralsina.com.ar/), as a simple way of building PDF
+#. *[Not on MS Windows, other OS : if activated]* Install :program:`rst2pdf` (http://rst2pdf.ralsina.com.ar/), as a
+   simple way of building PDF
 
 #. Fetch 3rd-party plugins for Sphinx: https://bitbucket.org/birkenfeld/sphinx-contrib/
 
@@ -76,10 +83,14 @@ The "download" button fetches the corresponding sources of Sphinx, the TYPO3-rel
 Pygments library, ... if they are not available locally.
 
 .. important::
-	It is known that the Python Imaging Library and/or ``rst2pdf`` might fail to be successfully installed and configured on some systems. However, as these libraries are only used to render PDF with ``rst2pdf`` and as the recommended method for rendering PDF is to use :ref:`LaTeX <rendering-pdf>` anyway, you should not worry if you are unable to install ``rst2pdf`` locally.
+	It is known that the Python Imaging Library and/or :program:`rst2pdf` might fail to be successfully installed and
+	configured on some systems. However, as these libraries are only used to render PDF with :program:`rst2pdf` and as
+	the recommended method for rendering PDF is to use :ref:`LaTeX <rendering-pdf>` anyway, you should not worry if you
+	are unable to install :program:`rst2pdf` locally.
 
 .. tip::
-	Instead of fetching once for all the TYPO3-related commands, you may prefer to clone the official git repository. To do so, open a terminal and run:
+	Instead of fetching once for all the TYPO3-related commands, you may prefer to clone the official git repository.
+	To do so, open a terminal and run:
 
 	.. code-block:: bash
 
@@ -87,13 +98,15 @@ Pygments library, ... if they are not available locally.
 		$ sudo rm -rf RestTools
 		$ git clone git://git.typo3.org/Documentation/RestTools.git
 
-The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands, PyYAML, Pygments, Python Imaging Library and ``rst2pdf``. **Good to know:** TypoScript support for Pygments is automatically updated, if needed, upon rebuilding your Sphinx environment.
+The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands,
+PyYAML, Pygments, Python Imaging Library and :program:`rst2pdf`. **Good to know:** TypoScript support for Pygments is
+automatically updated, if needed, upon rebuilding your Sphinx environment.
 
 Finally, the "remove" button removes both the sources and the corresponding version of the Sphinx environment.
 
 .. important::
 	This button *WILL NOT* remove sources of the TYPO3-related commands, the PyYAML library, Pygments, the Python Imaging
-	Library or ``rst2pdf``.
+	Library or :program:`rst2pdf`.
 
 
 Choosing the version of Sphinx
@@ -115,13 +128,13 @@ Choosing how to render PDF
 	single: PDF; LaTeX
 	single: PDF; rst2pdf
 
-The second tab "pdf" lets you choose which PDF builder you prefer (either ``rst2pdf`` or LaTeX) and whether you want
-to install and configure ``rst2pdf``:
+The second tab "pdf" lets you choose which PDF builder you prefer (either :program:`rst2pdf` or LaTeX) and whether you
+want to install and configure :program:`rst2pdf`:
 
 |em-pdf|
 
 .. tip::
-	**Except for MS Windows users,** ``rst2pdf`` is available by default with this extension. However, if you want
+	**Except for MS Windows users,** :program:`rst2pdf` is available by default with this extension. However, if you want
 	better output, you should consider using LaTeX instead. Please read chapter :ref:`admin-rendering-pdf` for instructions.
 
 

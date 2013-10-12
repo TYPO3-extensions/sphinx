@@ -22,7 +22,7 @@ consulter le chapitre :ref:`installing_share_font` pour plus d'informations.
 Modèle LaTeX
 """"""""""""
 
-Le modèle LaTeX est défini dans le fichier ``conf.py`` :
+Le modèle LaTeX est défini dans le fichier :file:`conf.py` :
 
 .. code-block:: python
 
@@ -33,9 +33,9 @@ Le modèle LaTeX est défini dans le fichier ``conf.py`` :
 	     u'Xavier Perseguers', 'manual'),
 	]
 
-Dans cet exemple, la classe de documents dans ``conf.py`` est ``manual`` (le dernier tuple de ``latex_documents``). Ce
-qui signifie qu'après que Sphinx a automatiquement ajouté le préfixe ``sphinx`` durant la phase de compilation, la classe
-de document finale telle que vue par LaTeX est ``sphinxmanual`` :
+Dans cet exemple, la classe de documents dans :file:`conf.py` est ``manual`` (le dernier tuple de ``latex_documents``).
+Ce qui signifie qu'après que Sphinx a automatiquement ajouté le préfixe ``sphinx`` durant la phase de compilation, la
+classe de document finale telle que vue par LaTeX est ``sphinxmanual`` :
 
 .. code-block:: latex
 	:linenos:
@@ -68,19 +68,19 @@ Sphinx fournit deux classes de documents :
   uniquement). Les documents "howto" n'auront pas d'annexes. Par ailleurs, ce type de document fournit une page de titre
   simplifiée.
 
-Les deux fichiers de classes (``sphinxmanual.cls`` et ``sphinxhowto.cls``) sont copiés dans le répertoire ``build/latex/``
-au moment du rendu.
+Les deux fichiers de classes (:file:`sphinxmanual.cls` et :file:`sphinxhowto.cls`) sont copiés dans le répertoire
+:file:`build/latex/` au moment du rendu.
 
 Après avoir joué avec les différentes options pour personnaliser le rendu, le résultat est que la création d'une classe
 de documents personnalisée n'est pas la meilleure option parce que la plupart des paramètres sont ensuite surchargés par
-le paquet ``sphinx`` à la ligne 12 du code ci-dessus. Ce paquet (fichier ``sphinx.sty``) est également copié dans le
-répertoire ``build/latex/``.
+le paquet ``sphinx`` à la ligne 12 du code ci-dessus. Ce paquet (fichier :file:`sphinx.sty`) est également copié dans le
+répertoire :file:`build/latex/`.
 
 Préambule LaTeX
 """""""""""""""
 
 Des commandes supplémentaires peuvent être ajoutées au préambule du fichier LaTeX généré. C'est facilement réalisé en
-modifiant le fichier ``conf.py`` :
+modifiant le fichier :file:`conf.py` :
 
 .. code-block:: python
 
@@ -98,8 +98,8 @@ modifiant le fichier ``conf.py`` :
 	    'preamble': PREAMBLE
 	}
 
-Ce qui a pour effet d'injecter le contenu du fichier``latex-styling.tex`` (dans le même répertoire que ``conf.py``) dans
-le document LaTeX généré. Par exemple, si ``latex-styling.tex`` contient :
+Ce qui a pour effet d'injecter le contenu du fichier :file:`latex-styling.tex` (dans le même répertoire que
+:file:`conf.py`) dans le document LaTeX généré. Par exemple, si :file:`latex-styling.tex` contient :
 
 .. code-block:: latex
 
@@ -125,16 +125,16 @@ le document LaTeX généré devient :
 Autres options
 """"""""""""""
 
-Le fichier de configuration ``conf.py`` vous permet d'effectuer d'autres réglages avec LaTeX. Veuillez consulter
+Le fichier de configuration :file:`conf.py` vous permet d'effectuer d'autres réglages avec LaTeX. Veuillez consulter
 http://sphinx-doc.org/config.html#options-for-latex-output pour plus d'informations.
 
 Modèle TYPO3
 """"""""""""
 
 Nous voulons rester aussi proche que possible du rendu par défaut, pour éviter de devoir modifier le code de génération
-LaTeX de Sphinx. C'est pourquoi nous choisissons d'inclure un paquet personnalisé ``typo3`` (fichier ``typo3.sty``) qui
-surcharge certains paramètres du paquet ``sphinx``. Afin de l'inclure automatiquement, nous utilisons naturellement
-l'option ``preamble`` de ``conf.py`` :
+LaTeX de Sphinx. C'est pourquoi nous choisissons d'inclure un paquet personnalisé ``typo3`` (fichier :file:`typo3.sty`)
+qui surcharge certains paramètres du paquet ``sphinx``. Afin de l'inclure automatiquement, nous utilisons naturellement
+l'option ``preamble`` de :file:`conf.py` :
 
 .. code-block:: python
 
@@ -143,6 +143,6 @@ l'option ``preamble`` de ``conf.py`` :
 	    'preamble': '\\usepackage{typo3}'
 	}
 
-Le paquet ``typo3`` est disponible dans le dépôt RestTools, dans le répertoire ``RestTools/LaTeX/`` et est automatiquement
-copié dans le répertoire de rendu lorsque vous utilisez cette extension. Sinon, vous pouvez choisir de le référencer
-dans ``TEXMF`` si vous envisagez de générer des PDF depuis la ligne de commande uniquement.
+Le paquet ``typo3`` est disponible dans le dépôt RestTools, dans le répertoire :file:`RestTools/LaTeX/` et est
+automatiquement copié dans le répertoire de rendu lorsque vous utilisez cette extension. Sinon, vous pouvez choisir de le
+référencer dans ``TEXMF`` si vous envisagez de générer des PDF depuis la ligne de commande uniquement.

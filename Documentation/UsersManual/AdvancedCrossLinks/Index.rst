@@ -19,7 +19,7 @@ Advanced cross-links
 
 	This is an advanced topic that you should skip unless you want to enable cross-link to virtually any website.
 
-This section first describes the format of index file ``objects.inv`` being used by Intersphinx_ and then shows how to
+This section first describes the format of index file :file:`objects.inv` being used by Intersphinx_ and then shows how to
 automatically generate such a file for a Doxygen_-based API documentation.
 
 .. _Intersphinx: http://sphinx-doc.org/ext/intersphinx.html
@@ -33,7 +33,7 @@ Format of ``objects.inv``
 .. index::
 	single: objects.inv (format)
 
-An index file ``objects.inv`` consists of two parts; one in plain text, at the beginning, followed by a ZLIB-compressed
+An index file :file:`objects.inv` consists of two parts; one in plain text, at the beginning, followed by a ZLIB-compressed
 list of references::
 
 	# Sphinx inventory version 2
@@ -112,14 +112,14 @@ Expected result is:
 	instead.
 
 The problem with Doxygen is that it generates cryptic file names which are hard to link to manually. Fortunately we
-found a way to prepare an index file ``objects.inv`` by parsing the XML output of an API documentation.
+found a way to prepare an index file :file:`objects.inv` by parsing the XML output of an API documentation.
 
 You need both the HTML and the XML versions of the documentation. Getting XML output is just a matter of adding::
 
 	GENERATE_XML   =   YES
 
-to your Doxygen configuration file. Then generate the API documentation as usual. You should end up with a ``html`` and
-a ``xml`` output directories (with default settings).
+to your Doxygen configuration file. Then generate the API documentation as usual. You should end up with a :file:`html`
+and a :file:`xml` output directories (with default settings).
 
 Then run following script:
 
@@ -134,5 +134,5 @@ Then run following script:
 
 .. _xmlstarlet: http://xmlstar.sourceforge.net/
 
-The index file ``objects.inv`` will be stored along your HTML documentation. You should then deploy this HTML directory
-to your website and :ref:`cross-link to it as usual <docs-typo3-org-crosslink>`.
+The index file :file:`objects.inv` will be stored along your HTML documentation. You should then deploy this HTML
+directory to your website and :ref:`cross-link to it as usual <docs-typo3-org-crosslink>`.

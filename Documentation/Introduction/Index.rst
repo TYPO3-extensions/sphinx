@@ -67,7 +67,7 @@ In addition, this extension comes with a few goodies such as:
 - Backend module to kickstart a Sphinx documentation project
 - Backend module to compile a Sphinx project
 - Integrated reStructuredText editor
-- Wizard to convert an OpenOffice document (``manual.sxw``) to a Sphinx project (using an online tool on http://docs.typo3.org)
+- Wizard to convert an OpenOffice document (:file:`manual.sxw`) to a Sphinx project (using an online tool on http://docs.typo3.org)
 
 
 What can I do with a Sphinx project?

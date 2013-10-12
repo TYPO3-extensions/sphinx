@@ -14,14 +14,14 @@ Rendu sur docs.typo3.org
 
 Lorsque vous publiez votre extension sur le :abbr:`TER (TYPO3 Extension Repository)`, la documentation
 Sphinx/reStructuredText associée est automatiquement compilée et publiée sur le site http://docs.typo3.org à l'URL
-``http://docs.typo3.org/typo3cms/extensions/<extension-key>/``.
+:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/`.
 
 Par exemple, cette documentation est publiée sur http://docs.typo3.org/typo3cms/extensions/sphinx/.
 
 De plus, une archive zip est créée automatiquement pour chaque combinaison de version et de langue et contient une copie
 du rendu HTML (aussi connu sous le nom de "gabarit statique" dans cette extension) et son équivalent PDF (si le rendu
 PDF a été activé, voir :ref:`ci-après <docs-typo3-org-pdf>`). Les archives sont stockés sous
-``http://docs.typo3.org/typo3cms/extensions/<extension-key>/packages/`` ``<extension-key>-<version>-<language>.zip``.
+:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/packages/` :file:`{extension-key}-{version}-{language}.zip`.
 Exemples :
 
 - http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-default.zip
@@ -51,16 +51,16 @@ Titre, mention de copyright et version
 .. index::
 	single: Settings.yml (format)
 
-Un projet Sphinx valide pour un manuel d'extension doit contenir un fichier de configuration ``Settings.yml`` au même
-niveau que le document principal ``Index.rst``. Ce fichier est votre passe pour surcharger les paramètres par défaut du
-fichier de configuration Sphinx réel ``conf.py`` qui ne fait pas partie de votre projet (étant donné qu'il va contenir
-des paramètres liés à l'environnement de compilation sur http://docs.typo3.org). Au lieu de ça, ce fichier de
+Un projet Sphinx valide pour un manuel d'extension doit contenir un fichier de configuration :file:`Settings.yml` au même
+niveau que le document principal :file:`Index.rst`. Ce fichier est votre passe pour surcharger les paramètres par défaut
+du fichier de configuration Sphinx réel :file:`conf.py` qui ne fait pas partie de votre projet (étant donné qu'il va
+contenir des paramètres liés à l'environnement de compilation sur http://docs.typo3.org). Au lieu de ça, ce fichier de
 configuration YAML vous permet de définir certaines options de projet.
 
-De façon similaire, cette extension s'occupe de lire les options de ``Settings.yml``, ce qui assure une uniformité entre
-le travail local sur votre manuel d'extension et son déploiement automatique sur http://docs.typo3.org.
+De façon similaire, cette extension s'occupe de lire les options de :file:`Settings.yml`, ce qui assure une uniformité
+entre le travail local sur votre manuel d'extension et son déploiement automatique sur http://docs.typo3.org.
 
-Un fichier standard ``Settings.yml`` devrait définir certaines informations générales de projet :
+Un fichier standard :file:`Settings.yml` devrait définir certaines informations générales de projet :
 
 .. code-block:: yaml
 	:linenos:
@@ -109,7 +109,7 @@ Rendu PDF
 ^^^^^^^^^
 
 La version PDF de votre documentation est générée en utilisant le générateur LaTeX de Sphinx (cf. :ref:`rendering-pdf`
-au besoin) et doit être explicitement activée pour votre extension. Pour se faire, ouvrez le fichier ``Settings.yml``
+au besoin) et doit être explicitement activée pour votre extension. Pour se faire, ouvrez le fichier :file:`Settings.yml`
 (à la racine de votre dossier de documentation) et assurez-vous qu'il contient les options de configuration suivantes
 (lignes 6 à 15) :
 
@@ -167,7 +167,7 @@ documentclass
 Les lignes 12 à 15 devraient être recopiées telles quelles. La ligne 15 est en fait le "déclencheur" de rendu PDF.
 
 Lorsque le rendu PDF est activé, votre documentation est générée automatiquement sur http://docs.typo3.org à l'URL
-``http://docs.typo3.org/typo3cms/extensions/<extension-key>/_pdf/``. Par exemple :
+:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/_pdf/`. Par exemple :
 http://docs.typo3.org/typo3cms/extensions/sphinx/_pdf/.
 
 Veuillez lire le chapitre :ref:`customizing-rendering` pour de plus amples informations sur les options de configuration
@@ -183,12 +183,12 @@ Documentation multilingue
 	single: Manuel multilingue
 
 Les manuels d'extensions multilingues sont supportés à la fois par cette extension et par http://docs.typo3.org. Si vous
-souhaitez traduire votre documentation, démarrez un nouveau projet Sphinx complet (y.c. ``Settings.yml``) dans le
-répertoire ``Documentation/Localization.<locale>``.
+souhaitez traduire votre documentation, démarrez un nouveau projet Sphinx complet (y.c. :file:`Settings.yml`) dans le
+répertoire :file:`Documentation/Localization.{locale}`.
 
 .. tip::
-	Vous pouvez réutiliser vos ressources comme ``Includes.txt`` ou les images de votre documentation principale dans
-	le répertoire ``Documentation`` mais pas dans l'autre sens, c'est-à-dire que vous ne pouvez pas réutiliser des
+	Vous pouvez réutiliser vos ressources comme :file:`Includes.txt` ou les images de votre documentation principale dans
+	le répertoire :file:`Documentation` mais pas dans l'autre sens, c'est-à-dire que vous ne pouvez pas réutiliser des
 	ressources spécifiques à un manuel traduit dans votre manuel principal (anglais).
 
 Locales
@@ -196,6 +196,31 @@ Locales
 
 .. index::
 	single: Locales
+
+Mis à part pour les quelques préfixes qui sont déjà des "locales", http://docs.typo3.org s'attend à avoir une locale et
+pas un code de langue. Par conséquent, assurez-vous d'*étendre* le préfixe en conséquence. Par exemple, une
+documentation française (préfixe ``fr``) devrait être étendue soit en ``fr_FR`` (français de France) ou en ``fr_CA``
+(français du Canada). Regardez notre liste de suggestions ci-dessous.
+
+Votre manuel d'extension traduit sera généré sur http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) et
+http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
+
+.. note::
+	Par convention, la page d'*accueil* (ou d'*arrivée*) d'une documentation devrait être associée à une ancre ``start``.
+	En bref, votre fichier :file:`Index.rst` principal devrait être comme ceci :
+
+	.. code-block:: rest
+
+		.. _start:
+
+		===================================
+		Titre de votre extension
+		===================================
+
+.. caution::
+	Les noms de fichiers et les URIs sont générés en minuscules et avec des tirets en lieu et place de traits de
+	soulignement. Cela signifie qu'une documentation avec la locale ``fr_FR`` sera en fait accessible en
+	utilisant ``fr-fr``.
 
 La liste des langues supportées par Sphinx est :
 
@@ -238,19 +263,6 @@ zh_CN    Chinois simplifié        zh_CN
 zh_TW    Chinois traditionnel     zh_TW
 =======  ======================== ================
 
-Mis à part pour les quelques préfixes qui sont déjà des "locales", http://docs.typo3.org s'attend à avoir une locale et
-pas un code de langue. Par conséquent, assurez-vous d'*étendre* le préfixe en conséquence. Par exemple, une
-documentation française (préfixe ``fr``) devrait être étendue soit en ``fr_FR`` (français de France) ou en ``fr_CA``
-(français du Canada). Regardez nos suggestions ci-dessus.
-
-Votre manuel d'extension traduit sera généré sur http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) et
-http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
-
-.. caution::
-	Les noms de fichiers et les URIs sont générés en minuscules et avec des tirets en lieu et place de traits de
-	soulignement. Cela signifie qu'une documentation avec la locale ``fr_FR`` sera en fait accessible en
-	utilisant ``fr-fr``.
-
 
 Bonnes pratiques
 """"""""""""""""
@@ -288,8 +300,8 @@ Un lien tel que ``:ref:`stdWrap en détails <t3tsref:stdwrap>``` va créer un li
 
 Derrière les coulisses, voici ce qui se passe :
 
-- Chaque rendu HTML Sphinx crée un fichier nommé ``objects.inv`` qui contient une correspondance entre les ancres et les
-  URIs relatives à la racine des fichiers HTML.
+- Chaque rendu HTML Sphinx crée un fichier nommé :file:`objects.inv` qui contient une correspondance entre les ancres et
+  les URIs relatives à la racine des fichiers HTML.
 
 - Les projets qui utilisent l'extension Intersphinx peuvent spécifier l'emplacement de tels fichiers de correspondance
   grâce à l'option de configuration ``intersphinx_mapping``. La correspondance sera ensuite utilisée pour résoudre des
@@ -305,7 +317,8 @@ http://docs.typo3.org/typo3cms/Index.html.
 	références vers lesquelles vous souhaitez créer des références croisées, comme décrit ci-après.
 
 Vous êtes en mesure de créer des liens vers d'autres documentations de http://docs.typo3.org (ou ailleurs) en configurant
-la correspondance Intersphinx dans ``Settings.yml``. Pour se faire, ajoutez des options de configuration (lignes 6 à 9) :
+la correspondance Intersphinx dans :file:`Settings.yml`. Pour se faire, ajoutez des options de configuration
+(lignes 6 à 9) :
 
 .. code-block:: yaml
 	:linenos:
@@ -328,7 +341,7 @@ convention, vous devriez la clé d'extension comme préfixe vers d'autres manuel
 * :ref:`Journal des modifications pour EXT:restdoc <restdoc:changelog>`
 
 .. caution::
-	Dès lors que vous définissez des correspondances Intersphinx dans le fichier de configuration ``Settings.yml``,
+	Dès lors que vous définissez des correspondances Intersphinx dans le fichier de configuration :file:`Settings.yml`,
 	la liste de références vers les manuels officiels est supprimée. Si vous souhaitez créer des références croisées
 	vers une documentation officielle TYPO3 en plus d'autres documentation arbitraires, assurez-vous de définir les
 	correspondances correspondantes également.
@@ -344,7 +357,7 @@ permet de façon très facile de faire des références croisées vers le code s
 soit pour une méthode particulière.
 
 Pour être en mesure de créer des références croisées vers l'API de TYPO3, vous devez tout d'abord ajouter une
-correspondance Intersphinx. Pour se faire, ouvrez le fichier de configuration ``Settings.yml`` et ajoutez un bloc
+correspondance Intersphinx. Pour se faire, ouvrez le fichier de configuration :file:`Settings.yml` et ajoutez un bloc
 Intersphinx ``t3cmsapi`` :
 
 .. code-block:: yaml
@@ -383,15 +396,15 @@ Quelques ancres supplémentaires sont également créées (et sont disponibles c
 ================== =================================
 Ancre              Cible
 ================== =================================
-``modindex``       :ref:`t3cmsapi:modindex`
-``genindex``       :ref:`t3cmsapi:genindex`
-``start``          :ref:`t3cmsapi:start`
-``hierarchy``      :ref:`t3cmsapi:hierarchy`
+``deprecated``     :ref:`t3cmsapi:deprecated`
 ``functions``      :ref:`t3cmsapi:functions`
 ``functions-func`` :ref:`t3cmsapi:functions-func`
-``variables``      :ref:`t3cmsapi:variables`
-``deprecated``     :ref:`t3cmsapi:deprecated`
-``todo``           :ref:`t3cmsapi:todo`
-``test``           :ref:`t3cmsapi:test`
+``genindex``       :ref:`t3cmsapi:genindex`
+``hierarchy``      :ref:`t3cmsapi:hierarchy`
+``modindex``       :ref:`t3cmsapi:modindex`
 ``pages``          :ref:`t3cmsapi:pages`
+``start``          :ref:`t3cmsapi:start`
+``test``           :ref:`t3cmsapi:test`
+``todo``           :ref:`t3cmsapi:todo`
+``variables``      :ref:`t3cmsapi:variables`
 ================== =================================

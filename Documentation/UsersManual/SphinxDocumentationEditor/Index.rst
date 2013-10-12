@@ -61,5 +61,5 @@ words from its description and selects it using the autocompletion mechanism.
 
 In case the reference you insert is not coming from your documentation (that is, you are referencing another
 chapter or section) but is a cross-reference to another document, the Intersphinx mapping of your configuration
-file ``Settings.yml`` will be automatically updated in order for the rendering to succeed. You may want to read section
-:ref:`docs-typo3-org-crosslink` for additional information.
+file :file:`Settings.yml` will be automatically updated in order for the rendering to succeed. You may want to read
+section :ref:`docs-typo3-org-crosslink` for additional information.
