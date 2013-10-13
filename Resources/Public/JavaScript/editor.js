@@ -38,6 +38,7 @@ CausalSphinxEditor = {
 						text: 'Yes',
 						click: function() {
 							self._openFile(file);
+							$(this).dialog('close');
 						}
 					},
 					{
