@@ -39,6 +39,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canExtractIntersphinxReferencesForExtensionSphinx() {
+		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc')) {
+			$this->markTestIncomplete('This test requires extension "restdoc" to be loaded.');
+		}
 		$references = GeneralUtility::getIntersphinxReferences('sphinx');
 		$this->assertTrue(is_array($references));
 		$this->assertTrue(isset($references['Index.htm']['start']));
