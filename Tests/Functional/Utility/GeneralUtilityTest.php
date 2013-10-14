@@ -51,6 +51,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canGenerateSphinxEnglishDocumentationAsHtml() {
+		if (!\Causal\Sphinx\Utility\SphinxBuilder::isReady()) {
+			$this->markTestIncomplete('This test requires a working Sphinx environment.');
+		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/default/html/Index.html';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
 		GeneralUtility::generateDocumentation('sphinx', 'html');
@@ -61,6 +64,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canGenerateSphinxEnglishDocumentationAsJson() {
+		if (!\Causal\Sphinx\Utility\SphinxBuilder::isReady()) {
+			$this->markTestIncomplete('This test requires a working Sphinx environment.');
+		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/default/json/Index.fjson';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
 		GeneralUtility::generateDocumentation('sphinx', 'json');
@@ -71,6 +77,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canGenerateSphinxEnglishDocumentationAsPdf() {
+		if (!\Causal\Sphinx\Utility\SphinxBuilder::isReady()) {
+			$this->markTestIncomplete('This test requires a working Sphinx environment.');
+		}
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sphinx']);
+		if ($configuration['pdf_builder'] !== 'pdflatex') {
+			$this->markTestIncomplete('This test requires LaTeX to build PDF.');
+		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/default/pdf/sphinx.pdf';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
 		GeneralUtility::generateDocumentation('sphinx', 'pdf');
@@ -81,6 +94,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canGenerateSphinxFrenchDocumentationAsHtml() {
+		if (!\Causal\Sphinx\Utility\SphinxBuilder::isReady()) {
+			$this->markTestIncomplete('This test requires a working Sphinx environment.');
+		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/fr_FR/html/Index.html';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
 		GeneralUtility::generateDocumentation('sphinx', 'html', FALSE, 'fr_FR');
@@ -91,6 +107,9 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canGenerateSphinxFrenchDocumentationAsJson() {
+		if (!\Causal\Sphinx\Utility\SphinxBuilder::isReady()) {
+			$this->markTestIncomplete('This test requires a working Sphinx environment.');
+		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/fr_FR/json/Index.fjson';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
 		GeneralUtility::generateDocumentation('sphinx', 'json', FALSE, 'fr_FR');
@@ -101,6 +120,13 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canGenerateSphinxFrenchDocumentationAsPdf() {
+		if (!\Causal\Sphinx\Utility\SphinxBuilder::isReady()) {
+			$this->markTestIncomplete('This test requires a working Sphinx environment.');
+		}
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sphinx']);
+		if ($configuration['pdf_builder'] !== 'pdflatex') {
+			$this->markTestIncomplete('This test requires LaTeX to build PDF.');
+		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/fr_FR/pdf/sphinx.pdf';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
 		GeneralUtility::generateDocumentation('sphinx', 'pdf', FALSE, 'fr_FR');
