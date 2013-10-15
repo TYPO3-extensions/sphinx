@@ -90,6 +90,7 @@ class SphinxDocumentation {
 			if (!isset($documents[$packageKey])) {
 				$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
 					->setPackageKey($packageKey)
+					->setExtensionKey($extensionKey)
 					->setIcon($extension->getIcon());
 				$documents[$packageKey] = $document;
 			}
