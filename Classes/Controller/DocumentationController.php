@@ -131,7 +131,7 @@ class DocumentationController extends AbstractActionController {
 					// Prevent browser-cache issue
 					$documentationUrl .= '?t=' . $GLOBALS['EXEC_TIME'];
 				}
-				break;
+			break;
 			case 'USER':
 				$documentationUrl = NULL;
 				$this->signalSlotDispatcher->dispatch(
@@ -147,7 +147,7 @@ class DocumentationController extends AbstractActionController {
 				if ($documentationUrl === NULL) {
 					throw new \RuntimeException('No slot found to render documentation with identifier "' . $identifier . '"', 1371208253);
 				}
-				break;
+			break;
 			default:
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371162948);
 		}
@@ -300,13 +300,13 @@ class DocumentationController extends AbstractActionController {
 		switch ($configuration['pdf_builder']) {
 			case 'pdflatex':
 				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
-				break;
+			break;
 			case 'rst2pdf':
 				$renderPdf = TRUE;
-				break;
+			break;
 			default:
 				$renderPdf = FALSE;
-				break;
+			break;
 		}
 		if ($renderPdf) {
 			$layouts['pdf'] = $this->translate('documentationLayout_pdf');

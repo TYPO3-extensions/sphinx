@@ -24,7 +24,7 @@ Editing a document
 
 The pencil icon loads the "Ace editor" (http://ace.ajax.org/).
 
-This editor lets you quickly update the corresponding chapter, or then any file within your Spinx project, and recompile
+This editor lets you quickly update the corresponding chapter, or then any file within your Sphinx project, and recompile
 the documentation if you click on toolbar icon "save and close":
 
 |

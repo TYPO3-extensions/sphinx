@@ -190,13 +190,13 @@ class SphinxDocumentation {
 		switch ($configuration['pdf_builder']) {
 			case 'pdflatex':
 				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
-				break;
+			break;
 			case 'rst2pdf':
 				$renderPdf = TRUE;
-				break;
+			break;
 			default:
 				$renderPdf = FALSE;
-				break;
+			break;
 		}
 		if ($renderPdf) {
 			$formats[] = 'pdf';

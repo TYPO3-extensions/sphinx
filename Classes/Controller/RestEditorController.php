@@ -150,7 +150,7 @@ class RestEditorController extends AbstractActionController {
 				switch ($parts['type']) {
 					case 'EXT':
 						$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($parts['extensionKey'], $layout, $force, $parts['locale']);
-						break;
+					break;
 					case 'USER':
 						$outputFilename = NULL;
 						$this->signalSlotDispatcher->dispatch(
@@ -163,7 +163,7 @@ class RestEditorController extends AbstractActionController {
 								'documentationUrl' => &$outputFilename,
 							)
 						);
-						break;
+					break;
 				}
 				if (substr($outputFilename, -4) === '.log') {
 					throw new \RuntimeException($this->translate('editor.message.compile.failure'), 1370011537);
@@ -217,7 +217,7 @@ class RestEditorController extends AbstractActionController {
 			case 'EXT':
 				list($prefix, $locale) = explode('.', $identifier, 2);
 				$reference = $prefix;
-				break;
+			break;
 			case 'USER':
 				$path = '';
 				$this->signalSlotDispatcher->dispatch(
@@ -229,13 +229,13 @@ class RestEditorController extends AbstractActionController {
 					)
 				);
 				$objectsInvFilename = $path . 'objects.inv';
-				// NO BREAK here, fallback to default section
+			// NO BREAK here, fallback to default section
 			default:
 				$locale = '';
 				// Use last segment of reference as prefix
 				$segments = explode('.', $reference);
 				$prefix = end($segments);
-				break;
+			break;
 		}
 
 		$references = \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences(
@@ -317,11 +317,11 @@ class RestEditorController extends AbstractActionController {
 				list($documentationExtension, $locale) = explode('.', $identifier, 2);
 				$settingsFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($documentationExtension) .
 					'Documentation/' . ($locale ? 'Localization.' . $locale . '/' : '') . 'Settings.yml';
-				break;
+			break;
 			default:
 				$parts = $this->parseReferenceDocument($reference, '');
 				$settingsFilename = $parts['basePath'] . '/Settings.yml';
-				break;
+			break;
 		}
 
 		$ret = \Causal\Sphinx\Utility\GeneralUtility::addIntersphinxMapping(
@@ -403,15 +403,15 @@ class RestEditorController extends AbstractActionController {
 				switch ($documentationType) {
 					case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX:
 						$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
-						break;
+					break;
 					case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_README:
 						$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
-						break;
+					break;
 					default:
 						throw new \RuntimeException('Unsupported documentation type for extension "' . $extensionKey . '"', 1379086939);
 				}
 				$filename = $this->getFilename($extensionKey, $document, $filename, $locale);
-				break;
+			break;
 			case 'USER':
 				$basePath = NULL;
 				$slotFilename = NULL;
@@ -433,7 +433,7 @@ class RestEditorController extends AbstractActionController {
 				} else {
 					$filename = rtrim($basePath, '/') . '/' . $filename;
 				}
-				break;
+			break;
 			default:
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163472);
 		}
@@ -481,11 +481,11 @@ class RestEditorController extends AbstractActionController {
 				} else {
 					$filename = $path . $filename;
 				}
-				break;
+			break;
 			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_README:
 				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 				$filename = $path . 'README.rst';
-				break;
+			break;
 			default:
 				throw new \RuntimeException('Unsupported documentation type for extension "' . $extensionKey . '"', 1371117564);
 		}

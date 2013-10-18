@@ -90,7 +90,7 @@ class InteractiveViewerController extends AbstractActionController {
 				$this->languageDirectory = empty($locale) ? 'default' : $locale;
 				$this->extension = $extensionKey;
 				$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $this->languageDirectory . '/json');
-				break;
+			break;
 			case 'USER':
 				if (is_file($documentationFilename)) {
 					$path = dirname($documentationFilename);
@@ -105,7 +105,7 @@ class InteractiveViewerController extends AbstractActionController {
 						)
 					);
 				}
-				break;
+			break;
 			default:
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163248);
 		}
@@ -214,12 +214,12 @@ class InteractiveViewerController extends AbstractActionController {
 		switch (TRUE) {
 			case $anchor !== '':
 				$link .= '#' . $anchor;
-				break;
+			break;
 			case substr($document, 0, 11) === '_downloads/':
 			case substr($document, 0, 8) === '_images/':
 			case substr($document, 0, 9) === '_sources/':
 				$link = '../typo3conf/Documentation/typo3cms.extensions.' . $this->extension . '/' . $this->languageDirectory . '/json/' . $document;
-				break;
+			break;
 		}
 		return $link;
 	}

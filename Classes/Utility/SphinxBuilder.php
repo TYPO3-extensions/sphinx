@@ -383,10 +383,10 @@ class SphinxBuilder {
 		switch ($configuration['pdf_builder']) {
 			case 'pdflatex':
 				$output = static::buildPdfWithLaTeX($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags);
-				break;
+			break;
 			case 'rst2pdf':
 				$output = static::buildPdfWithRst2Pdf($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags);
-				break;
+			break;
 			default:
 				throw new \RuntimeException('No available PDF builders.', 1378718863);
 		}

@@ -239,7 +239,7 @@ l':ref:`assistant de nouveau projet Sphinx <kickstart_sphinx_project>`) ; c.-à-
 	                    );
 	                }
 	                $documentationUrl = '../' . $basePath . $masterFile;
-	                break;
+	            break;
 	            case 'json':	// Interactive
 	                $masterFile = '_make/build/json/Index.fjson';
 	                if ($force || !is_file($basePath . $masterFile)) {
@@ -251,7 +251,7 @@ l':ref:`assistant de nouveau projet Sphinx <kickstart_sphinx_project>`) ; c.-à-
 	                    );
 	                }
 	                $documentationUrl = '../' . $basePath . $masterFile;
-	                break;
+	            break;
 	            case 'pdf':
 	            default:
 	                throw new \RuntimeException(

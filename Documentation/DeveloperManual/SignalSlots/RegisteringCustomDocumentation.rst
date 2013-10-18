@@ -237,7 +237,7 @@ implementation. We suppose that you have a TYPO3-based documentation project wit
 	                    );
 	                }
 	                $documentationUrl = '../' . $basePath . $masterFile;
-	                break;
+	            break;
 	            case 'json':	// Interactive
 	                $masterFile = '_make/build/json/Index.fjson';
 	                if ($force || !is_file($basePath . $masterFile)) {
@@ -249,7 +249,7 @@ implementation. We suppose that you have a TYPO3-based documentation project wit
 	                    );
 	                }
 	                $documentationUrl = '../' . $basePath . $masterFile;
-	                break;
+	            break;
 	            case 'pdf':
 	            default:
 	                throw new \RuntimeException(

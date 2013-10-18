@@ -90,10 +90,10 @@ HTML;
 					case 'jpeg':
 					case 'png':
 						$class = 'image';
-						break;
+					break;
 					default:
 						$class = 'file';
-						break;
+					break;
 				}
 				$out[] = '<td data-path="' . str_replace('\\', '/', $path) . '"><span class="' . $class . '">' . htmlspecialchars(basename($path)) . '</span></td>';
 			}

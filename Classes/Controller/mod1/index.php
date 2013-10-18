@@ -259,13 +259,13 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		switch ($configuration['pdf_builder']) {
 			case 'pdflatex':
 				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
-				break;
+			break;
 			case 'rst2pdf':
 				$renderPdf = TRUE;
-				break;
+			break;
 			default:
 				$renderPdf = FALSE;
-				break;
+			break;
 		}
 		$values = array(
 			'project' => $this->project,
@@ -305,7 +305,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
-				break;
+			break;
 			case 'build_json':
 				$configurationFilename = $this->project['basePath'] . $this->project['conf_py'];
 				$backupConfigurationFilename = $configurationFilename . '.bak';
@@ -333,7 +333,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						rename($backupConfigurationFilename, $configurationFilename);
 					}
 				}
-				break;
+			break;
 			case 'build_latex':
 				try {
 					$output = SphinxBuilder::buildLatex(
@@ -345,7 +345,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
-				break;
+			break;
 			case 'build_pdf':
 				try {
 					$output = SphinxBuilder::buildPdf(
@@ -357,7 +357,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
-				break;
+			break;
 			case 'check_links':
 				try {
 					$output = SphinxBuilder::checkLinks(
@@ -369,10 +369,10 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				} catch (\RuntimeException $e) {
 					$output = $e->getMessage();
 				}
-				break;
+			break;
 			default:
 				$output = '';
-				break;
+			break;
 		}
 
 		return $output;

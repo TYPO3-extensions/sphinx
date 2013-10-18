@@ -124,37 +124,37 @@ HTML;
 				switch ($action) {
 					case 'DOWNLOAD':
 						$this->downloadSphinx($availableVersions[$version], $messages);
-						break;
+					break;
 					case 'BUILD':
 						$this->buildSphinx($availableVersions[$version], $messages);
-						break;
+					break;
 					case 'IMPORT':
 						if ($this->downloadSphinx($availableVersions[$version], $messages)) {
 							$this->buildSphinx($availableVersions[$version], $messages);
 						}
-						break;
+					break;
 					case 'REMOVE':
 						$this->removeSphinx($availableVersions[$version], $messages);
-						break;
+					break;
 				}
 
 				foreach ($messages as $message) {
 					switch (TRUE) {
 						case GeneralUtility::isFirstPartOfStr($message, '[OK] '):
 							$out[] = $this->formatOk(substr($message, 5));
-							break;
+						break;
 						case GeneralUtility::isFirstPartOfStr($message, '[INFO] '):
 							$out[] = $this->formatInformation(substr($message, 7));
-							break;
+						break;
 						case GeneralUtility::isFirstPartOfStr($message, '[WARNING] '):
 							$out[] = $this->formatWarning(substr($message, 10));
-							break;
+						break;
 						case GeneralUtility::isFirstPartOfStr($message, '[ERROR] '):
 							$out[] = $this->formatError(substr($message, 8));
-							break;
+						break;
 						default:
 							$out[] = $message;
-							break;
+						break;
 					}
 				}
 

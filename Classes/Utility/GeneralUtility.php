@@ -212,16 +212,16 @@ class GeneralUtility {
 				switch (++$cellCounter) {
 					case 1:
 						$cellName = 't3-cell-property';
-						break;
+					break;
 					case 2:
 						$cellName = 't3-cell-datatype';
-						break;
+					break;
 					case 3:
 						$cellName = 't3-cell-description';
-						break;
+					break;
 					default:
 						$cellName = 't3-cell-unknown';
-						break;
+					break;
 				}
 
 				$term = $tableCell[1];
@@ -461,16 +461,16 @@ HTML;
 			case 'json':
 				$documentationFormat = 'json';
 				$masterDocument = 'Index.fjson';
-				break;
+			break;
 			case 'pdf':
 				$documentationFormat = 'pdf';
 				$masterDocument = $extensionKey . '.pdf';
-				break;
+			break;
 			case 'html':
 			default:
 				$documentationFormat = 'html';
 				$masterDocument = 'Index.html';
-				break;
+			break;
 		}
 
 		$relativeOutputDirectory = 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $languageDirectory . '/' . $documentationFormat;
@@ -517,10 +517,11 @@ HTML;
 						}
 					}
 				}
-				break;
+			break;
 			case static::DOCUMENTATION_TYPE_README:
 				$source = ExtensionManagementUtility::extPath($extensionKey) . 'README.rst';
 				copy($source, $basePath . '/Index.rst');
+			break;
 		}
 
 		// Cache Intersphinx references to speed-up rendering
@@ -586,10 +587,10 @@ HTML;
 			switch ($configuration['pdf_builder']) {
 				case 'pdflatex':
 					copy($documentationBasePath . '/_make/build/latex/' . $extensionKey . '.pdf', $absoluteOutputDirectory . '/' . $extensionKey . '.pdf');
-					break;
+				break;
 				case 'rst2pdf':
 					copy($documentationBasePath . '/_make/build/pdf/' . $extensionKey . '.pdf', $absoluteOutputDirectory . '/' . $extensionKey . '.pdf');
-					break;
+				break;
 			}
 		}
 
@@ -866,7 +867,7 @@ YAML;
 						}
 						$pythonLine .= LF . ')]';
 						$i--;
-						break;
+					break;
 					case 'latex_elements':
 						$pythonLine = 'latex_elements = {' . LF;
 						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
@@ -882,7 +883,7 @@ YAML;
 						}
 						$pythonLine .= LF . '}';
 						$i--;
-						break;
+					break;
 					case 'extensions':
 						$pythonLine = 'extensions = [';
 						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
@@ -902,7 +903,7 @@ YAML;
 							}
 						}
 						$pythonLine .= ']';
-						break;
+					break;
 					case 'intersphinx_mapping':
 						$pythonLine = 'intersphinx_mapping = {' . LF;
 						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
@@ -932,10 +933,10 @@ YAML;
 						}
 						$pythonLine .= LF . '}';
 						$i--;
-						break;
+					break;
 					default:
 						$pythonLine = sprintf('%s = u\'%s\'', $matches[2], addcslashes($matches[3], "\\'"));
-						break;
+					break;
 				}
 				if (!empty($pythonLine)) {
 					$pythonConfiguration[] = $pythonLine;

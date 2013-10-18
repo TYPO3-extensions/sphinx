@@ -124,7 +124,7 @@ class CustomProject {
 						}
 					}
 					$documentationUrl = '../' . $basePath . $masterFile;
-					break;
+				break;
 				case 'json':        // Interactive
 					$masterFile = $buildDirectory . 'json/Index.fjson';
 					if ($force || !is_file($absoluteBasePath . $masterFile)) {
@@ -163,7 +163,7 @@ class CustomProject {
 						}
 					}
 					$documentationUrl = '../' . $basePath . $masterFile;
-					break;
+				break;
 				case 'pdf':
 					switch ($this->settings['pdf_builder']) {
 						case 'pdflatex':
@@ -194,7 +194,7 @@ class CustomProject {
 						$availablePdfs = glob($absoluteBasePath . $masterFilePattern);
 					}
 					$documentationUrl = '../' . substr($availablePdfs[0], strlen(PATH_site));
-					break;
+				break;
 				default:
 					throw new \RuntimeException(
 						'Sorry! Layout ' . $layout . ' is not yet supported', 1371415095
