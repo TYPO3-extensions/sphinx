@@ -242,7 +242,8 @@ class DocumentationController extends AbstractActionController {
 				FALSE,
 				'TYPO3DocProject',
 				$metadata['version'],
-				$metadata['release']
+				$metadata['release'],
+				$extensionKey
 			);
 			$reference = 'EXT:' . $extensionKey;
 		} catch (\RuntimeException $exception) {

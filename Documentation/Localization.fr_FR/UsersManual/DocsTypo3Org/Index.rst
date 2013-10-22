@@ -82,7 +82,7 @@ copyright
 		d'années comme ``2013`` ou ``2010-2013``.
 
 version
-	La version majeure du projet, utilisé comme remplacement pour ``|version|``. Par exemple, pour la documnetation
+	La version majeure du projet, utilisé comme remplacement pour ``|version|``. Par exemple, pour la documentation
 	TYPO3, ça pourrait être ``6.2``.
 
 release
