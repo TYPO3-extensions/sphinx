@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../Includes.txt
-.. include:: Images.txt
 
 
 .. _to-do-list:
@@ -17,7 +16,8 @@ You have thought of better user experience? Great!
 
 .. only:: html
 
-	|finger|
+	.. figure:: ../Images/finger.png
+		:alt: A single address
 
 .. note::
 	Please use the extension's bug tracker on Forge to propose new features: https://forge.typo3.org/projects/extension-sphinx/issues

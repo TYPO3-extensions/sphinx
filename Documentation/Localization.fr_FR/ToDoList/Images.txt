@@ -1,2 +1,0 @@
-.. |finger| image:: ../../Images/finger.png
-	:alt: Une seule adresse

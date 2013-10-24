@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
-.. include:: Images.txt
 
 
 Installation de l'extension
@@ -32,12 +31,15 @@ Téléchargement et configuration de Sphinx
 
 Depuis le gestionnaire d'extensions, exécutez le script de mise à niveau que cette extension fournit :
 
-|em_update|
+.. figure:: ../../../Images/em_update.png
+	:alt: Lancement du script de mise à niveau dans le gestionnaire d'extensions
+	:width: 711
 
 Sélectionnez la version de Sphinx que vous souhaitez utiliser et démarrez le processus d'importation avec le bouton
 "import" :
 
-|import_sphinx|
+.. figure:: ../../../Images/import_sphinx.png
+	:alt: Importation de Sphinx dans l'environnement local
 
 .. important::
 	Si la liste des versions disponibles de Sphinx est vide, il est vraisemblable qu'il vous manque le support d'OpenSSL
@@ -121,12 +123,15 @@ Choix de la version de Sphinx à utiliser
 
 Depuis le gestionnaire d'extensions, configurez l'extension de façon habituelle :
 
-|em_configure|
+.. figure:: ../../../Images/em_configure.png
+	:alt: Configuration de l'extension dans le gestionnaire d'extensions
+	:width: 711
 
 Le premier onglet "basic" vous permet de choisir quelle version de Sphinx vous souhaitez utiliser pour
 générer vos documents :
 
-|em-sphinx-version|
+.. figure:: ../../../Images/em-sphinx-version.png
+	:alt: Configuration de la version de Sphinx à utiliser par défaut
 
 
 Choix de la méthode de rendu PDF
@@ -139,7 +144,8 @@ Choix de la méthode de rendu PDF
 Le deuxième onglet "pdf" vous permet de choisir le générateur PDF vous préférez (:program:`rst2pdf` ou LaTeX) et si vous
 désirez installer et configurer :program:`rst2pdf` :
 
-|em-pdf|
+.. figure:: ../../../Images/em-pdf.png
+	:alt: Configuration du générateur PDF à utiliser
 
 .. tip::
 	**Sauf pour les utilisateurs MS Windows,** :program:`rst2pdf` est disponible par défaut avec cette extension.
@@ -163,7 +169,8 @@ Le troisième onglet "3rd-party plugins" vous permet d'activer des extensions Sp
 de ces extensions (ou modules) sont disponibles sur docs.typo3.org et conviennent donc à une utilisation dans vos
 manuels d'extensions :
 
-|em-plugins|
+.. figure:: ../../../Images/em-plugins.png
+	:alt: Configuration des extensions à installer
 
 Veuillez lire le chapitre :ref:`third-party-plugins` pour comprendre comment les utiliser dans vos documents.
 

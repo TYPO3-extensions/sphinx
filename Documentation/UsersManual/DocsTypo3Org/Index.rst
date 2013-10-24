@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
 .. _docs-typo3-org:
@@ -260,7 +259,8 @@ names have been preserved. It is thus possible to switch from the original, in E
 prefixing the URI segment ``fr-fr/``. In the third navigation bar however, the directory and files names have been
 translated as well, making it impossible to match chapters with their translated counterparts:
 
-|translated-uri-segment|
+.. figure:: ../../Images/translated-uri-segments.png
+	:alt: Translating URI segments
 
 
 .. _docs-typo3-org-crosslink:

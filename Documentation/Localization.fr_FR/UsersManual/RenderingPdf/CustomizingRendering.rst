@@ -13,7 +13,7 @@ Personnalisation du rendu
 
 Afin de personnaliser le rendu d'une documentation générée en PDF avec LaTeX pour correspondre au design TYPO3, nous
 devons d'abord installer la `famille de fontes corporate Share`_ et la convertir pour être compatible avec LaTeX. Veuillez
-consulter le chapitre :ref:`installing_share_font` pour plus d'informations.
+consulter le chapitre :ref:`installing-share-font` pour plus d'informations.
 
 .. Liens :
 .. _`famille de fontes corporate Share`: http://typo3.org/the-brand/style-guide/the-typo3-font/

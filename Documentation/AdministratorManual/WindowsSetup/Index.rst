@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
 .. _windows-setup:
@@ -19,18 +18,22 @@ As this extension requires Python, unzip and tar extraction utilities to be pres
 up their environment with the Python framework. On a vanilla Windows environment, when you run the update script of this
 extension in Extension Manager by clicking on action icon |update_script| you will see a few error messages:
 
+.. |update_script| image:: ../../Images/update_script.png
+	:alt: Running the update script in Extension Manager
+
 .. index::
 	single: Error Message; Python interpreter was not found
 	single: Error Message; Unzip cannot be executed
 	single: Error Message; Tar cannot be executed
 
-|environment_check_windows|
+.. figure:: ../../Images/environment_check_windows.png
+	:alt: Environment check under MS Windows
 
 Following sections describe how to install:
 
-- :ref:`Python <installing_python>`
-- :ref:`Unzip <installing_unzip>`
-- :ref:`Tar <installing_tar>`
+- :ref:`Python <installing-python>`
+- :ref:`Unzip <installing-unzip>`
+- :ref:`Tar <installing-tar>`
 
 .. note::
 	These instructions have been tested under:
@@ -45,7 +48,8 @@ Following sections describe how to install:
 
 	Installation of WampServer may fail with an error message similar to:
 
-	|msvcr100dll|
+	.. image:: ../../Images/msvcr100dll.png
+		:alt: Missing Microsoft Visual C++ Redistributable
 
 	This cryptic error message means that you need to install the Microsoft Visual C++ Redistributable which can easily
 	be downloaded on the Microsoft website as x86 or x64 edition:
@@ -69,7 +73,7 @@ Following sections describe how to install:
 	This will allocate 8 MB for ThreadStackSize. Then restart Apache.
 
 
-.. _installing_python:
+.. _installing-python:
 
 Installing Python
 ^^^^^^^^^^^^^^^^^
@@ -77,7 +81,8 @@ Installing Python
 Please go to http://www.python.org/download/releases/ and download the Python Windows Installer. As of writing,
 Python 2.7.5 is known to be working properly. Then launch the installer and follow the instructions:
 
-|python_setup|
+.. figure:: ../../Images/python_setup.png
+	:alt: Installing Python
 
 .. important::
 	Option "Install for all users" is needed if your web server runs with another user.
@@ -91,13 +96,15 @@ available.
 
 To do so, open Control Panel > System > Advanced system settings > Environment variables:
 
-|environment_variables|
+.. figure:: ../../Images/environment_variables.png
+	:alt: Updating the environment variables
 
 Find the system variable ``Path`` and edit it:
 
-|system_variables|
+.. figure:: ../../Images/system_variables.png
+	:alt: System environment variables
 
-You should append the path to :program:`python`. By default it is stored under directory :file:`C:\Python27\\`.
+You should append the path to :program:`python`. By default it is stored under directory :file:`C:\\Python27\\`.
 
 .. important::
 	Put the path at the end of the existing list, after having inserted a path separator character which is, under
@@ -108,7 +115,7 @@ You should append the path to :program:`python`. By default it is stored under d
 	once at startup.
 
 
-.. _installing_unzip:
+.. _installing-unzip:
 
 Installing Unzip
 ^^^^^^^^^^^^^^^^
@@ -116,13 +123,14 @@ Installing Unzip
 Please go to http://gnuwin32.sourceforge.net/packages/unzip.htm and download the setup file. Then launch the installer
 and follow the instructions:
 
-|unzip_setup|
+.. figure:: ../../Images/unzip_setup.png
+	:alt: Installing UnZip extraction utility
 
 You should now register the :program:`unzip` command in ``%PATH%`` to be globally available. By default it is stored under
-directory :file:`C:\Program Files (x86)\GnuWin32\bin`. Please perform steps as in previous section.
+directory :file:`C:\\Program Files (x86)\\GnuWin32\\bin`. Please perform steps as in previous section.
 
 
-.. _installing_tar:
+.. _installing-tar:
 
 Installing Tar
 ^^^^^^^^^^^^^^
@@ -148,12 +156,13 @@ Installing Tar
 		for most purposes it is to be preferred to GNU Tar.
 
 Please go to http://gnuwin32.sourceforge.net/packages/libarchive.htm (LibArchive contains BsdTar) and download the setup
-file. Then launch the installer and follow the instructions, as you did for :ref:`unzip <installing_unzip>`:
+file. Then launch the installer and follow the instructions, as you did for :ref:`unzip <installing-unzip>`:
 
-|libarchive_setup|
+.. figure:: ../../Images/libarchive_setup.png
+	:alt: Installing LibArchive library for reading and writing streaming archives
 
 .. important::
-	By default the :program:`bsdtar` extraction utility is stored under directory :file:`C:\Program Files (x86)\GnuWin32\bin`,
+	By default the :program:`bsdtar` extraction utility is stored under directory :file:`C:\\Program Files (x86)\\GnuWin32\\bin`,
 	just as :program:`unzip`; it should thus be automatically detected as you already registered this path into the ``%PATH%``
 	environment variable. If needed, please register an alternate path as described previously.
 

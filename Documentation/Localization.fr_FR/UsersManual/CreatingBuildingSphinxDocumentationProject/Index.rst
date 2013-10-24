@@ -4,10 +4,9 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
-.. include:: Images.txt
 
 
-.. _kickstart_sphinx_project:
+.. _kickstart-sphinx-project:
 
 Création et compilation d'un projet de documentation Sphinx
 -----------------------------------------------------------
@@ -22,9 +21,8 @@ Création et compilation d'un projet de documentation Sphinx
 Utilisez le module Fichiers > Console Sphinx qui montre une arborescence de répertoires, choisissez un répertoire vide
 et utilisez l'assistant qui est affiché automatiquement pour créer un nouveau projet de documentation Sphinx :
 
-|
-
-|project_wizard|
+.. figure:: ../../../Images/project_wizard.png
+	:alt: Démarrer un nouveau projet Sphinx
 
 Un projet Sphinx vide sera créé. Vous pouvez ensuite modifier le fichier de configuration :file:`conf.py` selon
 vos besoins.
@@ -32,9 +30,8 @@ vos besoins.
 Pour compiler un projet Sphinx, choisissez un répertoire contenant un projet de documentation et cliquez sur l'un des
 boutons de compilation :
 
-|
-
-|project_properties|
+.. figure:: ../../../Images/project_properties.png
+	:alt: Propriétés d'un projet de documentation Sphinx
 
 La console affichera la sortie standard de la commande.
 
@@ -81,7 +78,8 @@ Si les commandes :program:`make` et :program:`pdflatex` sont disponibles sur vot
 :program:`rst2pdf`), un bouton de compilation supplémentaire est affiché, pour vous permettre de générer une version PDF
 de votre documentation automatiquement :
 
-|build_button_pdf|
+.. figure:: ../../../Images/build_button_pdf.png
+	:alt: Bouton de génération PDF
 
 
 Vérification des liens

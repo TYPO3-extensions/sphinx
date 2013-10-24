@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
-.. include:: Images.txt
 
 
 Présentation de LaTeX
@@ -14,6 +13,10 @@ TeX et les programmes associés comme LaTeX (formaté comme |LaTeX_logo| et pron
 page pour ordinateur. Il est bien connu pour son habileté avec le contenu mathématique et scientifique (LaTeX est utilisé
 comme principale méthode d'affichage des formules sur Wikipedia) et d'autres travaux typographiques difficiles tels que
 des documents longs ou compliqués et des ouvrages multilingues.
+
+.. |LaTeX_logo| image:: ../../../Images/LaTeX_logo.png
+	:alt: LaTeX
+	:height: 1.2em
 
 Les systèmes TeX produisent un résultat -- sur papier ou sur un écran -- de la plus haute qualité typographique. Même
 avec des documents simples vous obtenez un meilleur résultat qu'avec un traitement de textes. Comparez

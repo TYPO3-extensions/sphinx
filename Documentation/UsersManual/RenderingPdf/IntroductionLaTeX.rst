@@ -4,13 +4,19 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
 Introduction to LaTeX
 ^^^^^^^^^^^^^^^^^^^^^
 
-TeX and associated programs such as LaTeX (formatted as |LaTeX_logo|, and pronounced "Lah-tech") is a system for computer typesetting. It is well known for its skill with mathematical and scientific text (LaTeX is used as the primary method of displaying formulas on Wikipedia) and other difficult typesetting jobs such as long or intricate documents and multilingual works.
+TeX and associated programs such as LaTeX (formatted as |LaTeX_logo|, and pronounced "Lah-tech") is a system for
+computer typesetting. It is well known for its skill with mathematical and scientific text (LaTeX is used as the primary
+method of displaying formulas on Wikipedia) and other difficult typesetting jobs such as long or intricate documents and
+multilingual works.
+
+.. |LaTeX_logo| image:: ../../Images/LaTeX_logo.png
+	:alt: LaTeX
+	:height: 1.2em
 
 TeX systems produce output -- on paper or on the computer screen -- of the highest typographic quality. Even on simple documents, you get a better job than a word processor. Compare `these samples of plain text <http://www.ctan.org/tex/zen.pdf>`_ from Herigels' *Zen in the Art of Archery* done in the word processor *Word*, and *TeX*. These are short and the typographic differences are subtle but even a non-expert will have the sense that the TeX page looks better. For instance, the word processor's page has some lines with wide gaps between words and some lines with too many words stuffed in; contrast the second paragraph's second line with its third. TeX's output is better.
 

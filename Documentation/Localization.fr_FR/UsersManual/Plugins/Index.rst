@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
-.. include:: Images.txt
 
 
 .. _third-party-plugins:
@@ -90,7 +89,8 @@ Extension Sphinx qui génère des graphiques et des graphes à l'aide de
 
 .. only:: latex or missing_sphinxcontrib_googlechart
 
-	|sphinxcontrib-googlechart|
+	.. image:: ../../../Images/sphinxcontrib-googlechart.png
+		:alt: sphinxcontrib.googlechart
 
 .. only:: html
 
@@ -119,7 +119,9 @@ Extension Sphinx qui intègre des cartes `Google Maps <http://maps.google.com/>`
 
 .. only:: latex or missing_sphinxcontrib_googlemaps
 
-	|sphinxcontrib-googlemaps|
+	.. image:: ../../../Images/sphinxcontrib-googlemaps.png
+		:alt: sphinxcontrib.googlemaps
+
 
 .. only:: html
 
@@ -143,7 +145,9 @@ Extension Sphinx qui intègre des diapositives de présentation.
 
 .. only:: latex or missing_sphinxcontrib_slide
 
-	|sphinxcontrib-slide|
+	.. image:: ../../../Images/sphinxcontrib-slide.png
+		:alt: sphinxcontrib.slide
+
 
 .. only:: html
 
@@ -165,7 +169,9 @@ Extension Sphinx qui intègre une vidéo YouTube en utilisant son ID.
 
 .. only:: latex or missing_sphinxcontrib_youtube
 
-	|sphinxcontrib-youtube|
+	.. image:: ../../../Images/sphinxcontrib-youtube.png
+		:alt: sphinxcontrib.youtube
+
 
 .. only:: html
 

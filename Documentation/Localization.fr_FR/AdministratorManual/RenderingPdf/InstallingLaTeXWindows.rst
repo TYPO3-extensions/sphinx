@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
-.. include:: Images.txt
 
 
 Installation de LaTeX sous MS Windows
@@ -26,7 +25,8 @@ Vous pouvez lire le chapitre `Installing MiKTeX`_ dans le manuel MiKTeX si vous 
 	sur le site MiKTeX). Mais gardez à l'esprit qu'il en résulte une empreinte d'utilisation du disque *beaucoup plus
 	importante*.
 
-|miktex_setup|
+.. figure:: ../../../Images/miktex_setup.png
+	:alt: Installation de MiKTeX
 
 .. important::
 	L'option "Install MiKTeX for anyone who uses this computer" est nécessaire si votre serveur web s'exécute avec un
@@ -38,7 +38,8 @@ que ça améliore le confort d'utilisation lorsque vous générer des documents 
 avec le compilateur n'est pas disponible sans ligne de commande et va résulter en une erreur de compilation si un paquet
 LaTeX n'est pas disponible sur votre système :
 
-|miktex_onthefly|
+.. figure:: ../../../Images/miktex_onthefly.png
+	:alt: Format de page par défaut et installation des paquets manquants à la volée
 
 .. tip::
 

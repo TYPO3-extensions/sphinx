@@ -4,10 +4,9 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
-.. _kickstart_sphinx_project:
+.. _kickstart-sphinx-project:
 
 Creating and building a Sphinx documentation project
 ----------------------------------------------------
@@ -21,17 +20,15 @@ Creating and building a Sphinx documentation project
 
 Use the module File > Sphinx Console which presents a tree of directories, choose an empty directory and use the wizard that is automatically shown to create a new Sphinx documentation project:
 
-|
-
-|project_wizard|
+.. figure:: ../../Images/project_wizard.png
+	:alt: Kickstarting a new Sphinx project
 
 A blank Sphinx project will be created. You may then edit the configuration file :file:`conf.py` to fit your needs.
 
 To build a Sphinx project, choose a director containing a documentation project and click on one the build buttons:
 
-|
-
-|project_properties|
+.. figure:: ../../Images/project_properties.png
+	:alt: Properties of a Sphinx documentation project
 
 The console will show you the output of the command.
 
@@ -75,7 +72,8 @@ PDF
 If commands :program:`make` and :program:`pdflatex` are found on your server (or if you configured :program:`rst2pdf`),
 then an additional build button is shown, allowing you to build the PDF version of your documentation automatically:
 
-|build_button_pdf|
+.. figure:: ../../Images/build_button_pdf.png
+	:alt: Build button to render as PDF
 
 
 Check Links

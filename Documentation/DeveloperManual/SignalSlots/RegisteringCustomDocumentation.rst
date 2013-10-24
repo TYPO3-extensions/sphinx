@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
 .. _register-custom-documentation:
@@ -103,7 +102,8 @@ Sample code
 This sample code will register a custom documentation and simply return a public URL (http://www.example.com) as
 "master page":
 
-|custom_documentation|
+.. figure:: ../../Images/custom_documentation.png
+	:alt: Custom documentation in the drop-down list
 
 
 Registering the slots
@@ -210,7 +210,7 @@ Example implementation of the TODO
 
 In example above, the actual rendering of an arbitrary documentation is not shown. Here is an example of a possible
 implementation. We suppose that you have a TYPO3-based documentation project within directory :file:`fileadmin/demo-sphinx`
-(e.g., generated with the :ref:`Sphinx Project Kickstarter <kickstart_sphinx_project>`); that is, a project where file
+(e.g., generated with the :ref:`Sphinx Project Kickstarter <kickstart-sphinx-project>`); that is, a project where file
 :file:`conf.py` is stored within a directory :file:`_make`:
 
 .. code-block:: php

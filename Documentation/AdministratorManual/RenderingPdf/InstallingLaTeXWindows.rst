@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
 Installing LaTeX on MS Windows
@@ -25,7 +24,8 @@ Download and run the MiKTeX_ installer to setup a basic TeX/LaTeX system on your
 	Alternatively, you may choose to install a full-fledge version of MiKTeX (MiKTeX Net Installer under "Other Downloads"
 	on the MiKTeX's website). But keep in mind that this results in a *lot larger* footprint.
 
-|miktex_setup|
+.. figure:: ../../Images/miktex_setup.png
+	:alt: Installing MiKTeX
 
 .. important::
 	Option "Install MiKTeX for anyone who uses this computer" is needed if your web server runs with another user.
@@ -35,7 +35,8 @@ you to let MiKTeX installing those missing packages without asking you. The rati
 experience when compiling from your TYPO3 website as interactive input cannot happen, and rendering will crash if a
 LaTeX package is missing on your system:
 
-|miktex_onthefly|
+.. figure:: ../../Images/miktex_onthefly.png
+	:alt: Default page format and installing missing packages on the fly
 
 .. tip::
 

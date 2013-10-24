@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
 .. _introduction:
@@ -90,25 +89,28 @@ site. Le meilleur moyen est d'utiliser l'extension TYPO3 `Sphinx/reStructuredTex
 Copies d'écran
 --------------
 
-|project_wizard_overview|
+.. figure:: ../../Images/project_wizard_overview.png
+	:alt: Vue d'ensemble de l'assistant de création d'un nouveau projet
 
-|
 
 Générer un project de documentation Sphinx existant
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|mod1_overview|
+.. figure:: ../../Images/mod1_overview.png
+	:alt: Vue d'ensemble du module Backend pour générer des projets Sphinx
+	:width: 711
 
-|
 
 Générer un PDF avec pdflatex
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|build_buttons|
+.. figure:: ../../Images/build_buttons.png
+	:alt: Boutons de la barre d'outils
 
-|
 
 Générer et parcourir les manuels d'autres extensions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|viewer|
+.. figure:: ../../Images/viewer.png
+	:alt: Visionneuse intégrée au Backend pour les manuels des extensions
+	:width: 711

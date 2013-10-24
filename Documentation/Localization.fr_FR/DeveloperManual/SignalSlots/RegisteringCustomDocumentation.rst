@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
-.. include:: Images.txt
 
 
 .. _register-custom-documentation:
@@ -104,7 +103,8 @@ Code exemple
 Ce code exemple enregistre une documentation personnelle and retourne simplement une URL publique (http://www.example.com)
 comme "page principale".
 
-|custom_documentation|
+.. figure:: ../../../Images/custom_documentation.png
+	:alt: Documentation personnalisée dans la liste déroulante
 
 
 Enregistrement des slots
@@ -212,7 +212,7 @@ Exemple d'implémentation de la partie TODO
 Dans l'exemple précédent, la génération en tant que telle d'une documentation arbitraire n'est pas montrée. Voici un
 exemple d'une implémentation possible de cette génération. Nous supposons que vous avez un projet de documentation basé
 sur le modèle TYPO3 dans le répertoire :file:`fileadmin/demo-sphinx` (p. ex. généré avec
-l':ref:`assistant de nouveau projet Sphinx <kickstart_sphinx_project>`) ; c.-à-d. un projet dont le fichier
+l':ref:`assistant de nouveau projet Sphinx <kickstart-sphinx-project>`) ; c.-à-d. un projet dont le fichier
 :file:`conf.py` est stocké dans le répertoire :file:`_make` :
 
 .. code-block:: php

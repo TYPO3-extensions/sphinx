@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
-.. include:: Images.txt
 
 
 Comparaison LaTeX / rst2pdf
@@ -13,13 +12,16 @@ Comparaison LaTeX / rst2pdf
 Dans un souci de vous convaincre que le rendu LaTeX est réellement beaucoup plus élégant et professionnel, nous avons
 généré la documentation que vous êtes en train de lire une fois avec :program:`rst2pdf` :
 
-|pdf_rst2pdf|
+.. figure:: ../../../Images/pdf_rst2pdf.png
+	:alt: PDF généré avec rst2pdf
+	:width: 711
+
 
 et ensuite avec LaTeX :
 
-|
-
-|pdf_latex|
+.. figure:: ../../../Images/pdf_latex.png
+	:alt: PDF généré avec LaTeX
+	:width: 711
 
 Les fichiers ont été générés sans configuration ou réglages spéciaux.
 

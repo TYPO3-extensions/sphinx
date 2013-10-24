@@ -58,8 +58,7 @@ La liste de références compressée avec ZLIB a la structure suivante :
 
 <nom ancre>
 	Nom de l'ancre en minuscules. Vous pouvez utiliser les caractères spéciaux "-" (tiret), "_" (trait de soulignement)
-	et "\\" (anti-asYou may use special characters such as "-" (dash), "_" (underscore) and "\\"
-	(barre oblique inversée) pour séparer les mots.
+	et "\\" (barre oblique inversée) pour séparer les mots.
 
 <url cible>
 	URL relative vers la page qui se termine par :

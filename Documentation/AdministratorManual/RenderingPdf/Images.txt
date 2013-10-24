@@ -1,8 +1,0 @@
-.. |miktex_setup| image:: ../../Images/miktex_setup.png
-	:alt: Installing MiKTeX
-
-.. |miktex_onthefly| image:: ../../Images/miktex_onthefly.png
-	:alt: Default page format and installing missing packages on the fly
-
-.. |share_font| image:: ../../Images/share_font.png
-	:alt: Using the Share font family within LaTeX

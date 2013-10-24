@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
 .. _sphinx-documentation-editor:
@@ -12,11 +11,11 @@
 Sphinx documentation editor
 ---------------------------
 
-When showing an extension's manual using the :ref:`interactive layout <layouts>`, the standard TYPO3 Backend toolbar shows a pencil icon to let you edit the corresponding chapter:
+When showing an extension's manual using the :ref:`interactive layout <layouts>`, the standard TYPO3 Backend toolbar
+shows a pencil icon to let you edit the corresponding chapter:
 
-|
-
-|edit_chapter|
+.. figure:: ../../Images/edit_chapter.png
+	:alt: Edit reStructuredText source from any chapter
 
 
 Editing a document
@@ -27,9 +26,8 @@ The pencil icon loads the "Ace editor" (http://ace.ajax.org/).
 This editor lets you quickly update the corresponding chapter, or then any file within your Sphinx project, and recompile
 the documentation if you click on toolbar icon "save and close":
 
-|
-
-|save_compile|
+.. figure:: ../../Images/save_compile.png
+	:alt: Save and compile your reStructuredText chapter
 
 .. note::
 	The Ace editor currently lacks syntax highlighting for reStructuredText and is configured with Markdown instead.
@@ -38,7 +36,8 @@ the documentation if you click on toolbar icon "save and close":
 On the right side, a panel provides a browser of references within your documentation. The references are
 grouped by chapter using a accordion widget:
 
-|reference-browser|
+.. figure:: ../../Images/references-browser.png
+	:alt: Browser of references
 
 At the beginning an input box lets you show the references of any other extension or official manual providing
 a reStructuredText/Sphinx-based documentation. Just type an extension key, part of the extension title or some

@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../Includes.txt
-.. include:: Images.txt
 
 
 .. _introduction:
@@ -84,25 +83,28 @@ is to use TYPO3 extension `Sphinx/reStructuredText Documentation Viewer (restdoc
 Screenshots
 -----------
 
-|project_wizard_overview|
+.. figure:: ../Images/project_wizard_overview.png
+	:alt: Overview of the new project wizard
 
-|
 
 Build an existing Sphinx documentation project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|mod1_overview|
+.. figure:: ../Images/mod1_overview.png
+	:alt: Overview of the Backend module to build Sphinx projects
+	:width: 711
 
-|
 
 Build PDF with pdflatex
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-|build_buttons|
+.. figure:: ../Images/build_buttons.png
+	:alt: Toolbar buttons
 
-|
 
 Render and browse other extension manuals locally
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|viewer|
+.. figure:: ../Images/viewer.png
+	:alt: Integrated Backend viewer for extension manuals
+	:width: 711

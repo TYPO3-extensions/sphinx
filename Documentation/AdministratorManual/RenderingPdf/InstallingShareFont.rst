@@ -4,10 +4,9 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
-.. _installing_share_font:
+.. _installing-share-font:
 
 Installing the Share font
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -83,4 +82,5 @@ and compile it:
 
 When you open generated file :file:`test-font.pdf`, you should see the Share font used locally:
 
-|share_font|
+.. figure:: ../../Images/share_font.png
+	:alt: Using the Share font family within LaTeX

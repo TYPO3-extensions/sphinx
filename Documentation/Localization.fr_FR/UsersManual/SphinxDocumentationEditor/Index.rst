@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
-.. include:: Images.txt
 
 
 .. _sphinx-documentation-editor:
@@ -15,9 +14,8 @@
 Lorsque vous affichez un manuel d'extension en utilisant le :ref:`gabarit interactif <layouts>`, la barre d'outils
 standard de TYPO3 affiche une icône de crayon pour vous permettre de modifier le chapitre correspondant :
 
-|
-
-|edit_chapter|
+.. figure:: ../../../Images/edit_chapter.png
+	:alt: Modifier la source reStructuredText de n'importe quel chapitre
 
 
 Modification d'un document
@@ -29,9 +27,8 @@ Cet éditeur vous permet de mettre à jour rapidement le chapitre correspondant 
 de votre project Sphinx, et de générer à nouveau la documentation lorsque vous cliquez sur l'icône "enregistrer et
 fermer" :
 
-|
-
-|save_compile|
+.. figure:: ../../../Images/save_compile.png
+	:alt: Sauvegarder et compiler votre chapitre reStructuredText
 
 .. note::
 	L'éditeur Ace ne propose pas pour l'instant de coloration syntaxique pour reStructuredText et est par conséquent
@@ -40,7 +37,8 @@ fermer" :
 Sur le côté droit, un panneau vous montre un navigateur de références au sein de votre documentation. Les
 références sont groupées par chapitre sous la forme d'un accordéon :
 
-|reference-browser|
+.. figure:: ../../../Images/references-browser.png
+	:alt: Navigateur de références
 
 Tout en haut, vous trouvez une zone de texte qui vous permet d'afficher les références de toutes les extensions
 et les manuels officiels dotés d'une documentation basée sur reStructuredText/Sphinx. Il vous suffit de taper

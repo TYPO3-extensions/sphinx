@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
 Installing the extension
@@ -32,11 +31,14 @@ Downloading and configuring Sphinx
 
 In the Extension Manager, execute the update script this extension is providing:
 
-|em_update|
+.. figure:: ../../Images/em_update.png
+	:alt: Launching the update script within Extension Manager
+	:width: 711
 
 Select a version of Sphinx you would like to use and start the import process with the "import" button:
 
-|import_sphinx|
+.. figure:: ../../Images/import_sphinx.png
+	:alt: Importing Sphinx to the local environment
 
 .. important::
 	If the list of available versions of Sphinx is empty, you most probably lack OpenSSL support in PHP (this is a
@@ -114,11 +116,14 @@ Choosing the version of Sphinx
 
 In the Extension Manager, configure this extension as usual:
 
-|em_configure|
+.. figure:: ../../Images/em_configure.png
+	:alt: Configuring the extension within Extension Manager
+	:width: 711
 
 The first tab "basic" lets you choose which version of Sphinx should be used to render your documents:
 
-|em-sphinx-version|
+.. figure:: ../../Images/em-sphinx-version.png
+	:alt: Configuring the version of Sphinx to be used by default
 
 
 Choosing how to render PDF
@@ -131,7 +136,8 @@ Choosing how to render PDF
 The second tab "pdf" lets you choose which PDF builder you prefer (either :program:`rst2pdf` or LaTeX) and whether you
 want to install and configure :program:`rst2pdf`:
 
-|em-pdf|
+.. figure:: ../../Images/em-pdf.png
+	:alt: Configuring how to render PDF
 
 .. tip::
 	**Except for MS Windows users,** :program:`rst2pdf` is available by default with this extension. However, if you want
@@ -153,7 +159,8 @@ Choosing the 3rd-party plugins to install
 The third tab "3rd-party plugins" lets you activate additional Sphinx extensions. Some of them are available on
 docs.typo3.org, and are as such suited for use with your extension manuals:
 
-|em-plugins|
+.. figure:: ../../Images/em-plugins.png
+	:alt: Configuring the 3rd-party plugins to install
 
 Please read chapter :ref:`third-party-plugins` for instructions on how to use them in your documents.
 

@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
-.. include:: Images.txt
 
 
 .. _docs-typo3-org:
@@ -283,7 +282,8 @@ noms de répertoires et de fichiers ont été gardés. Il est donc possible de p
 noms des répertoires et de fichiers ont également été traduits et il n'est donc plus possible de faire correspondre les
 chapitres traduits :
 
-|translated-uri-segment|
+.. figure:: ../../../Images/translated-uri-segments.png
+	:alt: Traduction des segments d'une URI
 
 
 .. _docs-typo3-org-crosslink:

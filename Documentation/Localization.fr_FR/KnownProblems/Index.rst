@@ -79,7 +79,7 @@ Problèmes connus
        LaTeX Error: File `typo3.sty' not found.
 
   Cela arrive si vous tentez de produire un PDF avec la mise en page TYPO3 mais sans avoir suivi les instructions du
-  chapitre :ref:`installing_share_font`. Ce qui est en fait réellement requis est le clone du dépôt git RestTools, et
+  chapitre :ref:`installing-share-font`. Ce qui est en fait réellement requis est le clone du dépôt git RestTools, et
   pas la fonte Share.
 
 - Avec FAL (TYPO3 6.x) seul le stockage local (*LocalStorage*) a été implémenté et testé, ce qui signifie que le code

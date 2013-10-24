@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
 .. _to-do-list:
@@ -17,7 +16,8 @@ disposer d'une fonction de fou ? Vous avez pensé à une meilleure expérience u
 
 .. only:: html
 
-	|finger|
+	.. figure:: ../../Images/finger.png
+		:alt: Une seule adresse
 
 .. note::
 	Veuillez svp utiliser le système de suivi de bogues de l'extension sur Forge pour proposer de nouvelles

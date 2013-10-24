@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../../Includes.txt
-.. include:: Images.txt
 
 
 .. _sphinx-documentation-viewer:
@@ -14,12 +13,15 @@ Visionneuse de documentation Sphinx
 
 Cette extension fournit un autre module Backend dans la partie "Aide" :
 
-|section_help|
+.. figure:: ../../../Images/section_help.png
+	:alt: Visionneuse de documentation Sphinx
 
 Une liste déroulant tout en haut affiche les extensions utilisées qui contiennent une documentation basée sur Sphinx et
 vous permet de rapidement l'afficher **localement** :
 
-|viewer_choose_extension|
+.. figure:: ../../../Images/viewer_choose_extension.png
+	:alt: Choix du manuel d'extension à afficher localement
+	:width: 711
 
 .. tip::
 	La visionneuse de documentation Sphinx recharge automatiquement le dernier manuel que vous avez sélectionné et si
@@ -29,19 +31,26 @@ vous permet de rapidement l'afficher **localement** :
 Écran d'accueil
 ^^^^^^^^^^^^^^^
 
-Si aucune documentation n'est sélectionnée dans la liste déroulante, c.-à-d. que "Tableau de bord" (*Dashboard*) est sélectionné :
+Si aucune documentation n'est sélectionnée dans la liste déroulante, c.-à-d. que "Tableau de bord" (*Dashboard*) est
+sélectionné :
 
-|kickstart|
+.. figure:: ../../../Images/kickstart.png
+	:alt: Aucune documentation sélectionnée
+
 
 une liste d'extensions utilisées contenant uniquement un manuel OpenOffice est affichée et vous permet de facilement le
 convertir en Sphinx à l'aide d'un outil en ligne disponible sur http://docs.typo3.org :
 
-|convert-openoffice|
+.. figure:: ../../../Images/convert-openoffice.png
+	:alt: Conversion facile des manuels OpenOffice en projets Sphinx
+	:width: 711
 
 De façon similaire, un projet de documention Sphinx vide peut être créé pour les extensions qui n'ont pas encore de
 manuel :
 
-|kickstart-sphinx|
+.. figure:: ../../../Images/kickstart-sphinx.png
+	:alt: Démarrer un projet de documentation Sphinx
+	:width: 711
 
 
 .. _layouts:
@@ -59,9 +68,9 @@ Les manuels d'extensions peuvent être générés avec différents "gabarits" :
 
 - **PDF:** Génère et affiche une version PDF et de ce fait nécessite soit :program:`pdflatex` soit :program:`rst2pdf` :
 
-  |
-
-  |render_pdf|
+  .. figure:: ../../../Images/render_pdf.png
+      :alt: Génération d'une documentation en PDF
+      :width: 691
 
 .. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
 
@@ -98,7 +107,8 @@ Sinon :
 	Une case à cocher à droite vous permet de forcer le manuel d'extension à être généré à nouveau (ce qui recrée par
 	conséquent la version mise en cache) :
 
-	|checkbox|
+	.. image:: ../../../Images/checkbox.png
+		:alt: Case à cocher pour forcer un manuel d'extension à être généré
 
 .. note::
 	La visionneuse de documentation Sphinx supporte deux types de manuels d'extensions :
@@ -123,7 +133,7 @@ Référencement d'un projet personnel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Si vous avez un projet Sphinx complet quelque part dans votre site. comme un projet démarré avec
-la :ref:`Console Sphinx <kickstart_sphinx_project>`, vous pouvez l'enregistrer avec la visionneuse de documentation
+la :ref:`Console Sphinx <kickstart-sphinx-project>`, vous pouvez l'enregistrer avec la visionneuse de documentation
 Sphinx.
 
 En effet, nous avons implémenté notre propre signal pour :ref:`enregistrer une documentation personnelle <register-custom-documentation>`.

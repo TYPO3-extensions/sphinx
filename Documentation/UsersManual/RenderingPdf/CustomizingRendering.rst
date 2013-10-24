@@ -13,7 +13,7 @@ Customizing the rendering
 
 In order to customize the output of documentation rendered as PDF with LaTeX to match the TYPO3 branding, we first
 need to install the `Share corporate font family`_ and convert it to be compatible with LaTeX. Please refer to chapter
-:ref:`installing_share_font` for instructions.
+:ref:`installing-share-font` for instructions.
 
 .. _`Share corporate font family`: http://typo3.org/the-brand/style-guide/the-typo3-font/
 

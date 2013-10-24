@@ -4,7 +4,6 @@
 .. -*- coding: utf-8 -*- with BOM.
 
 .. include:: ../../Includes.txt
-.. include:: Images.txt
 
 
 .. _sphinx-documentation-viewer:
@@ -14,12 +13,15 @@ Sphinx documentation viewer
 
 This extension provides another Backend module under section "Help":
 
-|section_help|
+.. figure:: ../../Images/section_help.png
+	:alt: Sphinx documentation viewer
 
 A drop-down menu on top lists all loaded extensions that are featuring a Sphinx-based documentation and lets you quickly
 show it **locally**:
 
-|viewer_choose_extension|
+.. figure:: ../../Images/viewer_choose_extension.png
+	:alt: Selector to show an extension manual locally
+	:width: 711
 
 .. tip::
 	The Sphinx documentation viewer automatically reloads the last manual you selected and if you choose the interactive
@@ -31,16 +33,21 @@ Welcome screen
 
 If no documentation has been selected in the drop-down menu; that is, "Dashboard" is selected:
 
-|kickstart|
+.. figure:: ../../Images/kickstart.png
+	:alt: No documentation selected
 
 a list of locally available extensions with an OpenOffice manual only is shown and lets you easily convert it to Sphinx
 using an online tool on http://docs.typo3.org:
 
-|convert-openoffice|
+.. figure:: ../../Images/convert-openoffice.png
+	:alt: Easily convert OpenOffice manuals to Sphinx projects
+	:width: 711
 
 Similarly, an empty Sphinx documentation project may be created for local extensions without any manual yet:
 
-|kickstart-sphinx|
+.. figure:: ../../Images/kickstart-sphinx.png
+	:alt: Kickstart a Sphinx documentation project
+	:width: 711
 
 
 .. _layouts:
@@ -58,9 +65,9 @@ Extension manuals may be rendered with different "layouts":
 
 - **PDF:** This renders and shows the PDF version and as such requires either :program:`pdflatex` or :program:`rst2pdf`:
 
-  |
-
-  |render_pdf|
+  .. figure:: ../../Images/render_pdf.png
+      :alt: Render a documentation as PDF
+      :width: 691
 
 .. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
 
@@ -93,7 +100,8 @@ Otherwise:
 .. tip::
 	A checkbox on the right lets you force the extension's manual to be recompiled (thus recreating the cached version):
 
-	|checkbox|
+	.. image:: ../../Images/checkbox.png
+		:alt: Checkbox to force an extension manual to be rendered
 
 .. note::
 	The Sphinx Documentation Viewer supports two types of extension's manual:
@@ -117,7 +125,7 @@ Registering a custom project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you have a complete Sphinx project somewhere in your website, such as project you kickstarted with
-the :ref:`Sphinx Console <kickstart_sphinx_project>`, you may register it with the Sphinx Documentation Viewer.
+the :ref:`Sphinx Console <kickstart-sphinx-project>`, you may register it with the Sphinx Documentation Viewer.
 
 In fact, we implemented our own signal for :ref:`registering custom documentation <register-custom-documentation>`.
 

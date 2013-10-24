@@ -1,8 +1,0 @@
-.. |project_properties| image:: ../../../Images/project_properties.png
-	:alt: Propriétés d'un projet de documentation Sphinx
-
-.. |project_wizard| image:: ../../../Images/project_wizard.png
-	:alt: Démarrer un nouveau projet Sphinx
-
-.. |build_button_pdf| image:: ../../../Images/build_button_pdf.png
-	:alt: Bouton de génération PDF
