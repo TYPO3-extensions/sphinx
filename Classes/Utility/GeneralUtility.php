@@ -409,7 +409,7 @@ HTML;
 		} elseif ($useCache && is_file($cacheFile)) {
 			$path = dirname($cacheFile);
 		} elseif ($remoteUrl) {
-			$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteUrl);
+			$content = \Causal\Sphinx\Utility\GeneralUtility::getUrl($remoteUrl);
 			if ($content) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($cacheFile) . '/');
 				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $content);
@@ -810,7 +810,7 @@ YAML;
 				$remoteUrl = rtrim($remoteUrl, '/') . '/objects.inv';
 				$cacheFile = $cacheDirectory . $prefix . '-' . md5($remoteUrl) . '-objects.inv';
 				if (!is_file($cacheFile)) {
-					$objectsInv = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteUrl);
+					$objectsInv = \Causal\Sphinx\Utility\GeneralUtility::getUrl($remoteUrl);
 					if ($objectsInv) {
 						\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($cacheFile) . '/');
 						\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $objectsInv);
@@ -945,6 +945,28 @@ YAML;
 		}
 
 		return $pythonConfiguration;
+	}
+
+	/**
+	 * Reads the file or url $url and returns the content
+	 * If you are having trouble with proxys when reading URLs you can configure your way out of that with settings like $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] etc.
+	 *
+	 * @param string $url File/URL to read
+	 * @return mixed The content from the resource given as input. FALSE if an error has occured.
+	 */
+	static public function getUrl($url) {
+		// Known problems when using \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl() with https:// resources
+		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($url, 'https://')) {
+			return \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
+		}
+
+		/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
+		$http = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url);
+		try {
+			return $http->send()->getBody();
+		} catch (\Exception $e) {
+			return FALSE;
+		}
 	}
 
 }

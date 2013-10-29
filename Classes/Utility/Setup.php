@@ -120,7 +120,7 @@ class Setup {
 
 		$zipFilename = $tempPath . $version . '.zip';
 		static::$log[] = '[INFO] Fetching ' . $url;
-		$zipContent = GeneralUtility::getUrl($url);
+		$zipContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
 		if ($zipContent && GeneralUtility::writeFile($zipFilename, $zipContent)) {
 			$output[] = '[INFO] Sphinx ' . $version . ' has been downloaded.';
 			$targetPath = $sphinxSourcesPath . $version;
@@ -326,16 +326,14 @@ EOT;
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		$url = 'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3';
-		/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
-		$http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\HttpRequest', $url);
 		static::$log[] = '[INFO] Fetching ' . $url;
-		$body = $http->send()->getBody();
+		$body = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
 		if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">snapshot</a>#', $body, $matches)) {
 			$commit = $matches[1];
 			$url = 'https://git.typo3.org/Documentation/RestTools.git/snapshot/' . $commit . '.tar.gz';
 			$archiveFilename = $tempPath . 'RestTools.tar.gz';
 			static::$log[] = '[INFO] Fetching ' . $url;
-			$archiveContent = $http->setUrl($url)->send()->getBody();
+			$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
 			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 				$output[] = '[INFO] TYPO3 ReStructuredText Tools (' . $commit . ') have been downloaded.';
 
@@ -485,7 +483,7 @@ EOT;
 			$output[] = '[WARNING] Could not find command unzip. 3rd-party libraries were not installed.';
 		} else {
 			$url = 'https://bitbucket.org/xperseguers/sphinx-contrib/overview';
-			$content = GeneralUtility::getUrl($url);
+			$content = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
 			$content = substr($content, strpos($content, '<dl class="metadata">'));
 			// Search for the download link
 			// <a rel="nofollow"
@@ -494,7 +492,7 @@ EOT;
 			if (preg_match('#href="(/xperseguers/sphinx-contrib/get/[0-9a-f]+\.zip)"#', $content, $matches)) {
 				$url = 'https://bitbucket.org' . $matches[1];
 				$archiveFilename = $tempPath . 'sphinx-contrib.zip';
-				$archiveContent = GeneralUtility::getUrl($url);
+				$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
 				if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 					$output[] = '[INFO] 3rd-party libraries for Sphinx have been downloaded.';
 
@@ -678,7 +676,7 @@ EOT;
 
 		$url = 'http://pyyaml.org/download/pyyaml/PyYAML-3.10.tar.gz';
 		$archiveFilename = $tempPath . 'PyYAML-3.10.tar.gz';
-		$archiveContent = GeneralUtility::getUrl($url);
+		$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
 		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 			$output[] = '[INFO] PyYAML 3.10 has been downloaded.';
 
@@ -768,7 +766,7 @@ EOT;
 
 		$url = 'http://effbot.org/media/downloads/Imaging-1.1.7.tar.gz';
 		$archiveFilename = $tempPath . 'Imaging-1.1.7.tar.gz';
-		$archiveContent = GeneralUtility::getUrl($url);
+		$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
 		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 			$output[] = '[INFO] Python Imaging Library 1.1.7 has been downloaded.';
 
@@ -858,7 +856,7 @@ EOT;
 
 		$url = 'https://bitbucket.org/birkenfeld/pygments-main/get/1.6.tar.gz';
 		$archiveFilename = $tempPath . 'pygments-1.6.tar.gz';
-		$archiveContent = GeneralUtility::getUrl($url);
+		$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
 		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 			$output[] = '[INFO] Pygments 1.6 has been downloaded.';
 
@@ -936,7 +934,7 @@ EOT;
 
 		$url = 'https://git.typo3.org/Documentation/RestTools.git/blob_plain/HEAD:/ExtendingPygmentsForTYPO3/_incoming/typoscript.py';
 		$libraryFilename = $lexersPath . 'typoscript.py';
-		$libraryContent = GeneralUtility::getUrl($url);
+		$libraryContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
 
 		if ($libraryContent) {
 			if (!is_file($libraryFilename) || md5_file($libraryFilename) !== md5($libraryContent)) {
@@ -986,7 +984,7 @@ EOT;
 
 		$url = 'http://rst2pdf.googlecode.com/files/rst2pdf-0.93.tar.gz';
 		$archiveFilename = $tempPath . 'rst2pdf-0.93.tar.gz';
-		$archiveContent = GeneralUtility::getUrl($url);
+		$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
 		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 			$output[] = '[INFO] rst2pdf 0.93 has been downloaded.';
 
@@ -1076,10 +1074,9 @@ EOT;
 	 * Please note: all versions older than 1.0 are automatically discarded
 	 * as they are most probably of absolutely no use.
 	 *
-	 * @param array &$report
 	 * @return array
 	 */
-	static public function getSphinxAvailableVersions(array &$report = array()) {
+	static public function getSphinxAvailableVersions() {
 		$sphinxUrl = 'https://bitbucket.org/birkenfeld/sphinx/downloads';
 
 		$cacheFilename = static::getTemporaryPath() . static::$extKey . '.' . md5($sphinxUrl) . '.html';
@@ -1087,7 +1084,7 @@ EOT;
 			|| $GLOBALS['EXEC_TIME'] - filemtime($cacheFilename) > 86400
 			|| filesize($cacheFilename) == 0) {
 
-			$html = GeneralUtility::getURL($sphinxUrl, 0, FALSE, $report);
+			$html = \Causal\Sphinx\Utility\GeneralUtility::getUrl($sphinxUrl);
 			GeneralUtility::writeFile($cacheFilename, $html);
 		} else {
 			$html = file_get_contents($cacheFilename);

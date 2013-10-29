@@ -78,7 +78,7 @@ class OpenOfficeConverter {
 
 			$documentationUrl = $matches[1];
 			$zipFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/documentation.zip');
-			$zipContent = GeneralUtility::getUrl($documentationUrl);
+			$zipContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($documentationUrl);
 			if ($zipContent && GeneralUtility::writeFile($zipFilename, $zipContent)) {
 				GeneralUtility::rmdir($outputDirectory, TRUE);
 				GeneralUtility::mkdir_deep($outputDirectory . DIRECTORY_SEPARATOR);

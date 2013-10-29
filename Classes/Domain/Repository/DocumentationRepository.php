@@ -120,7 +120,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			'typo3temp/manuals.json'
 		);
 		if (!is_file($cacheFile) || $GLOBALS['EXEC_TIME'] - filemtime($cacheFile) > 86400) {
-			$json = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl('http://docs.typo3.org/typo3cms/extensions/manuals.json');
+			$json = \Causal\Sphinx\Utility\GeneralUtility::getUrl('http://docs.typo3.org/typo3cms/extensions/manuals.json');
 			if ($json) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $json);
 			}
@@ -144,7 +144,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			'typo3temp/documents.json'
 		);
 		if (!is_file($cacheFile) || $GLOBALS['EXEC_TIME'] - filemtime($cacheFile) > 86400) {
-			$json = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl('http://docs.typo3.org/typo3cms/documents.json');
+			$json = \Causal\Sphinx\Utility\GeneralUtility::getUrl('http://docs.typo3.org/typo3cms/documents.json');
 			if ($json) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $json);
 			}

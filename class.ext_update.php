@@ -83,7 +83,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// Fetch the list of official versions of Sphinx
 		$report = array();
-		$availableVersions = Setup::getSphinxAvailableVersions($report);
+		$availableVersions = Setup::getSphinxAvailableVersions();
 		// Load the list of locally available versions of Sphinx
 		$localVersions = Setup::getSphinxLocalVersions();
 
@@ -100,15 +100,7 @@ HTML;
 					'your OpenSSL configuration might be broken</li>';
 			}
 
-			$message .= '</ul><br />';
-			$message .= 'Technical details:<br />' . LF;
-			$message .= nl2br(
-				str_replace(
-					TAB,
-					str_repeat('&nbsp;', 4),
-					\TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($report)
-				)
-			);
+			$message .= '</ul>';
 
 			$out[] = $this->formatWarning($message, FALSE);
 		}
