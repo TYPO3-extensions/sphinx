@@ -28,6 +28,10 @@ Problèmes connus
       $TYPO3_CONF_VARS['SYS']['binSetup'] = 'python=/usr/bin/python,' .
                                             'unzip=/usr/bin/unzip,tar=/bin/tar';
 
+  Une autre raison possible si vous voyez cette erreur après avoir manuallement configuré ``binSetup`` est que vous avez
+  désactivé l'exécution des programmes dans le Backend en définissant ``$TYPO3_CONF_VARS['BE']['disable_exec_function']``
+  à ``1``.
+
 - Certaines distributions de Linux (comme Fedora) ne fournissent pas ``docutils`` ou les fichiers d'en-tête (*header files*)
   et les bibliothèques pour développer des extensions Python. Depuis une Fedora en version standard, vous pouvez installer
   les composants manquants avec :
