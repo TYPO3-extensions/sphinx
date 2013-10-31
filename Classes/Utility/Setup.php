@@ -54,6 +54,12 @@ class Setup {
 	static public function createLibraryDirectories() {
 		$errors = array();
 
+		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function'] == 1) {
+			$errors[] = 'You have disabled exec() with $TYPO3_CONF_VARS[\'BE\'][\'disable_exec_function\'] = \'1\'. ' .
+				'Please open System > Install > All configuration and set it to 0 to proceed.';
+			return $errors;
+		}
+
 		if (!CommandUtility::checkCommand('python')) {
 			$errors[] = 'Python interpreter was not found. Hint: You probably should double-check '.
 				'$TYPO3_CONF_VARS[\'SYS\'][\'binPath\'] and/or $TYPO3_CONF_VARS[\'SYS\'][\'binSetup\'].';
