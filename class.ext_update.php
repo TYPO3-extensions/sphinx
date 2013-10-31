@@ -81,6 +81,15 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			return implode(LF, $out);
 		}
 
+		// Sphinx actually relies by default on Jinja2 as templating engine and Jinja2 requires Python 2.6
+		// We don't check this as a hard requirement but will issue a warning
+		$pythonVersion = Setup::getPythonVersion();
+		if (version_compare($pythonVersion, '2.6', '<')) {
+			$out[] = $this->formatWarning('The default templating language in Sphinx is Jinja. Jinja requires at least ' .
+				'Python 2.6 but you are using ' . $pythonVersion . '. As such it is very likely that you will not be ' .
+				'able to actually render Sphinx projects.');
+		}
+
 		// Fetch the list of official versions of Sphinx
 		$report = array();
 		$availableVersions = Setup::getSphinxAvailableVersions();

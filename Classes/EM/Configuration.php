@@ -100,6 +100,22 @@ class Configuration {
 			}
 		}
 
+		if (count($versions) > 0) {
+			// Sphinx actually relies by default on Jinja2 as templating engine and Jinja2 requires Python 2.6
+			// We don't check this as a hard requirement but will issue a warning
+			$pythonVersion = \Causal\Sphinx\Utility\Setup::getPythonVersion();
+			if (version_compare($pythonVersion, '2.6', '<')) {
+				$out[] = '<div class="typo3-message message-warning">';
+				//$out[] = '<div class="message-header">Message head</div>';
+				$out[] = '<div class="message-body">';
+				$out[] = '<strong>Beware:</strong> The default templating language in Sphinx is Jinja. Jinja requires ' .
+					'at least Python 2.6 but you are using ' . $pythonVersion . '. As such it is very likely that you ' .
+					'will not be able to actually render Sphinx projects.';
+				$out[] = '</div>';
+				$out[] = '</div>';
+			}
+		}
+
 		$i = 0;
 		foreach ($versions as $version) {
 			$out[] = '<div style="margin-top:1ex">';

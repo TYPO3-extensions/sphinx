@@ -191,25 +191,17 @@ class Setup {
 		$success = TRUE;
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 		$sphinxPath = static::getSphinxPath();
-		$pythonVersion = static::getPythonVersion();
 
 		// Sphinx 1.2 requires Python 2.5
 		// http://forge.typo3.org/issues/53246
 		if (version_compare($version, '1.1.99', '>')) {
+			$pythonVersion = static::getPythonVersion();
 			if (version_compare($pythonVersion, '2.5', '<')) {
 				$success = FALSE;
 				$output[] = '[ERROR] Could not install Sphinx ' . $version . ': You are using Python ' . $pythonVersion .
 					' but the required version is at least 2.5.';
 				return $success;
 			}
-		}
-
-		// Sphinx actually relies by default on Jinja2 as templating engine and Jinja2 requires Python 2.6
-		// We don't check this as a hard requirement but will issue a warning
-		if (version_compare($pythonVersion, '2.6', '<')) {
-			$output[] = '[WARNING] The default templating language in Sphinx is Jinja. Jinja requires at least ' .
-				'Python 2.6 but you are using ' . $pythonVersion . '. As such it is very likely that you will not be ' .
-				'able to actually render Sphinx projects.';
 		}
 
 		$pythonHome = NULL;
