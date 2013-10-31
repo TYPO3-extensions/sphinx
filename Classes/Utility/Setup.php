@@ -46,6 +46,27 @@ class Setup {
 	static protected $log = array();
 
 	/**
+	 * Returns the version of python.
+	 *
+	 * @return string The version of python
+	 */
+	static public function getPythonVersion() {
+		$version = NULL;
+		if (CommandUtility::checkCommand('python')) {
+			$python = escapeshellarg(CommandUtility::getCommand('python'));
+			$cmd = $python . ' -V 2>&1';
+			static::exec($cmd, $out, $ret);
+			if ($ret === 0) {
+				$versionLine = array_shift($out);
+				if (preg_match('/Python ([0-9.]+)/', $versionLine, $matches)) {
+					$version = $matches[1];
+				}
+			}
+		}
+		return $version;
+	}
+
+	/**
 	 * Initializes the environment by creating directories to hold sphinx and 3rd
 	 * party tools.
 	 *
@@ -170,6 +191,18 @@ class Setup {
 		$success = TRUE;
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 		$sphinxPath = static::getSphinxPath();
+
+		// Sphinx 1.2 requires Python 2.5
+		// http://forge.typo3.org/issues/53246
+		if (version_compare($version, '1.1.99', '>')) {
+			$pythonVersion = static::getPythonVersion();
+			if (version_compare($pythonVersion, '2.5', '<')) {
+				$success = FALSE;
+				$output[] = '[ERROR] Could not install Sphinx ' . $version . ': You are using Python ' . $pythonVersion .
+					' but the required version is at least 2.5.';
+				return $success;
+			}
+		}
 
 		$pythonHome = NULL;
 		$pythonLib = NULL;
