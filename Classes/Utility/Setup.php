@@ -1130,7 +1130,7 @@ EOT;
 		preg_replace_callback(
 			'#<tr class="iterable-item">.*?<td class="name">([^<]*)</td>.*?<a href="([^"]+)">zip</a>#s',
 			function($matches) use (&$versions) {
-				if ($matches[1] !== 'tip' && version_compare($matches[1], '1.0', '>=')) {
+				if ($matches[1] !== 'tip' && version_compare($matches[1], '1.1.3', '>=')) {
 					$versions[$matches[1]] = array(
 						'name' => $matches[1],
 						'url'  => $matches[2],
