@@ -8,3 +8,4 @@ https://github.com/ajaxorg/ace-builds.git
 
 It uses the concatenated and minified version of Ace (src-min)
 
+Current version: package 10.28.2013
