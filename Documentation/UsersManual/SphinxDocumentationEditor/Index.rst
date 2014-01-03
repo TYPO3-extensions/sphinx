@@ -21,17 +21,14 @@ shows a pencil icon to let you edit the corresponding chapter:
 Editing a document
 ^^^^^^^^^^^^^^^^^^
 
-The pencil icon loads the "Ace editor" (http://ace.ajax.org/).
+The pencil icon loads the "CodeMirror editor" (http://codemirror.net/).
 
 This editor lets you quickly update the corresponding chapter, or then any file within your Sphinx project, and recompile
 the documentation if you click on toolbar icon "save and close":
 
 .. figure:: ../../Images/save_compile.png
 	:alt: Save and compile your reStructuredText chapter
-
-.. note::
-	The Ace editor currently lacks syntax highlighting for reStructuredText and is configured with Markdown instead.
-	You may consider watching http://forge.typo3.org/issues/51841.
+	:width: 711
 
 On the right side, a panel provides a browser of references within your documentation. The references are
 grouped by chapter using a accordion widget:

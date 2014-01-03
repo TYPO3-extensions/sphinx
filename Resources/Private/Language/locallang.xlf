@@ -78,9 +78,6 @@
 			<trans-unit id="toolbar.editor.saveclose">
 				<source>Save and close document</source>
 			</trans-unit>
-			<trans-unit id="toolbar.editor.showInvisibles">
-				<source>Show Invisibles</source>
-			</trans-unit>
 			<trans-unit id="editor.message.open.title">
 				<source>Open file</source>
 			</trans-unit>

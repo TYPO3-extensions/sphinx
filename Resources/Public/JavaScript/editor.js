@@ -1,3 +1,7 @@
+String.prototype.endsWith = function(suffix) {
+	return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
 CausalSphinxEditor = {
 
 	reference: null,
@@ -15,9 +19,8 @@ CausalSphinxEditor = {
 		references: null
 	},
 
-	// Ace-specific
+	// CodeMirror-specific
 	editor: null,
-	session: null,
 
 	openFile: function(file) {
 		var self = CausalSphinxEditor;
@@ -64,15 +67,12 @@ CausalSphinxEditor = {
 			function(data) {
 				if (data.status == 'success') {
 					self.isReadOnly = data.readOnly;
-					self.editor.setValue(data.contents);
-					self.editor.setReadOnly(self.isReadOnly);
-					if (self.isReadOnly) {
-						$('#editor-readonly').css('visibility', 'visible');
-					} else {
-						$('#editor-readonly').css('visibility', 'hidden');
-					}
-					self.editor.gotoLine(1);
-					self.editor.getSession().setScrollTop(0);
+					self.editor.toTextArea();
+					self.editor = null;
+					self.startLine = 1;
+					var textarea = document.getElementById('editor');
+					textarea.value = data.contents;
+					self._initEditor(file);
 					self.filename = file;
 					self.isDirty = false;
 					$("#filename").html(file);
@@ -117,7 +117,7 @@ CausalSphinxEditor = {
 
 	save: function() {
 		var self = CausalSphinxEditor;
-		var contents = this.editor.getSession().getValue();
+		var contents = this.editor.getValue();
 
 		$.post(this.actions.save,
 			{
@@ -139,7 +139,7 @@ CausalSphinxEditor = {
 
 	saveAndClose: function() {
 		var self = CausalSphinxEditor;
-		var contents = this.editor.getSession().getValue();
+		var contents = this.editor.getValue();
 
 		$.post(this.actions.save,
 			{
@@ -156,6 +156,38 @@ CausalSphinxEditor = {
 				}
 			}
 		);
+	},
+
+	_initEditor: function(file) {
+		var self = CausalSphinxEditor;
+		var textarea = document.getElementById('editor');
+		this.editor = CodeMirror.fromTextArea(
+			textarea,
+			{
+				lineWrapping: true,
+				readOnly: this.isReadOnly,
+				lineNumbers: true,
+				showTrailingSpace: true,
+				mode: file.endsWith('.yml') ? 'yaml' : 'rst-base'
+			}
+		);
+		this.editor.setSize(null, '100%');
+
+		if (this.isReadOnly) {
+			$('#editor-readonly').css('visibility', 'visible');
+		} else {
+			$('#editor-readonly').css('visibility', 'hidden');
+		}
+
+		this.editor.on("change", function(e) {
+			self.isDirty = true;
+		});
+
+		window.setTimeout(function(){
+			self.editor.setCursor(self.startLine - 1, 0);
+			self.editor.scrollIntoView({line: self.startLine - 1, ch: 0});
+		}, 100);
+		self.editor.focus();
 	},
 
 	initialize: function() {
@@ -196,29 +228,7 @@ CausalSphinxEditor = {
 		// Initializes tooltips
 		$(document).tooltip();
 
-		// Initialize the Ace editor
-		this.editor = ace.edit("editor");
-		this.session = this.editor.getSession()
-
-		this.editor.setTheme("ace/theme/github");
-		this.editor.setReadOnly(this.isReadOnly);
-		if (this.isReadOnly) {
-			$('#editor-readonly').css('visibility', 'visible');
-		} else {
-			$('#editor-readonly').css('visibility', 'hidden');
-		}
-		this.session.setMode("ace/mode/markdown");
-
-		this.editor.on("change", function(e) {
-			self.isDirty = true;
-		});
-
-		this.editor.setPrintMarginColumn(120);
-		this.session.setUseWrapMode(true);
-		this.session.setWrapLimitRange(120, 120);
-		this.editor.gotoLine(this.startLine);
-		this.editor.focus();
-		this.editor.renderer.scrollToRow(this.startLine);
+		this._initEditor('.rst');
 	}
 
 }

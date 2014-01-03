@@ -17,6 +17,7 @@
 	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
 	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
 	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/jquery-ui.smoothness/jquery-ui-1.10.3.custom.min.css')}" />
+	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/codemirror.css')}" />
 
 	<sphinx:includeJs.jQuery version="1.10"/>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-migrate-1.2.1.min.js')}"></script>
@@ -25,7 +26,7 @@
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/editor.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/flashmessages.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/Ace/ace.js')}" charset="utf-8"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/codemirror.min.js')}"></script>
 	<script type="text/javascript">
 		// Initialize the editor
 		CausalSphinxEditor.reference = "{reference}";
@@ -74,7 +75,9 @@
 
 <f:render partial="Documentation/HeaderToolbar" arguments="{buttons: buttons}" />
 
-<pre id="editor" class="ui-layout-center">{contents}</pre>
+<div class="ui-layout-center">
+	<textarea id="editor">{contents}</textarea>
+</div>
 
 <div class="ui-layout-east layout-content-container">
 	<div class="ui-widget-header no-scrollbar add-padding">
@@ -85,7 +88,7 @@
 		<label for="extension-key" title="{f:translate(key:'editor.tooltip.input')}"><f:translate key="editor.label.loadReference"/></label>
 		<input id="extension-key" style="width:180px" />
 	</div>
-	<sphinx:objectsInvBrowser id="accordion-objectsinv" reference="{reference}" aceEditor="CausalSphinxEditor.editor" controller="{controller}" />
+	<sphinx:objectsInvBrowser id="accordion-objectsinv" reference="{reference}" cmEditor="CausalSphinxEditor.editor" controller="{controller}" />
 </div>
 
 <div class="outer-west layout-child-container">

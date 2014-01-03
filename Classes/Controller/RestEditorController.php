@@ -529,12 +529,6 @@ class RestEditorController extends AbstractActionController {
 			'getContentIframe().CausalSphinxEditor.saveAndClose()'
 		);
 
-		$buttons[] = '<div style="float:right">';
-		$buttons[] = '<input type="checkbox" id="tx-sphinx-showinvisibles" onclick="getContentIframe().CausalSphinxEditor.editor.setShowInvisibles(this.checked)" value="1" />' .
-			'<label for="tx-sphinx-showinvisibles">' .
-			$this->translate('toolbar.editor.showInvisibles') . '</label>';
-		$buttons[] = '</div>';
-
 		return implode(' ', $buttons);
 	}
 

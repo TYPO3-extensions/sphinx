@@ -40,11 +40,11 @@ class ObjectsInvBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	 *
 	 * @param string $id
 	 * @param string $reference Reference to the documentation project
-	 * @param string $aceEditor Reference to the Ace editor
+	 * @param string $cmEditor Reference to the CodeMirror editor
 	 * @param \Causal\Sphinx\Controller\RestEditorController $controller
 	 * @return string
 	 */
-	public function render($id, $reference, $aceEditor, \Causal\Sphinx\Controller\RestEditorController $controller) {
+	public function render($id, $reference, $cmEditor, \Causal\Sphinx\Controller\RestEditorController $controller) {
 		$out = array();
 		$out[] = '<div id="' . $id . '" class="basic">';	// Start of accordion
 		$out[] = $controller->accordionReferencesAction($reference, '', FALSE, FALSE);
@@ -63,8 +63,8 @@ class ObjectsInvBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 		$out[] = '<script type="text/javascript">';
 		$out[] = <<<JS
 function EditorInsert(str, prefix, url) {
-	${aceEditor}.insert(str);
-	${aceEditor}.focus();
+	${cmEditor}.replaceSelection(str);
+	${cmEditor}.focus();
 
 	if (prefix) {
 		$.ajax({

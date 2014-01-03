@@ -21,7 +21,7 @@ standard de TYPO3 affiche une icône de crayon pour vous permettre de modifier l
 Modification d'un document
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-L'icône de crayon charge l'éditeur "Ace" (http://ace.ajax.org/).
+L'icône de crayon charge l'éditeur "CodeMirror" (http://codemirror.net/).
 
 Cet éditeur vous permet de mettre à jour rapidement le chapitre correspondant ou, par la suite, n'importe quel fichier
 de votre project Sphinx, et de générer à nouveau la documentation lorsque vous cliquez sur l'icône "enregistrer et
@@ -29,10 +29,7 @@ fermer" :
 
 .. figure:: ../../../Images/save_compile.png
 	:alt: Sauvegarder et compiler votre chapitre reStructuredText
-
-.. note::
-	L'éditeur Ace ne propose pas pour l'instant de coloration syntaxique pour reStructuredText et est par conséquent
-	configuré pour utiliser Markdown à la place. Vous pouvez surveiller http://forge.typo3.org/issues/51841.
+	:width: 711
 
 Sur le côté droit, un panneau vous montre un navigateur de références au sein de votre documentation. Les
 références sont groupées par chapitre sous la forme d'un accordéon :
