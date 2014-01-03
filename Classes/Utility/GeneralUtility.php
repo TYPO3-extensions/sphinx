@@ -357,16 +357,49 @@ HTML;
 	}
 
 	/**
+	 * Returns a fully qualified reference from a given intersphinx key
+	 * (official documents solely).
+	 *
+	 * @param string $intersphinxKey
+	 * @param array &$additionalData
+	 * @return string
+	 */
+	static public function getReferenceFromIntersphinxKey($intersphinxKey, array &$additionalData = NULL) {
+		// No dependency injection needed here
+		/** @var \Causal\Sphinx\Domain\Repository\DocumentationRepository $documentationRepository */
+		$documentationRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Repository\\DocumentationRepository');
+		$officialDocuments = $documentationRepository->getOfficialDocuments();
+
+		// Not an official "document" but still...
+		$officialDocuments[] = array(
+			'key' => 'typo3cms.api.t3cmsapi',
+			'shortcut' => 't3cmsapi',
+			'url' => 'http://typo3.org/api/typo3cms/',
+		);
+
+		$reference = NULL;
+		foreach ($officialDocuments as $officialDocument) {
+			if ($officialDocument['shortcut'] === $intersphinxKey) {
+				$reference = $officialDocument['key'];
+				$additionalData = $officialDocument;
+				break;
+			}
+		}
+
+		return $reference;
+	}
+
+	/**
 	 * Returns the Intersphinx references of a given documentation reference.
 	 *
 	 * @param string $reference Reference of a documentation or an extension key
 	 * @param string $locale The locale to use
-	 * @param string $remoteUrl The remote URL to retrieve objects.inv
+	 * @param string &$remoteUrl The remote URL to retrieve objects.inv (as reference!)
 	 * @param string $localFilename The local objects.inv filename to read
 	 * @return array Intersphinx references extracted from objects.inv
 	 * @throws \RuntimeException
 	 */
-	static public function getIntersphinxReferences($reference, $locale = '', $remoteUrl = '', $localFilename = '') {
+	static public function getIntersphinxReferences($reference, $locale = '', &$remoteUrl = '', $localFilename = '') {
 		if (!ExtensionManagementUtility::isLoaded('restdoc')) {
 			throw new \RuntimeException('Extension restdoc is not loaded', 1370809705);
 		}
@@ -387,8 +420,9 @@ HTML;
 				'typo3temp/tx_' . static::$extKey . '/' . $reference . '/objects.inv'
 			);
 		}
-		if ($remoteUrl && substr($remoteUrl, -12) !== '/objects.inv') {
-			$remoteUrl = rtrim($remoteUrl, '/') . '/objects.inv';
+		$remoteFilename = $remoteUrl;
+		if ($remoteFilename && substr($remoteFilename, -12) !== '/objects.inv') {
+			$remoteFilename = rtrim($remoteFilename, '/') . '/objects.inv';
 		}
 
 		if (empty($localFilename)) {
@@ -399,7 +433,7 @@ HTML;
 		$path = '';
 
 		$useCache = TRUE;
-		if ($remoteUrl && is_file($cacheFile) && $GLOBALS['EXEC_TIME'] - filemtime($cacheFile) > 86400) {
+		if ($remoteFilename && is_file($cacheFile) && $GLOBALS['EXEC_TIME'] - filemtime($cacheFile) > 86400) {
 			// Cache file is more than 1 day old and we have an URL to fetch a fresh version: DO IT!
 			$useCache = FALSE;
 		}
@@ -408,8 +442,8 @@ HTML;
 			$path = dirname($localFilename);
 		} elseif ($useCache && is_file($cacheFile)) {
 			$path = dirname($cacheFile);
-		} elseif ($remoteUrl) {
-			$content = \Causal\Sphinx\Utility\GeneralUtility::getUrl($remoteUrl);
+		} elseif ($remoteFilename) {
+			$content = \Causal\Sphinx\Utility\GeneralUtility::getUrl($remoteFilename);
 			if ($content) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($cacheFile) . '/');
 				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $content);
@@ -533,7 +567,6 @@ HTML;
 		// Theme t3sphinx is still incompatible with JSON output
 		if ($format === 'json') {
 			static::overrideThemeT3Sphinx($documentationBasePath);
-			$settingsYamlFilename = $documentationBasePath . '/Settings.yml';
 			if (is_file($settingsYamlFilename)) {
 				$confpyFilename = $documentationBasePath . '/_make/conf.py';
 				$confpy = file_get_contents($confpyFilename);
@@ -569,6 +602,47 @@ HTML;
 				$documentationSource .= '/Localization.' . $locale;
 			}
 			$warnings = file_get_contents($warningsFilename);
+
+			// Intersphinx auto-mapping, if needed
+			if ($documentationType === static::DOCUMENTATION_TYPE_SPHINX) {
+				// Original files
+				$settingsYamlFilename = ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
+				if (!empty($locale)) {
+					$settingsYamlFilename .= '/Localization.' . $locale;
+				}
+				$settingsYamlFilename .= '/Settings.yml';
+
+				if (is_file($settingsYamlFilename) && is_writable($settingsYamlFilename)) {
+					$warningsLines = explode(LF, $warnings);
+					$prefixes = array();
+					$recompile = FALSE;
+					foreach ($warningsLines as $warningLine) {
+						if (preg_match('/ WARNING: undefined label: ([^:]+):/', $warningLine, $matches)) {
+							$remoteUrl = '';
+							$additionalInformation = array();
+							if (in_array($matches[1], $prefixes)) {
+								continue;
+							}
+							$reference = static::getReferenceFromIntersphinxKey($matches[1], $additionalInformation);
+							if ($reference !== NULL) {
+								$remoteUrl = $additionalInformation['url'];
+							} else {
+								$reference = $matches[1];
+							}
+							// $remoteUrl will be "updated" by next call if $reference is an extension key
+							$anchors = static::getIntersphinxReferences($reference, $locale, $remoteUrl);
+							if (count($anchors) > 0 && static::addIntersphinxMapping($settingsYamlFilename, $matches[1], $remoteUrl) === TRUE) {
+								$recompile = TRUE;
+							}
+							$prefixes[] = $matches[1];
+						}
+					}
+					if ($recompile) {
+						// Recompile and hope this works this time!
+						static::generateDocumentation($extensionKey, $format, $force, $locale);
+					}
+				}
+			}
 
 			// Compatibility with Windows platform
 			$warnings = str_replace(

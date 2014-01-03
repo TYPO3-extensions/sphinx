@@ -138,7 +138,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @return array
 	 */
-	protected function getOfficialDocuments() {
+	public function getOfficialDocuments() {
 		// See \TYPO3\CMS\Documentation\Service\DocumentationService::getOfficialDocuments()
 		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
 			'typo3temp/documents.json'
