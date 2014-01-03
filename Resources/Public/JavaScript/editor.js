@@ -183,6 +183,28 @@ CausalSphinxEditor = {
 			self.isDirty = true;
 		});
 
+		// Add standard keymap for Linux/Windows
+		CodeMirror.keyMap['default']['Alt-W'] = function(cm) {
+			// Alt-W in case Ctrl-W below would not be catched as when using Cmd+W
+			self.closeEditor();
+		}
+		CodeMirror.keyMap['default']['Ctrl-S'] = function(cm) {
+			self.save();
+		}
+		CodeMirror.keyMap['default']['Shift-Ctrl-S'] = function(cm) {
+			self.saveAndClose();
+		}
+		// Add standard keymap for Mac OS X
+		CodeMirror.keyMap['default']['Ctrl-W'] = function(cm) {
+			self.closeEditor();
+		}
+		CodeMirror.keyMap['default']['Cmd-S'] = function(cm) {
+			self.save();
+		}
+		CodeMirror.keyMap['default']['Shift-Cmd-S'] = function(cm) {
+			self.saveAndClose();
+		}
+
 		window.setTimeout(function(){
 			self.editor.setCursor(self.startLine - 1, 0);
 			self.editor.scrollIntoView({line: self.startLine - 1, ch: 0});
