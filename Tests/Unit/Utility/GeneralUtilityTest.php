@@ -146,7 +146,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 */
 	public function canParseBasicYaml() {
 		// Setup
-		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 # This is the project specific Settings.yml file.
 # Place Sphinx specific build information here.
@@ -179,7 +179,7 @@ YAML;
 	 */
 	public function canCreateInitialIntersphinxMapping() {
 		// Setup
-		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 conf.py:
   copyright: 2013
@@ -218,7 +218,7 @@ YAML;
 	 */
 	public function canCreateInitialIntersphinxMappingWithCommentsAndDelimiters() {
 		// Setup
-		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 # This is the project specific Settings.yml file.
 # Place Sphinx specific build information here.
@@ -271,7 +271,7 @@ YAML;
 	 */
 	public function canCreateNewSettingsYamlWithIntersphinxMapping() {
 		// Setup
-		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		if (is_file($fixtureFilename)) {
 			unlink($fixtureFilename);
 		}
@@ -312,7 +312,7 @@ YAML;
 	 */
 	public function canAddNewIntersphinxMapping() {
 		// Setup
-		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 conf.py:
   copyright: 2013
@@ -358,7 +358,7 @@ YAML;
 	 */
 	public function existingMappingIsNotAddedAgain() {
 		// Setup
-		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 conf.py:
   copyright: 2013
@@ -391,7 +391,7 @@ YAML;
 	 */
 	public function canParseLaTeXYamlConfiguration() {
 		// Setup
-		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 conf.py:
   latex_documents:
@@ -434,7 +434,7 @@ YAML;
 	 */
 	public function canParseIntersphinxYamlMapping() {
 		// Setup
-		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 conf.py:
   intersphinx_mapping:
@@ -466,7 +466,7 @@ YAML;
 	 */
 	public function canParseExtensionsConfiguration() {
 		// Setup
-		$fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 conf.py:
   extensions:

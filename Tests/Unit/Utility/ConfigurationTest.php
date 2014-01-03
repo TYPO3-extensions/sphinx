@@ -35,7 +35,7 @@ class ConfigurationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	protected $fixtureFilename;
 
 	public function setUp() {
-		$this->fixtureFilename = tempnam(PATH_typo3 . 'typo3temp', 'sphinx');
+		$this->fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$confpy = <<<PYTHON
 templates_path = ['_templates']
 source_suffix = 'rst'
