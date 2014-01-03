@@ -22,6 +22,9 @@ CausalSphinxEditor = {
 	// CodeMirror-specific
 	editor: null,
 
+	// Spinner-specific
+	spinner: null,
+
 	openFile: function(file) {
 		var self = CausalSphinxEditor;
 		var doOpen = true;
@@ -119,6 +122,7 @@ CausalSphinxEditor = {
 		var self = CausalSphinxEditor;
 		var contents = this.editor.getValue();
 
+		this.showSpinner();
 		$.post(this.actions.save,
 			{
 				'tx_sphinx_help_sphinxdocumentation[reference]': this.reference,
@@ -127,6 +131,7 @@ CausalSphinxEditor = {
 				'tx_sphinx_help_sphinxdocumentation[compile]': 0
 			},
 			function(data) {
+				self.hideSpinner();
 				if (data.status == 'success') {
 					self.isDirty = false;
 					CausalSphinx.Flashmessage.display(2, data.statusTitle, data.statusText, 2);
@@ -141,6 +146,7 @@ CausalSphinxEditor = {
 		var self = CausalSphinxEditor;
 		var contents = this.editor.getValue();
 
+		this.showSpinner();
 		$.post(this.actions.save,
 			{
 				'tx_sphinx_help_sphinxdocumentation[reference]': this.reference,
@@ -152,10 +158,56 @@ CausalSphinxEditor = {
 				if (data.status == 'success') {
 					document.location.href = self.actions.redirect;
 				} else {
+					self.hideSpinner();
 					CausalSphinx.Flashmessage.display(4, data.statusTitle, data.statusText);
 				}
 			}
 		);
+	},
+
+	showSpinner: function() {
+		var self = CausalSphinxEditor;
+
+		$('<div>', {
+			id:    'overlay',
+			css:   {
+				position: 'absolute',
+				top: 0,
+				left: 0,
+				width: '100%',
+				height: '100%',
+				backgroundColor: '#000',
+				opacity: 0.5,
+				'z-index': 10,
+			}
+		}).insertAfter('#editor');
+		window.setTimeout(function() {
+			var opts = {
+				lines: 13, // The number of lines to draw
+				length: 20, // The length of each line
+				width: 10, // The line thickness
+				radius: 30, // The radius of the inner circle
+				corners: 1, // Corner roundness (0..1)
+				rotate: 0, // The rotation offset
+				direction: 1, // 1: clockwise, -1: counterclockwise
+				color: '#fff', // #rgb or #rrggbb or array of colors
+				speed: 1, // Rounds per second
+				trail: 60, // Afterglow percentage
+				shadow: false, // Whether to render a shadow
+				hwaccel: false, // Whether to use hardware acceleration
+				className: 'spinner', // The CSS class to assign to the spinner
+				zIndex: 2e9, // The z-index (defaults to 2000000000)
+				top: 'auto', // Top position relative to parent in px
+				left: 'auto' // Left position relative to parent in px
+			};
+			self.spinner = new Spinner(opts).spin($('.CodeMirror')[0]);
+		}, 100);
+	},
+
+	hideSpinner: function() {
+		$('#overlay').remove();
+		this.spinner.stop();
+		this.spinner = null;
 	},
 
 	_initEditor: function(file) {
@@ -205,7 +257,7 @@ CausalSphinxEditor = {
 			self.saveAndClose();
 		}
 
-		window.setTimeout(function(){
+		window.setTimeout(function() {
 			self.editor.setCursor(self.startLine - 1, 0);
 			self.editor.scrollIntoView({line: self.startLine - 1, ch: 0});
 		}, 100);

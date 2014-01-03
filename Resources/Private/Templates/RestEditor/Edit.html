@@ -27,6 +27,7 @@
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/editor.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/flashmessages.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/codemirror.min.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/spin.min.js')}"></script>
 	<script type="text/javascript">
 		// Initialize the editor
 		CausalSphinxEditor.reference = "{reference}";
@@ -75,7 +76,7 @@
 
 <f:render partial="Documentation/HeaderToolbar" arguments="{buttons: buttons}" />
 
-<div class="ui-layout-center">
+<div class="ui-layout-center layout-content-container">
 	<textarea id="editor">{contents}</textarea>
 </div>
 
