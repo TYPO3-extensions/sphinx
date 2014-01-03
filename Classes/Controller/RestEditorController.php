@@ -134,7 +134,7 @@ class RestEditorController extends AbstractActionController {
 			}
 			$contents = implode(LF, $lines);
 
-			$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($parts['filename'], $contents);
+			$success = is_writable($parts['filename']) && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($parts['filename'], $contents);
 			if (!$success) {
 				throw new \RuntimeException(sprintf(
 					$this->translate('editor.message.save.failure'),
