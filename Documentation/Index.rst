@@ -27,13 +27,13 @@ Sphinx Python Documentation Generator and Viewer
 		Installs a full-fledged Sphinx environment within your TYPO3 website. Builds and renders
 		Sphinx/reStructuredText-based projects such as extension manuals, official reference guides or your own
 		in-house documents as HTML/JSON/PDF either from TYPO3 Backend or from command-line, as you prefer. Features
-		a reStructuredText editor with cross-reference browser.
+		a reStructuredText editor with cross-reference browser and syntax highlighting.
 
 	:Keywords:
 		reStructuredText, reST, sphinx-doc, sphinx, LaTeX, documentation
 
 	:Copyright:
-		2013
+		2013-2014
 
 	:Author:
 		Xavier Perseguers
@@ -55,10 +55,10 @@ Sphinx Python Documentation Generator and Viewer
 	**Other versions of this document**
 
 	:PDF:
-		http://docs.typo3.org/typo3cms/extensions/sphinx/1.2.2/_pdf/
+		http://docs.typo3.org/typo3cms/extensions/sphinx/1.3.0/_pdf/
 
 	:French Manual:
-		http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/1.2.2/
+		http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/1.3.0/
 
 
 	**Table of Contents**

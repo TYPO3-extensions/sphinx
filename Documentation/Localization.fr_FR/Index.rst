@@ -27,13 +27,13 @@ Générateur et visionneuse de documentation Sphinx Python
 		Installe un environnement Sphinx complet dans votre site TYPO3. Compile et génère des projets basés sur
 		Sphinx/reStructuredText tels que les manuels d'extensions, les guides officiels de référence ou vos propres
 		documents internes soit depuis le Backend de TYPO3 ou depuis la ligne de commande, selon vos préférences.
-		Intègre un éditeur reStructuredText doté d'un navigateur de références croisées.
+		Intègre un éditeur reStructuredText avec coloration syntaxique et doté d'un navigateur de références croisées.
 
 	:Mots-clés:
 		reStructuredText, reST, sphinx-doc, sphinx, LaTeX, documentation
 
 	:Copyright:
-		2013
+		2013-2014
 
 	:Auteur:
 		Xavier Perseguers
@@ -55,10 +55,10 @@ Générateur et visionneuse de documentation Sphinx Python
 	**Autres versions de ce document**
 
 	:PDF:
-		http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/1.2.2/_pdf/
+		http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/1.3.0/_pdf/
 
 	:Manuel anglais:
-		http://docs.typo3.org/typo3cms/extensions/sphinx/1.2.2/
+		http://docs.typo3.org/typo3cms/extensions/sphinx/1.3.0/
 
 
 	**Sommaire**
