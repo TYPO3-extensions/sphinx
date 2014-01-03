@@ -901,6 +901,7 @@ YAML;
 								$pythonLine .= sprintf('\'%s\'', $matches[1]);
 								$firstItem = FALSE;
 							}
+							$i--;
 						}
 						$pythonLine .= ']';
 					break;
