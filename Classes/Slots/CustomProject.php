@@ -206,6 +206,15 @@ class CustomProject {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
 			$documentationUrl = '../' . $filename;
 		}
+
+		// Automatically fix Intersphinx mapping, if needed
+		$settingsYamlFilename = $absoluteBasePath . rtrim($sourceDirectory, '/') . '/Settings.yml';
+		if (is_file($warningsFilename) && is_file($settingsYamlFilename) && is_writable($settingsYamlFilename)) {
+			if (\Causal\Sphinx\Utility\GeneralUtility::autofixMissingIntersphinxMapping($warningsFilename, $settingsYamlFilename)) {
+				// Recompile and hope this works this time!
+				$this->render($identifier, $layout, $force, $documentationUrl);
+			}
+		}
 	}
 
 	/**

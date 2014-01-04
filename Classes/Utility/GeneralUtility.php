@@ -603,7 +603,7 @@ HTML;
 			}
 			$warnings = file_get_contents($warningsFilename);
 
-			// Intersphinx auto-mapping, if needed
+			// Automatically fix Intersphinx mapping, if needed
 			if ($documentationType === static::DOCUMENTATION_TYPE_SPHINX) {
 				// Original files
 				$settingsYamlFilename = ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
@@ -613,31 +613,7 @@ HTML;
 				$settingsYamlFilename .= '/Settings.yml';
 
 				if (is_file($settingsYamlFilename) && is_writable($settingsYamlFilename)) {
-					$warningsLines = explode(LF, $warnings);
-					$prefixes = array();
-					$recompile = FALSE;
-					foreach ($warningsLines as $warningLine) {
-						if (preg_match('/ WARNING: undefined label: ([^:]+):/', $warningLine, $matches)) {
-							$remoteUrl = '';
-							$additionalInformation = array();
-							if (in_array($matches[1], $prefixes)) {
-								continue;
-							}
-							$reference = static::getReferenceFromIntersphinxKey($matches[1], $additionalInformation);
-							if ($reference !== NULL) {
-								$remoteUrl = $additionalInformation['url'];
-							} else {
-								$reference = $matches[1];
-							}
-							// $remoteUrl will be "updated" by next call if $reference is an extension key
-							$anchors = static::getIntersphinxReferences($reference, $locale, $remoteUrl);
-							if (count($anchors) > 0 && static::addIntersphinxMapping($settingsYamlFilename, $matches[1], $remoteUrl) === TRUE) {
-								$recompile = TRUE;
-							}
-							$prefixes[] = $matches[1];
-						}
-					}
-					if ($recompile) {
+					if (static::autofixMissingIntersphinxMapping($warningsFilename, $settingsYamlFilename)) {
 						// Recompile and hope this works this time!
 						static::generateDocumentation($extensionKey, $format, $force, $locale);
 					}
@@ -670,6 +646,43 @@ HTML;
 
 		$documentationUrl = '../' . $relativeOutputDirectory . '/' . $masterDocument;
 		return $documentationUrl;
+	}
+
+	/**
+	 * Automatically fixes missing Intersphinx mapping based on sphinx-build warnings.
+	 *
+	 * @param string $warningsFilename
+	 * @param string $settingsYamlFilename
+	 * @return boolean TRUE if Settings.yml was updated, otherwise FALSE
+	 */
+	static public function autofixMissingIntersphinxMapping($warningsFilename, $settingsYamlFilename) {
+		$warningsLines = explode(LF, file_get_contents($warningsFilename));
+		$prefixes = array();
+		$intersphinxMappingUpdated = FALSE;
+
+		foreach ($warningsLines as $warningLine) {
+			if (preg_match('/ WARNING: undefined label: ([^:]+):/', $warningLine, $matches)) {
+				$remoteUrl = '';
+				$additionalInformation = array();
+				if (in_array($matches[1], $prefixes)) {
+					continue;
+				}
+				$reference = static::getReferenceFromIntersphinxKey($matches[1], $additionalInformation);
+				if ($reference !== NULL) {
+					$remoteUrl = $additionalInformation['url'];
+				} else {
+					$reference = $matches[1];
+				}
+				// $remoteUrl will be "updated" by next call if $reference is an extension key
+				$anchors = static::getIntersphinxReferences($reference, $locale, $remoteUrl);
+				if (count($anchors) > 0 && static::addIntersphinxMapping($settingsYamlFilename, $matches[1], $remoteUrl) === TRUE) {
+					$intersphinxMappingUpdated = TRUE;
+				}
+				$prefixes[] = $matches[1];
+			}
+		}
+
+		return $intersphinxMappingUpdated;
 	}
 
 	/**
