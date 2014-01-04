@@ -17,6 +17,9 @@ standard de TYPO3 affiche une icône de crayon pour vous permettre de modifier l
 .. figure:: ../../../Images/edit_chapter.png
 	:alt: Modifier la source reStructuredText de n'importe quel chapitre
 
+.. tip::
+	Vous pouvez également utiliser le raccourci clavier **Ctrl+E** ou **Cmd+E** pour passer en mode édition.
+
 
 Modification d'un document
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -30,6 +33,16 @@ fermer" :
 .. figure:: ../../../Images/save_compile.png
 	:alt: Sauvegarder et compiler votre chapitre reStructuredText
 	:width: 711
+
+**Raccourcis clavier :**
+
+- **Ctrl+S** / **Cmd+S** : sauvegarde le document
+- **Maj+Ctrl+S** / **Maj+Cmd+S** : sauvegarde et ferme le document (et donc génère à nouveau la documentation)
+- **Esc** / **Alt+W** / **Ctrl+W** : ferme le document
+
+
+Liens croisés
+^^^^^^^^^^^^^
 
 Sur le côté droit, un panneau vous montre un navigateur de références au sein de votre documentation. Les
 références sont groupées par chapitre sous la forme d'un accordéon :
@@ -61,3 +74,8 @@ Si la référence que vous insérez n'est pas issue de votre documentation (c.-�
 chapitre ou section) mais est une référence croisée vers un autre document, la partie Intersphinx de votre
 fichier de configuration :file:`Settings.yml` sera automatiquement mise à jour afin que la génération s'effectue avec
 succès. Au besoin, veuillez lire la section :ref:`docs-typo3-org-crosslink` pour plus d'informations.
+
+.. tip::
+	Depuis la version 1.3.0, vous pouvez insérer des références croisées manuellement et, pour autant que vous utilisiez
+	un préfixe officiel (tel que "t3cmsapi", "t3tsref", ...) ou une clé d'extension, l'éditeur mettra automatiquement à
+	jour, au besoin, la correspondance Intersphinx dans le fichier de configuration :file:`Settings.yml`.

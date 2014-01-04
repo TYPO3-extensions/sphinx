@@ -23,6 +23,9 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ===========================================================================
 Version  Changes
 =======  ===========================================================================
+1.3.0    - Syntax highlighting for reStructuredText and YAML files
+         - Keyboard shortcuts
+         - Automatic fix of unknown Intersphinx mapping prefixes
 1.2.0    - Enhanced documentation editor with cross-references browser
          - Support for sphinx-contrib libraries (YouTube inclusion, ...)
 1.1.0    - Support for multilingual documentation

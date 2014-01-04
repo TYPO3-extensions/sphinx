@@ -25,6 +25,9 @@ Ce qui suit est une vue d'ensemble très haut niveau des changements de cette ex
 =======  ===========================================================================
 Version  Changements
 =======  ===========================================================================
+1.3.0    - Coloration syntaxique pour les fichiers reStructuredText et YAML
+         - Raccourcis clavier
+         - Correction automatique des préfixes inconnus de références croisées
 1.2.0    - Éditeur de documentation amélioré avec navigateur de références croisées
          - Support des bibliothèques sphinx-contrib (inclusion YouTube, ...)
 1.1.0    - Support de documentation multilingue
