@@ -133,5 +133,22 @@
 		<div id="naviwestpayload"></div>
 	</div>
 </f:if>
+
+<script type="text/javascript">
+var editUrl = '<f:format.raw>{editUrl}</f:format.raw>';
+$(document).ready(function() {
+	// Key binding on Ctrl+E / Cmd+E to edit document
+	var editDocument = function(event) {
+		if (event.ctrlKey || event.metaKey) {
+			if (String.fromCharCode(event.which).toLowerCase() == 'e') {
+				document.location = editUrl;
+			}
+		}
+	};
+	$(document).bind('keydown', editDocument);
+	$(parent.document).bind('keydown', editDocument);
+});
+</script>
+
 </body>
 </html>

@@ -142,6 +142,8 @@ class InteractiveViewerController extends AbstractActionController {
 
 		$buttons = $this->getButtons($reference, $document, $warningsFilename);
 		$this->view->assign('buttons', $buttons);
+
+		$this->view->assign('editUrl', $this->getEditUrl($reference, $document, TRUE));
 	}
 
 	/**
@@ -253,14 +255,7 @@ class InteractiveViewerController extends AbstractActionController {
 
 		if ($document !== 'genindex/') {
 			$buttons[] = $this->createToolbarButton(
-				$this->uriBuilder->uriFor(
-					'edit',
-					array(
-						'reference' => $reference,
-						'document' => $document,
-					),
-					'RestEditor'
-				),
+				$this->getEditUrl($reference, $document),
 				$this->translate('toolbar.interactive.edit'),
 				't3-icon-actions t3-icon-actions-page t3-icon-page-open'
 			);
@@ -298,6 +293,29 @@ class InteractiveViewerController extends AbstractActionController {
 		}
 
 		return implode(' ', $buttons);
+	}
+
+	/**
+	 * Returns the edit URL for a given reference/document.
+	 *
+	 * @param string $reference
+	 * @param string $document
+	 * @param boolean $createAbsoluteUri
+	 * @return string
+	 */
+	protected function getEditUrl($reference, $document, $createAbsoluteUri = FALSE) {
+		if ($createAbsoluteUri) {
+			$this->uriBuilder->setCreateAbsoluteUri(TRUE);
+		}
+		$url = $this->uriBuilder->uriFor(
+			'edit',
+			array(
+				'reference' => $reference,
+				'document' => $document,
+			),
+			'RestEditor'
+		);
+		return $url;
 	}
 
 	/**
