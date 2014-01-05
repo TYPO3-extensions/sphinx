@@ -730,7 +730,7 @@ HTML;
 			/** @var \splFileInfo $item */
 			if ($item->isDir()) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($target . '/' . $iterator->getSubPathName());
-			} else {
+			} elseif (is_file($item)) {
 				copy($item, $target . '/' . $iterator->getSubPathName());
 			}
 		}
