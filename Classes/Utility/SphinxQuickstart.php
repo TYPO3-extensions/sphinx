@@ -119,7 +119,7 @@ class SphinxQuickstart {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pathRoot . $directory);
 		}
 
-		$binDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc/bin/');;
+		$binDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc/bin/');
 
 		// Compatibility with Windows platform
 		$binDirectory = str_replace('/', DIRECTORY_SEPARATOR, $binDirectory);

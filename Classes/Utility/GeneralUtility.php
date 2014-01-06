@@ -823,7 +823,8 @@ YAML;
 
 		// Search if mapping is already present
 		$mappingAlreadyExists = FALSE;
-		for ($i = $startLine + 1; $i < count($lines); $i += 3) {
+		$numberOfLines = count($lines);
+		for ($i = $startLine + 1; $i < $numberOfLines; $i += 3) {
 			if ($lines[$i] === $indent . $indent . $identifier . ':') {
 				$mappingAlreadyExists = TRUE;
 				break;
@@ -888,7 +889,8 @@ YAML;
 		}
 
 		if ($hasIntersphinxMapping) {
-			for ($i = $startLine + 1; $i < count($lines); $i += 3) {
+			$numberOfLines = count($lines);
+			for ($i = $startLine + 1; $i < $numberOfLines; $i += 3) {
 				if (!preg_match('/^' . $indent . $indent . '(.+):/', $lines[$i], $matches)) {
 					break;
 				}

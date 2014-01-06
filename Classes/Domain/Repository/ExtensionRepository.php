@@ -148,7 +148,7 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$extensions = $this->getDatabaseConnection()->exec_SELECTgetRows(
 			'DISTINCT extension_key, title',
 			$extensionTable,
-			$this->getSafeInClause('extension_key', array_map(function($e) { return "'$e'"; }, $extensionKeys)) .
+			$this->getSafeInClause('extension_key', array_map(function($e) { return "'" . $e . "'"; }, $extensionKeys)) .
 			' AND ' . $this->getDatabaseConnection()->searchQuery(
 				array($searchTerm),
 				array('extension_key', 'title', 'description'),
@@ -194,12 +194,16 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$extensions[] = array(
 			'extensionKey' => 'css_styled_content',
 			'title'        => 'CSS styled content',
-			'description'  => 'Contains configuration for CSS content-rendering of the table "tt_content". This is meant as a modern substitute for the classic "content (default)" template which was based more on <font>-tags, while this is pure CSS. It is intended to work with all modern browsers (which excludes the NS4 series).',
+			'description'  => 'Contains configuration for CSS content-rendering of the table "tt_content". ' .
+				'This is meant as a modern substitute for the classic "content (default)" template which was based ' .
+				'more on <font>-tags, while this is pure CSS. It is intended to work with all modern browsers (which ' .
+				'excludes the NS4 series).',
 		);
 		$extensions[] = array(
 			'extensionKey' => 'dbal',
 			'title'        => 'Database Abstraction Layer',
-			'description'  => 'A database abstraction layer implementation for TYPO3 4.6 based on ADOdb and offering a lot of other features.',
+			'description'  => 'A database abstraction layer implementation for TYPO3 4.6 based on ADOdb and offering ' .
+				'a lot of other features.',
 		);
 		$extensions[] = array(
 			'extensionKey' => 'felogin',
@@ -214,12 +218,16 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$extensions[] = array(
 			'extensionKey' => 'indexed_search',
 			'title'        => 'Indexed Search Engine',
-			'description'  => 'Indexed Search Engine for TYPO3 pages, PDF-files, Word-files, HTML and text files. Provides a backend module for statistics of the indexer and a frontend plugin. Documentation can be found in the extension "doc_indexed_search".',
+			'description'  => 'Indexed Search Engine for TYPO3 pages, PDF-files, Word-files, HTML and text files. ' .
+				'Provides a backend module for statistics of the indexer and a frontend plugin. Documentation can be ' .
+				'found in the extension "doc_indexed_search".',
 		);
 		$extensions[] = array(
 			'extensionKey' => 'linkvalidator',
 			'title'        => 'Link Validator',
-			'description'  => 'Link Validator checks the links in your website for validity. It can validate all kinds of links: internal, external and file links. Scheduler is supported to run Link Validator via Cron including the option to send status mails, if broken links were detected.',
+			'description'  => 'Link Validator checks the links in your website for validity. It can validate all ' .
+				'kinds of links: internal, external and file links. Scheduler is supported to run Link Validator via ' .
+				'Cron including the option to send status mails, if broken links were detected.',
 		);
 		$extensions[] = array(
 			'extensionKey' => 'openid',
@@ -229,12 +237,17 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$extensions[] = array(
 			'extensionKey' => 'recycler',
 			'title'        => 'Recycler',
-			'description'  => 'The recycler offers the possibility to restore deleted records or remove them from the database permanently. These actions can be applied to a single record, multiple records, and recursively to child records (ex. restoring a page can restore all content elements on that page). Filtering by page and by table provides a quick overview of deleted records before taking action on them.',
+			'description'  => 'The recycler offers the possibility to restore deleted records or remove them from ' .
+				'the database permanently. These actions can be applied to a single record, multiple records, and ' .
+				'recursively to child records (ex. restoring a page can restore all content elements on that page). ' .
+				'Filtering by page and by table provides a quick overview of deleted records before taking action ' .
+				'on them.',
 		);
 		$extensions[] = array(
 			'extensionKey' => 'rsaauth',
 			'title'        => 'RSA authentication for TYPO3',
-			'description'  => 'Contains a service to authenticate TYPO3 BE and FE users using private/public key encryption of passwords',
+			'description'  => 'Contains a service to authenticate TYPO3 BE and FE users using private/public key ' .
+				'encryption of passwords',
 		);
 		$extensions[] = array(
 			'extensionKey' => 'rtehtmlarea',
@@ -244,7 +257,8 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$extensions[] = array(
 			'extensionKey' => 'saltedpasswords',
 			'title'        => 'Salted user password hashes',
-			'description'  => 'Uses a password hashing framework for storing passwords. Integrates into the system extension "felogin". Use SSL or rsaauth to secure datatransfer! Please read the manual first!',
+			'description'  => 'Uses a password hashing framework for storing passwords. Integrates into the system ' .
+				'extension "felogin". Use SSL or rsaauth to secure datatransfer! Please read the manual first!',
 		);
 		$extensions[] = array(
 			'extensionKey' => 'scheduler',
@@ -254,7 +268,9 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$extensions[] = array(
 			'extensionKey' => 'sys_action',
 			'title'        => 'User>Task Center, Actions',
-			'description'  => 'Actions are \'programmed\' admin tasks which can be performed by selected regular users from the Task Center. An action could be creation of backend users, fixed SQL SELECT queries, listing of records, direct edit access to selected records etc.',
+			'description'  => 'Actions are \'programmed\' admin tasks which can be performed by selected regular ' .
+				'users from the Task Center. An action could be creation of backend users, fixed SQL SELECT queries, ' .
+				'listing of records, direct edit access to selected records etc.',
 		);
 		$extensions[] = array(
 			'extensionKey' => 'taskcenter',

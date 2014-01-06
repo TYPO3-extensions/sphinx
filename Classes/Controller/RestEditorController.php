@@ -249,9 +249,9 @@ class RestEditorController extends AbstractActionController {
 		$lastMainChapter = '';
 		foreach ($references as $chapter => $refs) {
 			if (is_numeric($chapter)
-				|| $chapter === 'genindex'    || $chapter === 'genindex.htm'
+				|| $chapter === 'genindex' || $chapter === 'genindex.htm'
 				|| $chapter === 'py-modindex' || $chapter === 'py-modindex.htm'
-				|| $chapter === 'search'      || $chapter === 'search.htm') {
+				|| $chapter === 'search' || $chapter === 'search.htm') {
 
 				continue;
 			}

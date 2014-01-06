@@ -307,7 +307,9 @@ class Documentation {
 			}
 
 			$menu[] = '<li class="toctree-l' . $level . $currentClass . ' nav-aside-lvl' . $level . '">';
-			$menu[] = '<a href="' . str_replace('&', '&amp;', $menuEntry['_OVERRIDE_HREF']) . '" class="nav-aside-lvl' . $level . $currentClass . '">' . sprintf($wrapTitle, htmlspecialchars($menuEntry['title'])) . '</a>';
+			$menu[] = '<a href="' . str_replace('&', '&amp;', $menuEntry['_OVERRIDE_HREF']) . '" class="nav-aside-lvl' . $level . $currentClass . '">' .
+				sprintf($wrapTitle, htmlspecialchars($menuEntry['title'])) .
+				'</a>';
 
 			$generateSubMenu = $level == 1;
 			$generateSubMenu |= isset($menuEntry['ITEM_STATE']) && ($menuEntry['ITEM_STATE'] === 'CUR' || $menuEntry['ITEM_STATE'] === 'ACT');
