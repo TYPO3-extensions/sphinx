@@ -78,11 +78,26 @@
 			<trans-unit id="toolbar.editor.saveclose">
 				<source>Save and close document</source>
 			</trans-unit>
+			<trans-unit id="editor.message.yes">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="editor.message.no">
+				<source>No</source>
+			</trans-unit>
 			<trans-unit id="editor.message.open.title">
 				<source>Open file</source>
 			</trans-unit>
+			<trans-unit id="editor.message.open.dirty">
+				<source>Your current document has been modified. Are you sure you want to open document “{0}”?</source>
+			</trans-unit>
+			<trans-unit id="editor.message.close.title">
+				<source>Close editor</source>
+			</trans-unit>
 			<trans-unit id="editor.message.save.title">
 				<source>Save file</source>
+			</trans-unit>
+			<trans-unit id="editor.message.save.dirty">
+				<source>Do you want to save the changes you made in the document “{0}”?</source>
 			</trans-unit>
 			<trans-unit id="editor.message.save.success">
 				<source>File was saved successfuly.</source>

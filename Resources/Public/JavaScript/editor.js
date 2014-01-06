@@ -1,9 +1,19 @@
+String.prototype.format = function() {
+	var s = this,
+		i = arguments.length;
+
+	while (i--) {
+		s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+	}
+	return s;
+};
 String.prototype.endsWith = function(suffix) {
 	return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
 CausalSphinxEditor = {
 
+	messages: {},
 	reference: null,
 	currentReference: null,
 	filename: null,
@@ -30,25 +40,22 @@ CausalSphinxEditor = {
 		var doOpen = true;
 
 		if (this.isDirty) {
-			var NewDialog = $('<div id="MenuDialog">\
-				<p>Your current document has been modified.\
-					Are you sure you want to open document “' + file + '”?</p>\
-			</div>');
+			var NewDialog = $('<div id="MenuDialog"><p>' + this.messages['editor.message.open.dirty'].format(file) + '</p></div>');
 			NewDialog.dialog({
 				modal: true,
-				title: 'Open File',
+				title: this.messages['editor.message.open.title'],
 				show: 'clip',
 				hide: 'clip',
 				buttons: [
 					{
-						text: 'Yes',
+						text: this.messages['editor.message.yes'],
 						click: function() {
 							self._openFile(file);
 							$(this).dialog('close');
 						}
 					},
 					{
-						text: 'No',
+						text: this.messages['editor.message.no'],
 						click: function() {
 							$(this).dialog('close');
 						}
@@ -90,23 +97,21 @@ CausalSphinxEditor = {
 		var self = CausalSphinxEditor;
 
 		if (this.isDirty) {
-			var NewDialog = $('<div id="MenuDialog">\
-				<p>Do you want to save the changes you made in the document “' + this.filename + '”?</p>\
-			</div>');
+			var NewDialog = $('<div id="MenuDialog"><p>' + this.messages['editor.message.save.dirty'].format(this.filename) + '</p></div>');
 			NewDialog.dialog({
 				modal: true,
-				title: 'Close Editor',
+				title: this.messages['editor.message.close.title'],
 				show: 'clip',
 				hide: 'clip',
 				buttons: [
 					{
-						text: 'Yes',
+						text: this.messages['editor.message.yes'],
 						click: function() {
 							self.saveAndClose();
 						}
 					},
 					{
-						text: 'No',
+						text: this.messages['editor.message.no'],
 						click: function() {
 							document.location.href = self.actions.redirect;
 						}
@@ -169,8 +174,8 @@ CausalSphinxEditor = {
 		var self = CausalSphinxEditor;
 
 		$('<div>', {
-			id:    'overlay',
-			css:   {
+			id: 'overlay',
+			css: {
 				position: 'absolute',
 				top: 0,
 				left: 0,
