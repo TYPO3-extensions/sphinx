@@ -553,8 +553,13 @@ HTML;
 				}
 			break;
 			case static::DOCUMENTATION_TYPE_README:
-				$source = ExtensionManagementUtility::extPath($extensionKey) . 'README.rst';
+				$extensionPath = ExtensionManagementUtility::extPath($extensionKey);
+				$source = $extensionPath . 'README.rst';
 				copy($source, $basePath . '/Index.rst');
+				if (is_dir($extensionPath . 'Resources')) {
+					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($basePath . '/Resources');
+					static::recursiveCopy($extensionPath . 'Resources', $basePath . '/Resources');
+				}
 			break;
 		}
 
