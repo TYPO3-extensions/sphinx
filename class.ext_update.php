@@ -25,8 +25,8 @@
 
 $BACK_PATH = $GLOBALS['BACK_PATH'] . TYPO3_mainDir;
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \Causal\Sphinx\Utility\Setup;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Sphinx\Utility\Setup;
 
 /**
  * Class to be used to initialize the Sphinx Python Documentation Generator locally.

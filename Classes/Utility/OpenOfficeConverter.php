@@ -24,7 +24,7 @@ namespace Causal\Sphinx\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * OpenOffice converter.
@@ -77,7 +77,7 @@ class OpenOfficeConverter {
 			&& preg_match('#(http://docs.typo3.org/getthedocs/files/\d+/Documentation.zip)#', $response, $matches)) {
 
 			$documentationUrl = $matches[1];
-			$zipFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/documentation.zip');
+			$zipFilename = GeneralUtility::getFileAbsFileName('typo3temp/documentation.zip');
 			$zipContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($documentationUrl);
 			if ($zipContent && GeneralUtility::writeFile($zipFilename, $zipContent)) {
 				GeneralUtility::rmdir($outputDirectory, TRUE);

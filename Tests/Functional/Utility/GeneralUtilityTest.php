@@ -24,7 +24,7 @@ namespace Causal\Sphinx\Tests\Functional\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \Causal\Sphinx\Utility\GeneralUtility;
+use Causal\Sphinx\Utility\GeneralUtility;
 
 /**
  * Testcase for class \Causal\Sphinx\Utility\GeneralUtility.

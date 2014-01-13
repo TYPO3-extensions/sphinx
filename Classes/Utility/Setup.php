@@ -24,8 +24,8 @@ namespace Causal\Sphinx\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sphinx environment setup.
@@ -1329,7 +1329,7 @@ EOT;
 	 * @return string Absolute path to the Sphinx binaries
 	 */
 	static private function getSphinxPath() {
-		$sphinxPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc/');
+		$sphinxPath = GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc/');
 		// Compatibility with Windows platform
 		$sphinxPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxPath);
 
@@ -1342,7 +1342,7 @@ EOT;
 	 * @return string Absolute path to typo3temp/
 	 */
 	static private function getTemporaryPath() {
-		$temporaryPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/');
+		$temporaryPath = GeneralUtility::getFileAbsFileName('typo3temp/');
 		// Compatibility with Windows platform
 		$temporaryPath = str_replace('/', DIRECTORY_SEPARATOR, $temporaryPath);
 

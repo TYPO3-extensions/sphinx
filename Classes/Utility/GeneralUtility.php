@@ -24,7 +24,7 @@ namespace Causal\Sphinx\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * General utility.
@@ -515,7 +515,7 @@ HTML;
 			return $documentationUrl;
 		}
 
-		$metadata = GeneralUtility::getExtensionMetaData($extensionKey);
+		$metadata = static::getExtensionMetaData($extensionKey);
 		$basePath = PATH_site . 'typo3temp/tx_' . static::$extKey . '/' . $extensionKey;
 		$documentationBasePath = $basePath;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
@@ -904,7 +904,7 @@ YAML;
 				$remoteUrl = rtrim($remoteUrl, '/') . '/objects.inv';
 				$cacheFile = $cacheDirectory . $prefix . '-' . md5($remoteUrl) . '-objects.inv';
 				if (!is_file($cacheFile)) {
-					$objectsInv = \Causal\Sphinx\Utility\GeneralUtility::getUrl($remoteUrl);
+					$objectsInv = static::getUrl($remoteUrl);
 					if ($objectsInv) {
 						\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($cacheFile) . '/');
 						\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $objectsInv);

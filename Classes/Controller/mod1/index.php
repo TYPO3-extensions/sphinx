@@ -27,8 +27,8 @@ namespace Causal\Sphinx\Controller;
 $GLOBALS['LANG']->includeLLFile('EXT:sphinx/Resources/Private/Language/locallang.xlf');
 $GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissions and exits if the users has no permission for entry.
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \Causal\Sphinx\Utility\SphinxBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Sphinx\Utility\SphinxBuilder;
 
 /**
  * Module 'Sphinx Console' for the 'sphinx' extension.
