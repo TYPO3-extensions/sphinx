@@ -119,8 +119,11 @@ class CustomProject {
 							$buildDirectory,
 							$confFilename
 						);
+						$targetWarningsFilename = $absoluteBasePath . $buildDirectory . 'html/warnings.txt';
 						if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
-							copy($warningsFilename, $absoluteBasePath . $buildDirectory . 'html/warnings.txt');
+							copy($warningsFilename, $targetWarningsFilename);
+						} elseif (is_file($targetWarningsFilename)) {
+							@unlink($targetWarningsFilename);
 						}
 					}
 					$documentationUrl = '../' . $basePath . $masterFile;
@@ -152,8 +155,11 @@ class CustomProject {
 								$buildDirectory,
 								$confFilename
 							);
+							$targetWarningsFilename = $absoluteBasePath . $buildDirectory . 'json/warnings.txt';
 							if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
-								copy($warningsFilename, $absoluteBasePath . $buildDirectory . 'json/warnings.txt');
+								copy($warningsFilename, $targetWarningsFilename);
+							} elseif (is_file($targetWarningsFilename)) {
+								@unlink($targetWarningsFilename);
 							}
 
 							if (file_exists($backupConfigurationFilename)) {
@@ -168,12 +174,12 @@ class CustomProject {
 					switch ($this->settings['pdf_builder']) {
 						case 'pdflatex':
 							$masterFilePattern = $buildDirectory . 'latex/*.pdf';
-							$targetWarnings = 'latex/warnings.txt';
+							$targetWarningsFilename = $absoluteBasePath . $buildDirectory . 'latex/warnings.txt';
 							break;
 						case 'rst2pdf':
 						default:
 							$masterFilePattern = $buildDirectory . 'pdf/*.pdf';
-							$targetWarnings = 'pdf/warnings.txt';
+							$targetWarningsFilename = $absoluteBasePath . $buildDirectory . 'pdf/warnings.txt';
 							break;
 					}
 
@@ -189,7 +195,9 @@ class CustomProject {
 							$confFilename
 						);
 						if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
-							copy($warningsFilename, $absoluteBasePath . $buildDirectory . $targetWarnings);
+							copy($warningsFilename, $targetWarningsFilename);
+						} elseif (is_file($targetWarningsFilename)) {
+							@unlink($targetWarningsFilename);
 						}
 						$availablePdfs = glob($absoluteBasePath . $masterFilePattern);
 					}
