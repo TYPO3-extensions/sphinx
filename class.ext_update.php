@@ -25,7 +25,7 @@
 
 $BACK_PATH = $GLOBALS['BACK_PATH'] . TYPO3_mainDir;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 use Causal\Sphinx\Utility\Setup;
 
 /**
@@ -115,7 +115,7 @@ HTML;
 		}
 
 		// Handle form operation, if needed
-		$operation = GeneralUtility::_POST('operation');
+		$operation = CoreGeneralUtility::_POST('operation');
 		if ($operation) {
 			list($action, $version) = explode('-', $operation, 2);
 
@@ -141,16 +141,16 @@ HTML;
 
 				foreach ($messages as $message) {
 					switch (TRUE) {
-						case GeneralUtility::isFirstPartOfStr($message, '[OK] '):
+						case CoreGeneralUtility::isFirstPartOfStr($message, '[OK] '):
 							$out[] = $this->formatOk(substr($message, 5));
 						break;
-						case GeneralUtility::isFirstPartOfStr($message, '[INFO] '):
+						case CoreGeneralUtility::isFirstPartOfStr($message, '[INFO] '):
 							$out[] = $this->formatInformation(substr($message, 7));
 						break;
-						case GeneralUtility::isFirstPartOfStr($message, '[WARNING] '):
+						case CoreGeneralUtility::isFirstPartOfStr($message, '[WARNING] '):
 							$out[] = $this->formatWarning(substr($message, 10));
 						break;
-						case GeneralUtility::isFirstPartOfStr($message, '[ERROR] '):
+						case CoreGeneralUtility::isFirstPartOfStr($message, '[ERROR] '):
 							$out[] = $this->formatError(substr($message, 8));
 						break;
 						default:
@@ -160,7 +160,7 @@ HTML;
 				}
 
 				$relativeLogFilename = 'typo3temp/tx_sphinx/' . $action . '-' . date('YmdHis') . '.log';
-				$absoluteLogFilename = GeneralUtility::getFileAbsFileName($relativeLogFilename);
+				$absoluteLogFilename = CoreGeneralUtility::getFileAbsFileName($relativeLogFilename);
 				Setup::dumpLog($absoluteLogFilename);
 
 				$out[] = '<p><a href="../' . $relativeLogFilename . '" target="_blank">Click here</a> to show the complete log.</p>';
@@ -170,7 +170,7 @@ HTML;
 			}
 		}
 
-		$out[] = '<form action="' . GeneralUtility::linkThisScript() . '" method="post">';
+		$out[] = '<form action="' . CoreGeneralUtility::linkThisScript() . '" method="post">';
 		$out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
 
 		$out[] = '<table class="typo3-dblist" style="width:auto">';
@@ -184,7 +184,7 @@ HTML;
 
 		$i = 0;
 		foreach ($availableVersions as $version) {
-			$isInstalled = GeneralUtility::inArray($localVersions, $version['name']);
+			$isInstalled = CoreGeneralUtility::inArray($localVersions, $version['name']);
 			$hasSources = Setup::hasSphinxSources($version['name']);
 			$hasLibraries = Setup::hasPyYaml()
 				&& Setup::hasPygments()
@@ -275,7 +275,7 @@ HTML;
 					$success &= Setup::buildRst2Pdf($version, $output);
 				}
 				if (Setup::hasThirdPartyLibraries()) {
-					$selectedPlugins = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->configuration['plugins'], TRUE);
+					$selectedPlugins = CoreGeneralUtility::trimExplode(',', $this->configuration['plugins'], TRUE);
 					foreach ($selectedPlugins as $selectedPlugin) {
 						$success &= Setup::buildThirdPartyLibraries($selectedPlugin, $version, $output);
 					}

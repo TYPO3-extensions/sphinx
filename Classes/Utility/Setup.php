@@ -25,7 +25,7 @@ namespace Causal\Sphinx\Utility;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\CommandUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
 
 /**
  * Sphinx environment setup.
@@ -96,9 +96,9 @@ class Setup {
 			'uploads/tx_sphinx/',
 		);
 		foreach ($directories as $directory) {
-			$absoluteDirectory = GeneralUtility::getFileAbsFileName($directory);
+			$absoluteDirectory = CoreGeneralUtility::getFileAbsFileName($directory);
 			if (!is_dir($absoluteDirectory)) {
-				GeneralUtility::mkdir_deep($absoluteDirectory);
+				CoreGeneralUtility::mkdir_deep($absoluteDirectory);
 			}
 			if (is_dir($absoluteDirectory)) {
 				if (!is_writable($absoluteDirectory)) {
@@ -141,8 +141,8 @@ class Setup {
 
 		$zipFilename = $tempPath . $version . '.zip';
 		static::$log[] = '[INFO] Fetching ' . $url;
-		$zipContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
-		if ($zipContent && GeneralUtility::writeFile($zipFilename, $zipContent)) {
+		$zipContent = GeneralUtility::getUrl($url);
+		if ($zipContent && CoreGeneralUtility::writeFile($zipFilename, $zipContent)) {
 			$output[] = '[INFO] Sphinx ' . $version . ' has been downloaded.';
 			$targetPath = $sphinxSourcesPath . $version;
 
@@ -165,7 +165,7 @@ class Setup {
 						"def color_terminal():\n    if 'COLORTERM' in os.environ:\n        return True",
 						$contents
 					);
-					GeneralUtility::writeFile($sourceFilename, $contents);
+					CoreGeneralUtility::writeFile($sourceFilename, $contents);
 				}
 			} else {
 				$success = FALSE;
@@ -223,11 +223,11 @@ class Setup {
 				$pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
 				static::$log[] = '[INFO] Recreating directory ' . $pythonHome;
-				GeneralUtility::rmdir($pythonHome, TRUE);
-				GeneralUtility::mkdir_deep($pythonLib . DIRECTORY_SEPARATOR);
+				CoreGeneralUtility::rmdir($pythonHome, TRUE);
+				CoreGeneralUtility::mkdir_deep($pythonLib . DIRECTORY_SEPARATOR);
 
 				$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-					\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
+					GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
 					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 				$out = array();
 				static::exec($cmd, $out, $ret);
@@ -283,7 +283,7 @@ $scriptFilename "\$@"
 EOT;
 				}
 
-				GeneralUtility::writeFile($shortcutFilename, $script);
+				CoreGeneralUtility::writeFile($shortcutFilename, $script);
 				chmod($shortcutFilename, 0755);
 			}
 		}
@@ -303,14 +303,14 @@ EOT;
 		$sphinxPath = static::getSphinxPath();
 
 		if (is_dir($sphinxSourcesPath . $version)) {
-			if (GeneralUtility::rmdir($sphinxSourcesPath . $version, TRUE)) {
+			if (CoreGeneralUtility::rmdir($sphinxSourcesPath . $version, TRUE)) {
 				$output[] = '[OK] Sources of Sphinx ' . $version . ' have been deleted.';
 			} else {
 				$output[] = '[ERROR] Could not delete sources of Sphinx ' . $version . '.';
 			}
 		}
 		if (is_dir($sphinxPath . $version)) {
-			if (GeneralUtility::rmdir($sphinxPath . $version, TRUE)) {
+			if (CoreGeneralUtility::rmdir($sphinxPath . $version, TRUE)) {
 				$output[] = '[OK] Sphinx ' . $version . ' has been deleted.';
 			} else {
 				$output[] = '[ERROR] Could not delete Sphinx ' . $version . '.';
@@ -360,14 +360,14 @@ EOT;
 
 		$url = 'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3';
 		static::$log[] = '[INFO] Fetching ' . $url;
-		$body = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
+		$body = GeneralUtility::getUrl($url);
 		if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">snapshot</a>#', $body, $matches)) {
 			$commit = $matches[1];
 			$url = 'https://git.typo3.org/Documentation/RestTools.git/snapshot/' . $commit . '.tar.gz';
 			$archiveFilename = $tempPath . 'RestTools.tar.gz';
 			static::$log[] = '[INFO] Fetching ' . $url;
-			$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
-			if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+			$archiveContent = GeneralUtility::getUrl($url);
+			if ($archiveContent && CoreGeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 				$output[] = '[INFO] TYPO3 ReStructuredText Tools (' . $commit . ') have been downloaded.';
 
 				// Target path is compatible with directory structure of complete git project
@@ -452,7 +452,7 @@ EOT;
 							}
 							$buffer[] = $globalSettingsLines[$i];
 						}
-						$isPatched = GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
+						$isPatched = CoreGeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
 					}
 				}
 			} else {
@@ -516,7 +516,7 @@ EOT;
 			$output[] = '[WARNING] Could not find command unzip. 3rd-party libraries were not installed.';
 		} else {
 			$url = 'https://bitbucket.org/xperseguers/sphinx-contrib/overview';
-			$content = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
+			$content = GeneralUtility::getUrl($url);
 			$content = substr($content, strpos($content, '<dl class="metadata">'));
 			// Search for the download link
 			// <a rel="nofollow"
@@ -525,8 +525,8 @@ EOT;
 			if (preg_match('#href="(/xperseguers/sphinx-contrib/get/[0-9a-f]+\.zip)"#', $content, $matches)) {
 				$url = 'https://bitbucket.org' . $matches[1];
 				$archiveFilename = $tempPath . 'sphinx-contrib.zip';
-				$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
-				if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+				$archiveContent = GeneralUtility::getUrl($url);
+				if ($archiveContent && CoreGeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 					$output[] = '[INFO] 3rd-party libraries for Sphinx have been downloaded.';
 
 					$targetPath = $sphinxSourcesPath . 'sphinx-contrib';
@@ -667,7 +667,7 @@ EOT;
 			'youtube',
 		);
 
-		$directories = GeneralUtility::get_dirs($pluginsPath);
+		$directories = CoreGeneralUtility::get_dirs($pluginsPath);
 		foreach ($directories as $directory) {
 			if ($directory{0} === '_' || !is_file($pluginsPath . $directory . '/README.rst')) {
 				continue;
@@ -709,8 +709,8 @@ EOT;
 
 		$url = 'http://pyyaml.org/download/pyyaml/PyYAML-3.10.tar.gz';
 		$archiveFilename = $tempPath . 'PyYAML-3.10.tar.gz';
-		$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
-		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+		$archiveContent = GeneralUtility::getUrl($url);
+		if ($archiveContent && CoreGeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 			$output[] = '[INFO] PyYAML 3.10 has been downloaded.';
 
 			$targetPath = $sphinxSourcesPath . 'PyYAML';
@@ -799,8 +799,8 @@ EOT;
 
 		$url = 'http://effbot.org/media/downloads/Imaging-1.1.7.tar.gz';
 		$archiveFilename = $tempPath . 'Imaging-1.1.7.tar.gz';
-		$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
-		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+		$archiveContent = GeneralUtility::getUrl($url);
+		if ($archiveContent && CoreGeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 			$output[] = '[INFO] Python Imaging Library 1.1.7 has been downloaded.';
 
 			$targetPath = $sphinxSourcesPath . 'Imaging';
@@ -889,8 +889,8 @@ EOT;
 
 		$url = 'https://bitbucket.org/birkenfeld/pygments-main/get/1.6.tar.gz';
 		$archiveFilename = $tempPath . 'pygments-1.6.tar.gz';
-		$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
-		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+		$archiveContent = GeneralUtility::getUrl($url);
+		if ($archiveContent && CoreGeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 			$output[] = '[INFO] Pygments 1.6 has been downloaded.';
 
 			$targetPath = $sphinxSourcesPath . 'Pygments';
@@ -967,11 +967,11 @@ EOT;
 
 		$url = 'https://git.typo3.org/Documentation/RestTools.git/blob_plain/HEAD:/ExtendingPygmentsForTYPO3/_incoming/typoscript.py';
 		$libraryFilename = $lexersPath . 'typoscript.py';
-		$libraryContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
+		$libraryContent = GeneralUtility::getUrl($url);
 
 		if ($libraryContent) {
 			if (!is_file($libraryFilename) || md5_file($libraryFilename) !== md5($libraryContent)) {
-				if (GeneralUtility::writeFile($libraryFilename, $libraryContent)) {
+				if (CoreGeneralUtility::writeFile($libraryFilename, $libraryContent)) {
 					$output[] = '[OK] TypoScript library for Pygments successfully downloaded/updated.';
 				}
 			}
@@ -1017,8 +1017,8 @@ EOT;
 
 		$url = 'http://rst2pdf.googlecode.com/files/rst2pdf-0.93.tar.gz';
 		$archiveFilename = $tempPath . 'rst2pdf-0.93.tar.gz';
-		$archiveContent = \Causal\Sphinx\Utility\GeneralUtility::getUrl($url);
-		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
+		$archiveContent = GeneralUtility::getUrl($url);
+		if ($archiveContent && CoreGeneralUtility::writeFile($archiveFilename, $archiveContent)) {
 			$output[] = '[INFO] rst2pdf 0.93 has been downloaded.';
 
 			$targetPath = $sphinxSourcesPath . 'rst2pdf';
@@ -1093,9 +1093,9 @@ EOT;
 		$pythonHome = $sphinxPath . $sphinxVersion;
 		$pythonLib = $pythonHome . '/lib/python';
 
-		$directories = GeneralUtility::get_dirs($pythonLib);
+		$directories = CoreGeneralUtility::get_dirs($pythonLib);
 		foreach ($directories as $directory) {
-			if (GeneralUtility::isFirstPartOfStr($directory, $library . '-')) {
+			if (CoreGeneralUtility::isFirstPartOfStr($directory, $library . '-')) {
 				return TRUE;
 			}
 		}
@@ -1117,8 +1117,8 @@ EOT;
 			|| $GLOBALS['EXEC_TIME'] - filemtime($cacheFilename) > 86400
 			|| filesize($cacheFilename) == 0) {
 
-			$html = \Causal\Sphinx\Utility\GeneralUtility::getUrl($sphinxUrl);
-			GeneralUtility::writeFile($cacheFilename, $html);
+			$html = GeneralUtility::getUrl($sphinxUrl);
+			CoreGeneralUtility::writeFile($cacheFilename, $html);
 		} else {
 			$html = file_get_contents($cacheFilename);
 		}
@@ -1153,7 +1153,7 @@ EOT;
 		$sphinxPath = static::getSphinxPath();
 		$versions = array();
 		if (is_dir($sphinxPath)) {
-			$versions = GeneralUtility::get_dirs($sphinxPath);
+			$versions = CoreGeneralUtility::get_dirs($sphinxPath);
 		}
 		return $versions;
 	}
@@ -1187,8 +1187,8 @@ EOT;
 		$success = FALSE;
 
 		static::$log[] = '[INFO] Recreating directory ' . $targetDirectory;
-		GeneralUtility::rmdir($targetDirectory, TRUE);
-		GeneralUtility::mkdir_deep($targetDirectory . DIRECTORY_SEPARATOR);
+		CoreGeneralUtility::rmdir($targetDirectory, TRUE);
+		CoreGeneralUtility::mkdir_deep($targetDirectory . DIRECTORY_SEPARATOR);
 
 		if (substr($archiveFilename, -4) === '.zip') {
 			$unzip = escapeshellarg(CommandUtility::getCommand('unzip'));
@@ -1229,11 +1229,11 @@ EOT;
 			$success = TRUE;
 			if ($moveContentOutsideOfDirectoryPrefix !== NULL) {
 				// When unpacking the sources, content is located under a directory
-				$directories = GeneralUtility::get_dirs($targetDirectory);
-				if (GeneralUtility::isFirstPartOfStr($directories[0], $moveContentOutsideOfDirectoryPrefix)) {
+				$directories = CoreGeneralUtility::get_dirs($targetDirectory);
+				if (CoreGeneralUtility::isFirstPartOfStr($directories[0], $moveContentOutsideOfDirectoryPrefix)) {
 					$fromDirectory = $targetDirectory . DIRECTORY_SEPARATOR . $directories[0];
-					\Causal\Sphinx\Utility\GeneralUtility::recursiveCopy($fromDirectory, $targetDirectory);
-					GeneralUtility::rmdir($fromDirectory, TRUE);
+					GeneralUtility::recursiveCopy($fromDirectory, $targetDirectory);
+					CoreGeneralUtility::rmdir($fromDirectory, TRUE);
 
 					// Remove tar.gz archive as we don't need it anymore
 					@unlink($archiveFilename);
@@ -1265,7 +1265,7 @@ EOT;
 		static::exec($cmd, $out, $ret);
 		if ($ret === 0) {
 			$cmd = 'cd ' . escapeshellarg(dirname($setupFile)) . ' && ' .
-				\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
+				GeneralUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
 				$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 			$out = array();
 			static::exec($cmd, $out, $ret);
@@ -1303,8 +1303,8 @@ EOT;
 		$content = implode(LF, static::$log);
 		if ($filename) {
 			$directory = dirname($filename);
-			GeneralUtility::mkdir($directory);
-			GeneralUtility::writeFile($filename, $content);
+			CoreGeneralUtility::mkdir($directory);
+			CoreGeneralUtility::writeFile($filename, $content);
 		} else {
 			return $content;
 		}
@@ -1316,7 +1316,7 @@ EOT;
 	 * @return string Absolute path to the Sphinx sources
 	 */
 	static private function getSphinxSourcesPath() {
-		$sphinxSourcesPath = GeneralUtility::getFileAbsFileName('uploads/tx_sphinx/');
+		$sphinxSourcesPath = CoreGeneralUtility::getFileAbsFileName('uploads/tx_sphinx/');
 		// Compatibility with Windows platform
 		$sphinxSourcesPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxSourcesPath);
 
@@ -1329,7 +1329,7 @@ EOT;
 	 * @return string Absolute path to the Sphinx binaries
 	 */
 	static private function getSphinxPath() {
-		$sphinxPath = GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc/');
+		$sphinxPath = CoreGeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc/');
 		// Compatibility with Windows platform
 		$sphinxPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxPath);
 
@@ -1342,7 +1342,7 @@ EOT;
 	 * @return string Absolute path to typo3temp/
 	 */
 	static private function getTemporaryPath() {
-		$temporaryPath = GeneralUtility::getFileAbsFileName('typo3temp/');
+		$temporaryPath = CoreGeneralUtility::getFileAbsFileName('typo3temp/');
 		// Compatibility with Windows platform
 		$temporaryPath = str_replace('/', DIRECTORY_SEPARATOR, $temporaryPath);
 
