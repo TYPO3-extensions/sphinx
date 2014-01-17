@@ -21,6 +21,9 @@ for a TeX package; otherwise install `TeX Live`_ directly.
 	- latex-recommended
 	- latex-extra
 	- fonts-recommended
+	- fonts-extra
+
+	Package "fonts-extra" is optional but recommended for best rendering of special symbols in some manuals.
 
 Linux Debian
 """"""""""""
@@ -30,7 +33,7 @@ You can issue following command to install required components:
 .. code-block:: bash
 
 	$ sudo apt-get install texlive-base texlive-latex-recommended \
-	  texlive-latex-extra texlive-fonts-recommended
+	  texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra
 
 In order to compile as PDF, this extension requires both :program:`pdflatex` (included in
 package ``texlive-latex-extra``) and :program:`make`:

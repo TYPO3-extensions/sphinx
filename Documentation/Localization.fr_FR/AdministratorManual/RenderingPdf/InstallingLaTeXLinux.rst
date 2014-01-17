@@ -22,6 +22,10 @@ source de logiciels usuelle pour un paquet TeX ; ou alors installez `TeX Live`_ 
 	- latex-recommended
 	- latex-extra
 	- fonts-recommended
+	- fonts-extra
+
+	Le composant "fonts-extra" est facultatif mais recommandé pour un rendu optimal des caractères spéciaux de certains
+	manuels.
 
 Linux Debian
 """"""""""""
@@ -31,7 +35,7 @@ Vous pouvez exécuter la commande suivante pour installer les composants requis 
 .. code-block:: bash
 
 	$ sudo apt-get install texlive-base texlive-latex-recommended \
-	  texlive-latex-extra texlive-fonts-recommended
+	  texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra
 
 Afin de compiler en PDF, cette extension nécessite à la fois :program:`pdflatex` (qui fait partie du paquet ``texlive-latex-extra``)
 et :program:`make`:
