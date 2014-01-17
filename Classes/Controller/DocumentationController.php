@@ -127,10 +127,6 @@ class DocumentationController extends AbstractActionController {
 					$this->redirect('kickstart');
 				}
 				$documentationUrl = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
-				if (substr($documentationUrl, -4) === '.pdf') {
-					// Prevent browser-cache issue
-					$documentationUrl .= '?t=' . $GLOBALS['EXEC_TIME'];
-				}
 			break;
 			case 'USER':
 				$documentationUrl = NULL;
@@ -150,6 +146,11 @@ class DocumentationController extends AbstractActionController {
 			break;
 			default:
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371162948);
+		}
+
+		if (substr($documentationUrl, -4) === '.pdf') {
+			// Prevent browser-cache issue
+			$documentationUrl .= '?t=' . $GLOBALS['EXEC_TIME'];
 		}
 
 		if ($layout === 'json' && substr($documentationUrl, -6) === '.fjson') {
