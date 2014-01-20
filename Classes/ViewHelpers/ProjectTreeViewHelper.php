@@ -68,11 +68,13 @@ HTML;
 		foreach ($iterator as $item) {
 			$path = $iterator->getSubPathName();
 			$identifier = md5($path);
+			$trTag = '<tr data-tt-id="' . $identifier . '"';
+			$trTag .= ' data-path="' . str_replace('\\', '/', $path) . '"';
 			if (basename($path) === $path) {
 				// 1st level
-				$out[] = '<tr data-tt-id="' . $identifier . '">';
+				$out[] = $trTag . '>';
 			} else {
-				$out[] = '<tr data-tt-id="' . $identifier . '" data-tt-parent-id="' . md5(dirname($path)) . '">';
+				$out[] = $trTag . ' data-tt-parent-id="' . md5(dirname($path)) . '">';
 			}
 
 			/** @var \splFileInfo $item */
@@ -95,7 +97,7 @@ HTML;
 						$class = 'file';
 					break;
 				}
-				$out[] = '<td data-path="' . str_replace('\\', '/', $path) . '"><span class="' . $class . '">' . htmlspecialchars(basename($path)) . '</span></td>';
+				$out[] = '<td><span class="' . $class . '">' . htmlspecialchars(basename($path)) . '</span></td>';
 			}
 
 			$out[] = '</tr>';
@@ -119,7 +121,7 @@ $(document).ready(function() {
 
 	// Open selected file on double-click
 	$("#$pluginId td span[class='file']").on("dblclick", function(e) {
-		var file = $(event.target).closest("td").attr('data-path');
+		var file = $(event.target).closest("tr").attr('data-path');
 		CausalSphinxEditor.openFile(file);
 	});
 
