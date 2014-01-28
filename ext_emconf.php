@@ -13,7 +13,7 @@
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Sphinx Python Documentation Generator and Viewer',
 	'description' => 'Installs a full-fledged Sphinx environment within your TYPO3 website. Builds and renders Sphinx/reStructuredText-based projects such as extension manuals, official reference guides or your own in-house documents as HTML/JSON/PDF either from TYPO3 Backend or from command-line, as you prefer. Features a reStructuredText editor with cross-reference browser and syntax highlighting.',
-	'category' => 'services',
+	'category' => 'module',
 	'author' => 'Xavier Perseguers (Causal)',
 	'author_company' => 'Causal Sàrl',
 	'author_email' => 'xavier@causal.ch',
