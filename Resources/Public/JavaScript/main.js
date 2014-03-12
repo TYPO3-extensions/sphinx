@@ -30,7 +30,7 @@ CausalSphinxApplication = {
 	}
 };
 
-// IIFE for faster access to $ and save $ use
+// IIFE for faster access to $ and safe $ use
 (function ($) {
 	$(document).ready(function() {
 		// Initialize the view
