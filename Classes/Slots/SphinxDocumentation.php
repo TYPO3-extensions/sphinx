@@ -217,7 +217,7 @@ class SphinxDocumentation {
 		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
 		$uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Request');
-		$uriBuilder->setRequest($request);
+		$uriBuilder->setRequest($request)->setArguments(array('M' => 'help_SphinxDocumentation'));
 
 		$link = 'typo3/' . $uriBuilder->uriFor(
 			'index',
@@ -230,9 +230,6 @@ class SphinxDocumentation {
 			'sphinx',
 			'help_sphinxdocumentation'
 		);
-
-		// TODO: better way to change module?
-		$link = str_replace('?M=help_DocumentationDocumentation', '?M=help_SphinxDocumentation', $link);
 
 		return $link;
 	}
