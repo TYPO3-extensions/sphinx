@@ -1,4 +1,4 @@
-/* mb, 2012-11-25, 2013-01-29 */
+/* mb, 2012-11-25, 2013-07-15 */
 
 /* override standard settings of typo3.org */
 
@@ -305,6 +305,7 @@
 .doc .admonition {
 	border: 1px solid #cccccc;
 	margin-bottom: 15px;
+	background-color: #fff;
 }
 
 .doc .admonition-title {
@@ -320,6 +321,12 @@
 	padding-left: 20px;
 	padding-right: 10px;
 	margin-bottom: 5px;
+}
+
+.doc .admonition blockquote {
+	/* BUGFIX: http://forge.typo3.org/issues/49175 */
+	margin-left: 20px;
+	padding-left: 36px;
 }
 
 .doc .admonition.tip .admonition-title,
@@ -372,7 +379,7 @@
 
 .doc .admonition.admonition-and-by-the-way .admonition-title,
 .doc .admonition.note .admonition-title {
-	background-color: #e9e9e9;
+	background-color: #d9d9d9;
 }
 
 .doc .topic-title,
@@ -532,6 +539,12 @@ hnav-related a:hover {
 .doc .d ol li {
 	margin-left: 20px;
 	padding-left: 0;
+}
+.doc .d ol ul li {
+	list-style: none;
+}
+.doc .d li li {
+	padding-left: 20px;
 }
 
 .doc div.figure {
@@ -888,3 +901,39 @@ hnav-related a:hover {
         margin-right: 16px;
     }
 
+.doc .highlighted {
+	/* doctools.js inserts <span class="highlighted"> */
+	background-color: #FBE54E;
+}
+.doc #searchbox {
+	padding-left: 10px;
+	margin-bottom: 20px;
+}
+.doc #searchbox .input-text {
+	width: 146px;
+}
+.doc p.highlight-link {
+	margin-top: 15px;
+	background-color: transparent;
+}
+.doc .highlight-link a {
+	text-decoration: none;
+	color: #666666;
+}
+.doc .highlight-link a:hover {
+	text-decoration: underline;
+}
+.doc #search-page-input-text {
+	width: 70%;
+	min-width: 100px;
+	max-width: 350px;
+}
+
+/* 2014-03-11 [BUGFIX] Numbers of OL LI don't show up for LI P in Chrome */
+.doc li p {
+	overflow: visible;
+}
+/* 2014-03-12 [BUGFIX] http://forge.typo3.org/issues/53137 */
+.doc .hnav-related-container {
+	clear: both;
+}
