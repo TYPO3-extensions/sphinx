@@ -16,6 +16,11 @@ This extension requires the Python interpreter to be available on your web serve
 documentation written in reStructuredText and as a Sphinx project.
 
 .. note::
+	Don't know how to start with reStructuredText and Sphinx? You may want to check
+	this `reStructuredText Primer for TYPO3 Users <https://github.com/xperseguers/TYPO3.docs.rst-primer>`_. This is a
+	brief introduction to reStructuredText (reST) concepts and syntax, intended to provide writers with enough
+	information to author documents productively.
+
 	Please visit http://wiki.typo3.org/ReST for further information on reStructuredText.
 
 .. tip::

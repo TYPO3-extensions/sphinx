@@ -28,7 +28,7 @@ Problèmes connus
       $TYPO3_CONF_VARS['SYS']['binSetup'] = 'python=/usr/bin/python,' .
                                             'unzip=/usr/bin/unzip,tar=/bin/tar';
 
-  Une autre raison possible si vous voyez cette erreur après avoir manuallement configuré ``binSetup`` est que vous avez
+  Une autre raison possible si vous voyez cette erreur après avoir manuellement configuré ``binSetup`` est que vous avez
   désactivé l'exécution des programmes dans le Backend en définissant ``$TYPO3_CONF_VARS['BE']['disable_exec_function']``
   à ``1``.
 
