@@ -15,10 +15,9 @@
 </div>
 
 <script type="text/javascript">
+	var extensionManagerUri = '<f:format.raw>{extensionManagerUri}</f:format.raw>';
 	function jumpToExtensionManager() {
-		//top.TYPO3.ModuleMenu.App.showModule('tools_ExtensionmanagerExtensionmanager');
-		var theUrl = top.TS.PATH_typo3 + 'mod.php?M=tools_ExtensionmanagerExtensionmanager&tx_extensionmanager_tools_extensionmanagerextensionmanager[action]=ter&tx_extensionmanager_tools_extensionmanagerextensionmanager[controller]=List';
-		top.TYPO3.Backend.ContentContainer.setUrl(theUrl);
+		top.TYPO3.Backend.ContentContainer.setUrl(top.TS.PATH_typo3 + extensionManagerUri);
 	}
 </script>
 

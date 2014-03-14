@@ -152,7 +152,8 @@ class InteractiveViewerController extends AbstractActionController {
 	 * @return void
 	 */
 	protected function missingRestdocAction() {
-		// Nothing to do
+		$extensionManagerUri = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tools_ExtensionmanagerExtensionmanager');
+		$this->view->assign('extensionManagerUri', $extensionManagerUri);
 	}
 
 	/**
