@@ -113,6 +113,10 @@ class GeneralUtility {
 			$supportedLocales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
 			$extPath = ExtensionManagementUtility::extPath($extensionKey);
 			$directories = glob($extPath . $pattern);
+			if ($directories === FALSE) {
+				// An error occured
+				$directories = array();
+			}
 
 			foreach ($directories as $directory) {
 				$directory = substr($directory, strlen($extPath));

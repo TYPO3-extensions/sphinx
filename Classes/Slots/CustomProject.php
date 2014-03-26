@@ -184,6 +184,10 @@ class CustomProject {
 					}
 
 					$availablePdfs = glob($absoluteBasePath . $masterFilePattern);
+					if ($availablePdfs === FALSE) {
+						// An error occured
+						$availablePdfs = array();
+					}
 					if ($force || count($availablePdfs) == 0) {
 						if (is_file($warningsFilename)) {
 							@unlink($warningsFilename);

@@ -1214,6 +1214,10 @@ EOT;
 					$tarFilePattern = dirname($archiveFilename) . DIRECTORY_SEPARATOR;
 					$tarFilePattern .= preg_replace('/(-[0-9.]+)?\.tar\.gz$/', '*.tar', basename($archiveFilename));
 					$files = glob($tarFilePattern);
+					if ($files === FALSE) {
+						// An error occured
+						$files = array();
+					}
 					foreach ($files as $file) {
 						@unlink($file);
 					}

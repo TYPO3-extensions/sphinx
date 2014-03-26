@@ -404,6 +404,10 @@ class InteractiveViewerController extends AbstractActionController {
 
 		$cacheDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/');
 		$cacheFiles = glob($cacheDirectory . 'warnings-' . md5($path) . '.*');
+		if ($cacheFiles === FALSE) {
+			// An error occured
+			$cacheFiles = array();
+		}
 		if (count($cacheFiles) > 0) {
 			list($_, $timestamp) = explode('.', basename($cacheFiles[0]));
 			if ($timestamp == $mtime) {
