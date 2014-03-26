@@ -48,8 +48,14 @@
 			<trans-unit id="tx_sphinx_domain_model_extension.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="kickstart.title">
-				<source>Kickstart Sphinx Documentation</source>
+			<trans-unit id="dashboard.title">
+				<source>Sphinx Dashboard</source>
+			</trans-unit>
+			<trans-unit id="kickstart.extension.title">
+				<source>Kickstart Extension Documentation</source>
+			</trans-unit>
+			<trans-unit id="convert.extension.title">
+				<source>Convert Extension Documentation</source>
 			</trans-unit>
 			<trans-unit id="kickstart.action">
 				<source>Action</source>

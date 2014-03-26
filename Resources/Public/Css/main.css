@@ -787,6 +787,9 @@ body.margin {
   border: none;
   background-color: transparent; }
 
+#tabs.ui-widget {
+  padding: inherit; }
+
 .tx-sphinx-extension-list {
   border-spacing: 0; }
   .tx-sphinx-extension-list thead {

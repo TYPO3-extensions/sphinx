@@ -73,7 +73,7 @@ class DocumentationController extends AbstractActionController {
 		}
 
 		if (empty($currentReference)) {
-			$contentActionUrl = $this->uriBuilder->uriFor('kickstart');
+			$contentActionUrl = $this->uriBuilder->uriFor('dashboard');
 		} else {
 			$contentActionUrl = $this->uriBuilder->uriFor(
 				'render',
@@ -95,11 +95,11 @@ class DocumentationController extends AbstractActionController {
 	}
 
 	/**
-	 * Kickstart action.
+	 * Dashboard action.
 	 *
 	 * @return void
 	 */
-	protected function kickstartAction() {
+	protected function dashboardAction() {
 		$extensionsWithoutDocumentation = $this->extensionRepository->findByHasNoDocumentation('G,L');
 		$extensionWithOpenOfficeDocumentation = $this->extensionRepository->findByHasOpenOffice('G,L');
 
@@ -124,7 +124,7 @@ class DocumentationController extends AbstractActionController {
 			case 'EXT':
 				list($extensionKey, $locale) = explode('.', $identifier, 2);
 				if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
-					$this->redirect('kickstart');
+					$this->redirect('dashboard');
 				}
 				$documentationUrl = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
 			break;

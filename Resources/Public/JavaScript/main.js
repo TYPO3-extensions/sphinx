@@ -1,5 +1,7 @@
 CausalSphinxApplication = {
-	datatable: null,
+	datatable1: null,
+	datatable2: null,
+
 	// Utility method to retrieve query parameters
 	getUrlVars: function getUrlVars() {
 		var vars = [], hash;
@@ -15,7 +17,14 @@ CausalSphinxApplication = {
 	initializeView: function() {
 		var getVars = this.getUrlVars();
 
-		this.datatable = $('#tx-sphinx-kickstart-list').dataTable({
+		this.datatable1 = $('#tx-sphinx-kickstart-list').dataTable({
+			'bPaginate': false,
+			'bJQueryUI': true,
+			'bLengthChange': false,
+			'iDisplayLength': 15,
+			'bStateSave': true
+		});
+		this.datatable2 = $('#tx-sphinx-convert-list').dataTable({
 			'bPaginate': false,
 			'bJQueryUI': true,
 			'bLengthChange': false,
@@ -24,8 +33,13 @@ CausalSphinxApplication = {
 		});
 
 		// Restore filter
-		if (this.datatable.length && getVars['search']) {
-			this.datatable.fnFilter(getVars['search']);
+		if (this.datatable1.length && getVars['search']) {
+			this.datatable1.fnFilter(getVars['search']);
+		}
+
+		// Restore filter
+		if (this.datatable2.length && getVars['search']) {
+			this.datatable2.fnFilter(getVars['search']);
 		}
 	}
 };
@@ -39,8 +53,12 @@ CausalSphinxApplication = {
 		// Make the data table filter react to the clearing of the filter field
 		$('.dataTables_wrapper .dataTables_filter input').clearable({
 			onClear: function() {
-				CausalSphinxApplication.datatable.fnFilter('');
+				CausalSphinxApplication.datatable1.fnFilter('');
+				CausalSphinxApplication.datatable2.fnFilter('');
 			}
 		});
+
+		// Create tabs
+		$('#tabs').tabs();
 	});
 }(jQuery));
