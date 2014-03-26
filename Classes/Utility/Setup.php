@@ -1131,8 +1131,16 @@ EOT;
 			'#<tr class="iterable-item">.*?<td class="name">([^<]*)</td>.*?<a href="([^"]+)">zip</a>#s',
 			function($matches) use (&$versions) {
 				if ($matches[1] !== 'tip' && version_compare($matches[1], '1.1.3', '>=')) {
-					$versions[$matches[1]] = array(
-						'name' => $matches[1],
+					$name = $matches[1];
+					// Make sure main release (e.g., "1.2") gets a ".0" patch release version as well
+					if (preg_match('/^\d+\.\d+$/', $name)) {
+						$name .= '.0';
+					}
+					// Fix sorting of beta releases
+					$name = str_replace('b', ' beta ', $name);
+
+					$versions[$name] = array(
+						'name' => $name,
 						'url'  => $matches[2],
 					);
 				}
