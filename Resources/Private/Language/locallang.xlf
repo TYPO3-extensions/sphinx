@@ -51,6 +51,10 @@
 			<trans-unit id="dashboard.title">
 				<source>Sphinx Dashboard</source>
 			</trans-unit>
+			<trans-unit id="kickstart.title">
+				<source>Kickstart Sphinx Documentation</source>
+				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.1.4.</note>
+			</trans-unit>
 			<trans-unit id="kickstart.extension.title">
 				<source>Kickstart Extension Documentation</source>
 			</trans-unit>
