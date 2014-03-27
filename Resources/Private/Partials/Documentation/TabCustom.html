@@ -1,0 +1,16 @@
+<p><f:translate key="dashboard.tabs.custom.title" /></p>
+<table id="tx-sphinx-custom-list" class="tx-sphinx-extension-list">
+	<thead>
+	<tr>
+		<th><f:translate key="project.group" /></th>
+		<th><f:translate key="project.name" /></th>
+		<th><f:translate key="project.description" /></th>
+		<th><f:translate key="dashboard.action" /></th>
+	</tr>
+	</thead>
+	<tbody>
+		<f:for each="{customProjects}" as="project">
+			<f:render partial="Documentation/Table/ProjectRow" arguments="{project: project}"/>
+		</f:for>
+	</tbody>
+</table>

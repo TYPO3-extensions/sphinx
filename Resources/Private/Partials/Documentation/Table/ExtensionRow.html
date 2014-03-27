@@ -6,8 +6,8 @@
 	</td>
 	<td>{extension.description}</td>
 	<td class="actions">
-		<sphinx:link.action action="{action}" arguments="{extensionKey: extension.extensionKey}">
-			<f:translate key="kickstart.action.{action}" />
+		<sphinx:link.action action="{action}" arguments="{extensionKey: extension.extensionKey}" icon="{icon}" checks="{isWritable: 'EXT:{extension.extensionKey}'}">
+			<f:translate key="dashboard.action.{action}" />
 		</sphinx:link.action>
 	</td>
 </tr>

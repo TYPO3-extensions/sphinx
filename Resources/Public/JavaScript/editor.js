@@ -1,4 +1,4 @@
-String.prototype.format = function() {
+String.prototype.format = function () {
 	var s = this,
 		i = arguments.length;
 
@@ -7,7 +7,7 @@ String.prototype.format = function() {
 	}
 	return s;
 };
-String.prototype.endsWith = function(suffix) {
+String.prototype.endsWith = function (suffix) {
 	return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
@@ -35,7 +35,7 @@ CausalSphinxEditor = {
 	// Spinner-specific
 	spinner: null,
 
-	openFile: function(file) {
+	openFile: function (file) {
 		var self = CausalSphinxEditor;
 		var doOpen = true;
 
@@ -49,14 +49,14 @@ CausalSphinxEditor = {
 				buttons: [
 					{
 						text: this.messages['editor.message.yes'],
-						click: function() {
+						click: function () {
 							self._openFile(file);
 							$(this).dialog('close');
 						}
 					},
 					{
 						text: this.messages['editor.message.no'],
-						click: function() {
+						click: function () {
 							$(this).dialog('close');
 						}
 					}
@@ -66,7 +66,7 @@ CausalSphinxEditor = {
 			self._openFile(file);
 		}
 	},
-	_openFile: function(file) {
+	_openFile: function (file) {
 		var self = CausalSphinxEditor;
 
 		$.post(this.actions.open,
@@ -74,7 +74,7 @@ CausalSphinxEditor = {
 				'tx_sphinx_help_sphinxdocumentation[reference]': this.reference,
 				'tx_sphinx_help_sphinxdocumentation[filename]': file
 			},
-			function(data) {
+			function (data) {
 				if (data.status == 'success') {
 					self.isReadOnly = data.readOnly;
 					self.editor.toTextArea();
@@ -93,7 +93,7 @@ CausalSphinxEditor = {
 		);
 	},
 
-	closeEditor: function() {
+	closeEditor: function () {
 		var self = CausalSphinxEditor;
 
 		if (this.isDirty) {
@@ -106,13 +106,13 @@ CausalSphinxEditor = {
 				buttons: [
 					{
 						text: this.messages['editor.message.yes'],
-						click: function() {
+						click: function () {
 							self.saveAndClose();
 						}
 					},
 					{
 						text: this.messages['editor.message.no'],
-						click: function() {
+						click: function () {
 							document.location.href = self.actions.redirect;
 						}
 					}
@@ -123,7 +123,7 @@ CausalSphinxEditor = {
 		}
 	},
 
-	save: function() {
+	save: function () {
 		var self = CausalSphinxEditor;
 		var contents = this.editor.getValue();
 
@@ -135,7 +135,7 @@ CausalSphinxEditor = {
 				'tx_sphinx_help_sphinxdocumentation[contents]': contents,
 				'tx_sphinx_help_sphinxdocumentation[compile]': 0
 			},
-			function(data) {
+			function (data) {
 				self.hideSpinner();
 				if (data.status == 'success') {
 					self.isDirty = false;
@@ -147,7 +147,7 @@ CausalSphinxEditor = {
 		);
 	},
 
-	saveAndClose: function() {
+	saveAndClose: function () {
 		var self = CausalSphinxEditor;
 		var contents = this.editor.getValue();
 
@@ -159,7 +159,7 @@ CausalSphinxEditor = {
 				'tx_sphinx_help_sphinxdocumentation[contents]': contents,
 				'tx_sphinx_help_sphinxdocumentation[compile]': 1
 			},
-			function(data) {
+			function (data) {
 				if (data.status == 'success') {
 					document.location.href = self.actions.redirect;
 				} else {
@@ -170,7 +170,7 @@ CausalSphinxEditor = {
 		);
 	},
 
-	showSpinner: function() {
+	showSpinner: function () {
 		var self = CausalSphinxEditor;
 
 		$('<div>', {
@@ -186,7 +186,7 @@ CausalSphinxEditor = {
 				'z-index': 10,
 			}
 		}).insertAfter('#editor');
-		window.setTimeout(function() {
+		window.setTimeout(function () {
 			var opts = {
 				lines: 13, // The number of lines to draw
 				length: 20, // The length of each line
@@ -209,13 +209,13 @@ CausalSphinxEditor = {
 		}, 100);
 	},
 
-	hideSpinner: function() {
+	hideSpinner: function () {
 		$('#overlay').remove();
 		this.spinner.stop();
 		this.spinner = null;
 	},
 
-	_initEditor: function(file) {
+	_initEditor: function (file) {
 		var self = CausalSphinxEditor;
 		var textarea = document.getElementById('editor');
 		this.editor = CodeMirror.fromTextArea(
@@ -236,14 +236,14 @@ CausalSphinxEditor = {
 			$('#editor-readonly').css('visibility', 'hidden');
 		}
 
-		this.editor.on("change", function(e) {
+		this.editor.on("change", function (e) {
 			self.isDirty = true;
 		});
 
 		// Keymap definitions
-		CodeMirror.commands.closeEditor = function(cm) { self.closeEditor(); }
-		CodeMirror.commands.save = function(cm) { self.save(); }
-		CodeMirror.commands.saveAndClose = function(cm) { self.saveAndClose(); }
+		CodeMirror.commands.closeEditor = function (cm) { self.closeEditor(); }
+		CodeMirror.commands.save = function (cm) { self.save(); }
+		CodeMirror.commands.saveAndClose = function (cm) { self.saveAndClose(); }
 
 		// Add standard keymap for Linux/Windows
 		CodeMirror.keyMap['default']['Alt-W'] = 'closeEditor';
@@ -256,24 +256,24 @@ CausalSphinxEditor = {
 		CodeMirror.keyMap['default']['Cmd-S'] = 'save';
 		CodeMirror.keyMap['default']['Shift-Cmd-S'] = 'saveAndClose';
 
-		window.setTimeout(function() {
+		window.setTimeout(function () {
 			self.editor.setCursor(self.startLine - 1, 0);
 			self.editor.scrollIntoView({line: self.startLine - 1, ch: 0});
 		}, 100);
 		self.editor.focus();
 	},
 
-	initialize: function() {
+	initialize: function () {
 		var self = CausalSphinxEditor;
 
 		$("#extension-key")
-			.bind('loadReferences', function(event, reference, url) {
+			.bind('loadReferences', function (event, reference, url) {
 				$.ajax({
 					url: self.actions.references
 						.replace(/REFERENCE/, reference)
 						.replace(/URL/, url)
 						.replace(/USE_PREFIX/, reference != self.currentReference ? '1' : '0')
-				}).done(function(data) {
+				}).done(function (data) {
 					$('#accordion-objectsinv')
 						.accordion('destroy')
 						.html(data['html'])
@@ -285,12 +285,12 @@ CausalSphinxEditor = {
 				source: CausalSphinxEditor.actions.autocomplete,
 				minLength: 2,
 				position: { my : "right top", at: "right bottom" },
-				select: function(event, ui) {
+				select: function (event, ui) {
 					if (ui.item) {
 						$(this).trigger('loadReferences', [ui.item.value, ui.item.id]);
 					}
 				},
-				change: function(event, ui) {
+				change: function (event, ui) {
 					if ($(this).val().length == 0) {
 						// Reset the references to current document
 						$(this).trigger('loadReferences', self.currentReference);
@@ -306,6 +306,6 @@ CausalSphinxEditor = {
 
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
 	CausalSphinxEditor.initialize();
 });

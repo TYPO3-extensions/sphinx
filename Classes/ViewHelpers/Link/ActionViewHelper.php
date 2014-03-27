@@ -26,8 +26,11 @@ namespace Causal\Sphinx\ViewHelpers\Link;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
- * A view helper for creating links to extbase actions using the loading mask.
+ * A view helper for creating links to sphinx actions using the loading mask.
  *
  * = Examples =
  *
@@ -45,7 +48,7 @@ namespace Causal\Sphinx\ViewHelpers\Link;
 class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 
 	/**
-	 * Renders the extbase action link.
+	 * Renders the sphinx action link.
 	 *
 	 * @param string $action Target action
 	 * @param array $arguments Arguments
@@ -63,33 +66,82 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
 	 * @param boolean $absolute If set, the URI of the rendered link is absolute
 	 * @param boolean $addQueryString If set, the current query parameters will be kept in the URI
 	 * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = TRUE
+	 * @param array $checks
+	 * @param string $icon
 	 * @return string Rendered link
 	 */
 	public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL,
 							$pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE,
 							$section = '', $format = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array(),
-							$absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array()) {
-
-		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uri = $uriBuilder
-			->reset()
-			->setTargetPageUid($pageUid)
-			->setTargetPageType($pageType)
-			->setNoCache($noCache)
-			->setUseCacheHash(!$noCacheHash)
-			->setSection($section)
-			->setFormat($format)
-			->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
-			->setArguments($additionalParams)
-			->setCreateAbsoluteUri($absolute)
-			->setAddQueryString($addQueryString)
-			->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
-			->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
+							$absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(),
+							array $checks = array(), $icon = NULL) {
 
 		$this->tag->addAttribute('href', '#');
-		$this->tag->addAttribute('onclick', 'top.TYPO3.Backend.ContentContainer.setUrl(\'' . $uri . '\')');
-		$this->tag->setContent($this->renderChildren());
+		if (!GeneralUtility::isFirstPartOfStr($action, 'javascript')) {
+			$uriBuilder = $this->controllerContext->getUriBuilder();
+			$uri = $uriBuilder
+				->reset()
+				->setTargetPageUid($pageUid)
+				->setTargetPageType($pageType)
+				->setNoCache($noCache)
+				->setUseCacheHash(!$noCacheHash)
+				->setSection($section)
+				->setFormat($format)
+				->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
+				->setArguments($additionalParams)
+				->setCreateAbsoluteUri($absolute)
+				->setAddQueryString($addQueryString)
+				->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
+				->uriFor($action, $arguments, $controller, $extensionName, $pluginName);
+
+			$this->tag->addAttribute('onclick', 'top.TYPO3.Backend.ContentContainer.setUrl(\'' . $uri . '\')');
+		} else {
+			$this->tag->addAttribute('onclick', $action);
+		}
+
+		$content = $this->renderChildren();
+		if ($icon) {
+			$content = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon, array('title' => trim($content)));
+		}
+
+		foreach ($checks as $check => $value) {
+			switch ($check) {
+				case 'isWritable':
+					if (strpos($value, 'EXT:') === 0) {
+						$value .= '/__sphinx.tmp';
+					}
+					$fileName = GeneralUtility::getFileAbsFileName($value);
+					if (strpos($value, 'EXT:') === 0) {
+						$fileName = PathUtility::dirname($fileName);
+					}
+					if (!is_writable($fileName)) {
+						$content .= sprintf(
+							' <font style="color:#f00"><abbr title="%s">%s</abbr></font>',
+							htmlspecialchars($this->translate('dashboard.action.disabled.title')),
+							htmlspecialchars($this->translate('dashboard.action.disabled'))
+						);
+						$this->tag->addAttribute('onclick', 'return false');
+					}
+					break;
+			}
+		}
+
+		$this->tag->setContent($content);
 		$this->tag->forceClosingTag(TRUE);
 		return $this->tag->render();
 	}
+
+	/**
+	 * Translates a given id.
+	 *
+	 * @param string $id
+	 * @return string
+	 */
+	protected function translate($id) {
+		$request = $this->controllerContext->getRequest();
+		$extensionName = $request->getControllerExtensionName();
+		$value = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($id, $extensionName);
+		return $value;
+	}
+
 }

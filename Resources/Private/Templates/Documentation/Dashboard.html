@@ -26,7 +26,13 @@
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.tools.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.clearable.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.10.4.custom.min.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/main.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/dashboard.js')}"></script>
+	<script type="text/javascript">
+		// Initialize the dashboard's actions
+		CausalSphinxDashboard.actions.editCustomProject = "{f:uri.action(action:'editCustomProject',arguments:{documentationKey:'DOCUMENTATION_KEY'})}";
+		CausalSphinxDashboard.actions.updateCustomProject = "{f:uri.action(action:'updateCustomProject')}";
+		CausalSphinxDashboard.actions.removeCustomProject = "{f:uri.action(action:'removeCustomProject',arguments:{documentationKey:'DOCUMENTATION_KEY'})}";
+	</script>
 </head>
 <body class="margin">
 
@@ -42,49 +48,26 @@
 		<f:if condition="{extensionsOpenOffice}">
 			<li><a href="#tabs-convert-extension" title="{f:translate(key:'dashboard.tabs.convert.title')}"><f:translate key="dashboard.tabs.convert.label" /></a></li>
 		</f:if>
+		<li><a href="#tabs-custom" title="{f:translate(key:'dashboard.tabs.custom.title')}"><f:translate key="dashboard.tabs.custom.label" /></a></li>
 	</ul>
 	<f:if condition="{extensionsEmpty}">
 		<div id="tabs-kickstart-extension">
-			<p><f:translate key="dashboard.tabs.kickstart.title" /></p>
-			<table id="tx-sphinx-kickstart-list" class="tx-sphinx-extension-list">
-				<thead>
-					<tr>
-						<th><f:translate key="tx_sphinx_domain_model_extension.title" /></th>
-						<th><f:translate key="tx_sphinx_domain_model_extension.description" /></th>
-						<th><f:translate key="kickstart.action" /></th>
-					</tr>
-				</thead>
-				<tbody>
-					<f:for each="{extensionsEmpty}" as="extension">
-						<f:render partial="Documentation/ExtensionRow" arguments="{extension: extension, action: 'createExtensionProject'}"/>
-					</f:for>
-					<f:for each="{projects}" as="project">
-						<f:render partial="Documentation/ProjectRow" arguments="{project: project}"/>
-					</f:for>
-				</tbody>
-			</table>
+			<f:render partial="Documentation/TabKickstartExtension" arguments="{_all}" />
 		</div>
 	</f:if>
 	<f:if condition="{extensionsOpenOffice}">
 		<div id="tabs-convert-extension">
-			<p><f:translate key="dashboard.tabs.convert.title" /></p>
-			<table id="tx-sphinx-convert-list" class="tx-sphinx-extension-list">
-				<thead>
-				<tr>
-					<th><f:translate key="tx_sphinx_domain_model_extension.title" /></th>
-					<th><f:translate key="tx_sphinx_domain_model_extension.description" /></th>
-					<th><f:translate key="kickstart.action" /></th>
-				</tr>
-				</thead>
-				<tbody>
-					<f:for each="{extensionsOpenOffice}" as="extension">
-						<f:render partial="Documentation/ExtensionRow" arguments="{extension: extension, action: 'convert'}"/>
-					</f:for>
-				</tbody>
-			</table>
+			<f:render partial="Documentation/TabConvertExtension" arguments="{_all}" />
 		</div>
 	</f:if>
+	<div id="tabs-custom">
+		<f:render partial="Documentation/TabCustom" arguments="{_all}" />
+	</div>
 </div>
+
+<script type="text/javascript">
+	<sphinx:includeMessages keyPrefix="dashboard.message." jsDictionnary="CausalSphinxDashboard.messages" />
+</script>
 
 </body>
 </html>

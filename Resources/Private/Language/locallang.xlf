@@ -42,6 +42,21 @@
 			<trans-unit id="extensionType_G">
 				<source>Global Extensions</source>
 			</trans-unit>
+			<trans-unit id="project.documentationKey">
+				<source>Documentation Key</source>
+			</trans-unit>
+			<trans-unit id="project.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="project.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="project.group">
+				<source>Group</source>
+			</trans-unit>
+			<trans-unit id="project.directory">
+				<source>Directory</source>
+			</trans-unit>
 			<trans-unit id="tx_sphinx_domain_model_extension.title">
 				<source>Title</source>
 			</trans-unit>
@@ -67,14 +82,70 @@
 			<trans-unit id="dashboard.tabs.convert.title">
 				<source>This panel lets you convert OpenOffice manuals from local extensions into a Sphinx project.</source>
 			</trans-unit>
+			<trans-unit id="dashboard.tabs.custom.label">
+				<source>Custom Documentation</source>
+			</trans-unit>
+			<trans-unit id="dashboard.tabs.custom.title">
+				<source>This panel lets you manage custom documentation.</source>
+			</trans-unit>
+			<trans-unit id="dashboard.action">
+				<source>Action</source>
+			</trans-unit>
+			<trans-unit id="dashboard.action.disabled">
+				<source>RO</source>
+				<note from="developer">This label is shown within an &lt;abbr&gt; tag and is means that project is read-only.</note>
+			</trans-unit>
+			<trans-unit id="dashboard.action.disabled.title">
+				<source>This project is read-only, actions are thus disabled.</source>
+				<note from="developer">This label is the full description of dashboard.action.disabled.</note>
+			</trans-unit>
+			<trans-unit id="dashboard.action.createExtensionProject">
+				<source>Create documentation project</source>
+			</trans-unit>
+			<trans-unit id="dashboard.action.convert">
+				<source>Convert OpenOffice manual to Sphinx</source>
+			</trans-unit>
+			<trans-unit id="dashboard.action.editCustomProject">
+				<source>Edit reference to custom project</source>
+			</trans-unit>
+			<trans-unit id="dashboard.action.removeCustomProject">
+				<source>Remove reference to custom project</source>
+			</trans-unit>
+			<trans-unit id="dashboard.message.yes">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="dashboard.message.no">
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="dashboard.message.update">
+				<source>Update</source>
+			</trans-unit>
+			<trans-unit id="dashboard.message.cancel">
+				<source>Cancel</source>
+			</trans-unit>
+			<trans-unit id="dashboard.message.removeCustomProject.title">
+				<source>Remove Custom Project</source>
+			</trans-unit>
+			<trans-unit id="dashboard.message.removeCustomProject">
+				<source>Are you sure you want to remove custom project “{0}”?</source>
+			</trans-unit>
+			<trans-unit id="dashboard.form.edit.updateProjectGroup">
+				<source>Update for all projects</source>
+			</trans-unit>
+			<trans-unit id="dashboard.form.edit.updateProjectGroup.description">
+				<source>When ticked, every custom project within this group will be updated to reflect change in group's name. This has thus the effect of renaming the group instead of creating a new group to hold this project.</source>
+			</trans-unit>
 			<trans-unit id="kickstart.action">
 				<source>Action</source>
+				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.1.4.</note>
 			</trans-unit>
 			<trans-unit id="kickstart.action.createExtensionProject">
 				<source>Create documentation project</source>
+				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.1.4.</note>
 			</trans-unit>
 			<trans-unit id="kickstart.action.convert">
 				<source>Convert OpenOffice manual to Sphinx</source>
+				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.1.4.</note>
 			</trans-unit>
 			<trans-unit id="toolbar.alwaysRender">
 				<source>Always render documentation</source>

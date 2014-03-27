@@ -60,6 +60,18 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 	}
 
 	/**
+	 * Returns an AJAX response.
+	 *
+	 * @param array $response
+	 * return void
+	 */
+	protected function returnAjax(array $response) {
+		header('Content-type: application/json');
+		echo json_encode($response);
+		exit;
+	}
+
+	/**
 	 * Returns the localized label of a given key.
 	 *
 	 * @param string $key The label key

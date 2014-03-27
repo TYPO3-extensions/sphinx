@@ -80,7 +80,7 @@ function EditorInsert(str, prefix, url) {
 		});
 	}
 }
-$(document).ready(function() {
+$(document).ready(function () {
 	$('#$id').accordion({ heightStyle: 'fill' });
 });
 JS;

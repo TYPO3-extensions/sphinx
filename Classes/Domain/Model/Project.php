@@ -38,6 +38,11 @@ class Project {
 
 	/**
 	 * @var string
+	 */
+	protected $uid;
+
+	/**
+	 * @var string
 	 * @notEmpty
 	 */
 	protected $documentationKey;
@@ -64,6 +69,25 @@ class Project {
 	 * @notEmpty
 	 */
 	protected $directory;
+
+	/**
+	 * Default constructor.
+	 *
+	 * @param string $documentationKey
+	 */
+	public function __construct($documentationKey) {
+		$this->uid = $documentationKey;
+		$this->documentationKey = $documentationKey;
+	}
+
+	/**
+	 * Returns the (original) documentation key.
+	 *
+	 * @return string
+	 */
+	public function getUid() {
+		return $this->uid;
+	}
 
 	/**
 	 * Returns the documentation key.

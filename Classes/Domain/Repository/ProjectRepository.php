@@ -49,16 +49,123 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$projects = array();
 		$data = $this->loadProjects();
 		foreach ($data as $p) {
-			/** @var \Causal\Sphinx\Domain\Model\Project $project */
-			$project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project');
-			$project->setDocumentationKey($p['key']);
-			$project->setName($p['name']);
-			$project->setDescription($p['description']);
-			$project->setGroup($p['group']);
-			$project->setDirectory($p['directory']);
-			$projects[$project->getDocumentationKey()] = $project;
+			$project = $this->instantiateProjectFromArray($p);
+
+			$key = $p['group'] . $project->getDocumentationKey();
+			$projects[$key] = $project;
 		}
-		return $projects;
+		ksort($projects);
+		return array_values($projects);
+	}
+
+	/**
+	 * Returns a project based on its documentation key.
+	 *
+	 * @param string $documentationKey
+	 * @return \Causal\Sphinx\Domain\Model\Project
+	 */
+	public function findByDocumentationKey($documentationKey) {
+		$projects = $this->loadProjects();
+		foreach ($projects as $project) {
+			if ($project['key'] === $documentationKey) {
+				return $this->instantiateProjectFromArray($project);
+			}
+		}
+
+		return NULL;
+	}
+
+	/**
+	 * Updates a given project.
+	 *
+	 * @param \Causal\Sphinx\Domain\Model\Project $project
+	 * @return bool
+	 */
+	public function update(\Causal\Sphinx\Domain\Model\Project $project) {
+		$projects = $this->loadProjects();
+		$numberOfProjects = count($projects);
+		$found = FALSE;
+
+		for ($i = 0; $i < $numberOfProjects; $i++) {
+			if ($projects[$i]['key'] === $project->getUid()) {
+				$projects[$i] = array(
+					'name' => $project->getName(),
+					'description' => $project->getDescription(),
+					'group' => $project->getGroup(),
+					'key' => $project->getDocumentationKey(),
+					'directory' => $project->getDirectory(),
+				);
+				$found = TRUE;
+				break;
+			}
+		}
+
+		if ($found) {
+			return $this->persistProjects($projects);
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Renames a project's group.
+	 *
+	 * @param string $oldName
+	 * @param string $newName
+	 * @return bool
+	 */
+	public function renameGroup($oldName, $newName) {
+		$projects = $this->loadProjects();
+		$numberOfProjects = count($projects);
+
+		for ($i = 0; $i < $numberOfProjects; $i++) {
+			if ($projects[$i]['group'] === $oldName) {
+				$projects[$i]['group'] = $newName;
+			}
+		}
+
+		return $this->persistProjects($projects);
+	}
+
+	/**
+	 * Removes a project.
+	 *
+	 * @param string $documentationKey
+	 * @return bool
+	 */
+	public function remove($documentationKey) {
+		$projects = $this->loadProjects();
+		$numberOfProjects = count($projects);
+		$found = FALSE;
+
+		for ($i = 0; $i < $numberOfProjects; $i++) {
+			if ($projects[$i]['key'] === $documentationKey) {
+				unset($projects[$i]);
+				$found = TRUE;
+				break;
+			}
+		}
+
+		if ($found) {
+			return $this->persistProjects($projects);
+		}
+		return FALSE;
+	}
+
+	/**
+	 * Instantiate a Project domain object from raw data.
+	 *
+	 * @param array $data
+	 * @return \Causal\Sphinx\Domain\Model\Project
+	 */
+	protected function instantiateProjectFromArray(array $data) {
+		/** @var \Causal\Sphinx\Domain\Model\Project $project */
+		$project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project', $data['key']);
+		$project->setName($data['name']);
+		$project->setDescription($data['description']);
+		$project->setGroup($data['group']);
+		$project->setDirectory($data['directory']);
+
+		return $project;
 	}
 
 	/**
@@ -83,11 +190,27 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Persists the projects.
 	 *
 	 * @param array $projects
-	 * @return void
+	 * @return bool TRUE if the list of projects was successfully persisted
 	 */
 	protected function persistProjects(array $projects) {
 		$filename = GeneralUtility::getFileAbsFileName(static::PROJECTS_FILENAME);
-		GeneralUtility::writeFile($filename, json_encode($projects));
+		if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
+			$content = json_encode($projects, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+		} else {
+			$content = json_encode($projects);
+			if (count($projects) > 0) {
+				// Mimic JSON_UNESCAPE_SLASHES
+				$content = str_replace('\\/', '/', $content);
+				// Mimic JSON_PRETTY_PRINT (for our known data structure)
+				$content = "{\n\t" . substr($content, 1, -1) . "\n}";
+				$content = str_replace('{"', "{\n\t\t\"", $content);
+				$content = str_replace('"}', "\"\n\t}", $content);
+				$content = str_replace('},', "},\n\t", $content);
+				$content = str_replace('","', "\",\n\t\t\"", $content);
+				$content = str_replace(array(':{', '":"'), array(': {', '": "'), $content);
+			}
+		}
+		return GeneralUtility::writeFile($filename, $content);
 	}
 
 }

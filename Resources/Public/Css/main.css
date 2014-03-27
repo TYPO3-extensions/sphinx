@@ -48,65 +48,6 @@ a:hover {
 .right {
   float: right; }
 
-.ui-widget-header {
-  background: none;
-  border: none;
-  font-weight: normal; }
-
-.dataTable {
-  border-right: 1px solid #a2aab8;
-  border-bottom: 1px solid #a2aab8;
-  border-left: 1px solid #a2aab8; }
-
-.dataTables_info {
-  font-size: 10px;
-  color: #444;
-  float: left; }
-
-.paging_two_button .ui-button {
-  float: left;
-  cursor: pointer; }
-
-.paging_full_numbers .ui-button {
-  padding: 2px 6px;
-  margin: 0;
-  cursor: pointer;
-  color: #333 !important; }
-
-.dataTables_paginate .ui-button {
-  margin-right: -0.1em !important; }
-
-.paging_full_numbers {
-  float: right; }
-
-.dataTables_paginate {
-  width: auto; }
-
-.tx-sphinx-extension-list {
-  width: 100%; }
-
-.tx-sphinx-extension-list td {
-  padding: 10px; }
-
-.tx-sphinx-extension-list td.title {
-  width: 280px; }
-
-.tx-sphinx-extension-list td.icons {
-  width: 40px; }
-
-.tx-sphinx-extension-list .icons a {
-  display: none; }
-
-.tx-sphinx-extension-list tr:hover .icons a {
-  display: inline; }
-
-.tx-sphinx-extension-list td.actions {
-  width: 250px; }
-  .tx-sphinx-extension-list td.actions a {
-    padding: 2px; }
-    .tx-sphinx-extension-list td.actions a:hover {
-      border: 1px solid #333; }
-
 .headerTooltip,
 .tooltip {
   -webkit-box-shadow: 2px 2px 11px #666666;
@@ -346,11 +287,14 @@ p {
 .add-padding {
   padding: 10px !important; }
 
+.ui-layout-pane .ui-widget {
+  padding: .5em 1em; }
+
+.ui-layout-pane .ui-accordion {
+  padding: 0; }
+
 .ui-accordion-content {
   padding: 0 1em !important; }
-
-.ui-widget {
-  padding: .5em 1em; }
 
 /*
  *	Default printing styles
@@ -777,20 +721,25 @@ table.treetable tr.expanded.accept td span.indenter a {
 body.margin {
   margin: 30px 24px; }
 
-.ui-toolbar {
+.dataTables_filter {
+  display: block;
   margin-bottom: 5px; }
-  .ui-toolbar .dataTables_filter {
-    display: block; }
-
-.tx-sphinx-extension-list .t3-icon,
-.tx-sphinx-extension-list .t3-icon:hover {
-  border: none;
-  background-color: transparent; }
 
 #tabs.ui-widget {
   padding: inherit; }
 
+#tabs .ui-widget-header {
+  background: none;
+  border: none;
+  font-weight: normal; }
+
+#tabs .ui-tabs-nav {
+  border-bottom: 1px solid #aaa;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
+
 .tx-sphinx-extension-list {
+  width: 100%;
   border-spacing: 0; }
   .tx-sphinx-extension-list thead {
     background-color: #666; }
@@ -817,14 +766,24 @@ body.margin {
       margin-left: 5px; }
       .tx-sphinx-extension-list th .DataTables_sort_icon.ui-icon-carat-2-n-s {
         background: none; }
+  .tx-sphinx-extension-list tr td.actions a span.t3-icon,
+  .tx-sphinx-extension-list tr td.actions abbr {
+    display: none; }
+  .tx-sphinx-extension-list tr:hover td.actions a span.t3-icon,
+  .tx-sphinx-extension-list tr:hover td.actions abbr {
+    display: inline-block; }
   .tx-sphinx-extension-list tr.odd td, .tx-sphinx-extension-list tr.even td {
     background: none; }
   .tx-sphinx-extension-list tr.odd:hover td, .tx-sphinx-extension-list tr.even:hover td {
     background: none; }
   .tx-sphinx-extension-list tr td {
+    padding: 10px; }
+    .tx-sphinx-extension-list tr td .title {
+      width: 280px; }
+  .tx-sphinx-extension-list tr td {
     background: none;
     padding: 8px 10px;
-    vertical-align: middle; }
+    vertical-align: top; }
     .tx-sphinx-extension-list tr td img {
       vertical-align: middle;
       margin-right: 5px; }
@@ -834,10 +793,51 @@ body.margin {
     background: #f7f7f7; }
   .tx-sphinx-extension-list tr:hover {
     background: #ececec; }
+  .tx-sphinx-extension-list abbr[title] {
+    border-bottom: dotted 1px; }
 
 .dataTables_info {
   display: none; }
 
+.dataTable {
+  border-right: 1px solid #a2aab8;
+  border-bottom: 1px solid #a2aab8;
+  border-left: 1px solid #a2aab8; }
+
+.paging_two_button .ui-button {
+  float: left;
+  cursor: pointer; }
+
+.paging_full_numbers .ui-button {
+  padding: 2px 6px;
+  margin: 0;
+  cursor: pointer;
+  color: #333 !important; }
+
+.dataTables_paginate .ui-button {
+  margin-right: -0.1em !important; }
+
+.paging_full_numbers {
+  float: right; }
+
 .dataTables_paginate {
+  width: auto;
   float: left;
   margin: 10px 0 0; }
+
+.ui-dialog label, .ui-dialog input {
+  display: block; }
+.ui-dialog input.text, .ui-dialog textarea {
+  margin-bottom: 12px;
+  width: 95%;
+  padding: .4em; }
+  .ui-dialog input.text.half-width, .ui-dialog textarea.half-width {
+    display: inline;
+    width: 45%; }
+.ui-dialog input.checkbox {
+  display: inline; }
+.ui-dialog input.checkbox + label {
+  display: inline; }
+.ui-dialog fieldset {
+  padding: 0;
+  border: 0; }

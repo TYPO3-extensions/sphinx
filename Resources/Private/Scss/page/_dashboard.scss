@@ -2,22 +2,9 @@ body.margin {
 	margin: 30px 24px;
 }
 
-.ui-toolbar {
-  margin-bottom: 5px;
-
-  .dataTables_filter {
+.dataTables_filter {
 	display: block;
-  }
-}
-
-.tx-sphinx-extension-list {
-
-	.t3-icon,
-	.t3-icon:hover {
-		border: none;
-		background-color: transparent;
-	}
-
+	margin-bottom: 5px;
 }
 
 // Tabs
@@ -25,110 +12,204 @@ body.margin {
 	padding: inherit;
 }
 
-// Table
-.tx-sphinx-extension-list {
-
-  border-spacing: 0;
-
-  // Header
-  thead {
-	background-color: #666;
-
-	tr {
-	  background: none !important;
-
-	  &:hover {
-		background: none;
-	  }
-	}
-  }
-
-  th {
+#tabs .ui-widget-header {
 	background: none;
-	border: 0;
-	padding: 8px 10px;
-
-	min-width: 53px;
-
-	vertical-align: middle;
-	text-align: left;
-
-	font-weight: bold;
-	color: #fff;
-
-	cursor: pointer;
-	white-space: nowrap;
-
-
-	&:hover {
-	  background: rgba(200,200,200,.3);
-	}
-
-	.DataTables_sort_icon {
-	  display: inline-block;
-	  vertical-align: middle;
-	  margin-left: 5px;
-
-	  &.ui-icon-carat-2-n-s {
-		background: none;
-	  }
-	}
-  }
-
-  // All lines
-  tr {
-
-	// Reset some values that get applied by jQuery UI styling
-	&.odd,
-	&.even {
-	  td {
-		background: none;
-	  }
-
-	  &:hover {
-		td {
-		  background: none;
-		}
-	  }
-	}
-
-	// Add some stuff to match corporate design
-	td {
-	  background: none;
-	  padding: 8px 10px;
-	  vertical-align: middle;
-
-	  img {
-		vertical-align: middle;
-		margin-right: 5px;
-	  }
-	}
-
-	// Zebra-look
-	&:nth-child(2n) {
-	  background: #fff;
-	}
-
-	&:nth-child(2n + 1) {
-	  background: #f7f7f7;
-	}
-
-	// Hovering lines
-	&:hover {
-	  background: #ececec;
-	}
-
-  }
+	border: none;
+	font-weight: normal;
 }
 
+#tabs .ui-tabs-nav {
+	border-bottom: 1px solid #aaa;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
 
+// Table
+.tx-sphinx-extension-list {
+	width: 100%;
+
+	border-spacing: 0;
+
+	// Header
+	thead {
+		background-color: #666;
+
+		tr {
+			background: none !important;
+
+			&:hover {
+				background: none;
+			}
+		}
+	}
+
+	th {
+		background: none;
+		border: 0;
+		padding: 8px 10px;
+
+		min-width: 53px;
+
+		vertical-align: middle;
+		text-align: left;
+
+		font-weight: bold;
+		color: #fff;
+
+		cursor: pointer;
+		white-space: nowrap;
+
+		&:hover {
+			background: rgba(200,200,200,.3);
+		}
+
+		.DataTables_sort_icon {
+			display: inline-block;
+			vertical-align: middle;
+			margin-left: 5px;
+
+			&.ui-icon-carat-2-n-s {
+				background: none;
+			}
+		}
+	}
+
+	// All lines
+	tr {
+		td.actions {
+			a span.t3-icon,
+			abbr {
+				display: none
+			}
+		}
+
+		&:hover {
+			td.actions {
+				a span.t3-icon,
+				abbr {
+					display: inline-block;
+				}
+			}
+		}
+
+		// Reset some values that get applied by jQuery UI styling
+		&.odd,
+		&.even {
+			td {
+				background: none;
+			}
+
+			&:hover {
+				td {
+					background: none;
+				}
+			}
+		}
+
+		td {
+			padding: 10px;
+
+			.title {
+				width: 280px;
+			}
+		}
+
+		// Add some stuff to match corporate design
+		td {
+			background: none;
+			padding: 8px 10px;
+			vertical-align: top;
+
+			img {
+				vertical-align: middle;
+				margin-right: 5px;
+			}
+		}
+
+		// Zebra-look
+		&:nth-child(2n) {
+			background: #fff;
+		}
+
+		&:nth-child(2n + 1) {
+			background: #f7f7f7;
+		}
+
+		// Hovering lines
+		&:hover {
+			background: #ececec;
+		}
+	}
+
+	abbr[title] {
+		border-bottom: dotted 1px;
+	}
+
+}
 
 // Paginator
 .dataTables_info {
-  display: none;
+	display: none;
+}
+
+.dataTable {
+	border-right: 1px solid #a2aab8;
+	border-bottom: 1px solid #a2aab8;
+	border-left: 1px solid #a2aab8;
+}
+
+.paging_two_button .ui-button {
+	float: left;
+	cursor: pointer;
+}
+
+.paging_full_numbers .ui-button {
+	padding: 2px 6px;
+	margin: 0;
+	cursor: pointer;
+	color: #333 !important;
+}
+
+.dataTables_paginate .ui-button {
+	margin-right: -0.1em !important;
+}
+
+.paging_full_numbers {
+	float: right;
 }
 
 .dataTables_paginate {
-  float: left;
-  margin: 10px 0 0;
+	width: auto;
+	float: left;
+	margin: 10px 0 0;
+}
+
+// Form Dialog
+.ui-dialog {
+	label, input {
+		display: block;
+	}
+	input.text, textarea {
+		margin-bottom: 12px;
+		width: 95%;
+		padding: .4em;
+
+		&.half-width {
+			display: inline;
+			width: 45%;
+		}
+	}
+
+	// Checkbox
+	input.checkbox {
+		display: inline;
+	}
+	input.checkbox + label {
+		display: inline;
+	}
+
+	fieldset {
+		padding: 0;
+		border: 0;
+	}
 }

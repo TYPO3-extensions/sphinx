@@ -36,7 +36,7 @@ if (typeof CausalSphinx == 'undefined') CausalSphinx = {};
  * Example (Information message):
  * CausalSphinx.Flashmessage.display(1, 'TYPO3 Backend - Version 4.4', 'Ready for take off', 3);
  */
-CausalSphinx.Flashmessage = function() {
+CausalSphinx.Flashmessage = function () {
 	var messageContainer;
 	var severities = ['notice', 'information', 'ok', 'warning', 'error'];
 
@@ -59,13 +59,13 @@ CausalSphinx.Flashmessage = function() {
 		 * @param string message
 		 * @param float duration in sec (default 5)
 		 */
-		display : function(severity, title, message, duration) {
+		display : function (severity, title, message, duration) {
 			duration = duration || 5;
 			if (!messageContainer) {
 				messageContainer = $('#msg-div');
 
 				// When message is clicked, hide it (only works if auto-hide is disabled)
-				messageContainer.click(function(){
+				messageContainer.click(function () {
 					$(this).animate({top: -$(this).outerHeight()}, 500);
 				});
 			}

@@ -48,6 +48,12 @@ class DocumentationController extends AbstractActionController {
 	protected $extensionRepository;
 
 	/**
+	 * @var \Causal\Sphinx\Domain\Repository\ProjectRepository
+	 * @inject
+	 */
+	protected $projectRepository;
+
+	/**
 	 * Main action.
 	 *
 	 * @param string $reference Reference of a documentation
@@ -89,12 +95,14 @@ class DocumentationController extends AbstractActionController {
 			);
 		}
 
-		$this->view->assign('references', $references);
-		$this->view->assign('layouts', $layouts);
-		$this->view->assign('force', $force);
-		$this->view->assign('currentReference', $currentReference);
-		$this->view->assign('currentLayout', $currentLayout);
-		$this->view->assign('contentActionUrl', $contentActionUrl);
+		$this->view->assignMultiple(array(
+			'references' => $references,
+			'layouts' => $layouts,
+			'force' => $force,
+			'currentReference' => $currentReference,
+			'currentLayout' => $currentLayout,
+			'contentActionUrl' => $contentActionUrl,
+		));
 	}
 
 	/**
@@ -105,10 +113,14 @@ class DocumentationController extends AbstractActionController {
 	protected function dashboardAction() {
 		$extensionsWithoutDocumentation = $this->extensionRepository->findByHasNoDocumentation('G,L');
 		$extensionWithOpenOfficeDocumentation = $this->extensionRepository->findByHasOpenOffice('G,L');
+		$customProjects = $this->projectRepository->findAll();
 
-		$this->view->assign('extensionsEmpty', $extensionsWithoutDocumentation);
-		$this->view->assign('extensionsOpenOffice', $extensionWithOpenOfficeDocumentation);
-		$this->view->assign('oldTYPO3', version_compare(TYPO3_version, '6.1.99', '<='));
+		$this->view->assignMultiple(array(
+			'extensionsEmpty' => $extensionsWithoutDocumentation,
+			'extensionsOpenOffice' => $extensionWithOpenOfficeDocumentation,
+			'customProjects' => $customProjects,
+			'oldTYPO3' => version_compare(TYPO3_version, '6.1.99', '<='),
+		));
 	}
 
 	/**
@@ -318,6 +330,92 @@ class DocumentationController extends AbstractActionController {
 		}
 
 		return $layouts;
+	}
+
+	// -----------------------------------------------
+	// AJAX ACTIONS
+	// -----------------------------------------------
+
+	/**
+	 * Returns a form to edit a custom project.
+	 *
+	 * @param string $documentationKey
+	 * @return void
+	 */
+	protected function editCustomProjectAction($documentationKey) {
+		$response = array();
+
+		$project = $this->projectRepository->findByDocumentationKey($documentationKey);
+		if ($project !== NULL) {
+			$this->view->assign('project', $project);
+			$response['status'] = 'success';
+			$response['statusText'] = $this->view->render();
+		} else {
+			$response['status'] = 'error';
+		}
+
+		$this->returnAjax($response);
+	}
+
+	/**
+	 * Updates a custom project.
+	 * Note: Parameters are read from $_POST.
+	 *
+	 * @return void
+	 */
+	protected function updateCustomProjectAction() {
+		$response = array();
+		$success = FALSE;
+
+		$group = GeneralUtility::_POST('group');
+		$name = GeneralUtility::_POST('name');
+		$description = GeneralUtility::_POST('description');
+		$documentationKey = GeneralUtility::_POST('documentationKey');
+		$originalDocumentationKey = GeneralUtility::_POST('originalDocumentationKey');
+		$directory = GeneralUtility::_POST('directory');
+		$updateGroup = GeneralUtility::_POST('updateGroup') === 'true';
+
+		$project = $this->projectRepository->findByDocumentationKey($originalDocumentationKey);
+		if ($project !== NULL) {
+			$previousGroup = $project->getGroup();
+
+			$project->setGroup($group);
+			$project->setName($name);
+			$project->setDescription($description);
+			$project->setDocumentationKey($documentationKey);
+			$project->setDirectory($directory);
+
+			$success = $this->projectRepository->update($project);
+			if ($success && $updateGroup) {
+				$success = $this->projectRepository->renameGroup($previousGroup, $group);
+			}
+		}
+
+		if ($success) {
+			$response['status'] = 'success';
+		} else {
+			$response['status'] = 'error';
+		}
+
+		$this->returnAjax($response);
+	}
+
+	/**
+	 * Removes a custom project.
+	 *
+	 * @param string $documentationKey Reference of a custom project
+	 * @return void
+	 */
+	protected function removeCustomProjectAction($documentationKey) {
+		$response = array();
+
+		if ($this->projectRepository->remove($documentationKey)) {
+			$response['status'] = 'success';
+		} else {
+			$response['status'] = 'error';
+		}
+
+		$this->returnAjax($response);
 	}
 
 }

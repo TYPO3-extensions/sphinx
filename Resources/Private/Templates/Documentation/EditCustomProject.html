@@ -1,0 +1,24 @@
+<div title="{f:translate(key:'dashboard.action.editCustomProject')}">
+	<form>
+		<fieldset>
+			<label for="group"><f:translate key="project.group" /></label>
+			<input type="text" name="group" id="group" value="{project.group}" class="text ui-widget-content ui-corner-all half-width">
+
+			<input type="checkbox" name="updateGroup" id="updateGroup" value="1" class="checkbox" />
+			<label for="updateGroup" title="{f:translate(key:'dashboard.form.edit.updateProjectGroup.description')}"><f:translate key="dashboard.form.edit.updateProjectGroup" /></label>
+
+			<label for="name"><f:translate key="project.name" /></label>
+			<input type="text" name="name" id="name" value="{project.name}" class="text ui-widget-content ui-corner-all">
+
+			<label for="description"><f:translate key="project.description" /></label>
+			<textarea name="description" id="description" class="text ui-widget-content ui-corner-all">{project.description}</textarea>
+
+			<label for="documentationKey"><f:translate key="project.documentationKey" /></label>
+			<input type="text" name="documentationKey" id="documentationKey" value="{project.documentationKey}" class="text ui-widget-content ui-corner-all">
+			<input type="hidden" name="originalDocumentationKey" id="originalDocumentationKey" value="{project.documentationKey}" />
+
+			<label for="directory"><f:translate key="project.directory" /></label>
+			<input type="text" name="directory" id="directory" value="{project.directory}" class="text ui-widget-content ui-corner-all">
+		</fieldset>
+	</form>
+</div>

@@ -112,17 +112,17 @@ HTML;
 
 		$out[] = '<script type="text/javascript">';
 		$out[] = <<<JS
-$(document).ready(function() {
+$(document).ready(function () {
 	$('#$pluginId').treetable({ expandable: true });
 
 	// Highlight selected row
-	$("#$pluginId tbody").on("mousedown", "tr", function() {
+	$("#$pluginId tbody").on("mousedown", "tr", function () {
 		$(".selected").not(this).removeClass("selected");
 		$(this).toggleClass("selected");
 	});
 
 	// Open selected file on double-click
-	$("#$pluginId td span[class='file']").on("dblclick", function(e) {
+	$("#$pluginId td span[class='file']").on("dblclick", function (e) {
 		var file = $(event.target).closest("tr").attr('data-path');
 		CausalSphinxEditor.openFile(file);
 	});

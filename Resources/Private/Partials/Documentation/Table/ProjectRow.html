@@ -1,0 +1,17 @@
+{namespace sphinx=Causal\Sphinx\ViewHelpers}
+<tr id="{project.documentationKey}" >
+	<td>{project.group}</td>
+	<td class="title">
+		<f:image src="EXT:sphinx/Resources/Public/Images/default_icon.png" alt="{project.name}" />
+		{project.name}
+	</td>
+	<td>{project.description}</td>
+	<td class="actions">
+		<sphinx:link.action action="javascript:CausalSphinxDashboard.editCustomProject('{project.documentationKey}')" icon="actions-document-open">
+			<f:translate key="dashboard.action.editCustomProject" />
+		</sphinx:link.action>
+		<sphinx:link.action action="javascript:CausalSphinxDashboard.removeCustomProject('{project.documentationKey}')" icon="actions-edit-delete">
+			<f:translate key="dashboard.action.removeCustomProject" />
+		</sphinx:link.action>
+	</td>
+</tr>

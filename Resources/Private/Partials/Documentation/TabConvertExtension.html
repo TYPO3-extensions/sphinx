@@ -1,0 +1,15 @@
+<p><f:translate key="dashboard.tabs.convert.title" /></p>
+<table id="tx-sphinx-convert-list" class="tx-sphinx-extension-list">
+	<thead>
+	<tr>
+		<th><f:translate key="tx_sphinx_domain_model_extension.title" /></th>
+		<th><f:translate key="tx_sphinx_domain_model_extension.description" /></th>
+		<th><f:translate key="dashboard.action" /></th>
+	</tr>
+	</thead>
+	<tbody>
+		<f:for each="{extensionsOpenOffice}" as="extension">
+			<f:render partial="Documentation/Table/ExtensionRow" arguments="{extension: extension, action: 'convert', icon: 'status-status-reference-soft'}"/>
+		</f:for>
+	</tbody>
+</table>

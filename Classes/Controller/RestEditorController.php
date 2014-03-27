@@ -107,9 +107,7 @@ class RestEditorController extends AbstractActionController {
 			$response['statusText'] = $e->getMessage();
 		}
 
-		header('Content-type: application/json');
-		echo json_encode($response);
-		exit;
+		$this->returnAjax($response);
 	}
 
 	/**
@@ -181,9 +179,7 @@ class RestEditorController extends AbstractActionController {
 			$response['statusText'] = $e->getMessage();
 		}
 
-		header('Content-type: application/json');
-		echo json_encode($response);
-		exit;
+		$this->returnAjax($response);
 	}
 
 	/**
@@ -198,9 +194,7 @@ class RestEditorController extends AbstractActionController {
 
 		$manuals = $this->documentationRepository->findManualsBySearchTerm($q);
 
-		header('Content-type: application/json');
-		echo json_encode(array_values($manuals));
-		exit;
+		$this->returnAjax(array_values($manuals));
 	}
 
 	/**
@@ -298,9 +292,7 @@ class RestEditorController extends AbstractActionController {
 			return $html;
 		}
 
-		header('Content-type: application/json');
-		echo json_encode(array('html' => $html));
-		exit;
+		$this->returnAjax(array('html' => $html));
 	}
 
 	/**
@@ -351,9 +343,7 @@ class RestEditorController extends AbstractActionController {
 			);
 		}
 
-		header('Content-type: application/json');
-		echo json_encode($response);
-		exit;
+		$this->returnAjax($response);
 	}
 
 	// -----------------------------------------------

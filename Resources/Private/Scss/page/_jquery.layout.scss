@@ -181,12 +181,16 @@ iframe.ui-layout-mask {}	/* extra mask for objects/applets */
 	padding: 10px !important;
 }
 
-.ui-accordion-content {
-	padding: 0 1em !important;
+.ui-layout-pane .ui-widget {
+	padding: .5em 1em;
 }
 
-.ui-widget {
-	padding: .5em 1em;
+.ui-layout-pane .ui-accordion {
+	padding: 0;
+}
+
+.ui-accordion-content {
+	padding: 0 1em !important;
 }
 
 /*

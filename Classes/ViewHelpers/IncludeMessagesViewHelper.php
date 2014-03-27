@@ -56,7 +56,7 @@ class IncludeMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
 
 		$json = json_encode($messages);
 		$out = <<<JS
-$(document).ready(function() {
+$(document).ready(function () {
 	$jsDictionnary = $json;
 });
 JS;
