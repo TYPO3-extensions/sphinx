@@ -55,11 +55,17 @@
 				<source>Kickstart Sphinx Documentation</source>
 				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.1.4.</note>
 			</trans-unit>
-			<trans-unit id="kickstart.extension.title">
-				<source>Kickstart Extension Documentation</source>
+			<trans-unit id="dashboard.tabs.kickstart.label">
+				<source>Kickstart</source>
 			</trans-unit>
-			<trans-unit id="convert.extension.title">
-				<source>Convert Extension Documentation</source>
+			<trans-unit id="dashboard.tabs.kickstart.title">
+				<source>This panel lets you kickstart a new documentation for local extensions that have no manuals.</source>
+			</trans-unit>
+			<trans-unit id="dashboard.tabs.convert.label">
+				<source>Convert</source>
+			</trans-unit>
+			<trans-unit id="dashboard.tabs.convert.title">
+				<source>This panel lets you convert OpenOffice manuals from local extensions into a Sphinx project.</source>
 			</trans-unit>
 			<trans-unit id="kickstart.action">
 				<source>Action</source>
