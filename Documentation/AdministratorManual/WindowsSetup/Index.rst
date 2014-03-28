@@ -79,7 +79,7 @@ Installing Python
 ^^^^^^^^^^^^^^^^^
 
 Please go to http://www.python.org/download/releases/ and download the Python Windows Installer. As of writing,
-Python 2.7.5 is known to be working properly. Then launch the installer and follow the instructions:
+Python 2.7.6 is known to be working properly. Then launch the installer and follow the instructions:
 
 .. figure:: ../../Images/python_setup.png
 	:alt: Installing Python

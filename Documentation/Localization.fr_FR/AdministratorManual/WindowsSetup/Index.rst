@@ -81,7 +81,7 @@ Installation de Python
 ^^^^^^^^^^^^^^^^^^^^^^
 
 Allez sur http://www.python.org/download/releases/ et téléchargez l'installateur Python pour Windows. Au moment de la
-rédaction, Python 2.7.5 est connu pour fonctionner correctement. Ensuite exécutez l'installateur et suivez les
+rédaction, Python 2.7.6 est connu pour fonctionner correctement. Ensuite exécutez l'installateur et suivez les
 instructions :
 
 .. figure:: ../../../Images/python_setup.png
