@@ -53,8 +53,14 @@ CausalSphinxApplication = {
 		// Make the data table filter react to the clearing of the filter field
 		$('.dataTables_wrapper .dataTables_filter input').clearable({
 			onClear: function() {
-				CausalSphinxApplication.datatable1.fnFilter('');
-				CausalSphinxApplication.datatable2.fnFilter('');
+				switch ($(this).closest('.dataTables_filter').attr('id')) {
+					case 'tx-sphinx-kickstart-list_filter':
+						CausalSphinxApplication.datatable1.fnFilter('');
+						break;
+					case 'tx-sphinx-convert-list_filter':
+						CausalSphinxApplication.datatable2.fnFilter('');
+						break;
+				}
 			}
 		});
 
