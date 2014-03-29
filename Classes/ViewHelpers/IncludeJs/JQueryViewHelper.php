@@ -24,6 +24,8 @@ namespace Causal\Sphinx\ViewHelpers\IncludeJs;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Includes a given version from jQuery
  *
@@ -49,7 +51,7 @@ class JQueryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		$isTwoDigits = !$isEmpty && !$isThreeDigits && preg_match('/^\d+\.\d+$/', $version);
 
 		if (!$isThreeDigits) {
-			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(PATH_typo3 . 'contrib/jquery');
+			$files = GeneralUtility::getFilesInDir(PATH_typo3 . 'contrib/jquery');
 			foreach ($files as $file) {
 				if (preg_match('/^jquery-([0-9.]+).min.js$/', $file, $matches)) {
 					if ($isTwoDigits) {
@@ -69,7 +71,7 @@ class JQueryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		$jqueryFilename = 'jquery-' . $version . '.min.js';
 		if (!is_file(PATH_typo3 . 'contrib/jquery/' . $jqueryFilename)) {
 			// Load from Google's CDN
-			$scheme = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
+			$scheme = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
 			if ($isTwoDigits && version_compare($version, '1.8', '<=')) {
 				$src = $scheme . '://ajax.googleapis.com/ajax/libs/jquery/' . $version . '/jquery.min.js';
 			} else {

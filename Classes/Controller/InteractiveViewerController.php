@@ -24,6 +24,10 @@ namespace Causal\Sphinx\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use Causal\Sphinx\Utility\MiscUtility;
+
 /**
  * Interactive Documentation Viewer for the 'sphinx' extension.
  *
@@ -58,7 +62,7 @@ class InteractiveViewerController extends AbstractActionController {
 	 */
 	protected function initializeAction() {
 		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc')) {
-			$this->sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
+			$this->sphinxReader = GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
 			$this->sphinxReader
 				->setKeepPermanentLinks(FALSE)
 				->setDefaultFile('Index')
@@ -89,11 +93,11 @@ class InteractiveViewerController extends AbstractActionController {
 				list($extensionKey, $locale) = explode('.', $identifier, 2);
 				$this->languageDirectory = empty($locale) ? 'default' : $locale;
 				$this->extension = $extensionKey;
-				$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $this->languageDirectory . '/json');
+				$path = GeneralUtility::getFileAbsFileName('typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $this->languageDirectory . '/json');
 			break;
 			case 'USER':
 				if (is_file($documentationFilename)) {
-					$path = dirname($documentationFilename);
+					$path = PathUtility::dirname($documentationFilename);
 				} else {
 					$path = '';
 					$this->signalSlotDispatcher->dispatch(
@@ -127,7 +131,7 @@ class InteractiveViewerController extends AbstractActionController {
 		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference-' . $reference, $document);
 
 		/** @var \Causal\Sphinx\Domain\Model\Documentation $documentation */
-		$documentation = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\Sphinx\Domain\Model\Documentation', $this->sphinxReader);
+		$documentation = GeneralUtility::makeInstance('Causal\Sphinx\Domain\Model\Documentation', $this->sphinxReader);
 		$documentation->setCallbackLinks(array($this, 'getLink'));
 		$documentation->setCallbackImages(array($this, 'processImage'));
 
@@ -182,7 +186,7 @@ class InteractiveViewerController extends AbstractActionController {
 			$restdocVersion = substr($restdocVersion, 0, strrpos($restdocVersion, '-')) . '.0';
 		}
 
-		$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($this->request->getControllerExtensionKey());
+		$metadata = MiscUtility::getExtensionMetaData($this->request->getControllerExtensionKey());
 		list($minVersion, $_) = explode('-', $metadata['constraints']['suggests']['restdoc']);
 
 		if (version_compare($restdocVersion, $minVersion, '<')) {
@@ -335,13 +339,13 @@ class InteractiveViewerController extends AbstractActionController {
 			list($extensionKey, $locale) = explode('.', $identifier, 2);
 
 			if (empty($locale)) {
-				$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
+				$documentationType = MiscUtility::getDocumentationType($extensionKey);
 			} else {
-				$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getLocalizedDocumentationType($extensionKey, $locale);
+				$documentationType = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
 			}
 
-			if ($documentationType === \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX) {
-				$localizationDirectories = \Causal\Sphinx\Utility\GeneralUtility::getLocalizationDirectories($extensionKey);
+			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_SPHINX) {
+				$localizationDirectories = MiscUtility::getLocalizationDirectories($extensionKey);
 				$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 
 				$filename = ($document ? substr($document, 0, -1) : 'Index') . '.rst';
@@ -402,17 +406,17 @@ class InteractiveViewerController extends AbstractActionController {
 		$path = rtrim($path, '/') . '/';
 		$mtime = filemtime($path . 'warnings.txt');
 
-		$cacheDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/');
+		$cacheDirectory = GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/');
 		$cacheFiles = glob($cacheDirectory . 'warnings-' . md5($path) . '.*');
 		if ($cacheFiles === FALSE) {
 			// An error occured
 			$cacheFiles = array();
 		}
 		if (count($cacheFiles) > 0) {
-			list($_, $timestamp) = explode('.', basename($cacheFiles[0]));
+			list($_, $timestamp) = explode('.', PathUtility::basename($cacheFiles[0]));
 			if ($timestamp == $mtime) {
-				return \TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo(dirname($cacheFiles[0]),
-					PATH_site) . basename($cacheFiles[0]);
+				return PathUtility::getRelativePathTo(PathUtility::dirname($cacheFiles[0]),
+					PATH_site) . PathUtility::basename($cacheFiles[0]);
 			} else {
 				// Cache file is now outdated
 				@unlink($cacheFiles[0]);
@@ -468,7 +472,7 @@ class InteractiveViewerController extends AbstractActionController {
 						'RestEditor'
 					);
 
-					$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
+					$baseUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 					return sprintf(
 							$linkPattern,
 							$baseUrl . $actionUrl,
@@ -504,9 +508,9 @@ HTML;
 
 		$contents = str_replace('###CONTENTS###', $contents, $htmlTemplate);
 		$cacheFile = $cacheDirectory . 'warnings-' . md5($path) . '.' . $mtime . '.html';
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $contents);
+		GeneralUtility::writeFile($cacheFile, $contents);
 
-		return \TYPO3\CMS\Core\Utility\PathUtility::getRelativePathTo(dirname($cacheFile), PATH_site) . basename($cacheFile);
+		return PathUtility::getRelativePathTo(dirname($cacheFile), PATH_site) . PathUtility::basename($cacheFile);
 	}
 
 }

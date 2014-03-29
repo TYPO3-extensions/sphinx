@@ -24,6 +24,9 @@ namespace Causal\Sphinx\Slots;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Sphinx\Utility\MiscUtility;
+
 /**
  * Slot implementation for EXT:sphinx.
  *
@@ -90,7 +93,7 @@ class CustomProject {
 		}
 
 		$basePath = $projects[$identifier]->getDirectory();
-		$absoluteBasePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($basePath);
+		$absoluteBasePath = GeneralUtility::getFileAbsFileName($basePath);
 		$warningsFilename = $absoluteBasePath . 'warnings.txt';
 
 		if (is_file($absoluteBasePath . 'source/conf.py')) {
@@ -136,13 +139,13 @@ class CustomProject {
 						if (copy($configurationFilename, $backupConfigurationFilename)) {
 							if ($confFilename === '_make/conf.py') {
 								$settingsYamlFilename = $absoluteBasePath . 'Settings.yml';
-								\Causal\Sphinx\Utility\GeneralUtility::overrideThemeT3Sphinx($absoluteBasePath);
+								MiscUtility::overrideThemeT3Sphinx($absoluteBasePath);
 								if (is_file($settingsYamlFilename)) {
 									$confpyFilename = $absoluteBasePath . $confFilename;
 									$confpy = file_get_contents($confpyFilename);
-									$pythonConfiguration = \Causal\Sphinx\Utility\GeneralUtility::yamlToPython($settingsYamlFilename);
+									$pythonConfiguration = MiscUtility::yamlToPython($settingsYamlFilename);
 									$confpy .= LF . '# Additional options from Settings.yml' . LF . implode(LF, $pythonConfiguration);
-									\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($confpyFilename, $confpy);
+									GeneralUtility::writeFile($confpyFilename, $confpy);
 								}
 							}
 
@@ -215,14 +218,14 @@ class CustomProject {
 		} catch (\RuntimeException $e) {
 			$filename = 'typo3temp/tx_myext_' . $e->getCode() . '.log';
 			$content = $e->getMessage();
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
+			GeneralUtility::writeFile(PATH_site . $filename, $content);
 			$documentationUrl = '../' . $filename;
 		}
 
 		// Automatically fix Intersphinx mapping, if needed
 		$settingsYamlFilename = $absoluteBasePath . rtrim($sourceDirectory, '/') . '/Settings.yml';
 		if (is_file($warningsFilename) && is_file($settingsYamlFilename) && is_writable($settingsYamlFilename)) {
-			if (\Causal\Sphinx\Utility\GeneralUtility::autofixMissingIntersphinxMapping($warningsFilename, $settingsYamlFilename)) {
+			if (MiscUtility::autofixMissingIntersphinxMapping($warningsFilename, $settingsYamlFilename)) {
 				// Recompile and hope this works this time!
 				$this->render($identifier, $layout, $force, $documentationUrl);
 			}
@@ -240,7 +243,7 @@ class CustomProject {
 		$projects = $this->projectRepository->findAll();
 		$directory = $projects[$identifier]->getDirectory();
 
-		$absoluteBasePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory);
+		$absoluteBasePath = GeneralUtility::getFileAbsFileName($directory);
 		if (is_file($absoluteBasePath . 'source/conf.py')) {
 			// Separate source/build directories
 			$buildDirectory = 'build/json/';
@@ -249,7 +252,7 @@ class CustomProject {
 			$buildDirectory = '_make/build/json/';
 		}
 
-		$path = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory . $buildDirectory);
+		$path = GeneralUtility::getFileAbsFileName($directory . $buildDirectory);
 	}
 
 	/**
@@ -265,15 +268,15 @@ class CustomProject {
 		$projects = $this->projectRepository->findAll();
 		$directory = $projects[$identifier]->getDirectory();
 
-		$absoluteBasePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory);
+		$absoluteBasePath = GeneralUtility::getFileAbsFileName($directory);
 		if (is_file($absoluteBasePath . 'source/conf.py')) {
 			// Separate source/build directories
 			$directory = rtrim($directory, '/') . '/source/';
 		}
 
 		$jsonFilename = substr($document, 0, strlen($document) - 1) . '.rst';
-		$basePath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory);
-		$filename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($directory . $jsonFilename);
+		$basePath = GeneralUtility::getFileAbsFileName($directory);
+		$filename = GeneralUtility::getFileAbsFileName($directory . $jsonFilename);
 	}
 
 }

@@ -24,6 +24,8 @@ namespace Causal\Sphinx\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Abstract multi action controller.
  *
@@ -54,7 +56,7 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 		if (!is_array($configuration)) {
 			$configuration = array();
 		}
-		$this->settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($configuration, $this->settings);
+		$this->settings = GeneralUtility::array_merge($configuration, $this->settings);
 	}
 
 	/**

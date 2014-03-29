@@ -24,6 +24,8 @@ namespace Causal\Sphinx\Slots;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Slot implementation for EXT:documentation.
  *
@@ -78,7 +80,7 @@ class SphinxDocumentation {
 			$packageKey = $extension->getPackageKey();
 
 			if ($locale !== NULL) {
-				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($locale, $language)) {
+				if (!GeneralUtility::isFirstPartOfStr($locale, $language)) {
 					// Translated manual but does not match current Backend language
 					continue;
 				}

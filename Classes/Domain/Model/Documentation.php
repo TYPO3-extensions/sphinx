@@ -24,6 +24,8 @@ namespace Causal\Sphinx\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Causal\Sphinx\Utility\MiscUtility;
+
 /**
  * Domain model for a Documentation.
  *
@@ -119,12 +121,12 @@ class Documentation {
 		if ($body === NULL) {
 			if ($this->sphinxReader->getDocument() !== 'genindex/') {
 				$body = $this->sphinxReader->getBody($this->callbackLinks, $this->callbackImages);
-				$body = \Causal\Sphinx\Utility\GeneralUtility::postProcessPropertyTables($body);
+				$body = MiscUtility::postProcessPropertyTables($body);
 
 				// Recreate list of labels for cross-referencing
 				if (strpos($body, '<span id="labels-for-crossreferencing"></span>') !== FALSE) {
 					$references = $this->sphinxReader->getReferences();
-					$body = \Causal\Sphinx\Utility\GeneralUtility::populateCrossReferencingLabels($body, $references, $this->callbackLinks);
+					$body = MiscUtility::populateCrossReferencingLabels($body, $references, $this->callbackLinks);
 				}
 			} else {
 				$linksCategories = array();

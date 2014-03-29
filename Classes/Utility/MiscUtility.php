@@ -24,10 +24,12 @@ namespace Causal\Sphinx\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * General utility.
+ * Miscellaneous utility.
  *
  * @category    Utility
  * @package     TYPO3
@@ -36,7 +38,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class GeneralUtility {
+class MiscUtility {
 
 	const DOCUMENTATION_TYPE_UNKNOWN    = 0;
 	const DOCUMENTATION_TYPE_SPHINX     = 1;
@@ -265,7 +267,7 @@ HTML;
 	 * @param callback $callbackLinks Callback to generate Links in current context
 	 * @return string Processed contents
 	 * @throws \RuntimeException
-	 * @see \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences()
+	 * @see MiscUtility::getIntersphinxReferences()
 	 * @see http://forge.typo3.org/issues/48313
 	 */
 	static public function populateCrossReferencingLabels($contents, array $references, $callbackLinks) {
@@ -309,7 +311,7 @@ HTML;
 					if (!$isGeneralIndex) {
 						$source = '_sources/' . $file . '.txt';
 						$filename = call_user_func($callbackLinks, $source);
-						$absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($filename, 3));
+						$absoluteFilename = GeneralUtility::getFileAbsFileName(substr($filename, 3));
 						if (is_file($absoluteFilename)) {
 							$fileContents = file_get_contents($absoluteFilename);
 							$lines = explode(LF, $fileContents);
@@ -371,7 +373,7 @@ HTML;
 	static public function getReferenceFromIntersphinxKey($intersphinxKey, array &$additionalData = NULL) {
 		// No dependency injection needed here
 		/** @var \Causal\Sphinx\Domain\Repository\DocumentationRepository $documentationRepository */
-		$documentationRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Repository\\DocumentationRepository');
+		$documentationRepository = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Repository\\DocumentationRepository');
 		$officialDocuments = $documentationRepository->getOfficialDocuments();
 
 		// Not an official "document" but still...
@@ -412,7 +414,7 @@ HTML;
 			// Extension key has been provided
 			$extensionKey = $reference;
 			$reference = 'typo3cms.extensions.' . $extensionKey;
-			$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+			$cacheFile = GeneralUtility::getFileAbsFileName(
 				'typo3temp/tx_' . static::$extKey . '/' . $extensionKey . '/_make/build/json/objects.inv'
 			);
 			$remoteUrl = 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey;
@@ -420,7 +422,7 @@ HTML;
 				$remoteUrl .= '/' . strtolower(str_replace('_', '-', $locale));
 			}
 		} else {
-			$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+			$cacheFile = GeneralUtility::getFileAbsFileName(
 				'typo3temp/tx_' . static::$extKey . '/' . $reference . '/objects.inv'
 			);
 		}
@@ -430,7 +432,7 @@ HTML;
 		}
 
 		if (empty($localFilename)) {
-			$localFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+			$localFilename = GeneralUtility::getFileAbsFileName(
 				'typo3conf/Documentation/' . $reference . '/' . ($locale ?: 'default') . '/json/objects.inv'
 			);
 		}
@@ -443,21 +445,21 @@ HTML;
 		}
 
 		if (is_file($localFilename)) {
-			$path = dirname($localFilename);
+			$path = PathUtility::dirname($localFilename);
 		} elseif ($useCache && is_file($cacheFile)) {
-			$path = dirname($cacheFile);
+			$path = PathUtility::dirname($cacheFile);
 		} elseif ($remoteFilename) {
-			$content = \Causal\Sphinx\Utility\GeneralUtility::getUrl($remoteFilename);
+			$content = static::getUrl($remoteFilename);
 			if ($content) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($cacheFile) . '/');
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $content);
-				$path = dirname($cacheFile);
+				GeneralUtility::mkdir_deep(PathUtility::dirname($cacheFile) . '/');
+				GeneralUtility::writeFile($cacheFile, $content);
+				$path = PathUtility::dirname($cacheFile);
 			}
 		}
 
 		if ($path) {
 			/** @var \Tx_Restdoc_Reader_SphinxJson $sphinxReader */
-			$sphinxReader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
+			$sphinxReader = GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
 			$sphinxReader->setPath($path);
 			$references = $sphinxReader->getReferences();
 		} else {
@@ -491,7 +493,7 @@ HTML;
 
 			$filename = 'typo3temp/tx_' . static::$extKey . '/1369679343.log';
 			$content = 'ERROR 1369679343: No documentation found for extension "' . $extensionKey . '"';
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $content);
+			GeneralUtility::writeFile(PATH_site . $filename, $content);
 			return '../' . $filename;
 		}
 
@@ -512,7 +514,7 @@ HTML;
 		}
 
 		$relativeOutputDirectory = 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $languageDirectory . '/' . $documentationFormat;
-		$absoluteOutputDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($relativeOutputDirectory);
+		$absoluteOutputDirectory = GeneralUtility::getFileAbsFileName($relativeOutputDirectory);
 		if (!$force && is_file($absoluteOutputDirectory . '/' . $masterDocument)) {
 			// Do not render the documentation again
 			$documentationUrl = '../' . $relativeOutputDirectory . '/' . $masterDocument;
@@ -522,7 +524,7 @@ HTML;
 		$metadata = static::getExtensionMetaData($extensionKey);
 		$basePath = PATH_site . 'typo3temp/tx_' . static::$extKey . '/' . $extensionKey;
 		$documentationBasePath = $basePath;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($basePath, TRUE);
+		GeneralUtility::rmdir($basePath, TRUE);
 		if (!empty($locale)) {
 			$documentationBasePath .= '/Localization.' . $locale;
 		}
@@ -549,9 +551,9 @@ HTML;
 				if (empty($locale)) {
 					$localizationDirectories = static::getLocalizationDirectories($extensionKey);
 					foreach ($localizationDirectories as $info) {
-						$localizationDirectory = $basePath . DIRECTORY_SEPARATOR . basename($info['directory']);
+						$localizationDirectory = $basePath . DIRECTORY_SEPARATOR . PathUtility::basename($info['directory']);
 						if (is_dir($localizationDirectory)) {
-							\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($localizationDirectory, TRUE);
+							GeneralUtility::rmdir($localizationDirectory, TRUE);
 						}
 					}
 				}
@@ -561,7 +563,7 @@ HTML;
 				$source = $extensionPath . 'README.rst';
 				copy($source, $basePath . '/Index.rst');
 				if (is_dir($extensionPath . 'Resources')) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($basePath . '/Resources');
+					GeneralUtility::mkdir($basePath . '/Resources');
 					static::recursiveCopy($extensionPath . 'Resources', $basePath . '/Resources');
 				}
 			break;
@@ -581,7 +583,7 @@ HTML;
 				$confpy = file_get_contents($confpyFilename);
 				$pythonConfiguration = static::yamlToPython($settingsYamlFilename);
 				$confpy .= LF . '# Additional options from Settings.yml' . LF . implode(LF, $pythonConfiguration);
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($confpyFilename, $confpy);
+				GeneralUtility::writeFile($confpyFilename, $confpy);
 			}
 		}
 
@@ -595,14 +597,14 @@ HTML;
 			}
 		} catch (\RuntimeException $e) {
 			$relativeFilename = 'typo3temp/tx_' . static::$extKey . '/' . $e->getCode() . '.log';
-			$absoluteFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($relativeFilename);
+			$absoluteFilename = GeneralUtility::getFileAbsFileName($relativeFilename);
 			$content = $e->getMessage();
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($absoluteFilename, $content);
+			GeneralUtility::writeFile($absoluteFilename, $content);
 			return '../' . $relativeFilename;
 		}
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($absoluteOutputDirectory, TRUE);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($absoluteOutputDirectory . '/');
+		GeneralUtility::rmdir($absoluteOutputDirectory, TRUE);
+		GeneralUtility::mkdir_deep($absoluteOutputDirectory . '/');
 
 		$warningsFilename = $documentationBasePath . '/warnings.txt';
 		if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
@@ -635,7 +637,7 @@ HTML;
 				str_replace('/', DIRECTORY_SEPARATOR, $documentationSource),
 				$warnings
 			);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($absoluteOutputDirectory . '/warnings.txt', $warnings);
+			GeneralUtility::writeFile($absoluteOutputDirectory . '/warnings.txt', $warnings);
 		}
 
 		if ($format !== 'pdf') {
@@ -716,7 +718,7 @@ HTML;
 			$replacement = $matches[1] . implode(LF . $matches[1], $imports);
 			$newConfiguration = preg_replace($t3sphinxImportPattern, $replacement, $configuration);
 
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($basePath . '/_make/conf.py', $newConfiguration);
+			GeneralUtility::writeFile($basePath . '/_make/conf.py', $newConfiguration);
 		}
 	}
 
@@ -738,7 +740,7 @@ HTML;
 		foreach ($iterator as $item) {
 			/** @var \splFileInfo $item */
 			if ($item->isDir()) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($target . '/' . $iterator->getSubPathName());
+				GeneralUtility::mkdir($target . '/' . $iterator->getSubPathName());
 			} elseif (is_file($item)) {
 				copy($item, $target . '/' . $iterator->getSubPathName());
 			}
@@ -792,7 +794,7 @@ conf.py:
 ...
 
 YAML;
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $configuration);
+			GeneralUtility::writeFile($filename, $configuration);
 		}
 
 		$contents = file_get_contents($filename);
@@ -856,7 +858,7 @@ YAML;
 		}
 
 		return $isDirty
-			? \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, implode(LF, $lines))
+			? GeneralUtility::writeFile($filename, implode(LF, $lines))
 			: NULL;
 	}
 
@@ -868,12 +870,12 @@ YAML;
 	 * @see http://forge.typo3.org/issues/51275
 	 */
 	static public function cacheIntersphinxMapping($filename) {
-		$cacheDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+		$cacheDirectory = GeneralUtility::getFileAbsFileName(
 			'typo3temp/tx_' . static::$extKey . '/intersphinx/'
 		);
 
 		// Clean-up caches
-		$cacheFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($cacheDirectory);
+		$cacheFiles = GeneralUtility::getFilesInDir($cacheDirectory);
 		foreach ($cacheFiles as $cacheFile) {
 			if ($GLOBALS['EXEC_TIME'] - filemtime($cacheDirectory . $cacheFile) > 28800) {	// 8 hours of cache
 				@unlink($cacheDirectory . $cacheFile);
@@ -910,8 +912,8 @@ YAML;
 				if (!is_file($cacheFile)) {
 					$objectsInv = static::getUrl($remoteUrl);
 					if ($objectsInv) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($cacheFile) . '/');
-						\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $objectsInv);
+						GeneralUtility::mkdir_deep(PathUtility::dirname($cacheFile) . '/');
+						GeneralUtility::writeFile($cacheFile, $objectsInv);
 					}
 				}
 				$lines[$i + 2] = $indent . $indent . '- ' . $cacheFile;
@@ -920,7 +922,7 @@ YAML;
 		}
 
 		if ($isDirty) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, implode(LF, $lines));
+			GeneralUtility::writeFile($filename, implode(LF, $lines));
 		}
 	}
 
@@ -988,7 +990,7 @@ YAML;
 							$indent = $matches[1];
 							$firstItem = TRUE;
 							while (preg_match('/^' . $indent . '- (.+)/', $lines[++$i], $matches)) {
-								if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($matches[1], 't3sphinx.')) {
+								if (GeneralUtility::isFirstPartOfStr($matches[1], 't3sphinx.')) {
 									// Extension t3sphinx is not compatible with JSON output
 									continue;
 								}
@@ -1054,13 +1056,13 @@ YAML;
 	 * @return mixed The content from the resource given as input. FALSE if an error has occured.
 	 */
 	static public function getUrl($url) {
-		// Known problems when using \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl() with https:// resources
-		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($url, 'https://')) {
-			return \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
+		// Known problems when using GeneralUtility::getUrl() with https:// resources
+		if (!GeneralUtility::isFirstPartOfStr($url, 'https://')) {
+			return GeneralUtility::getUrl($url);
 		}
 
 		/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
-		$http = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url);
+		$http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url);
 		try {
 			return $http->send()->getBody();
 		} catch (\Exception $e) {

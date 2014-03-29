@@ -24,6 +24,9 @@ namespace Causal\Sphinx\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * SphinxBuilder Wrapper.
  *
@@ -291,7 +294,7 @@ class SphinxBuilder {
 		$sourceDirectory = rtrim($sourceDirectory);
 		$buildDirectory = rtrim($buildDirectory);
 		$paperSize = 'a4';
-		$sphinxSourcesPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('uploads/tx_sphinx/');
+		$sphinxSourcesPath = GeneralUtility::getFileAbsFileName('uploads/tx_sphinx/');
 		$templatePath = $sphinxSourcesPath . 'RestTools/LaTeX/';
 		$templateFiles = array(
 			'typo3.sty',
@@ -439,20 +442,20 @@ class SphinxBuilder {
 		$buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
 		if (!empty($make)) {
 			$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
-				\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . dirname($pdflatex) . '"') . ' && ' .
+				MiscUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . PathUtility::dirname($pdflatex) . '"') . ' && ' .
 				$make . ' -C ' . static::safeEscapeshellarg($buildDirectory . '/latex') . ' all-pdf' .
 				' 2>&1';	// redirect errors to STDOUT
 		} else {
 			// We are on Windows and "make" is not available,
 			// we will thus simulate it
 			$latexPath = $basePath . $buildDirectory . DIRECTORY_SEPARATOR . 'latex' . DIRECTORY_SEPARATOR;
-			$files = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($latexPath, 'tex');
+			$files = GeneralUtility::getFilesInDir($latexPath, 'tex');
 			$mainFile = current($files);
 			$basename = substr($mainFile, 0, -4);	// Remove .tex
 			$makeindex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('makeindex');
 
 			$cmd = 'cd ' . escapeshellarg($latexPath) . ' && ' .
-				\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . dirname($pdflatex) . '"') . ' && ' .
+				MiscUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . PathUtility::dirname($pdflatex) . '"') . ' && ' .
 				escapeshellarg($pdflatex) . ' ' . $mainFile . ' && ' .
 				escapeshellarg($pdflatex) . ' ' . $mainFile . ' && ' .
 				escapeshellarg($pdflatex) . ' ' . $mainFile . ' && ' .
@@ -659,12 +662,12 @@ class SphinxBuilder {
 					$sphinxBuilder = $link;
 				} else {
 					// Relative symbolic link
-					$sphinxBuilder = realpath(dirname($sphinxBuilder) . '/' . $link);
+					$sphinxBuilder = realpath(PathUtility::dirname($sphinxBuilder) . '/' . $link);
 				}
 			}
 			$sphinxPath = substr($sphinxBuilder, 0, strrpos($sphinxBuilder, '/bin/') + 1);
 		} else {
-			$sphinxPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+			$sphinxPath = GeneralUtility::getFileAbsFileName(
 					'typo3temp/tx_sphinx/sphinx-doc/' . $sphinxVersion . '/'
 			);
 			$sphinxBuilder = $sphinxPath . 'bin/sphinx-build';
@@ -689,10 +692,10 @@ class SphinxBuilder {
 		$pythonPath = str_replace('/', DIRECTORY_SEPARATOR, $pythonPath);
 
 		$exports = array(
-			\Causal\Sphinx\Utility\GeneralUtility::getExportCommand('PYTHONPATH', $pythonPath)
+			MiscUtility::getExportCommand('PYTHONPATH', $pythonPath)
 		);
 		if (static::$htmlConsole) {
-			$exports[] = \Causal\Sphinx\Utility\GeneralUtility::getExportCommand('COLORTERM', '1');
+			$exports[] = MiscUtility::getExportCommand('COLORTERM', '1');
 		}
 		$cmd = implode(' && ', $exports) . ' && ' . escapeshellarg($sphinxBuilder);
 		return $cmd;
@@ -823,10 +826,10 @@ class SphinxBuilder {
 		);
 
 		if ($contents !== $newContents) {
-			$extensionIsDeactivated = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($filename, $newContents);
+			$extensionIsDeactivated = GeneralUtility::writeFile($filename, $newContents);
 		}
 
-		$settingsYmlFilename = dirname($filename) . '/../Settings.yml';
+		$settingsYmlFilename = PathUtility::dirname($filename) . '/../Settings.yml';
 		if (is_file($settingsYmlFilename)) {
 			$contents = file_get_contents($settingsYmlFilename);
 			$newContents = preg_replace(
@@ -836,7 +839,7 @@ class SphinxBuilder {
 			);
 
 			if ($contents !== $newContents) {
-				$extensionIsDeactivated = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($settingsYmlFilename, $newContents);
+				$extensionIsDeactivated = GeneralUtility::writeFile($settingsYmlFilename, $newContents);
 			}
 		}
 
@@ -850,11 +853,11 @@ class SphinxBuilder {
 	 * @return boolean
 	 */
 	static protected function isTemporaryPath($path) {
-		$temporaryPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/');
+		$temporaryPath = GeneralUtility::getFileAbsFileName('typo3temp/');
 		// Compatibility with Windows platform
 		$temporaryPath = str_replace('/', DIRECTORY_SEPARATOR, $temporaryPath);
 
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $temporaryPath);
+		return GeneralUtility::isFirstPartOfStr($path, $temporaryPath);
 	}
 
 	/**
@@ -883,10 +886,10 @@ class SphinxBuilder {
 			// Multiple commands are not supported on Windows
 			// We use an intermediate batch file instead
 			$relativeBatchFilename = 'typo3temp/tx_' . static::$extKey . '/build-' . $GLOBALS['EXEC_TIME'] . '.bat';
-			$absoluteBatchFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($relativeBatchFilename);
+			$absoluteBatchFilename = GeneralUtility::getFileAbsFileName($relativeBatchFilename);
 			$batchScript = '@ECHO OFF' . CR . LF . str_replace(' && ', CR . LF, $command);
 
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($absoluteBatchFilename, $batchScript);
+			GeneralUtility::writeFile($absoluteBatchFilename, $batchScript);
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($absoluteBatchFilename, $output, $returnValue);
 
 			@unlink($absoluteBatchFilename);

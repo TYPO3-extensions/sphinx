@@ -24,6 +24,9 @@ namespace Causal\Sphinx\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Sphinx\Utility\MiscUtility;
+
 /**
  * Module 'Sphinx Documentation' for the 'sphinx' extension.
  *
@@ -126,7 +129,7 @@ class DocumentationController extends AbstractActionController {
 				if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
 					$this->redirect('dashboard');
 				}
-				$documentationUrl = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
+				$documentationUrl = MiscUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
 			break;
 			case 'USER':
 				$documentationUrl = NULL;
@@ -155,9 +158,9 @@ class DocumentationController extends AbstractActionController {
 
 		if ($layout === 'json' && substr($documentationUrl, -6) === '.fjson') {
 			if (substr($documentationUrl, 0, 3) === '../') {
-				$documentationFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($documentationUrl, 3));
+				$documentationFilename = GeneralUtility::getFileAbsFileName(substr($documentationUrl, 3));
 			} elseif ($documentationUrl{0} === '/') {
-				$documentationFilename = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(substr($documentationUrl, 1));
+				$documentationFilename = GeneralUtility::getFileAbsFileName(substr($documentationUrl, 1));
 			} else {
 				$documentationFilename = '';
 			}
@@ -179,7 +182,7 @@ class DocumentationController extends AbstractActionController {
 		}
 
 		if (substr(preg_replace('/\?t=\d+$/', '', $documentationUrl), -4) === '.pdf') {
-			$referer = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER');
+			$referer = GeneralUtility::getIndpEnv('HTTP_REFERER');
 			if (substr($referer, strpos($referer, '?M=') + 3) === 'help_SphinxDocumentation') {
 				$this->view->assign('documentationUrl', $documentationUrl);
 				return;
@@ -206,7 +209,7 @@ class DocumentationController extends AbstractActionController {
 				$reference = 'EXT:' . $extensionKey;
 			} catch (\RuntimeException $exception) {
 				$this->controllerContext->getFlashMessageQueue()->enqueue(
-					\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					GeneralUtility::makeInstance(
 						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 						$exception->getMessage(),
 						'',
@@ -233,9 +236,9 @@ class DocumentationController extends AbstractActionController {
 		$reference = NULL;
 
 		try {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($documentationDirectory . DIRECTORY_SEPARATOR);
+			GeneralUtility::mkdir_deep($documentationDirectory . DIRECTORY_SEPARATOR);
 
-			$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
+			$metadata = MiscUtility::getExtensionMetaData($extensionKey);
 			\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
 				$documentationDirectory,
 				$metadata['title'],
@@ -249,7 +252,7 @@ class DocumentationController extends AbstractActionController {
 			$reference = 'EXT:' . $extensionKey;
 		} catch (\RuntimeException $exception) {
 			$this->controllerContext->getFlashMessageQueue()->enqueue(
-				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				GeneralUtility::makeInstance(
 					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 					$exception->getMessage(),
 					'',

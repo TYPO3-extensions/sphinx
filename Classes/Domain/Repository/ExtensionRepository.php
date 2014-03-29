@@ -24,6 +24,9 @@ namespace Causal\Sphinx\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Sphinx\Utility\MiscUtility;
+
 /**
  * Extension repository.
  *
@@ -49,9 +52,9 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$titles = array();
 
 		foreach ($loadedExtensionKeys as $extensionKey) {
-			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
-			if ($documentationType === \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_UNKNOWN
-				&& \TYPO3\CMS\Core\Utility\GeneralUtility::inList($allowedInstallTypes, $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'])) {
+			$documentationType = MiscUtility::getDocumentationType($extensionKey);
+			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_UNKNOWN
+				&& GeneralUtility::inList($allowedInstallTypes, $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'])) {
 
 				$extension = $this->createExtensionObject($extensionKey);
 				$extensions[$extensionKey] = $extension;
@@ -76,10 +79,10 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$titles = array();
 
 		foreach ($loadedExtensionKeys as $extensionKey) {
-			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
-			if (($documentationType === \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX
-				|| $documentationType === \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_README)
-				&& \TYPO3\CMS\Core\Utility\GeneralUtility::inList($allowedInstallTypes, $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'])) {
+			$documentationType = MiscUtility::getDocumentationType($extensionKey);
+			if (($documentationType === MiscUtility::DOCUMENTATION_TYPE_SPHINX
+				|| $documentationType === MiscUtility::DOCUMENTATION_TYPE_README)
+				&& GeneralUtility::inList($allowedInstallTypes, $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'])) {
 
 				$extension = $this->createExtensionObject($extensionKey);
 				$extensions[$extensionKey] = $extension;
@@ -88,9 +91,9 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 				// Look for possible translations
 				$supportedLocales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
 				foreach ($supportedLocales as $locale => $name) {
-					$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getLocalizedDocumentationType($extensionKey, $locale);
-					if ($documentationType === \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX) {
-						$localizationDirectories = \Causal\Sphinx\Utility\GeneralUtility::getLocalizationDirectories($extensionKey);
+					$documentationType = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
+					if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_SPHINX) {
+						$localizationDirectories = MiscUtility::getLocalizationDirectories($extensionKey);
 						$documentationKey = $extensionKey . '.' . $localizationDirectories[$locale]['locale'];
 
 						$extension = $this->createExtensionObject($extensionKey);
@@ -121,9 +124,9 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$titles = array();
 
 		foreach ($loadedExtensionKeys as $extensionKey) {
-			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
-			if ($documentationType === \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_OPENOFFICE
-				&& \TYPO3\CMS\Core\Utility\GeneralUtility::inList($allowedInstallTypes, $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'])) {
+			$documentationType = MiscUtility::getDocumentationType($extensionKey);
+			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_OPENOFFICE
+				&& GeneralUtility::inList($allowedInstallTypes, $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'])) {
 
 				$extension = $this->createExtensionObject($extensionKey);
 				$extensions[$extensionKey] = $extension;
@@ -294,10 +297,10 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function createExtensionObject($extensionKey) {
 		$info = $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey];
-		$metadata = \Causal\Sphinx\Utility\GeneralUtility::getExtensionMetaData($extensionKey);
+		$metadata = MiscUtility::getExtensionMetaData($extensionKey);
 
 		/** @var \Causal\Sphinx\Domain\Model\Extension $extension */
-		$extension = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Extension');
+		$extension = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Extension');
 		$extension->setExtensionKey($extensionKey);
 		$extension->setTitle($metadata['title']);
 		$extension->setIcon($info['siteRelPath'] . $info['ext_icon']);

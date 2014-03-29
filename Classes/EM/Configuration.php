@@ -24,6 +24,8 @@ namespace Causal\Sphinx\EM;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Configuration class for the TYPO3 Extension Manager.
  *
@@ -50,17 +52,17 @@ class Configuration {
 		$out = array();
 		$globalVersion = NULL;
 
-		$sphinxPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc');
+		$sphinxPath = GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc');
 		$versions = array();
 		if (is_dir($sphinxPath)) {
-			$versions = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($sphinxPath);
+			$versions = GeneralUtility::get_dirs($sphinxPath);
 		}
 		$versions = array_diff($versions, array('bin'));
 
 		// Maybe a global install of Sphinx is available
 		$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
 		// Do not resolve symbolic link here, no need if after all one wants to link to a local version of sphinx-build
-		if ($sphinxBuilder && !\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($$sphinxBuilder, $sphinxPath)) {
+		if ($sphinxBuilder && !GeneralUtility::isFirstPartOfStr($$sphinxBuilder, $sphinxPath)) {
 			$output = array();
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec(escapeshellarg($sphinxBuilder) . ' --version 2>&1', $output);
 			$versionLine = $output[0];
@@ -172,7 +174,7 @@ JS;
 		$out[] = '</div>';
 		$out[] = '</div>';
 
-		$selectedPlugins = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $params['fieldValue'], TRUE);
+		$selectedPlugins = GeneralUtility::trimExplode(',', $params['fieldValue'], TRUE);
 
 		// First show plugins available on docs.typo3.org, then the others
 		$sortedPlugins = array('start' => array(), 'end' => array());

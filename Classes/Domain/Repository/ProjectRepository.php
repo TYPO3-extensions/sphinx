@@ -24,7 +24,7 @@ namespace Causal\Sphinx\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * (Custom) Project repository.
@@ -50,7 +50,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$data = $this->loadProjects();
 		foreach ($data as $p) {
 			/** @var \Causal\Sphinx\Domain\Model\Project $project */
-			$project = CoreGeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project');
+			$project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project');
 			$project->setDocumentationKey($p['key']);
 			$project->setName($p['name']);
 			$project->setDescription($p['description']);
@@ -68,7 +68,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function loadProjects() {
 		$projects = array();
-		$filename = CoreGeneralUtility::getFileAbsFileName(static::PROJECTS_FILENAME);
+		$filename = GeneralUtility::getFileAbsFileName(static::PROJECTS_FILENAME);
 		if (is_file($filename)) {
 			$contents = file_get_contents($filename);
 			$projects = json_decode($contents, TRUE);
@@ -86,8 +86,8 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	protected function persistProjects(array $projects) {
-		$filename = CoreGeneralUtility::getFileAbsFileName(static::PROJECTS_FILENAME);
-		CoreGeneralUtility::writeFile($filename, json_encode($projects));
+		$filename = GeneralUtility::getFileAbsFileName(static::PROJECTS_FILENAME);
+		GeneralUtility::writeFile($filename, json_encode($projects));
 	}
 
 }

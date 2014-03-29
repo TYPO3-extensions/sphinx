@@ -24,6 +24,8 @@ namespace Causal\Sphinx\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * SphinxQuickstart Wrapper.
  *
@@ -84,7 +86,7 @@ class SphinxQuickstart {
 		$masterDocument = 'index';
 
 		$pathRoot = rtrim($pathRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pathRoot);
+		GeneralUtility::mkdir_deep($pathRoot);
 
 		$isTypo3Documentation = is_dir(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/Templates/Projects/' . $template . '/_make');
 
@@ -116,10 +118,10 @@ class SphinxQuickstart {
 			$excludePattern = '_build';
 		}
 		foreach ($directories as $directory) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($pathRoot . $directory);
+			GeneralUtility::mkdir_deep($pathRoot . $directory);
 		}
 
-		$binDirectory = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc/bin/');
+		$binDirectory = GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc/bin/');
 
 		// Compatibility with Windows platform
 		$binDirectory = str_replace('/', DIRECTORY_SEPARATOR, $binDirectory);
@@ -161,7 +163,7 @@ class SphinxQuickstart {
 	 */
 	static protected function createFromTemplate(array $config) {
 		/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
-		$contentObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 
 		// Recursively instantiate template files
 		$source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/Templates/Projects/' . $config['template'] . '/';
@@ -177,7 +179,7 @@ class SphinxQuickstart {
 		foreach ($iterator as $item) {
 			/** @var \splFileInfo $item */
 			if ($item->isDir()) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($config['path'] . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+				GeneralUtility::mkdir($config['path'] . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
 			} else {
 				if (substr($item, -5) === '.tmpl') {
 					$targetSubPathName = substr($iterator->getSubPathName(), 0, -5);
@@ -186,7 +188,7 @@ class SphinxQuickstart {
 					}
 					$contents = file_get_contents($item);
 					$contents = $contentObj->substituteMarkerArray($contents, $config['markers'], '###|###');
-					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($config['path'] . DIRECTORY_SEPARATOR . $targetSubPathName, $contents);
+					GeneralUtility::writeFile($config['path'] . DIRECTORY_SEPARATOR . $targetSubPathName, $contents);
 				} elseif (substr($item, -4) === '.rst') {
 					$targetSubPathName = substr($iterator->getSubPathName(), 0, -4) . $config['sourceFileSuffix'];
 					copy($item, $config['path'] . DIRECTORY_SEPARATOR . $targetSubPathName);

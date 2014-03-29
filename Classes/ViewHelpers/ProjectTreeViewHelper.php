@@ -24,6 +24,8 @@ namespace Causal\Sphinx\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\PathUtility;
+
 /**
  * Creates a project tree browser using jquery-treetable.
  *
@@ -70,16 +72,16 @@ HTML;
 			$identifier = md5($path);
 			$trTag = '<tr data-tt-id="' . $identifier . '"';
 			$trTag .= ' data-path="' . str_replace('\\', '/', $path) . '"';
-			if (basename($path) === $path) {
+			if (PathUtility::basename($path) === $path) {
 				// 1st level
 				$out[] = $trTag . '>';
 			} else {
-				$out[] = $trTag . ' data-tt-parent-id="' . md5(dirname($path)) . '">';
+				$out[] = $trTag . ' data-tt-parent-id="' . md5(PathUtility::dirname($path)) . '">';
 			}
 
 			/** @var \splFileInfo $item */
 			if ($item->isDir()) {
-				$out[] = '<td><span class="folder">' . htmlspecialchars(basename($path)) . '</span></td>';
+				$out[] = '<td><span class="folder">' . htmlspecialchars(PathUtility::basename($path)) . '</span></td>';
 			} else {
 				if (($pos = strrpos($path, '.')) !== FALSE) {
 					$extension = strtolower(substr($path, $pos + 1));
@@ -97,7 +99,7 @@ HTML;
 						$class = 'file';
 					break;
 				}
-				$out[] = '<td><span class="' . $class . '">' . htmlspecialchars(basename($path)) . '</span></td>';
+				$out[] = '<td><span class="' . $class . '">' . htmlspecialchars(PathUtility::basename($path)) . '</span></td>';
 			}
 
 			$out[] = '</tr>';

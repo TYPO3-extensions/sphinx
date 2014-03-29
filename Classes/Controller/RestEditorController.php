@@ -24,6 +24,10 @@ namespace Causal\Sphinx\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use Causal\Sphinx\Utility\MiscUtility;
+
 /**
  * ReStructuredText Editor for the 'sphinx' extension.
  *
@@ -134,7 +138,7 @@ class RestEditorController extends AbstractActionController {
 			}
 			$contents = implode(LF, $lines);
 
-			$success = is_writable($parts['filename']) && \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($parts['filename'], $contents);
+			$success = is_writable($parts['filename']) && GeneralUtility::writeFile($parts['filename'], $contents);
 			if (!$success) {
 				throw new \RuntimeException(sprintf(
 					$this->translate('editor.message.save.failure'),
@@ -149,7 +153,7 @@ class RestEditorController extends AbstractActionController {
 
 				switch ($parts['type']) {
 					case 'EXT':
-						$outputFilename = \Causal\Sphinx\Utility\GeneralUtility::generateDocumentation($parts['extensionKey'], $layout, $force, $parts['locale']);
+						$outputFilename = MiscUtility::generateDocumentation($parts['extensionKey'], $layout, $force, $parts['locale']);
 					break;
 					case 'USER':
 						$outputFilename = NULL;
@@ -238,7 +242,7 @@ class RestEditorController extends AbstractActionController {
 			break;
 		}
 
-		$references = \Causal\Sphinx\Utility\GeneralUtility::getIntersphinxReferences(
+		$references = MiscUtility::getIntersphinxReferences(
 			$reference,
 			$locale,
 			$remoteUrl,
@@ -324,7 +328,7 @@ class RestEditorController extends AbstractActionController {
 			break;
 		}
 
-		$ret = \Causal\Sphinx\Utility\GeneralUtility::addIntersphinxMapping(
+		$ret = MiscUtility::addIntersphinxMapping(
 			$settingsFilename,
 			$prefix,
 			$remoteUrl ?: 'http://docs.typo3.org/typo3cms/extensions/' . $prefix
@@ -363,13 +367,13 @@ class RestEditorController extends AbstractActionController {
 	 * @return boolean
 	 */
 	protected function isEditableFiletype($filename) {
-		$filename = basename($filename);
+		$filename = PathUtility::basename($filename);
 		if (($pos = strrpos($filename, '.')) !== FALSE) {
 			$extension = strtolower(substr($filename, $pos + 1));
 		} else {
 			$extension = '';
 		}
-		return empty($extension) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList(
+		return empty($extension) || GeneralUtility::inList(
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'],
 			$extension
 		);
@@ -396,15 +400,15 @@ class RestEditorController extends AbstractActionController {
 			case 'EXT':
 				list($extensionKey, $locale) = explode('.', $identifier, 2);
 				if (empty($locale)) {
-					$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
+					$documentationType = MiscUtility::getDocumentationType($extensionKey);
 				} else {
-					$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getLocalizedDocumentationType($extensionKey, $locale);
+					$documentationType = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
 				}
 				switch ($documentationType) {
-					case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX:
+					case MiscUtility::DOCUMENTATION_TYPE_SPHINX:
 						$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
 					break;
-					case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_README:
+					case MiscUtility::DOCUMENTATION_TYPE_README:
 						$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 					break;
 					default:
@@ -460,12 +464,12 @@ class RestEditorController extends AbstractActionController {
 	 */
 	protected function getFilename($extensionKey, $document, $filename, $locale) {
 		if (empty($locale)) {
-			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getDocumentationType($extensionKey);
+			$documentationType = MiscUtility::getDocumentationType($extensionKey);
 		} else {
-			$documentationType = \Causal\Sphinx\Utility\GeneralUtility::getLocalizedDocumentationType($extensionKey, $locale);
+			$documentationType = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
 		}
 		switch ($documentationType) {
-			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX:
+			case MiscUtility::DOCUMENTATION_TYPE_SPHINX:
 				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 				if (empty($locale)) {
 					$path .= 'Documentation/';
@@ -473,7 +477,7 @@ class RestEditorController extends AbstractActionController {
 					// Allow to write in main directory even if working on translation
 					$path .= 'Documentation/';
 				} else {
-					$localizationDirectories = \Causal\Sphinx\Utility\GeneralUtility::getLocalizationDirectories($extensionKey);
+					$localizationDirectories = MiscUtility::getLocalizationDirectories($extensionKey);
 					$path .= $localizationDirectories[$locale]['directory'] . '/';
 				}
 				if (!empty($document)) {
@@ -482,7 +486,7 @@ class RestEditorController extends AbstractActionController {
 					$filename = $path . $filename;
 				}
 			break;
-			case \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_README:
+			case MiscUtility::DOCUMENTATION_TYPE_README:
 				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
 				$filename = $path . 'README.rst';
 			break;

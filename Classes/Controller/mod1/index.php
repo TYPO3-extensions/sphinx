@@ -27,7 +27,7 @@ namespace Causal\Sphinx\Controller;
 $GLOBALS['LANG']->includeLLFile('EXT:sphinx/Resources/Private/Language/locallang.xlf');
 $GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissions and exits if the users has no permission for entry.
 
-use TYPO3\CMS\Core\Utility\GeneralUtility as CoreGeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Sphinx\Utility\SphinxBuilder;
 
 /**
@@ -72,13 +72,13 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	public function init() {
 		parent::init();
 
-		$this->id = ($combinedIdentifier = CoreGeneralUtility::_GP('id'));
-		$this->objectManager = CoreGeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$this->id = ($combinedIdentifier = GeneralUtility::_GP('id'));
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
 		try {
 			if ($combinedIdentifier) {
 				/** @var $fileFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
-				$fileFactory = CoreGeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+				$fileFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
 				// Disallow the rendering of the processing folder (e.g. could be called manually)
 				// and all folders without any defined storage
@@ -104,7 +104,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $fileException) {
 			// Set folder object to null and throw a message later on
 			$this->folderObject = NULL;
-			$this->errorMessage = CoreGeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			$this->errorMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 				sprintf($GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE),
 					htmlspecialchars($this->id)
 				),
@@ -114,7 +114,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// File operation object:
-		$this->basicFF = CoreGeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
+		$this->basicFF = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
 		$this->basicFF->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 	}
 
@@ -126,16 +126,16 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function main() {
 		// Initialize doc
-		$this->doc = CoreGeneralUtility::makeInstance('template');
+		$this->doc = GeneralUtility::makeInstance('template');
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey) . 'Resources/Private/Layouts/ModuleSphinx.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->styleSheetFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) . 'Resources/Public/Css/Backend.css';
 
 		/** @var \TYPO3\CMS\Filelist\FileList $filelist */
-		$filelist = CoreGeneralUtility::makeInstance('TYPO3\CMS\Filelist\FileList');
+		$filelist = GeneralUtility::makeInstance('TYPO3\CMS\Filelist\FileList');
 		$filelist->backPath = $GLOBALS['BACK_PATH'];
 
-		$filelist->clipObj = CoreGeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
+		$filelist->clipObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 		$filelist->clipObj->fileMode = 1;
 		$filelist->clipObj->initializeClipboard();
 
@@ -171,7 +171,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		$storageRecord = $this->folderObject->getStorage()->getStorageRecord();
 		if ($storageRecord['driver'] === 'Local') {
-			$this->basePath = CoreGeneralUtility::getFileAbsFileName($this->folderObject->getPublicUrl());
+			$this->basePath = GeneralUtility::getFileAbsFileName($this->folderObject->getPublicUrl());
 
 			if ($_POST['project']) {
 				\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
@@ -246,7 +246,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	protected function buildFormAction() {
 		// Handle compilation, if needed
 		$output = '';
-		$operation = CoreGeneralUtility::_POST('operation');
+		$operation = GeneralUtility::_POST('operation');
 		if ($operation) {
 			$output = $this->handleCompilation($operation);
 		}
@@ -403,14 +403,14 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				'not compatible with JSON output.',
 				$this->project['conf_py']
 			);
-			$flashMessage = CoreGeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, 'Sphinx', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
+			$flashMessage = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, 'Sphinx', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-			$flashMessageService = CoreGeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+			$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
 			/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
 			$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
 			$defaultFlashMessageQueue->enqueue($flashMessage);
 
-			CoreGeneralUtility::writeFile($this->project['basePath'] . $this->project['conf_py'], $newConfiguration);
+			GeneralUtility::writeFile($this->project['basePath'] . $this->project['conf_py'], $newConfiguration);
 		}
 	}
 
@@ -494,7 +494,7 @@ HTML;
 
 // Make instance:
 /** @var $SOBE \Causal\Sphinx\Controller\ConsoleController */
-$SOBE = CoreGeneralUtility::makeInstance('Causal\\Sphinx\\Controller\\ConsoleController');
+$SOBE = GeneralUtility::makeInstance('Causal\\Sphinx\\Controller\\ConsoleController');
 $SOBE->init();
 
 // Include files?

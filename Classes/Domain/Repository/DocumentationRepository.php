@@ -24,6 +24,9 @@ namespace Causal\Sphinx\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Sphinx\Utility\MiscUtility;
+
 /**
  * Documentation repository.
  *
@@ -54,7 +57,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		$extensionKeys = array();
 
 		foreach ($manuals as $extensionKey => $info) {
-			if ($info['format'] == \Causal\Sphinx\Utility\GeneralUtility::DOCUMENTATION_TYPE_SPHINX) {
+			if ($info['format'] == MiscUtility::DOCUMENTATION_TYPE_SPHINX) {
 				$extensionKeys[] = $extensionKey;
 				$sphinxManuals[] = array(
 					'extensionKey' => $extensionKey,
@@ -116,13 +119,13 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	protected function getExtensionManuals() {
-		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+		$cacheFile = GeneralUtility::getFileAbsFileName(
 			'typo3temp/manuals.json'
 		);
 		if (!is_file($cacheFile) || $GLOBALS['EXEC_TIME'] - filemtime($cacheFile) > 86400) {
-			$json = \Causal\Sphinx\Utility\GeneralUtility::getUrl('http://docs.typo3.org/typo3cms/extensions/manuals.json');
+			$json = MiscUtility::getUrl('http://docs.typo3.org/typo3cms/extensions/manuals.json');
 			if ($json) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $json);
+				GeneralUtility::writeFile($cacheFile, $json);
 			}
 		}
 		$manuals = array();
@@ -140,13 +143,13 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getOfficialDocuments() {
 		// See \TYPO3\CMS\Documentation\Service\DocumentationService::getOfficialDocuments()
-		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+		$cacheFile = GeneralUtility::getFileAbsFileName(
 			'typo3temp/documents.json'
 		);
 		if (!is_file($cacheFile) || $GLOBALS['EXEC_TIME'] - filemtime($cacheFile) > 86400) {
-			$json = \Causal\Sphinx\Utility\GeneralUtility::getUrl('http://docs.typo3.org/typo3cms/documents.json');
+			$json = MiscUtility::getUrl('http://docs.typo3.org/typo3cms/documents.json');
 			if ($json) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($cacheFile, $json);
+				GeneralUtility::writeFile($cacheFile, $json);
 			}
 		}
 		$documents = array();
