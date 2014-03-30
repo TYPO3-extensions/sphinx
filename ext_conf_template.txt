@@ -1,17 +1,17 @@
-# cat=basic//10; type=user[EXT:sphinx/Classes/EM/Configuration.php:Causal\Sphinx\EM\Configuration->getVersions]; label=Sphinx version: Please select the Sphinx version to be used:
+# cat=basic//10; type=user[EXT:sphinx/Classes/EM/Configuration.php:Causal\Sphinx\EM\Configuration->getVersions]; label=LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.sphinx.version
 version =
 
-# cat=basic//20; type=boolean; label=Deactivate unknown extensions: If ticked, faulty extensions will be deactivated to let the Sphinx compilation continue anyway
+# cat=basic//20; type=boolean; label=LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.auto_continue
 auto_continue = 1
 
-# cat=basic//30; type=boolean; label=Load console module: If ticked, the Sphinx Console module will be present under section "File"
+# cat=basic//30; type=boolean; label=LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.module.load_console
 load_console_module = 1
 
-# cat=pdf//10; type=options[- none -=,rst2pdf=rst2pdf,LaTeX (better output)=pdflatex]; label=PDF Builder: Please select the builder to use to render PDF
+# cat=pdf//10; type=options[LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.pdf_builder.none=,LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.pdf_builder.rst2pdf=rst2pdf,LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.pdf_builder.pdflatex=pdflatex]; label=LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.pdf_builder
 pdf_builder =
 
-# cat=pdf//20; type=boolean; label=Install rst2pdf: Locally build rst2pdf, additional gcc libraries are needed
+# cat=pdf//20; type=boolean; label=LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.rst2pdf
 install_rst2pdf = 0
 
-# cat=3rd-party Plugins; type=user[EXT:sphinx/Classes/EM/Configuration.php:Causal\Sphinx\EM\Configuration->getPlugins]; label=Activate plugins: 3rd-party plugins you may use in your documents.
+# cat=plugins; type=user[EXT:sphinx/Classes/EM/Configuration.php:Causal\Sphinx\EM\Configuration->getPlugins]; label=LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.sphinx.plugins
 plugins =

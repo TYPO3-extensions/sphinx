@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2014-03-27T09:36:45Z" product-name="sphinx">
+		<header/>
+		<body>
+			<trans-unit id="settings.sphinx.version">
+				<source>Sphinx version: Please select the Sphinx version to be used:</source>
+			</trans-unit>
+			<trans-unit id="settings.sphinx.plugins">
+				<source>Activate plugins: 3rd-party plugins you may use in your documents.</source>
+			</trans-unit>
+			<trans-unit id="settings.build.auto_continue">
+				<source>Deactivate unknown extensions: If ticked, faulty extensions will be deactivated to let the Sphinx compilation continue anyway</source>
+			</trans-unit>
+			<trans-unit id="settings.build.pdf_builder">
+				<source>PDF Builder: Please select the builder to use to render PDF</source>
+			</trans-unit>
+			<trans-unit id="settings.build.pdf_builder.none">
+				<source>- none -</source>
+			</trans-unit>
+			<trans-unit id="settings.build.pdf_builder.rst2pdf">
+				<source>rst2pdf</source>
+			</trans-unit>
+			<trans-unit id="settings.build.pdf_builder.pdflatex">
+				<source>LaTeX (better output)</source>
+			</trans-unit>
+			<trans-unit id="settings.build.rst2pdf">
+				<source>Install rst2pdf: Locally build rst2pdf, additional gcc libraries are needed</source>
+			</trans-unit>
+			<trans-unit id="settings.module.load_console">
+				<source>Load console module: If ticked, the Sphinx Console module will be present under section "File"</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
