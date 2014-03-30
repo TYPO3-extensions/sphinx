@@ -87,12 +87,12 @@ class CustomProject {
 	 * @return void
 	 */
 	public function render($identifier, $layout, $force, &$documentationUrl) {
-		$projects = $this->projectRepository->findAll();
-		if (!isset($projects[$identifier])) {
+		$project = $this->projectRepository->findByDocumentationKey($identifier);
+		if ($project === NULL) {
 			return;
 		}
 
-		$basePath = $projects[$identifier]->getDirectory();
+		$basePath = $project->getDirectory();
 		$absoluteBasePath = GeneralUtility::getFileAbsFileName($basePath);
 		$warningsFilename = $absoluteBasePath . 'warnings.txt';
 
@@ -240,8 +240,8 @@ class CustomProject {
 	 * @return void
 	 */
 	public function retrieveBasePath($identifier, &$path) {
-		$projects = $this->projectRepository->findAll();
-		$directory = $projects[$identifier]->getDirectory();
+		$project = $this->projectRepository->findByDocumentationKey($identifier);
+		$directory = $project->getDirectory();
 
 		$absoluteBasePath = GeneralUtility::getFileAbsFileName($directory);
 		if (is_file($absoluteBasePath . 'source/conf.py')) {
@@ -265,8 +265,8 @@ class CustomProject {
 	 * @return void
 	 */
 	public function retrieveRestFilename($identifier, $document, &$basePath, &$filename) {
-		$projects = $this->projectRepository->findAll();
-		$directory = $projects[$identifier]->getDirectory();
+		$project = $this->projectRepository->findByDocumentationKey($identifier);
+		$directory = $project->getDirectory();
 
 		$absoluteBasePath = GeneralUtility::getFileAbsFileName($directory);
 		if (is_file($absoluteBasePath . 'source/conf.py')) {

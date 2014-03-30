@@ -337,6 +337,58 @@ class DocumentationController extends AbstractActionController {
 	// -----------------------------------------------
 
 	/**
+	 * Returns a form to add a custom project.
+	 *
+	 * @return void
+	 */
+	protected function addCustomProjectAction() {
+		$response = array();
+		$response['status'] = 'success';
+		$response['statusText'] = $this->view->render();
+
+		$this->returnAjax($response);
+	}
+
+	/**
+	 * Creates a custom project.
+	 * Note: Parameters are read from $_POST.
+	 *
+	 * @return void
+	 */
+	protected function createCustomProjectAction() {
+		$response = array();
+		$success = FALSE;
+
+		$group = GeneralUtility::_POST('group');
+		$name = GeneralUtility::_POST('name');
+		$description = GeneralUtility::_POST('description');
+		$documentationKey = GeneralUtility::_POST('documentationKey');
+		$directory = GeneralUtility::_POST('directory');
+
+		$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
+
+		// $existingProject must be NULL otherwise it means we try to reuse an existing project's key
+		if ($existingProject === NULL) {
+			/** @var \Causal\Sphinx\Domain\Model\Project $project */
+			$project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project', $documentationKey);
+			$project->setName($name);
+			$project->setDescription($description);
+			$project->setGroup($group);
+			$project->setDirectory($directory);
+
+			$success = $this->projectRepository->add($project);
+		}
+
+		if ($success) {
+			$response['status'] = 'success';
+		} else {
+			$response['status'] = 'error';
+		}
+
+		$this->returnAjax($response);
+	}
+
+	/**
 	 * Returns a form to edit a custom project.
 	 *
 	 * @param string $documentationKey
@@ -376,7 +428,14 @@ class DocumentationController extends AbstractActionController {
 		$updateGroup = GeneralUtility::_POST('updateGroup') === 'true';
 
 		$project = $this->projectRepository->findByDocumentationKey($originalDocumentationKey);
-		if ($project !== NULL) {
+		if ($originalDocumentationKey !== $documentationKey) {
+			$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
+		} else {
+			$existingProject = NULL;
+		}
+
+		// $existingProject must be NULL otherwise it means we try to reuse an existing project's key
+		if ($project !== NULL && $existingProject === NULL) {
 			$previousGroup = $project->getGroup();
 
 			$project->setGroup($group);

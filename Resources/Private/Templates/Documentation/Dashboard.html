@@ -29,6 +29,8 @@
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/dashboard.js')}"></script>
 	<script type="text/javascript">
 		// Initialize the dashboard's actions
+		CausalSphinxDashboard.actions.addCustomProject = "{f:uri.action(action:'addCustomProject')}";
+		CausalSphinxDashboard.actions.createCustomProject = "{f:uri.action(action:'createCustomProject')}";
 		CausalSphinxDashboard.actions.editCustomProject = "{f:uri.action(action:'editCustomProject',arguments:{documentationKey:'DOCUMENTATION_KEY'})}";
 		CausalSphinxDashboard.actions.updateCustomProject = "{f:uri.action(action:'updateCustomProject')}";
 		CausalSphinxDashboard.actions.removeCustomProject = "{f:uri.action(action:'removeCustomProject',arguments:{documentationKey:'DOCUMENTATION_KEY'})}";
@@ -61,6 +63,9 @@
 		</div>
 	</f:if>
 	<div id="tabs-custom">
+		<div class="dataTables_addCustomProject">
+			<button><f:translate key="dashboard.action.addCustomProject" /></button>
+		</div>
 		<f:render partial="Documentation/TabCustom" arguments="{_all}" />
 	</div>
 </div>

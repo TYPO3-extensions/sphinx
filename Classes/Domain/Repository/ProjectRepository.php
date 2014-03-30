@@ -76,6 +76,25 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Adds a given project.
+	 *
+	 * @param \Causal\Sphinx\Domain\Model\Project $project
+	 * @return bool
+	 */
+	public function add(\Causal\Sphinx\Domain\Model\Project $project) {
+		$projects = $this->loadProjects();
+		$projects[] = array(
+			'name' => $project->getName(),
+			'description' => $project->getDescription(),
+			'group' => $project->getGroup(),
+			'key' => $project->getDocumentationKey(),
+			'directory' => $project->getDirectory(),
+		);
+
+		return $this->persistProjects($projects);
+	}
+
+	/**
 	 * Updates a given project.
 	 *
 	 * @param \Causal\Sphinx\Domain\Model\Project $project
@@ -183,7 +202,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 				$projects = array();
 			}
 		}
-		return $projects;
+		return array_values($projects);
 	}
 
 	/**
@@ -193,6 +212,9 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return bool TRUE if the list of projects was successfully persisted
 	 */
 	protected function persistProjects(array $projects) {
+		// Be sure to have contiguous indices
+		$projects = array_values($projects);
+
 		$filename = GeneralUtility::getFileAbsFileName(static::PROJECTS_FILENAME);
 		if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
 			$content = json_encode($projects, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
@@ -202,7 +224,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 				// Mimic JSON_UNESCAPE_SLASHES
 				$content = str_replace('\\/', '/', $content);
 				// Mimic JSON_PRETTY_PRINT (for our known data structure)
-				$content = "{\n\t" . substr($content, 1, -1) . "\n}";
+				$content = "[\n\t" . substr($content, 1, -1) . "\n]";
 				$content = str_replace('{"', "{\n\t\t\"", $content);
 				$content = str_replace('"}', "\"\n\t}", $content);
 				$content = str_replace('},', "},\n\t", $content);

@@ -17,6 +17,8 @@ CausalSphinxDashboard = {
 	datatable3: null,
 
 	actions: {
+		addCustomProject: null,
+		createCustomProject: null,
 		editCustomProject: null,
 		updateCustomProject: null,
 		removeCustomProject: null
@@ -30,6 +32,77 @@ CausalSphinxDashboard = {
 			o.removeClass('ui-state-error');
 			return true;
 		}
+	},
+
+	addCustomProject: function () {
+		var self = CausalSphinxDashboard;
+
+		var ajaxData;
+		$.ajax({
+			url: self.actions.addCustomProject,
+			async: false,
+			success: function (data) {
+				ajaxData = data;
+			}
+		});
+
+		var form = ajaxData['statusText'];
+		var group, name, description, documentationKey, directory;
+
+		var NewDialog = $(form).dialog({
+			height: 420,
+			width: 500,
+			modal: true,
+			open: function (event, ui) {
+				group = $('#group');
+				name = $('#name');
+				description = $('#description');
+				documentationKey = $('#documentationKey');
+				directory = $('#directory');
+			},
+			buttons: [
+				{
+					text: this.messages['dashboard.message.add'],
+					click: function () {
+						var bValid = true;
+
+						// Using "&& bValid" at the end to prevent ensure
+						// every self.checkLength() is called
+						bValid = self.checkLength(group, 3, 50) && bValid;
+						bValid = self.checkLength(name, 3, 50) && bValid;
+						bValid = self.checkLength(documentationKey, 3, 50) && bValid;
+						bValid = self.checkLength(directory, 10, 255) && bValid;
+
+						if (bValid) {
+							$.ajax({
+								type: 'POST',
+								url: self.actions.createCustomProject,
+								data: {
+									group: group.val(),
+									name: name.val(),
+									description: description.val(),
+									documentationKey: documentationKey.val(),
+									directory: directory.val()
+								},
+								success: function (data) {
+									// Trick to force reload with correct active tab
+									var redirectUri = document.location.href.replace(/#.*/, '#tabs-custom');
+									document.location.href = redirectUri;
+									location.reload(true);
+								}
+							});
+							$(this).dialog('close');
+						}
+					}
+				},
+				{
+					text: this.messages['dashboard.message.cancel'],
+					click: function () {
+						$(this).dialog('close');
+					}
+				}
+			]
+		});
 	},
 
 	editCustomProject: function (documentationKey) {
@@ -228,6 +301,31 @@ CausalSphinxDashboard = {
 		if (this.datatable3.length && getVars['search']) {
 			this.datatable3.fnFilter(getVars['search']);
 		}
+
+		// Make the data table filter react to the clearing of the filter field
+		$('.dataTables_wrapper .dataTables_filter input').clearable({
+			onClear: function () {
+				switch ($(this).closest('.dataTables_filter').attr('id')) {
+					case 'tx-sphinx-kickstart-list_filter':
+						CausalSphinxDashboard.datatable1.fnFilter('');
+						break;
+					case 'tx-sphinx-convert-list_filter':
+						CausalSphinxDashboard.datatable2.fnFilter('');
+						break;
+					case 'tx-sphinx-custom-list_filter':
+						CausalSphinxDashboard.datatable3.fnFilter('');
+						break;
+				}
+			}
+		});
+
+		$('#tx-sphinx-custom-list_filter').after($('.dataTables_addCustomProject'));
+
+		$('.dataTables_addCustomProject button').button({
+			icons: { primary: 'ui-icon-circle-plus' }
+		}).click(function () {
+			CausalSphinxDashboard.addCustomProject();
+		});
 	}
 };
 
@@ -246,22 +344,5 @@ CausalSphinxDashboard = {
 
 		// Initialize the view
 		CausalSphinxDashboard.initializeView();
-
-		// Make the data table filter react to the clearing of the filter field
-		$('.dataTables_wrapper .dataTables_filter input').clearable({
-			onClear: function () {
-				switch ($(this).closest('.dataTables_filter').attr('id')) {
-					case 'tx-sphinx-kickstart-list_filter':
-						CausalSphinxDashboard.datatable1.fnFilter('');
-						break;
-					case 'tx-sphinx-convert-list_filter':
-						CausalSphinxDashboard.datatable2.fnFilter('');
-						break;
-					case 'tx-sphinx-custom-list_filter':
-						CausalSphinxDashboard.datatable3.fnFilter('');
-						break;
-				}
-			}
-		});
 	});
 }(jQuery));

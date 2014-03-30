@@ -101,7 +101,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 Could not find any version of Sphinx:<br /><br />
 <ul>
 	<li>Are you currently offline?</li>
-	<li>Does PHP have proper OpenSSL support?</li>
+	<li>Does PHP have <a href="http://wiki.typo3.org/Exception/CMS/1318283565">proper OpenSSL support</a>?</li>
 HTML;
 
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] == '1') {

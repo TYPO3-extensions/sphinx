@@ -722,8 +722,13 @@ body.margin {
   margin: 30px 24px; }
 
 .dataTables_filter {
-  display: block;
+  display: inline-block;
   margin-bottom: 5px; }
+
+.dataTables_addCustomProject {
+  float: right; }
+  .dataTables_addCustomProject button {
+    top: -3px; }
 
 #tabs.ui-widget {
   padding: inherit; }

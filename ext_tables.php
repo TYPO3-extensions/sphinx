@@ -16,7 +16,11 @@ if (TYPO3_MODE === 'BE') {
 		'documentation',
 		'top',
 		array(
-			'Documentation' => 'index,dashboard,render,convert,createExtensionProject',
+			'Documentation' => implode(',', array(
+				'index,dashboard,render,convert',
+				'createExtensionProject',
+				'addCustomProject,createCustomProject,editCustomProject,updateCustomProject,removeCustomProject',
+			)),
 			'InteractiveViewer' => 'render,missingRestdoc,outdatedRestdoc',
 			'RestEditor' => 'edit,open,save,autocomplete,accordionReferences,updateIntersphinx',
 		),

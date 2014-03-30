@@ -105,6 +105,9 @@
 			<trans-unit id="dashboard.action.convert">
 				<source>Convert OpenOffice manual to Sphinx</source>
 			</trans-unit>
+			<trans-unit id="dashboard.action.addCustomProject">
+				<source>Add custom project</source>
+			</trans-unit>
 			<trans-unit id="dashboard.action.editCustomProject">
 				<source>Edit reference to custom project</source>
 			</trans-unit>
@@ -116,6 +119,9 @@
 			</trans-unit>
 			<trans-unit id="dashboard.message.no">
 				<source>No</source>
+			</trans-unit>
+			<trans-unit id="dashboard.message.add">
+				<source>Add</source>
 			</trans-unit>
 			<trans-unit id="dashboard.message.update">
 				<source>Update</source>
