@@ -135,6 +135,9 @@
 			<trans-unit id="dashboard.message.removeCustomProject">
 				<source>Are you sure you want to remove custom project “{0}”?</source>
 			</trans-unit>
+			<trans-unit id="dashboard.message.datatable.search">
+				<source>Search:</source>
+			</trans-unit>
 			<trans-unit id="dashboard.form.edit.updateProjectGroup">
 				<source>Update for all projects</source>
 			</trans-unit>

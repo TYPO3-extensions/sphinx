@@ -234,6 +234,9 @@ CausalSphinxDashboard = {
 		var tableHeight = ($(window).height() - 320) + 'px';
 
 		this.datatable1 = $('#tx-sphinx-kickstart-list').dataTable({
+			'oLanguage': {
+				'sSearch': this.messages['dashboard.message.datatable.search']
+			},
 			'bPaginate': false,
 			'bJQueryUI': true,
 			'sScrollY': tableHeight,
@@ -242,6 +245,9 @@ CausalSphinxDashboard = {
 			'bStateSave': true
 		});
 		this.datatable2 = $('#tx-sphinx-convert-list').dataTable({
+			'oLanguage': {
+				'sSearch': this.messages['dashboard.message.datatable.search']
+			},
 			'bPaginate': false,
 			'bJQueryUI': true,
 			'sScrollY': tableHeight,
@@ -250,6 +256,9 @@ CausalSphinxDashboard = {
 			'bStateSave': true
 		});
 		this.datatable3 = $('#tx-sphinx-custom-list').dataTable({
+			'oLanguage': {
+				'sSearch': this.messages['dashboard.message.datatable.search']
+			},
 			'fnDrawCallback': function (oSettings) {
 				if (oSettings.aiDisplay.length == 0) {
 					return;
@@ -343,7 +352,7 @@ CausalSphinxDashboard = {
 		});
 
 		// Initialize the view
-		CausalSphinxDashboard.initialize();
+		setTimeout(function () { CausalSphinxDashboard.initialize(); }, 10);
 
 		// Initializes tooltips
 		$(document).tooltip();
