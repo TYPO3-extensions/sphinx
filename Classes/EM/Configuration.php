@@ -122,6 +122,11 @@ class Configuration {
 		foreach ($versions as $version) {
 			$out[] = '<div style="margin-top:1ex">';
 			$label = $version !== 'SYSTEM' ? $version : $globalVersion . ' (system)';
+			// Make sure main release (e.g., "1.2") gets a ".0" patch release version as well
+			if (preg_match('/^\d+\.\d+$/', $label)) {
+				$label .= '.0';
+			}
+			$label = str_replace('b', ' beta ', $label);
 			$checked = $version === $selectedVersion ? ' checked="checked"' : '';
 			$out[] = '<input type="radio" id="sphinx_version_' . $i . '" name="sphinx_version" value="' . $version . '"' . $checked . ' onclick="toggleSphinxVersion();" />';
 			$out[] = '<label for="sphinx_version_' . $i . '" style="display:inline">' . $label . '</label>';
