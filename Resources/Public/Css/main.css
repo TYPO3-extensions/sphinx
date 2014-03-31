@@ -83,6 +83,9 @@ p {
   background-position: right;
   background-repeat: no-repeat; }
 
+label.has-tooltip {
+  border-bottom: dotted 1px; }
+
 /*
  * Default Layout Theme
  *
