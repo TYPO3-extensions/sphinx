@@ -184,8 +184,8 @@ HTML;
 
 		$i = 0;
 		foreach ($availableVersions as $version) {
-			$isInstalled = CoreGeneralUtility::inArray($localVersions, $version['name']);
-			$hasSources = Setup::hasSphinxSources($version['name']);
+			$isInstalled = CoreGeneralUtility::inArray($localVersions, $version['key']);
+			$hasSources = Setup::hasSphinxSources($version['key']);
 			$hasLibraries = Setup::hasPyYaml()
 				&& Setup::hasPygments()
 				&& Setup::hasRestTools()
@@ -225,7 +225,7 @@ HTML;
 	protected function downloadSphinx(array $data, array &$output) {
 		$success = TRUE;
 		$installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
-		$version = $data['name'];
+		$version = $data['key'];
 		$url = 'https://bitbucket.org' . $data['url'];
 
 		if (!Setup::hasSphinxSources($version)) {
@@ -262,7 +262,7 @@ HTML;
 	 */
 	protected function buildSphinx(array $data, array &$output) {
 		$success = FALSE;
-		$version = $data['name'];
+		$version = $data['key'];
 		$installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
 
 		if (Setup::hasSphinxSources($version)) {
@@ -303,7 +303,7 @@ HTML;
 	 * @return void
 	 */
 	protected function removeSphinx(array $data, array &$output) {
-		$version = $data['name'];
+		$version = $data['key'];
 		Setup::removeSphinx($version, $output);
 	}
 
