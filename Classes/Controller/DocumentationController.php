@@ -377,6 +377,11 @@ class DocumentationController extends AbstractActionController {
 			$project->setDirectory($directory);
 
 			$success = $this->projectRepository->add($project);
+			if (!$success) {
+				$response['statusText'] = $this->translate('dashboard.action.error.unknownError');
+			}
+		} else {
+			$response['statusText'] = $this->translate('dashboard.action.error.invalidDocumentationKey');
 		}
 
 		if ($success) {
@@ -448,6 +453,11 @@ class DocumentationController extends AbstractActionController {
 			if ($success && $updateGroup) {
 				$success = $this->projectRepository->renameGroup($previousGroup, $group);
 			}
+			if (!$success) {
+				$response['statusText'] = $this->translate('dashboard.action.error.unknownError');
+			}
+		} else {
+			$response['statusText'] = $this->translate('dashboard.action.error.invalidDocumentationKey');
 		}
 
 		if ($success) {
@@ -472,6 +482,7 @@ class DocumentationController extends AbstractActionController {
 			$response['status'] = 'success';
 		} else {
 			$response['status'] = 'error';
+			$response['statusText'] = $this->translate('dashboard.action.error.unknownError');
 		}
 
 		$this->returnAjax($response);

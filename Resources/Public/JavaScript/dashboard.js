@@ -54,6 +54,7 @@ CausalSphinxDashboard = {
 			width: 500,
 			modal: true,
 			open: function (event, ui) {
+				$('.ui-state-error').hide();
 				group = $('#group');
 				name = $('#name');
 				description = $('#description');
@@ -65,6 +66,7 @@ CausalSphinxDashboard = {
 					text: this.messages['dashboard.message.add'],
 					click: function () {
 						var bValid = true;
+						var thisDialog = $(this);
 
 						// Using "&& bValid" at the end to prevent ensure
 						// every self.checkLength() is called
@@ -85,13 +87,18 @@ CausalSphinxDashboard = {
 									directory: directory.val()
 								},
 								success: function (data) {
-									// Trick to force reload with correct active tab
-									var redirectUri = document.location.href.replace(/#.*/, '#tabs-custom');
-									document.location.href = redirectUri;
-									location.reload(true);
-								}
+									if (data['status'] === 'success') {
+										thisDialog.dialog('close');
+										// Trick to force reload with correct active tab
+										var redirectUri = document.location.href.replace(/#.*/, '#tabs-custom');
+										document.location.href = redirectUri;
+										location.reload(true);
+									} else {
+										$('.ui-state-error').html(data['statusText']).show();
+										setTimeout(function () { $('.ui-state-error').fadeOut(1500); }, 1500);
+									}
+								},
 							});
-							$(this).dialog('close');
 						}
 					}
 				},
@@ -127,6 +134,7 @@ CausalSphinxDashboard = {
 				width: 500,
 				modal: true,
 				open: function (event, ui) {
+					$('.ui-state-error').hide();
 					group = $('#group');
 					updateGroup = $('#updateGroup');
 					name = $('#name');
@@ -140,6 +148,7 @@ CausalSphinxDashboard = {
 						text: this.messages['dashboard.message.update'],
 						click: function () {
 							var bValid = true;
+							var thisDialog = $(this);
 
 							// Using "&& bValid" at the end to prevent ensure
 							// every self.checkLength() is called
@@ -162,13 +171,18 @@ CausalSphinxDashboard = {
 										updateGroup: updateGroup.prop('checked')
 									},
 									success: function (data) {
-										// Trick to force reload with correct active tab
-										var redirectUri = document.location.href.replace(/#.*/, '#tabs-custom');
-										document.location.href = redirectUri;
-										location.reload(true);
+										if (data['status'] === 'success') {
+											thisDialog.dialog('close');
+											// Trick to force reload with correct active tab
+											var redirectUri = document.location.href.replace(/#.*/, '#tabs-custom');
+											document.location.href = redirectUri;
+											location.reload(true);
+										} else {
+											$('.ui-state-error').html(data['statusText']).show();
+											setTimeout(function () { $('.ui-state-error').fadeOut(1500); }, 1500);
+										}
 									}
 								});
-								$(this).dialog('close');
 							}
 						}
 					},

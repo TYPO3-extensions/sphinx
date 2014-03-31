@@ -114,6 +114,12 @@
 			<trans-unit id="dashboard.action.removeCustomProject">
 				<source>Remove reference to custom project</source>
 			</trans-unit>
+			<trans-unit id="dashboard.action.error.unknownError">
+				<source>Unknown error while saving changes.</source>
+			</trans-unit>
+			<trans-unit id="dashboard.action.error.invalidDocumentationKey">
+				<source>Invalid documentation key (probably already used).</source>
+			</trans-unit>
 			<trans-unit id="dashboard.message.yes">
 				<source>Yes</source>
 			</trans-unit>

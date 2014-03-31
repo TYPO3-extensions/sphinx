@@ -87,3 +87,8 @@ p { padding-bottom: 20px; }
 label.has-tooltip {
 	border-bottom: dotted 1px;
 }
+
+.ui-dialog-content .ui-state-error {
+	padding: .5em;
+	margin-bottom: 1em;
+}

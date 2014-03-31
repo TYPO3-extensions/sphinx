@@ -86,6 +86,10 @@ p {
 label.has-tooltip {
   border-bottom: dotted 1px; }
 
+.ui-dialog-content .ui-state-error {
+  padding: .5em;
+  margin-bottom: 1em; }
+
 /*
  * Default Layout Theme
  *
