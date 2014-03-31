@@ -229,7 +229,7 @@ CausalSphinxDashboard = {
 		return vars;
 	},
 	// Initializes the data table, depending on the current view
-	initializeView: function () {
+	initialize: function () {
 		var getVars = this.getUrlVars();
 		var tableHeight = ($(window).height() - 320) + 'px';
 
@@ -343,6 +343,9 @@ CausalSphinxDashboard = {
 		});
 
 		// Initialize the view
-		CausalSphinxDashboard.initializeView();
+		CausalSphinxDashboard.initialize();
+
+		// Initializes tooltips
+		$(document).tooltip();
 	});
 }(jQuery));
