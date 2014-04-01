@@ -365,6 +365,9 @@ class DocumentationController extends AbstractActionController {
 		$documentationKey = GeneralUtility::_POST('documentationKey');
 		$directory = GeneralUtility::_POST('directory');
 
+		// Sanitize directory
+		$directory = rtrim($directory, '/') . '/';
+
 		$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
 
 		// $existingProject must be NULL otherwise it means we try to reuse an existing project's key
@@ -431,6 +434,9 @@ class DocumentationController extends AbstractActionController {
 		$originalDocumentationKey = GeneralUtility::_POST('originalDocumentationKey');
 		$directory = GeneralUtility::_POST('directory');
 		$updateGroup = GeneralUtility::_POST('updateGroup') === 'true';
+
+		// Sanitize directory
+		$directory = rtrim($directory, '/') . '/';
 
 		$project = $this->projectRepository->findByDocumentationKey($originalDocumentationKey);
 		if ($originalDocumentationKey !== $documentationKey) {

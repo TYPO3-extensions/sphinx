@@ -101,6 +101,11 @@ class CustomProject {
 			$sourceDirectory = 'source/';
 			$buildDirectory = 'build/';
 			$confFilename = 'source/conf.py';
+		} elseif (is_file($absoluteBasePath . 'conf.py')) {
+			// All in one directory
+			$sourceDirectory = '.';
+			$buildDirectory = '_build/';
+			$confFilename = 'conf.py';
 		} else {
 			// TYPO3 documentation project
 			$sourceDirectory = '.';
@@ -247,6 +252,9 @@ class CustomProject {
 		if (is_file($absoluteBasePath . 'source/conf.py')) {
 			// Separate source/build directories
 			$buildDirectory = 'build/json/';
+		} elseif (is_file($absoluteBasePath . 'conf.py')) {
+			// All in one directory
+			$buildDirectory = '_build/json/';
 		} else {
 			// TYPO3 documentation project
 			$buildDirectory = '_make/build/json/';

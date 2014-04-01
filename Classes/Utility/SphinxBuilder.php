@@ -122,8 +122,8 @@ class SphinxBuilder {
 			$conf = './conf.py';
 		}
 		$basePath = rtrim($basePath, '/') . '/';
-		$sourceDirectory = rtrim($sourceDirectory);
-		$buildDirectory = rtrim($buildDirectory);
+		$sourceDirectory = rtrim($sourceDirectory, '/');
+		$buildDirectory = rtrim($buildDirectory, '/');
 
 		// Compatibility with Windows platform
 		$conf = str_replace('/', DIRECTORY_SEPARATOR, $conf);
@@ -291,8 +291,8 @@ class SphinxBuilder {
 			$conf = './conf.py';
 		}
 		$basePath = rtrim($basePath, '/') . '/';
-		$sourceDirectory = rtrim($sourceDirectory);
-		$buildDirectory = rtrim($buildDirectory);
+		$sourceDirectory = rtrim($sourceDirectory, '/');
+		$buildDirectory = rtrim($buildDirectory, '/');
 		$paperSize = 'a4';
 		$sphinxSourcesPath = GeneralUtility::getFileAbsFileName('uploads/tx_sphinx/');
 		$templatePath = $sphinxSourcesPath . 'RestTools/LaTeX/';
