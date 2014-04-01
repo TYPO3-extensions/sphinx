@@ -295,8 +295,6 @@ CausalSphinxDashboard = {
 						sLastGroup = sGroup;
 					}
 				}
-
-				oSettings.nTable.parentNode.style.height = $(oSettings.nTable).height() +'px';
 			},
 			'aoColumnDefs': [
 				{ 'bVisible': false, 'aTargets': [0] }
