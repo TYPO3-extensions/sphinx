@@ -133,12 +133,12 @@ label.has-tooltip {
  *	Must come AFTER pane-class above so will override
  *	These classes are NOT auto-generated and are NOT used by Layout
  */
-.layout-child-container,
 .layout-content-container {
   padding: 0;
   overflow: hidden; }
 
 .layout-child-container {
+  padding: 0;
   border: 0;
   /* remove border because inner-layout-panes probably have borders */ }
 
