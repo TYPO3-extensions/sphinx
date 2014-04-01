@@ -33,8 +33,8 @@ Vous pouvez lire le chapitre `Installing MiKTeX`_ dans le manuel MiKTeX si vous 
 	utilisateur dédié.
 
 À l'étape 3, l'installateur va vous demander si vous souhaitez installer les paquets manquants à la volée. Nous recommandons
-**vivement** de laisser MiKTeX installer ces composants supplémentaires sans interaction avec vous. Le raisonnement est
-que ça améliore le confort d'utilisation lorsque vous générer des documents depuis votre site TYPO3 parce que l'interaction
+**vivement** de laisser MiKTeX installer ces composants supplémentaires sans interaction avec vous. La raison est
+que ça améliore le confort d'utilisation lorsque vous générez des documents depuis votre site TYPO3 parce que l'interaction
 avec le compilateur n'est pas disponible sans ligne de commande et va résulter en une erreur de compilation si un paquet
 LaTeX n'est pas disponible sur votre système :
 
