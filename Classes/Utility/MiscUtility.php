@@ -667,6 +667,9 @@ HTML;
 	 * @return boolean TRUE if Settings.yml was updated, otherwise FALSE
 	 */
 	static public function autofixMissingIntersphinxMapping($warningsFilename, $settingsYamlFilename) {
+		if (!ExtensionManagementUtility::isLoaded('restdoc')) {
+			return FALSE;
+		}
 		$warningsLines = explode(LF, file_get_contents($warningsFilename));
 		$prefixes = array();
 		$intersphinxMappingUpdated = FALSE;
