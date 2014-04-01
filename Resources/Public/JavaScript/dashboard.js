@@ -34,91 +34,12 @@ CausalSphinxDashboard = {
 		}
 	},
 
-	addCustomProject: function () {
+	customProjectDialog: function (loadAction, saveAction, saveLabelKey) {
 		var self = CausalSphinxDashboard;
 
 		var ajaxData;
 		$.ajax({
-			url: self.actions.addCustomProject,
-			async: false,
-			success: function (data) {
-				ajaxData = data;
-			}
-		});
-
-		var form = ajaxData['statusText'];
-		var group, name, description, documentationKey, directory;
-
-		var NewDialog = $(form).dialog({
-			height: 420,
-			width: 500,
-			modal: true,
-			open: function (event, ui) {
-				$('.ui-state-error').hide();
-				group = $('#group');
-				name = $('#name');
-				description = $('#description');
-				documentationKey = $('#documentationKey');
-				directory = $('#directory');
-			},
-			buttons: [
-				{
-					text: this.messages['dashboard.message.add'],
-					click: function () {
-						var bValid = true;
-						var thisDialog = $(this);
-
-						// Using "&& bValid" at the end to prevent ensure
-						// every self.checkLength() is called
-						bValid = self.checkLength(group, 3, 50) && bValid;
-						bValid = self.checkLength(name, 3, 50) && bValid;
-						bValid = self.checkLength(documentationKey, 3, 50) && bValid;
-						bValid = self.checkLength(directory, 10, 255) && bValid;
-
-						if (bValid) {
-							$.ajax({
-								type: 'POST',
-								url: self.actions.createCustomProject,
-								data: {
-									group: group.val(),
-									name: name.val(),
-									description: description.val(),
-									documentationKey: documentationKey.val(),
-									directory: directory.val()
-								},
-								success: function (data) {
-									if (data['status'] === 'success') {
-										thisDialog.dialog('close');
-										// Trick to force reload with correct active tab
-										var redirectUri = document.location.href.replace(/#.*/, '#tabs-custom');
-										document.location.href = redirectUri;
-										location.reload(true);
-									} else {
-										$('.ui-state-error').html(data['statusText']).show();
-										setTimeout(function () { $('.ui-state-error').fadeOut(1500); }, 1500);
-									}
-								},
-							});
-						}
-					}
-				},
-				{
-					text: this.messages['dashboard.message.cancel'],
-					click: function () {
-						$(this).dialog('close');
-					}
-				}
-			]
-		});
-	},
-
-	editCustomProject: function (documentationKey) {
-		var self = CausalSphinxDashboard;
-
-		var ajaxData;
-		$.ajax({
-			url: self.actions.editCustomProject
-				.replace(/DOCUMENTATION_KEY/, documentationKey),
+			url: loadAction,
 			async: false,
 			success: function (data) {
 				ajaxData = data;
@@ -136,16 +57,16 @@ CausalSphinxDashboard = {
 				open: function (event, ui) {
 					$('.ui-state-error').hide();
 					group = $('#group');
-					updateGroup = $('#updateGroup');
+					updateGroup = $('#updateGroup') || $('');
 					name = $('#name');
 					description = $('#description');
-					originalDocumentationKey = $('#originalDocumentationKey');
+					originalDocumentationKey = $('#originalDocumentationKey') || $('');
 					documentationKey = $('#documentationKey');
 					directory = $('#directory');
 				},
 				buttons: [
 					{
-						text: this.messages['dashboard.message.update'],
+						text: this.messages[saveLabelKey],
 						click: function () {
 							var bValid = true;
 							var thisDialog = $(this);
@@ -160,7 +81,7 @@ CausalSphinxDashboard = {
 							if (bValid) {
 								$.ajax({
 									type: 'POST',
-									url: self.actions.updateCustomProject,
+									url: saveAction,
 									data: {
 										group: group.val(),
 										name: name.val(),
@@ -179,9 +100,11 @@ CausalSphinxDashboard = {
 											location.reload(true);
 										} else {
 											$('.ui-state-error').html(data['statusText']).show();
-											setTimeout(function () { $('.ui-state-error').fadeOut(1500); }, 1500);
+											setTimeout(function () {
+												$('.ui-state-error').fadeOut(1500);
+											}, 1500);
 										}
-									}
+									},
 								});
 							}
 						}
@@ -195,6 +118,24 @@ CausalSphinxDashboard = {
 				]
 			});
 		}
+	},
+
+	addCustomProject: function () {
+		var self = CausalSphinxDashboard;
+		self.customProjectDialog(
+			self.actions.addCustomProject,
+			self.actions.createCustomProject,
+			'dashboard.message.add'
+		);
+	},
+
+	editCustomProject: function (documentationKey) {
+		var self = CausalSphinxDashboard;
+		self.customProjectDialog(
+			self.actions.editCustomProject.replace(/DOCUMENTATION_KEY/, documentationKey),
+			self.actions.updateCustomProject,
+			'dashboard.message.update'
+		);
 	},
 
 	removeCustomProject: function (documentationKey) {
