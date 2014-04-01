@@ -1,4 +1,4 @@
-/* mb, 2012-11-25, 2013-07-15 */
+/* mb, 2012-11-25, 2013-07-15, 2014-03-25 */
 
 /* override standard settings of typo3.org */
 
@@ -75,94 +75,6 @@
 	font-size: 12px;
 }
 
-/*.doc #aside #nav-aside li {
-/*	padding-top: 0;
-/*}
-/*
-/*.doc #aside #nav-aside li a {
-/*	color: #555555;
-/*	font-weight: normal;
-/*	padding: 3px 8px 4px 30px;
-/*	background-image: url(http://typo3.org/typo3conf/ext/t3org_template/css/../i/i-arrows.png);
-/*	background-repeat: no-repeat;
-/*	background-position: -942px -431px;
-/*}
-/*
-/*.doc #aside #nav-aside li a:hover {
-/*	text-decoration: none;
-/*	background-position: -902px -471px;
-/*}
-/*
-/*.doc #aside #nav-aside .cur a {
-/*	font-weight: bold;
-/*	color: #000000;
-/*	background-position: -902px -471px;
-/*}
-/*
-/*.doc #aside .toc {
-/*	height: 25px;
-/*}
-/*
-/*.doc #aside .toc > p {
-/*	background-color: #efefef;
-/*	padding: 3px 8px 4px 10px;
-/*	font-weight: bold;
-/*	background-image: url(http://typo3.org/typo3conf/ext/t3org_template/css/../i/nav-aside.png);
-/*	background-position: right bottom;
-/*	background-repeat: no-repeat;
-/*}
-/*
-/*.doc #aside .toc ul {
-/*	display: block;
-/*}
-/*
-/*.doc #aside .toc li {
-/*	padding-left: 0;
-/*	padding-top: 0;
-/*}
-/*
-/*.doc #aside .toc li li > a {
-/*	padding-left: 50px;
-/*	background-position: -922px -431px;
-/*}
-/*
-/*.doc #aside .toc li li > a:hover {
-/*	background-position: -882px -471px;
-/*}
-/*
-/*.doc #aside .toc li li li > a {
-/*	padding-left: 70px;
-/*	background-position: -902px -431px;
-/*}
-/*
-/*.doc #aside .toc li li li > a:hover {
-/*	background-position: -862px -471px;
-/*}
-/*
-/*.doc #aside .toc li li li li > a {
-/*	padding-left: 90px;
-/*	background-position: -882px -431px;
-/*}
-/*
-/*.doc #aside .toc li li li li > a:hover {
-/*	background-position: -842px -471px;
-/*}
-/*
-/*.doc #aside .toc a {
-/*	display: block;
-/*	padding: 3px 8px 4px 30px;
-/*	background-image: url(http://typo3.org/typo3conf/ext/t3org_template/css/../i/i-arrows.png);
-/*	background-repeat: no-repeat;
-/*	background-position: -942px -431px;
-/*	border-bottom: 1px solid #d5d5d5;
-/*}
-/*
-/*.doc #aside .toc a:hover {
-/*	background-color: #efefef;
-/*	background-position: -902px -471px;
-/*}
-/*
-*/
 .doc .hnav-related {
 	margin: 0 0 17px 0;
 	margin: 0 0 0 0;
@@ -321,12 +233,6 @@
 	padding-left: 20px;
 	padding-right: 10px;
 	margin-bottom: 5px;
-}
-
-.doc .admonition blockquote {
-	/* BUGFIX: http://forge.typo3.org/issues/49175 */
-	margin-left: 20px;
-	padding-left: 36px;
 }
 
 .doc .admonition.tip .admonition-title,
@@ -654,12 +560,6 @@ hnav-related a:hover {
 }
 .doc .img-scaling {
     width: 100%;
-    display: block;
-    /* mb, 2013-03-25
-     * somebody (who?) wrote: "these lines break the centered display of images (which is default)."
-     * Answer: try the option :align: center
-     * We need .img-scaling to limit images when they are too big. That's more important!
-     */
 }
 
 .doc .pre {
@@ -936,4 +836,50 @@ hnav-related a:hover {
 /* 2014-03-12 [BUGFIX] http://forge.typo3.org/issues/53137 */
 .doc .hnav-related-container {
 	clear: both;
+}
+/* 2014-03-25: Let's use "Adaptive laout" as default */
+.doc .alt-stylesheet-0 {
+    border: none;
+}
+.doc .alt-stylesheet-1 {
+    border: 1px dotted #bbb;
+}
+#page,
+.doc .p {
+	margin: 0 25px;
+	width: inherit;
+	/* min-width: 981px; */
+}
+.doc pre .p {
+	margin: 0;
+}
+.doc .h {
+	width: 100%;
+}
+
+/* Better code blocks in documentation */
+.doc table.highlighttable,
+.doc table.highlighttable td {
+	border: 0;
+}
+.doc table.highlighttable td.linenos,
+.doc table.highlighttable div.linenodiv {
+	width: 40px;
+}
+.doc table.highlighttable div.linenodiv pre {
+	float: right;
+	padding-left: 8px;
+	padding-right: 0;
+	border-right: 0;
+	background: #e7e7e7;
+	width: 30px;
+}
+.doc table.highlighttable div.highlight pre {
+	border-left: 0;
+}
+.doc table.highlighttable td {
+	padding: 0;
+}
+.doc table.highlighttable td pre {
+	margin-bottom: 0;
 }

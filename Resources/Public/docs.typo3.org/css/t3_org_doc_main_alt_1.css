@@ -1,22 +1,22 @@
-/* mb, 2012-11-28, 2012-11-28 */
+/* mb, 2012-11-28, 2014-03-25 */
 
 /* alternate styles 1: wide */
 
-
 .doc .alt-stylesheet-0 {
-    border: 1px none #bbb;
+    border: none;
 }
 .doc .alt-stylesheet-1 {
     border: 1px dotted #bbb;
 }
-
 #page,
-.doc.p {
+.doc .p {
 	margin: 0 25px;
 	width: inherit;
-	min-width: 981px;
+	/* min-width: 981px; */
 }
-
+.doc pre .p {
+	margin: 0;
+}
 .doc .h {
 	width: 100%;
 }
