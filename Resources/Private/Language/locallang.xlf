@@ -120,6 +120,9 @@
 			<trans-unit id="dashboard.action.error.invalidDocumentationKey">
 				<source>Invalid documentation key (probably already used).</source>
 			</trans-unit>
+			<trans-unit id="dashboard.action.error.invalidDirectory">
+				<source>No Sphinx project found in specified directory.</source>
+			</trans-unit>
 			<trans-unit id="dashboard.message.yes">
 				<source>Yes</source>
 			</trans-unit>

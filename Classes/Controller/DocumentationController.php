@@ -368,23 +368,28 @@ class DocumentationController extends AbstractActionController {
 		// Sanitize directory
 		$directory = rtrim($directory, '/') . '/';
 
-		$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
+		$projectStructure = MiscUtility::getProjectStructure($directory);
+		if ($projectStructure !== MiscUtility::PROJECT_STRUCTURE_UNKNOWN) {
+			$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
 
-		// $existingProject must be NULL otherwise it means we try to reuse an existing project's key
-		if ($existingProject === NULL) {
-			/** @var \Causal\Sphinx\Domain\Model\Project $project */
-			$project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project', $documentationKey);
-			$project->setName($name);
-			$project->setDescription($description);
-			$project->setGroup($group);
-			$project->setDirectory($directory);
+			// $existingProject must be NULL otherwise it means we try to reuse an existing project's key
+			if ($existingProject === NULL) {
+				/** @var \Causal\Sphinx\Domain\Model\Project $project */
+				$project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project', $documentationKey);
+				$project->setName($name);
+				$project->setDescription($description);
+				$project->setGroup($group);
+				$project->setDirectory($directory);
 
-			$success = $this->projectRepository->add($project);
-			if (!$success) {
-				$response['statusText'] = $this->translate('dashboard.action.error.unknownError');
+				$success = $this->projectRepository->add($project);
+				if (!$success) {
+					$response['statusText'] = $this->translate('dashboard.action.error.unknownError');
+				}
+			} else {
+				$response['statusText'] = $this->translate('dashboard.action.error.invalidDocumentationKey');
 			}
 		} else {
-			$response['statusText'] = $this->translate('dashboard.action.error.invalidDocumentationKey');
+			$response['statusText'] = $this->translate('dashboard.action.error.invalidDirectory');
 		}
 
 		if ($success) {
@@ -438,32 +443,37 @@ class DocumentationController extends AbstractActionController {
 		// Sanitize directory
 		$directory = rtrim($directory, '/') . '/';
 
-		$project = $this->projectRepository->findByDocumentationKey($originalDocumentationKey);
-		if ($originalDocumentationKey !== $documentationKey) {
-			$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
-		} else {
-			$existingProject = NULL;
-		}
-
-		// $existingProject must be NULL otherwise it means we try to reuse an existing project's key
-		if ($project !== NULL && $existingProject === NULL) {
-			$previousGroup = $project->getGroup();
-
-			$project->setGroup($group);
-			$project->setName($name);
-			$project->setDescription($description);
-			$project->setDocumentationKey($documentationKey);
-			$project->setDirectory($directory);
-
-			$success = $this->projectRepository->update($project);
-			if ($success && $updateGroup) {
-				$success = $this->projectRepository->renameGroup($previousGroup, $group);
+		$projectStructure = MiscUtility::getProjectStructure($directory);
+		if ($projectStructure !== MiscUtility::PROJECT_STRUCTURE_UNKNOWN) {
+			$project = $this->projectRepository->findByDocumentationKey($originalDocumentationKey);
+			if ($originalDocumentationKey !== $documentationKey) {
+				$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
+			} else {
+				$existingProject = NULL;
 			}
-			if (!$success) {
-				$response['statusText'] = $this->translate('dashboard.action.error.unknownError');
+
+			// $existingProject must be NULL otherwise it means we try to reuse an existing project's key
+			if ($project !== NULL && $existingProject === NULL) {
+				$previousGroup = $project->getGroup();
+
+				$project->setGroup($group);
+				$project->setName($name);
+				$project->setDescription($description);
+				$project->setDocumentationKey($documentationKey);
+				$project->setDirectory($directory);
+
+				$success = $this->projectRepository->update($project);
+				if ($success && $updateGroup) {
+					$success = $this->projectRepository->renameGroup($previousGroup, $group);
+				}
+				if (!$success) {
+					$response['statusText'] = $this->translate('dashboard.action.error.unknownError');
+				}
+			} else {
+				$response['statusText'] = $this->translate('dashboard.action.error.invalidDocumentationKey');
 			}
 		} else {
-			$response['statusText'] = $this->translate('dashboard.action.error.invalidDocumentationKey');
+			$response['statusText'] = $this->translate('dashboard.action.error.invalidDirectory');
 		}
 
 		if ($success) {

@@ -420,29 +420,35 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return void
 	 */
 	protected function initializeSphinxProject() {
-		if (is_file($this->basePath . 'conf.py')) {
-			$this->project['singleDirectory'] = TRUE;
-			$this->project['basePath'] = $this->basePath;
-			$this->project['source'] = './';
-			$this->project['build'] = '_build/';
-			$this->project['conf_py'] = './conf.py';
-			$this->project['initialized'] = TRUE;
-		} elseif (is_file($this->basePath . 'source/conf.py')) {
-			$this->project['singleDirectory'] = FALSE;
-			$this->project['basePath'] = $this->basePath;
-			$this->project['source'] = 'source/';
-			$this->project['build'] = 'build/';
-			$this->project['conf_py'] = 'source/conf.py';
-			$this->project['initialized'] = TRUE;
-		} elseif (is_file($this->basePath . '_make/conf.py')) {
-			$this->project['singleDirectory'] = FALSE;
-			$this->project['basePath'] = $this->basePath;
-			$this->project['source'] = './';
-			$this->project['build'] = '_make/build/';
-			$this->project['conf_py'] = '_make/conf.py';
-			$this->project['initialized'] = TRUE;
-		} else {
-			$this->project['initialized'] = FALSE;
+		$projectStructure = MiscUtility::getProjectStructure($this->basePath);
+		switch ($projectStructure) {
+			case MiscUtility::PROJECT_STRUCTURE_SINGLE:
+				$this->project['singleDirectory'] = TRUE;
+				$this->project['basePath'] = $this->basePath;
+				$this->project['source'] = './';
+				$this->project['build'] = '_build/';
+				$this->project['conf_py'] = './conf.py';
+				$this->project['initialized'] = TRUE;
+				break;
+			case MiscUtility::PROJECT_STRUCTURE_SEPARATE:
+				$this->project['singleDirectory'] = FALSE;
+				$this->project['basePath'] = $this->basePath;
+				$this->project['source'] = 'source/';
+				$this->project['build'] = 'build/';
+				$this->project['conf_py'] = 'source/conf.py';
+				$this->project['initialized'] = TRUE;
+				break;
+			case MiscUtility::PROJECT_STRUCTURE_TYPO3:
+				$this->project['singleDirectory'] = FALSE;
+				$this->project['basePath'] = $this->basePath;
+				$this->project['source'] = './';
+				$this->project['build'] = '_make/build/';
+				$this->project['conf_py'] = '_make/conf.py';
+				$this->project['initialized'] = TRUE;
+				break;
+			default:
+				$this->project['initialized'] = FALSE;
+				break;
 		}
 
 		if ($this->project['initialized']) {

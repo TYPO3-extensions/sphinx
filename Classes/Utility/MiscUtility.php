@@ -40,6 +40,11 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class MiscUtility {
 
+	const PROJECT_STRUCTURE_UNKNOWN     = 0;
+	const PROJECT_STRUCTURE_SINGLE      = 1;
+	const PROJECT_STRUCTURE_SEPARATE    = 2;
+	const PROJECT_STRUCTURE_TYPO3       = 3;
+
 	const DOCUMENTATION_TYPE_UNKNOWN    = 0;
 	const DOCUMENTATION_TYPE_SPHINX     = 1;
 	const DOCUMENTATION_TYPE_README     = 2;
@@ -71,6 +76,33 @@ class MiscUtility {
 		$EM_CONF[$_EXTKEY]['extensionKey'] = $extensionKey;
 
 		return $EM_CONF[$_EXTKEY];
+	}
+
+	/**
+	 * Returns the type of project found in directory $path as one of the
+	 * PROJECT_STRUCTURE_* constants.
+	 *
+	 * @param string $path Relative or absolute path
+	 * @return integer One of the PROJECT_STRUCTURE_* constants
+	 */
+	static public function getProjectStructure($path) {
+		$type = static::PROJECT_STRUCTURE_UNKNOWN;
+
+		// To deal with both relative and absolute $path
+		$absolutePath = GeneralUtility::getFileAbsFileName($path);
+
+		if (is_file($absolutePath . 'conf.py')) {
+			// All in one directory
+			$type = static::PROJECT_STRUCTURE_SINGLE;
+		} elseif (is_file($absolutePath . 'source/conf.py')) {
+			// Separate source/build directories
+			$type = static::PROJECT_STRUCTURE_SEPARATE;
+		} elseif (is_file($absolutePath . 'Index.rst')) {
+			// TYPO3 documentation project
+			$type = static::PROJECT_STRUCTURE_TYPO3;
+		}
+
+		return $type;
 	}
 
 	/**

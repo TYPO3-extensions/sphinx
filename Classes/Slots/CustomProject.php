@@ -96,21 +96,24 @@ class CustomProject {
 		$absoluteBasePath = GeneralUtility::getFileAbsFileName($basePath);
 		$warningsFilename = $absoluteBasePath . 'warnings.txt';
 
-		if (is_file($absoluteBasePath . 'source/conf.py')) {
-			// Separate source/build directories
-			$sourceDirectory = 'source/';
-			$buildDirectory = 'build/';
-			$confFilename = 'source/conf.py';
-		} elseif (is_file($absoluteBasePath . 'conf.py')) {
-			// All in one directory
-			$sourceDirectory = '.';
-			$buildDirectory = '_build/';
-			$confFilename = 'conf.py';
-		} else {
-			// TYPO3 documentation project
-			$sourceDirectory = '.';
-			$buildDirectory = '_make/build/';
-			$confFilename = '_make/conf.py';
+		$projectStructure = MiscUtility::getProjectStructure($absoluteBasePath);
+		switch ($projectStructure) {
+			case MiscUtility::PROJECT_STRUCTURE_SINGLE:
+				$sourceDirectory = '.';
+				$buildDirectory = '_build/';
+				$confFilename = 'conf.py';
+				break;
+			case MiscUtility::PROJECT_STRUCTURE_SEPARATE:
+				$sourceDirectory = 'source/';
+				$buildDirectory = 'build/';
+				$confFilename = 'source/conf.py';
+				break;
+			case MiscUtility::PROJECT_STRUCTURE_TYPO3:
+			default:
+				$sourceDirectory = '.';
+				$buildDirectory = '_make/build/';
+				$confFilename = '_make/conf.py';
+				break;
 		}
 
 		try {
@@ -248,16 +251,18 @@ class CustomProject {
 		$project = $this->projectRepository->findByDocumentationKey($identifier);
 		$directory = $project->getDirectory();
 
-		$absoluteBasePath = GeneralUtility::getFileAbsFileName($directory);
-		if (is_file($absoluteBasePath . 'source/conf.py')) {
-			// Separate source/build directories
-			$buildDirectory = 'build/json/';
-		} elseif (is_file($absoluteBasePath . 'conf.py')) {
-			// All in one directory
-			$buildDirectory = '_build/json/';
-		} else {
-			// TYPO3 documentation project
-			$buildDirectory = '_make/build/json/';
+		$projectStructure = MiscUtility::getProjectStructure($directory);
+		switch ($projectStructure) {
+			case MiscUtility::PROJECT_STRUCTURE_SINGLE:
+				$buildDirectory = '_build/json/';
+				break;
+			case MiscUtility::PROJECT_STRUCTURE_SEPARATE:
+				$buildDirectory = 'build/json/';
+				break;
+			case MiscUtility::PROJECT_STRUCTURE_TYPO3:
+			default:
+				$buildDirectory = '_make/build/json/';
+				break;
 		}
 
 		$path = GeneralUtility::getFileAbsFileName($directory . $buildDirectory);
@@ -276,10 +281,11 @@ class CustomProject {
 		$project = $this->projectRepository->findByDocumentationKey($identifier);
 		$directory = $project->getDirectory();
 
-		$absoluteBasePath = GeneralUtility::getFileAbsFileName($directory);
-		if (is_file($absoluteBasePath . 'source/conf.py')) {
-			// Separate source/build directories
-			$directory = rtrim($directory, '/') . '/source/';
+		$projectStructure = MiscUtility::getProjectStructure($directory);
+		switch ($projectStructure) {
+			case MiscUtility::PROJECT_STRUCTURE_SEPARATE:
+				$directory = rtrim($directory, '/') . '/source/';
+				break;
 		}
 
 		$jsonFilename = substr($document, 0, strlen($document) - 1) . '.rst';
