@@ -443,7 +443,7 @@ class SphinxBuilder {
 		if (!empty($make)) {
 			$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 				MiscUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . PathUtility::dirname($pdflatex) . '"') . ' && ' .
-				$make . ' -C ' . static::safeEscapeshellarg($buildDirectory . '/latex') . ' all-pdf' .
+				$make . ' -C ' . static::safeEscapeshellarg($buildDirectory . '/latex') . ' clean all-pdf' .
 				' 2>&1';	// redirect errors to STDOUT
 		} else {
 			// We are on Windows and "make" is not available,
@@ -453,9 +453,12 @@ class SphinxBuilder {
 			$mainFile = current($files);
 			$basename = substr($mainFile, 0, -4);	// Remove .tex
 			$makeindex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('makeindex');
+			// List of patterns extracted from a generated Makefile
+			$cleanCmd = 'del /Q *.dvi *.log *.ind *.aux *.toc *.syn *.idx *.out *.ilg *.pla';
 
 			$cmd = 'cd ' . escapeshellarg($latexPath) . ' && ' .
 				MiscUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . PathUtility::dirname($pdflatex) . '"') . ' && ' .
+				$cleanCmd . ' && ' .
 				escapeshellarg($pdflatex) . ' ' . $mainFile . ' && ' .
 				escapeshellarg($pdflatex) . ' ' . $mainFile . ' && ' .
 				escapeshellarg($pdflatex) . ' ' . $mainFile . ' && ' .
