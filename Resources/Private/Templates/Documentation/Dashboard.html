@@ -43,14 +43,20 @@
 
 <div id="tabs">
 	<ul>
+		<li><a href="#tabs-custom" title="{f:translate(key:'dashboard.tabs.custom.title')}"><f:translate key="dashboard.tabs.custom.label" /></a></li>
 		<f:if condition="{extensionsEmpty}">
 			<li><a href="#tabs-kickstart-extension" title="{f:translate(key:'dashboard.tabs.kickstart.title')}"><f:translate key="dashboard.tabs.kickstart.label" /></a></li>
 		</f:if>
 		<f:if condition="{extensionsOpenOffice}">
 			<li><a href="#tabs-convert-extension" title="{f:translate(key:'dashboard.tabs.convert.title')}"><f:translate key="dashboard.tabs.convert.label" /></a></li>
 		</f:if>
-		<li><a href="#tabs-custom" title="{f:translate(key:'dashboard.tabs.custom.title')}"><f:translate key="dashboard.tabs.custom.label" /></a></li>
 	</ul>
+	<div id="tabs-custom">
+		<div class="dataTables_addCustomProject">
+			<button><f:translate key="dashboard.action.addCustomProject" /></button>
+		</div>
+		<f:render partial="Documentation/TabCustom" arguments="{_all}" />
+	</div>
 	<f:if condition="{extensionsEmpty}">
 		<div id="tabs-kickstart-extension">
 			<f:render partial="Documentation/TabKickstartExtension" arguments="{_all}" />
@@ -61,12 +67,6 @@
 			<f:render partial="Documentation/TabConvertExtension" arguments="{_all}" />
 		</div>
 	</f:if>
-	<div id="tabs-custom">
-		<div class="dataTables_addCustomProject">
-			<button><f:translate key="dashboard.action.addCustomProject" /></button>
-		</div>
-		<f:render partial="Documentation/TabCustom" arguments="{_all}" />
-	</div>
 </div>
 
 <script type="text/javascript">
