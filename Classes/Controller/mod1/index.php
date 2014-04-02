@@ -29,6 +29,7 @@ $GLOBALS['BE_USER']->modAccess($GLOBALS['MCONF'], 1);    // This checks permissi
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Sphinx\Utility\SphinxBuilder;
+use Causal\Sphinx\Utility\MiscUtility;
 
 /**
  * Module 'Sphinx Console' for the 'sphinx' extension.
