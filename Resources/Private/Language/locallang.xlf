@@ -48,6 +48,9 @@
 			<trans-unit id="project.name">
 				<source>Name</source>
 			</trans-unit>
+			<trans-unit id="project.language">
+				<source>Language</source>
+			</trans-unit>
 			<trans-unit id="project.description">
 				<source>Description</source>
 			</trans-unit>
@@ -239,6 +242,10 @@
 			</trans-unit>
 			<trans-unit id="editor.tooltip.references.insert">
 				<source>Click to insert a cross-link to this section</source>
+			</trans-unit>
+
+			<trans-unit id="language.default">
+				<source>Default (English)</source>
 			</trans-unit>
 		</body>
 	</file>

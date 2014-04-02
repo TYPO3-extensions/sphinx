@@ -128,7 +128,8 @@ class CustomProject {
 							$absoluteBasePath,
 							$sourceDirectory,
 							$buildDirectory,
-							$confFilename
+							$confFilename,
+							$project->getLanguage()
 						);
 						$targetWarningsFilename = $absoluteBasePath . $buildDirectory . 'html/warnings.txt';
 						if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
@@ -164,7 +165,8 @@ class CustomProject {
 								$absoluteBasePath,
 								$sourceDirectory,
 								$buildDirectory,
-								$confFilename
+								$confFilename,
+								$project->getLanguage()
 							);
 							$targetWarningsFilename = $absoluteBasePath . $buildDirectory . 'json/warnings.txt';
 							if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
@@ -207,7 +209,8 @@ class CustomProject {
 							$absoluteBasePath,
 							$sourceDirectory,
 							$buildDirectory,
-							$confFilename
+							$confFilename,
+							$project->getLanguage()
 						);
 						if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
 							copy($warningsFilename, $targetWarningsFilename);

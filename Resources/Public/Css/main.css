@@ -839,8 +839,9 @@ body.margin {
 
 .ui-dialog label, .ui-dialog input {
   display: block; }
+.ui-dialog input.text, .ui-dialog textarea, .ui-dialog select {
+  margin-bottom: 12px; }
 .ui-dialog input.text, .ui-dialog textarea {
-  margin-bottom: 12px;
   width: 95%;
   padding: .4em; }
   .ui-dialog input.text.half-width, .ui-dialog textarea.half-width {

@@ -56,6 +56,11 @@ class Project {
 	/**
 	 * @var string
 	 */
+	protected $language;
+
+	/**
+	 * @var string
+	 */
 	protected $description;
 
 	/**
@@ -126,6 +131,26 @@ class Project {
 	 */
 	public function setName($name) {
 		$this->name = $name;
+		return $this;
+	}
+
+	/**
+	 * Returns the language.
+	 *
+	 * @return string
+	 */
+	public function getLanguage() {
+		return $this->language;
+	}
+
+	/**
+	 * Sets the language.
+	 *
+	 * @param string $language
+	 * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
+	 */
+	public function setLanguage($language) {
+		$this->language = $language;
 		return $this;
 	}
 

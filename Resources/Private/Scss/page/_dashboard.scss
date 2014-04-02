@@ -197,8 +197,10 @@ body.margin {
 	label, input {
 		display: block;
 	}
-	input.text, textarea {
+	input.text, textarea, select {
 		margin-bottom: 12px;
+	}
+	input.text, textarea {
 		width: 95%;
 		padding: .4em;
 

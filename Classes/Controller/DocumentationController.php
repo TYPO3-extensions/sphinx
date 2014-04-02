@@ -342,6 +342,12 @@ class DocumentationController extends AbstractActionController {
 	 * @return void
 	 */
 	protected function addCustomProjectAction() {
+		$locales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
+		asort($locales);
+		$locales = array('' => $this->translate('language.default')) + $locales;
+
+		$this->view->assign('locales', $locales);
+
 		$response = array();
 		$response['status'] = 'success';
 		$response['statusText'] = $this->view->render();
@@ -354,12 +360,13 @@ class DocumentationController extends AbstractActionController {
 	 *
 	 * @param string $group
 	 * @param string $name
+	 * @param string $lang
 	 * @param string $description
 	 * @param string $documentationKey
 	 * @param string $directory
 	 * @return void
 	 */
-	protected function createCustomProjectAction($group, $name, $description, $documentationKey, $directory) {
+	protected function createCustomProjectAction($group, $name, $lang, $description, $documentationKey, $directory) {
 		$response = array();
 		$success = FALSE;
 
@@ -375,6 +382,7 @@ class DocumentationController extends AbstractActionController {
 				/** @var \Causal\Sphinx\Domain\Model\Project $project */
 				$project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project', $documentationKey);
 				$project->setName($name);
+				$project->setLanguage($lang);
 				$project->setDescription($description);
 				$project->setGroup($group);
 				$project->setDirectory($directory);
@@ -408,9 +416,17 @@ class DocumentationController extends AbstractActionController {
 	protected function editCustomProjectAction($documentationKey) {
 		$response = array();
 
+		$locales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
+		asort($locales);
+		$locales = array('' => $this->translate('language.default')) + $locales;
+
 		$project = $this->projectRepository->findByDocumentationKey($documentationKey);
+
 		if ($project !== NULL) {
-			$this->view->assign('project', $project);
+			$this->view->assignMultiple(array(
+				'project' => $project,
+				'locales' => $locales,
+			));
 			$response['status'] = 'success';
 			$response['statusText'] = $this->view->render();
 		} else {
@@ -425,6 +441,7 @@ class DocumentationController extends AbstractActionController {
 	 *
 	 * @param string $group
 	 * @param string $name
+	 * @param string $lang
 	 * @param string $description
 	 * @param string $documentationKey
 	 * @param string $originalDocumentationKey
@@ -432,7 +449,7 @@ class DocumentationController extends AbstractActionController {
 	 * @param bool $updateGroup
 	 * @return void
 	 */
-	protected function updateCustomProjectAction($group, $name, $description, $documentationKey,
+	protected function updateCustomProjectAction($group, $name, $lang, $description, $documentationKey,
 												 $originalDocumentationKey, $directory, $updateGroup) {
 		$response = array();
 		$success = FALSE;
@@ -455,6 +472,7 @@ class DocumentationController extends AbstractActionController {
 
 				$project->setGroup($group);
 				$project->setName($name);
+				$project->setLanguage($lang);
 				$project->setDescription($description);
 				$project->setDocumentationKey($documentationKey);
 				$project->setDirectory($directory);

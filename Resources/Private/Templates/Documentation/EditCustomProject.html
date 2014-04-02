@@ -11,6 +11,9 @@
 			<label for="name"><f:translate key="project.name" /></label>
 			<f:form.textfield name="name" id="name" value="{project.name}" class="text ui-widget-content ui-corner-all" />
 
+			<label for="lang"><f:translate key="project.language" /></label>
+			<f:form.select name="lang" id="lang" options="{locales}" value="{project.language}" class="ui-widget-content ui-corner-all" />
+
 			<label for="description"><f:translate key="project.description" /></label>
 			<f:form.textarea name="description" id="description" value="{project.description}" class="text ui-widget-content ui-corner-all" />
 

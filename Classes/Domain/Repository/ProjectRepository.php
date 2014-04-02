@@ -109,6 +109,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			if ($projects[$i]['key'] === $project->getUid()) {
 				$projects[$i] = array(
 					'name' => $project->getName(),
+					'language' => $project->getLanguage(),
 					'description' => $project->getDescription(),
 					'group' => $project->getGroup(),
 					'key' => $project->getDocumentationKey(),
@@ -180,6 +181,9 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface {
 		/** @var \Causal\Sphinx\Domain\Model\Project $project */
 		$project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project', $data['key']);
 		$project->setName($data['name']);
+		// "isset" to be removed in version 1.5.0 when it's expected
+		// that every project got this new key
+		$project->setLanguage(isset($data['language']) ? $data['language'] : '');
 		$project->setDescription($data['description']);
 		$project->setGroup($data['group']);
 		$project->setDirectory($data['directory']);
