@@ -351,19 +351,17 @@ class DocumentationController extends AbstractActionController {
 
 	/**
 	 * Creates a custom project.
-	 * Note: Parameters are read from $_POST.
 	 *
+	 * @param string $group
+	 * @param string $name
+	 * @param string $description
+	 * @param string $documentationKey
+	 * @param string $directory
 	 * @return void
 	 */
-	protected function createCustomProjectAction() {
+	protected function createCustomProjectAction($group, $name, $description, $documentationKey, $directory) {
 		$response = array();
 		$success = FALSE;
-
-		$group = GeneralUtility::_POST('group');
-		$name = GeneralUtility::_POST('name');
-		$description = GeneralUtility::_POST('description');
-		$documentationKey = GeneralUtility::_POST('documentationKey');
-		$directory = GeneralUtility::_POST('directory');
 
 		// Sanitize directory
 		$directory = rtrim($directory, '/') . '/';
@@ -424,21 +422,20 @@ class DocumentationController extends AbstractActionController {
 
 	/**
 	 * Updates a custom project.
-	 * Note: Parameters are read from $_POST.
 	 *
+	 * @param string $group
+	 * @param string $name
+	 * @param string $description
+	 * @param string $documentationKey
+	 * @param string $originalDocumentationKey
+	 * @param string $directory
+	 * @param bool $updateGroup
 	 * @return void
 	 */
-	protected function updateCustomProjectAction() {
+	protected function updateCustomProjectAction($group, $name, $description, $documentationKey,
+												 $originalDocumentationKey, $directory, $updateGroup) {
 		$response = array();
 		$success = FALSE;
-
-		$group = GeneralUtility::_POST('group');
-		$name = GeneralUtility::_POST('name');
-		$description = GeneralUtility::_POST('description');
-		$documentationKey = GeneralUtility::_POST('documentationKey');
-		$originalDocumentationKey = GeneralUtility::_POST('originalDocumentationKey');
-		$directory = GeneralUtility::_POST('directory');
-		$updateGroup = GeneralUtility::_POST('updateGroup') === 'true';
 
 		// Sanitize directory
 		$directory = rtrim($directory, '/') . '/';

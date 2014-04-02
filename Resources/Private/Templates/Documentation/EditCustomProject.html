@@ -1,25 +1,25 @@
 <div title="{f:translate(key:'dashboard.action.editCustomProject')}">
 	<div class="ui-state-error"></div>
-	<form>
+	<f:form action="updateCustomProject" id="tx-sphinx-customProject">
 		<fieldset>
 			<label for="group"><f:translate key="project.group" /></label>
-			<input type="text" name="group" id="group" value="{project.group}" class="text ui-widget-content ui-corner-all half-width">
+			<f:form.textfield name="group" id="group" value="{project.group}" class="text ui-widget-content ui-corner-all half-width" />
 
-			<input type="checkbox" name="updateGroup" id="updateGroup" value="1" class="checkbox" />
+			<f:form.checkbox name="updateGroup" id="updateGroup" value="1" class="checkbox" />
 			<label for="updateGroup" title="{f:translate(key:'dashboard.form.edit.updateProjectGroup.description')}" class="has-tooltip"><f:translate key="dashboard.form.edit.updateProjectGroup" /></label>
 
 			<label for="name"><f:translate key="project.name" /></label>
-			<input type="text" name="name" id="name" value="{project.name}" class="text ui-widget-content ui-corner-all">
+			<f:form.textfield name="name" id="name" value="{project.name}" class="text ui-widget-content ui-corner-all" />
 
 			<label for="description"><f:translate key="project.description" /></label>
-			<textarea name="description" id="description" class="text ui-widget-content ui-corner-all">{project.description}</textarea>
+			<f:form.textarea name="description" id="description" value="{project.description}" class="text ui-widget-content ui-corner-all" />
 
 			<label for="documentationKey"><f:translate key="project.documentationKey" /></label>
-			<input type="text" name="documentationKey" id="documentationKey" value="{project.documentationKey}" class="text ui-widget-content ui-corner-all">
-			<input type="hidden" name="originalDocumentationKey" id="originalDocumentationKey" value="{project.documentationKey}" />
+			<f:form.textfield name="documentationKey" id="documentationKey" value="{project.documentationKey}" class="text ui-widget-content ui-corner-all" />
+			<f:form.hidden name="originalDocumentationKey" id="originalDocumentationKey" value="{project.documentationKey}" />
 
 			<label for="directory"><f:translate key="project.directory" /></label>
-			<input type="text" name="directory" id="directory" value="{project.directory}" class="text ui-widget-content ui-corner-all">
+			<f:form.textfield name="directory" id="directory" value="{project.directory}" class="text ui-widget-content ui-corner-all" />
 		</fieldset>
-	</form>
+	</f:form>
 </div>

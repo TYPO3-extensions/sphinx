@@ -18,9 +18,7 @@ CausalSphinxDashboard = {
 
 	actions: {
 		addCustomProject: null,
-		createCustomProject: null,
 		editCustomProject: null,
-		updateCustomProject: null,
 		removeCustomProject: null
 	},
 
@@ -34,7 +32,7 @@ CausalSphinxDashboard = {
 		}
 	},
 
-	customProjectDialog: function (loadAction, saveAction, saveLabelKey) {
+	customProjectDialog: function (loadAction, saveLabelKey) {
 		var self = CausalSphinxDashboard;
 
 		var ajaxData;
@@ -47,15 +45,17 @@ CausalSphinxDashboard = {
 		});
 
 		if (ajaxData['status'] == 'success') {
-			var form = ajaxData['statusText'];
+			var formHtml = ajaxData['statusText'];
+			var form;
 			var group, updateGroup, name, description, documentationKey, originalDocumentationKey, directory;
 
-			var NewDialog = $(form).dialog({
-				height: 420,
+			var NewDialog = $(formHtml).dialog({
+				height: 'auto',
 				width: 500,
 				modal: true,
 				open: function (event, ui) {
 					$('.ui-state-error').hide();
+					form = $('#tx-sphinx-customProject');
 					group = $('#group');
 					updateGroup = $('#updateGroup') || $('');
 					name = $('#name');
@@ -81,16 +81,8 @@ CausalSphinxDashboard = {
 							if (bValid) {
 								$.ajax({
 									type: 'POST',
-									url: saveAction,
-									data: {
-										group: group.val(),
-										name: name.val(),
-										description: description.val(),
-										documentationKey: documentationKey.val(),
-										originalDocumentationKey: originalDocumentationKey.val(),
-										directory: directory.val(),
-										updateGroup: updateGroup.prop('checked')
-									},
+									url: form.prop('action'),
+									data: form.serialize(),
 									success: function (data) {
 										if (data['status'] === 'success') {
 											thisDialog.dialog('close');
@@ -124,7 +116,6 @@ CausalSphinxDashboard = {
 		var self = CausalSphinxDashboard;
 		self.customProjectDialog(
 			self.actions.addCustomProject,
-			self.actions.createCustomProject,
 			'dashboard.message.add'
 		);
 	},
@@ -133,7 +124,6 @@ CausalSphinxDashboard = {
 		var self = CausalSphinxDashboard;
 		self.customProjectDialog(
 			self.actions.editCustomProject.replace(/DOCUMENTATION_KEY/, documentationKey),
-			self.actions.updateCustomProject,
 			'dashboard.message.update'
 		);
 	},
