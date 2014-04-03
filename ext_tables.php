@@ -16,13 +16,10 @@ if (TYPO3_MODE === 'BE') {
 		'documentation',
 		'top',
 		array(
-			'Documentation' => implode(',', array(
-				'index,dashboard,render,convert',
-				'createExtensionProject',
-				'addCustomProject,createCustomProject,editCustomProject,updateCustomProject,removeCustomProject',
-			)),
+			'Documentation' => 'index,dashboard,render,convert,createExtensionProject',
 			'InteractiveViewer' => 'render,missingRestdoc,outdatedRestdoc',
 			'RestEditor' => 'edit,open,save,autocomplete,accordionReferences,updateIntersphinx',
+			'Ajax' => 'addCustomProject,createCustomProject,editCustomProject,updateCustomProject,removeCustomProject',
 		),
 		array(
 			'access' => 'user,group',
