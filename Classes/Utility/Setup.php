@@ -669,16 +669,18 @@ EOT;
 		);
 
 		$directories = GeneralUtility::get_dirs($pluginsPath);
-		foreach ($directories as $directory) {
-			if ($directory{0} === '_' || !is_file($pluginsPath . $directory . '/README.rst')) {
-				continue;
+		if (is_array($directories)) {
+			foreach ($directories as $directory) {
+				if ($directory{0} === '_' || !is_file($pluginsPath . $directory . '/README.rst')) {
+					continue;
+				}
+				$plugins[] = array(
+					'name' => $directory,
+					'description' => isset($descriptions[$directory]) ? $descriptions[$directory] : '',
+					'readme' => substr($pluginsPath . $directory . '/README.rst', strlen(PATH_site) - 1),
+					'docst3o' => in_array($directory, $availableOnDocsTypo3Org),
+				);
 			}
-			$plugins[] = array(
-				'name' => $directory,
-				'description' => isset($descriptions[$directory]) ? $descriptions[$directory] : '',
-				'readme' => substr($pluginsPath . $directory . '/README.rst', strlen(PATH_site) - 1),
-				'docst3o' => in_array($directory, $availableOnDocsTypo3Org),
-			);
 		}
 
 		return $plugins;
