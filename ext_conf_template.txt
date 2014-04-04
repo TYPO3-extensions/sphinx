@@ -5,7 +5,7 @@ version =
 auto_continue = 1
 
 # cat=basic//30; type=boolean; label=LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.module.load_console
-load_console_module = 1
+load_console_module = 0
 
 # cat=pdf//10; type=options[LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.pdf_builder.none=,LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.pdf_builder.rst2pdf=rst2pdf,LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.pdf_builder.pdflatex=pdflatex]; label=LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.pdf_builder
 pdf_builder =
