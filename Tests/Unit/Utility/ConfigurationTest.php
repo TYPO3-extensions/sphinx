@@ -24,6 +24,7 @@ namespace Causal\Sphinx\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Causal\Sphinx\Utility\Configuration;
 
 /**
@@ -44,7 +45,7 @@ project = u'My Unit \'\\\' Test Project'
 copyright = u'2013, Xavier Perseguers'
 PYTHON;
 
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($this->fixtureFilename, $confpy);
+		GeneralUtility::writeFile($this->fixtureFilename, $confpy);
 	}
 
 	public function tearDown() {
@@ -96,7 +97,7 @@ if 1 and "TYPO3 specific":
     except:
         html_theme = 'default'
 PYTHON;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($this->fixtureFilename, $confpy);
+		GeneralUtility::writeFile($this->fixtureFilename, $confpy);
 
 		$configuration = Configuration::load($this->fixtureFilename);
 		$this->assertSame(TRUE, $configuration['t3sphinx']);

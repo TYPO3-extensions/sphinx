@@ -24,12 +24,12 @@ namespace Causal\Sphinx\Tests\Functional\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Causal\Sphinx\Utility\GeneralUtility;
+use Causal\Sphinx\Utility\MiscUtility;
 
 /**
- * Testcase for class \Causal\Sphinx\Utility\GeneralUtility.
+ * Testcase for class \Causal\Sphinx\Utility\MiscUtility.
  */
-class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx', TRUE);
@@ -42,7 +42,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc')) {
 			$this->markTestIncomplete('This test requires extension "restdoc" to be loaded.');
 		}
-		$references = GeneralUtility::getIntersphinxReferences('sphinx');
+		$references = MiscUtility::getIntersphinxReferences('sphinx');
 		$this->assertTrue(is_array($references));
 		$this->assertTrue(isset($references['Index.htm']['start']));
 	}
@@ -56,7 +56,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/default/html/Index.html';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
-		GeneralUtility::generateDocumentation('sphinx', 'html');
+		MiscUtility::generateDocumentation('sphinx', 'html');
 		$this->assertTrue(is_file($masterFilename), 'Master file not found: ' . $masterFilename);
 	}
 
@@ -69,7 +69,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/default/json/Index.fjson';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
-		GeneralUtility::generateDocumentation('sphinx', 'json');
+		MiscUtility::generateDocumentation('sphinx', 'json');
 		$this->assertTrue(is_file($masterFilename), 'Master file not found: ' . $masterFilename);
 	}
 
@@ -86,7 +86,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/default/pdf/sphinx.pdf';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
-		GeneralUtility::generateDocumentation('sphinx', 'pdf');
+		MiscUtility::generateDocumentation('sphinx', 'pdf');
 		$this->assertTrue(is_file($masterFilename), 'Master file not found: ' . $masterFilename);
 	}
 
@@ -99,7 +99,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/fr_FR/html/Index.html';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
-		GeneralUtility::generateDocumentation('sphinx', 'html', FALSE, 'fr_FR');
+		MiscUtility::generateDocumentation('sphinx', 'html', FALSE, 'fr_FR');
 		$this->assertTrue(is_file($masterFilename), 'Master file not found: ' . $masterFilename);
 	}
 
@@ -112,7 +112,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/fr_FR/json/Index.fjson';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
-		GeneralUtility::generateDocumentation('sphinx', 'json', FALSE, 'fr_FR');
+		MiscUtility::generateDocumentation('sphinx', 'json', FALSE, 'fr_FR');
 		$this->assertTrue(is_file($masterFilename), 'Master file not found: ' . $masterFilename);
 	}
 
@@ -129,7 +129,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		}
 		$masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/fr_FR/pdf/sphinx.pdf';
 		$this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
-		GeneralUtility::generateDocumentation('sphinx', 'pdf', FALSE, 'fr_FR');
+		MiscUtility::generateDocumentation('sphinx', 'pdf', FALSE, 'fr_FR');
 		$this->assertTrue(is_file($masterFilename), 'Master file not found: ' . $masterFilename);
 	}
 

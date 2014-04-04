@@ -24,18 +24,19 @@ namespace Causal\Sphinx\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use Causal\Sphinx\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Causal\Sphinx\Utility\MiscUtility;
 
 /**
- * Testcase for class \Causal\Sphinx\Utility\GeneralUtility.
+ * Testcase for class \Causal\Sphinx\Utility\MiscUtility.
  */
-class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
+class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
 	 */
 	public function canExtractMetadataForExtensionSphinx() {
-		$metadata = GeneralUtility::getExtensionMetaData('sphinx');
+		$metadata = MiscUtility::getExtensionMetaData('sphinx');
 		$this->assertTrue(is_array($metadata));
 		$this->assertSame(24, count($metadata));
 		$this->assertSame('sphinx', $metadata['extensionKey']);
@@ -44,23 +45,23 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame('xavier@causal.ch', $metadata['author_email']);
 		$this->assertSame('6.0.0-6.2.99', $metadata['constraints']['depends']['typo3']);
 		//$this->assertSame('1.2.1', $metadata['release']);
-		$this->assertSame('1.2', $metadata['version']);
+		$this->assertSame('1.4', $metadata['version']);
 	}
 
 	/**
 	 * @test
 	 */
 	public function extensionSphinxHasSphinxDocumentation() {
-		$documentationType = GeneralUtility::getDocumentationType('sphinx');
-		$this->assertSame(GeneralUtility::DOCUMENTATION_TYPE_SPHINX, $documentationType);
+		$documentationType = MiscUtility::getDocumentationType('sphinx');
+		$this->assertSame(MiscUtility::DOCUMENTATION_TYPE_SPHINX, $documentationType);
 	}
 
 	/**
 	 * @test
 	 */
 	public function extensionAboutHasUnknownDocumentation() {
-		$documentationType = GeneralUtility::getDocumentationType('about');
-		$this->assertSame(GeneralUtility::DOCUMENTATION_TYPE_UNKNOWN, $documentationType);
+		$documentationType = MiscUtility::getDocumentationType('about');
+		$this->assertSame(MiscUtility::DOCUMENTATION_TYPE_UNKNOWN, $documentationType);
 	}
 
 	/**
@@ -73,15 +74,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			);
 		}
 
-		$documentationType = GeneralUtility::getDocumentationType('documentation');
-		$this->assertSame(GeneralUtility::DOCUMENTATION_TYPE_README, $documentationType);
+		$documentationType = MiscUtility::getDocumentationType('documentation');
+		$this->assertSame(MiscUtility::DOCUMENTATION_TYPE_README, $documentationType);
 	}
 
 	/**
 	 * @test
 	 */
 	public function extensionSphinxHasFrenchDocumentation() {
-		$localizationDirectories = GeneralUtility::getLocalizationDirectories('sphinx');
+		$localizationDirectories = MiscUtility::getLocalizationDirectories('sphinx');
 		$expected = array(
 			'fr'    => array(
 				'directory' => 'Documentation/Localization.fr_FR',
@@ -99,8 +100,8 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function extensionSphinxHasSphinxFrenchDocumentation() {
-		$documentationType = GeneralUtility::getLocalizedDocumentationType('sphinx', 'fr_FR');
-		$this->assertSame(GeneralUtility::DOCUMENTATION_TYPE_SPHINX, $documentationType);
+		$documentationType = MiscUtility::getLocalizedDocumentationType('sphinx', 'fr_FR');
+		$this->assertSame(MiscUtility::DOCUMENTATION_TYPE_SPHINX, $documentationType);
 	}
 
 	/**
@@ -113,15 +114,15 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			);
 		}
 
-		$documentationType = GeneralUtility::getLocalizedDocumentationType('documentation', 'fr_FR');
-		$this->assertSame(GeneralUtility::DOCUMENTATION_TYPE_UNKNOWN, $documentationType);
+		$documentationType = MiscUtility::getLocalizedDocumentationType('documentation', 'fr_FR');
+		$this->assertSame(MiscUtility::DOCUMENTATION_TYPE_UNKNOWN, $documentationType);
 	}
 
 	/**
 	 * @test
 	 */
 	public function canExtractEnglishDocumentationTitleForExtensionSphinx() {
-		$projectTitle = GeneralUtility::getDocumentationProjectTitle('sphinx');
+		$projectTitle = MiscUtility::getDocumentationProjectTitle('sphinx');
 		$this->assertSame('Sphinx Python Documentation Generator and Viewer', $projectTitle);
 	}
 
@@ -129,7 +130,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function canExtractFrenchDocumentationTitleForExtensionSphinx() {
-		$projectTitle = GeneralUtility::getDocumentationProjectTitle('sphinx', 'fr_FR');
+		$projectTitle = MiscUtility::getDocumentationProjectTitle('sphinx', 'fr_FR');
 		$this->assertSame('Générateur et visionneuse de documentation Sphinx Python', $projectTitle);
 	}
 
@@ -137,7 +138,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function cannotExtractGermanDocumentationTitleForExtensionSphinx() {
-		$projectTitle = GeneralUtility::getDocumentationProjectTitle('sphinx', 'de_DE');
+		$projectTitle = MiscUtility::getDocumentationProjectTitle('sphinx', 'de_DE');
 		$this->assertEmpty($projectTitle);
 	}
 
@@ -153,17 +154,17 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 # Settings given here will replace the settings of 'conf.py'.
 
 conf.py:
-  copyright: 2013
+  copyright: 2014
   project: Sphinx Python Documentation Generator and Viewer
   version: 1.2
   release: 1.2.0-dev
 YAML;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
 
 		// Test
-		$pythonConfiguration = GeneralUtility::yamlToPython($fixtureFilename);
+		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
 		$expected = array(
-			'copyright = u\'2013\'',
+			'copyright = u\'2014\'',
 			'project = u\'Sphinx Python Documentation Generator and Viewer\'',
 			'version = u\'1.2\'',
 			'release = u\'1.2.0-dev\'',
@@ -182,15 +183,15 @@ YAML;
 		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 conf.py:
-  copyright: 2013
+  copyright: 2014
   project: Sphinx Python Documentation Generator and Viewer
   version: 1.2
   release: 1.2.0-dev
 YAML;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
 
 		// Test
-		GeneralUtility::addIntersphinxMapping(
+		MiscUtility::addIntersphinxMapping(
 			$fixtureFilename,
 			'restdoc',
 			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
@@ -198,7 +199,7 @@ YAML;
 		$configuration = file_get_contents($fixtureFilename);
 		$expected = <<<YAML
 conf.py:
-  copyright: 2013
+  copyright: 2014
   project: Sphinx Python Documentation Generator and Viewer
   version: 1.2
   release: 1.2.0-dev
@@ -226,17 +227,17 @@ YAML;
 
 ---
 conf.py:
-  copyright: 2013
+  copyright: 2014
   project: Sphinx Python Documentation Generator and Viewer
   version: 1.2
   release: 1.2.0-dev
 ...
 
 YAML;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
 
 		// Test
-		GeneralUtility::addIntersphinxMapping(
+		MiscUtility::addIntersphinxMapping(
 			$fixtureFilename,
 			'restdoc',
 			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
@@ -249,7 +250,7 @@ YAML;
 
 ---
 conf.py:
-  copyright: 2013
+  copyright: 2014
   project: Sphinx Python Documentation Generator and Viewer
   version: 1.2
   release: 1.2.0-dev
@@ -277,7 +278,7 @@ YAML;
 		}
 
 		// Test
-		GeneralUtility::addIntersphinxMapping(
+		MiscUtility::addIntersphinxMapping(
 			$fixtureFilename,
 			'restdoc',
 			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
@@ -290,7 +291,7 @@ YAML;
 
 ---
 conf.py:
-  copyright: 2013
+  copyright: 2014
   project: No project name
   version: 1.0
   release: 1.0.0
@@ -315,7 +316,7 @@ YAML;
 		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 conf.py:
-  copyright: 2013
+  copyright: 2014
   project: Sphinx Python Documentation Generator and Viewer
   version: 1.2
   release: 1.2.0-dev
@@ -324,10 +325,10 @@ conf.py:
     - http://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
 YAML;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
 
 		// Test
-		GeneralUtility::addIntersphinxMapping(
+		MiscUtility::addIntersphinxMapping(
 			$fixtureFilename,
 			't3cmsapi',
 			'http://typo3.org/api/typo3cms'
@@ -335,7 +336,7 @@ YAML;
 		$configuration = file_get_contents($fixtureFilename);
 		$expected = <<<YAML
 conf.py:
-  copyright: 2013
+  copyright: 2014
   project: Sphinx Python Documentation Generator and Viewer
   version: 1.2
   release: 1.2.0-dev
@@ -361,7 +362,7 @@ YAML;
 		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
 		$yaml = <<<YAML
 conf.py:
-  copyright: 2013
+  copyright: 2014
   project: Sphinx Python Documentation Generator and Viewer
   version: 1.2
   release: 1.2.0-dev
@@ -370,10 +371,10 @@ conf.py:
     - http://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
 YAML;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
 
 		// Test
-		GeneralUtility::addIntersphinxMapping(
+		MiscUtility::addIntersphinxMapping(
 			$fixtureFilename,
 			'restdoc',
 			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
@@ -405,10 +406,10 @@ conf.py:
     pointsize: 10pt
     preamble: \usepackage{typo3}
 YAML;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
 
 		// Test
-		$pythonConfiguration = GeneralUtility::yamlToPython($fixtureFilename);
+		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
 		$expected = array(
 			'latex_documents = [(' . LF .
 				"u'Index'," . LF .
@@ -445,10 +446,10 @@ conf.py:
     - http://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
 YAML;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
 
 		// Test
-		$pythonConfiguration = GeneralUtility::yamlToPython($fixtureFilename);
+		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
 		$expected = array(
 			'intersphinx_mapping = {' . LF .
 				"'t3tsref': ('http://docs.typo3.org/typo3cms/TyposcriptReference/', None)," . LF .
@@ -474,10 +475,10 @@ conf.py:
   - t3sphinx.ext.t3extras
   - sphinxcontrib.youtube
 YAML;
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($fixtureFilename, $yaml);
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
 
 		// Test
-		$pythonConfiguration = GeneralUtility::yamlToPython($fixtureFilename);
+		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
 		$expected = array(
 			"extensions = ['sphinx.ext.intersphinx', 'sphinxcontrib.youtube']"
 		);
