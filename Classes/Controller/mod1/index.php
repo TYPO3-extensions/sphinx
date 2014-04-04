@@ -179,7 +179,7 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					$this->basePath,
 					$_POST['project'],
 					$_POST['author'],
-					FALSE,
+					strpos($_POST['template'], 'Separate') !== FALSE,
 					$_POST['template']
 				);
 			}

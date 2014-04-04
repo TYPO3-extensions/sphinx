@@ -851,6 +851,6 @@ body.margin {
   display: inline; }
 .ui-dialog input.checkbox + label {
   display: inline; }
-.ui-dialog fieldset {
+.ui-dialog fieldset, .ui-dialog p {
   padding: 0;
   border: 0; }

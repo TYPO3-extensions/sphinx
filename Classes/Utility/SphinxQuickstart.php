@@ -145,7 +145,7 @@ class SphinxQuickstart {
 
 		$config = array(
 			'template'         => $template,
-			'path'             => $separateSourceBuild ? $pathRoot . 'source' . DIRECTORY_SEPARATOR : $pathRoot,
+			'path'             => $pathRoot,
 			'masterDocument'   => $masterDocument,
 			'sourceFileSuffix' => $sourceFileSuffix,
 			'markers'          => $markers,

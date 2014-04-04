@@ -20,6 +20,13 @@
 			<label for="directory"><f:translate key="project.directory" /></label>
 			<f:form.textfield name="directory" id="directory" class="text ui-widget-content ui-corner-all" />
 
+			<hr />
+			<h2><f:translate key="dashboard.action.label.newProject" /></h2>
+			<p><f:translate key="dashboard.action.label.newProjectDescription" /></p>
+
+			<label for="template"><f:translate key="project.template" /></label>
+			<f:form.select name="template" id="template" options="{templates}" prependOptionLabel="" class="ui-widget-content ui-corner-all" />
+
 			<f:if condition="{hasGit}">
 				<label for="git" title="{f:translate(key:'project.gitRepository.description')}"><f:translate key="project.gitRepository" /></label>
 				<f:form.textfield name="git" id="git" class="text ui-widget-content ui-corner-all" />

@@ -33,12 +33,13 @@ if lexers:
 # If your documentation needs a minimal Sphinx version, state it here.
 #needs_sphinx = '1.0'
 
-# Add any Sphinx extension module names here, as strings. They can be extensions
-# coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.intersphinx', 'sphinx.ext.todo', 'sphinx.ext.ifconfig']
+# Add any Sphinx extension module names here, as strings. They can be
+# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
+# ones.
+extensions = []
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = []
+templates_path = ['###PATH_TEMPLATES###']
 
 # The suffix of source filenames.
 source_suffix = '###SOURCE_FILE_SUFFIX###'
@@ -70,14 +71,14 @@ release = '###RELEASE###'
 # non-false value, then it is used:
 #today = ''
 # Else, today_fmt is used as the format for a strftime call.
-today_fmt = '%Y-%m-%d %H:%M'
+#today_fmt = '%B %d, %Y'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = ['###EXCLUDE_PATTERN###']
-exclude_trees = ['###EXCLUDE_PATTERN###']
 
-# The reST default role (used for this markup: `text`) to use for all documents.
+# The reST default role (used for this markup: `text`) to use for all
+# documents.
 #default_role = None
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
@@ -94,15 +95,18 @@ exclude_trees = ['###EXCLUDE_PATTERN###']
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# A list of ignored prefixes for module index sorting.
+#modindex_common_prefix = []
+
 # If true, keep warnings as "system message" paragraphs in the built documents.
 #keep_warnings = False
 
 
-# -- Options for HTML output ---------------------------------------------------
+# -- Options for HTML output ----------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'haiku'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -110,7 +114,7 @@ html_theme = 'default'
 #html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = []
+#html_theme_path = []
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -131,7 +135,12 @@ html_theme_path = []
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_static_path = ['###PATH_STATIC###']
+
+# Add any extra paths that contain custom files (such as robots.txt or
+# .htaccess) here, relative to this directory. These files are copied
+# directly to the root of the documentation.
+#html_extra_path = []
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -188,11 +197,12 @@ latex_elements = {
 #'pointsize': '10pt',
 
 # Additional stuff for the LaTeX preamble.
-'preamble': '\\usepackage{typo3}'
+#'preamble': '',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title, author, documentclass [howto/manual]).
+# (source start file, target name, title,
+#  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     ('###MASTER_DOCUMENT###', '###PROJECT###.tex', u'###PROJECT_NAME###',
      u'###AUTHOR###', 'manual'),
@@ -318,7 +328,7 @@ pdf_use_numbered_links = False
 pdf_fit_background_mode = 'scale'
 
 
-# -- Options for manual page output --------------------------------------------
+# -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
@@ -331,7 +341,7 @@ man_pages = [
 #man_show_urls = False
 
 
-# -- Options for Texinfo output ------------------------------------------------
+# -- Options for Texinfo output -------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
@@ -353,74 +363,3 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
-
-
-#=================================================
-#
-# TYPO3 codeblock BEGIN:
-#
-# Insert this codeblock at the end of your Sphinx
-# builder configuration file 'conf.py'.
-# This may enable TYPO3 specific features like
-# TYPO3 themes. It makes Yaml settings files work.
-#
-#-------------------------------------------------
-
-if 1 and "TYPO3 specific":
-
-    try:
-        t3DocTeam
-    except NameError:
-        t3DocTeam = {}
-
-    try:
-        import t3sphinx
-        html_theme_path.insert(0, t3sphinx.themes_dir)
-        html_theme = 'typo3sphinx'
-    except:
-        html_theme = 'default'
-
-    t3DocTeam['conf_py_file'] = None
-    try:
-        t3DocTeam['conf_py_file'] = __file__
-    except:
-        import inspect
-        t3DocTeam['conf_py_file'] = inspect.getfile(
-            inspect.currentframe())
-
-    t3DocTeam['conf_py_package_dir'] = os.path.abspath(os.path.dirname(
-        t3DocTeam['conf_py_file']))
-    t3DocTeam['relpath_to_master_doc'] = '..'
-    t3DocTeam['relpath_to_logdir'] = '_not_versioned'
-    t3DocTeam['path_to_logdir'] = os.path.join(
-        t3DocTeam['conf_py_package_dir'],
-        t3DocTeam['relpath_to_logdir'])
-    t3DocTeam['pathToYamlSettings'] = os.path.join(
-        t3DocTeam['conf_py_package_dir'],
-        t3DocTeam['relpath_to_master_doc'], 'Settings.yml')
-    try:
-        t3DocTeam['pathToGlobalYamlSettings'] = \
-            t3sphinx.pathToGlobalYamlSettings
-    except:
-        t3DocTeam['pathToGlobalYamlSettings'] = None
-    if not t3DocTeam['pathToGlobalYamlSettings']:
-        t3DocTeam['pathToGlobalYamlSettings'] = os.path.join(
-            t3DocTeam['conf_py_package_dir'], 'GlobalSettings.yml')
-    try:
-        __function = t3sphinx.yamlsettings.processYamlSettings
-    except:
-        __function = None
-    if not __function:
-        try:
-            import yamlsettings
-            __function = yamlsettings.processYamlSettings
-        except:
-            __function = None
-    if __function:
-        __function(globals(), t3DocTeam)
-
-#-------------------------------------------------
-#
-# TYPO3 codeblock END.
-#
-#=================================================

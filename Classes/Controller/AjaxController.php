@@ -58,7 +58,12 @@ class AjaxController extends AbstractActionController {
 		asort($locales);
 		$locales = array('' => $this->translate('language.default')) + $locales;
 
-		$this->view->assign('locales', $locales);
+		$projectTemplates = $this->getProjectTemplates();
+
+		$this->view->assignMultiple(array(
+			'locales' => $locales,
+			'templates' => $projectTemplates,
+		));
 
 		$response = array();
 		$response['status'] = 'success';
@@ -76,10 +81,11 @@ class AjaxController extends AbstractActionController {
 	 * @param string $description
 	 * @param string $documentationKey
 	 * @param string $directory
+	 * @param string $template
 	 * @param string $git
 	 * @return void
 	 */
-	public function createCustomProjectAction($group, $name, $lang, $description, $documentationKey, $directory, $git = '') {
+	public function createCustomProjectAction($group, $name, $lang, $description, $documentationKey, $directory, $template = '', $git = '') {
 		$response = array();
 		$success = FALSE;
 		$hasGitCommand = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('git') !== '';
@@ -134,7 +140,22 @@ class AjaxController extends AbstractActionController {
 					$directory .= 'Documentation/';
 				}
 			}
+		} elseif ($existingProject === NULL && !empty($template)) {
+			$absoluteDirectory = GeneralUtility::getFileAbsFileName($directory);
+			GeneralUtility::mkdir_deep($absoluteDirectory);
+
+			\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
+				$absoluteDirectory,
+				$name,
+				$GLOBALS['BE_USER']->user['realName'],
+				strpos($template, 'Separate') !== FALSE,
+				$template
+			);
+
+			// Discover project structure again
+			$projectStructure = MiscUtility::getProjectStructure($directory);
 		}
+
 		if ($projectStructure !== MiscUtility::PROJECT_STRUCTURE_UNKNOWN) {
 			// $existingProject must be NULL otherwise it means we try to reuse an existing project's key
 			if ($existingProject === NULL) {
@@ -287,6 +308,19 @@ class AjaxController extends AbstractActionController {
 	 */
 	protected function isValidDocumentationKey($documentationKey) {
 		return preg_match('/^[a-z][a-z0-9]*(\.[a-z0-9]+)*$/', $documentationKey);
+	}
+
+	/**
+	 * Returns the available project templates.
+	 *
+	 * @return array
+	 */
+	protected function getProjectTemplates() {
+		$templates = array();
+		foreach (array('BlankSingleProject', 'BlankSeparateProject', 'TYPO3DocProject') as $key) {
+			$templates[$key] = $this->translate('dashboard.projectTemplates.' . $key);
+		}
+		return $templates;
 	}
 
 }

@@ -60,11 +60,14 @@
 			<trans-unit id="project.directory">
 				<source>Directory</source>
 			</trans-unit>
+			<trans-unit id="project.template">
+				<source>Template</source>
+			</trans-unit>
 			<trans-unit id="project.gitRepository">
 				<source>Git Repository</source>
 			</trans-unit>
 			<trans-unit id="project.gitRepository.description">
-				<source>If you provide a Git URL, the directory you specify above should either be empty or will be created for you. Afterwards, a new documentation project will be instantiated by automatically cloning the repository.</source>
+				<source>If you provide a Git repository URL, the directory you specify above should either be empty or will be created for you. Afterwards, a new documentation project will be instantiated by automatically cloning the repository.</source>
 			</trans-unit>
 			<trans-unit id="tx_sphinx_domain_model_extension.title">
 				<source>Title</source>
@@ -123,6 +126,12 @@
 			<trans-unit id="dashboard.action.removeCustomProject">
 				<source>Remove reference to custom project</source>
 			</trans-unit>
+			<trans-unit id="dashboard.action.label.newProject">
+				<source>New Project</source>
+			</trans-unit>
+			<trans-unit id="dashboard.action.label.newProjectDescription">
+				<source>Options below let you kickstart a new project instead of just adding a reference to an existing project.</source>
+			</trans-unit>
 			<trans-unit id="dashboard.action.error.unknownError">
 				<source>Unknown error while saving changes.</source>
 			</trans-unit>
@@ -137,6 +146,15 @@
 			</trans-unit>
 			<trans-unit id="dashboard.action.error.directoryNotEmpty">
 				<source>Directory is not empty.</source>
+			</trans-unit>
+			<trans-unit id="dashboard.projectTemplates.BlankSingleProject">
+				<source>Blank (single directory)</source>
+			</trans-unit>
+			<trans-unit id="dashboard.projectTemplates.BlankSeparateProject">
+				<source>Blank (separate source/build directories)</source>
+			</trans-unit>
+			<trans-unit id="dashboard.projectTemplates.TYPO3DocProject">
+				<source>TYPO3 documentation</source>
 			</trans-unit>
 			<trans-unit id="dashboard.message.yes">
 				<source>Yes</source>
