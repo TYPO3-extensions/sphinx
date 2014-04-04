@@ -102,7 +102,7 @@ class CustomProject {
 			case MiscUtility::PROJECT_STRUCTURE_SINGLE:
 				$sourceDirectory = '.';
 				$buildDirectory = '_build/';
-				$confFilename = 'conf.py';
+				$confFilename = './conf.py';
 				break;
 			case MiscUtility::PROJECT_STRUCTURE_SEPARATE:
 				$sourceDirectory = 'source/';
