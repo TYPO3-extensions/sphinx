@@ -94,7 +94,7 @@ CausalSphinxDashboard = {
 											$('.ui-state-error').html(data['statusText']).show();
 											setTimeout(function () {
 												$('.ui-state-error').fadeOut(1500);
-											}, 1500);
+											}, 3000);
 										}
 									},
 								});

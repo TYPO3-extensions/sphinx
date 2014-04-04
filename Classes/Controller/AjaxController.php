@@ -50,7 +50,7 @@ class AjaxController extends AbstractActionController {
 	 *
 	 * @return void
 	 */
-	protected function addCustomProjectAction() {
+	public function addCustomProjectAction() {
 		$hasGitCommand = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('git') !== '';
 		$this->view->assign('hasGit', $hasGitCommand);
 
@@ -79,14 +79,21 @@ class AjaxController extends AbstractActionController {
 	 * @param string $git
 	 * @return void
 	 */
-	protected function createCustomProjectAction($group, $name, $lang, $description, $documentationKey, $directory, $git = '') {
+	public function createCustomProjectAction($group, $name, $lang, $description, $documentationKey, $directory, $git = '') {
 		$response = array();
 		$success = FALSE;
 		$hasGitCommand = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('git') !== '';
 		$mayCloneFromGit = FALSE;
 
-		// Sanitize directory
+		// Sanitize directory and documentation key
 		$directory = rtrim($directory, '/') . '/';
+		$documentationKey = strtolower(trim($documentationKey));
+
+		if (!$this->isValidDocumentationKey($documentationKey)) {
+			$response['status'] = 'error';
+			$response['statusText'] = $this->translate('dashboard.action.error.invalidDocumentationKey');
+			$this->returnAjax($response);
+		}
 
 		$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
 
@@ -165,7 +172,7 @@ class AjaxController extends AbstractActionController {
 	 * @param string $documentationKey
 	 * @return void
 	 */
-	protected function editCustomProjectAction($documentationKey) {
+	public function editCustomProjectAction($documentationKey) {
 		$response = array();
 
 		$locales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
@@ -201,13 +208,14 @@ class AjaxController extends AbstractActionController {
 	 * @param bool $updateGroup
 	 * @return void
 	 */
-	protected function updateCustomProjectAction($group, $name, $lang, $description, $documentationKey,
+	public function updateCustomProjectAction($group, $name, $lang, $description, $documentationKey,
 												 $originalDocumentationKey, $directory, $updateGroup) {
 		$response = array();
 		$success = FALSE;
 
-		// Sanitize directory
+		// Sanitize directory and documentation key
 		$directory = rtrim($directory, '/') . '/';
+		$documentationKey = strtolower(trim($documentationKey));
 
 		$projectStructure = MiscUtility::getProjectStructure($directory);
 		if ($projectStructure !== MiscUtility::PROJECT_STRUCTURE_UNKNOWN) {
@@ -219,7 +227,7 @@ class AjaxController extends AbstractActionController {
 			}
 
 			// $existingProject must be NULL otherwise it means we try to reuse an existing project's key
-			if ($project !== NULL && $existingProject === NULL) {
+			if ($this->isValidDocumentationKey($documentationKey) && $project !== NULL && $existingProject === NULL) {
 				$previousGroup = $project->getGroup();
 
 				$project->setGroup($group);
@@ -258,7 +266,7 @@ class AjaxController extends AbstractActionController {
 	 * @param string $documentationKey Reference of a custom project
 	 * @return void
 	 */
-	protected function removeCustomProjectAction($documentationKey) {
+	public function removeCustomProjectAction($documentationKey) {
 		$response = array();
 
 		if ($this->projectRepository->remove($documentationKey)) {
@@ -269,6 +277,16 @@ class AjaxController extends AbstractActionController {
 		}
 
 		$this->returnAjax($response);
+	}
+
+	/**
+	 * Checks if a given documentation key has the correct format.
+	 *
+	 * @param string $documentationKey
+	 * @return bool
+	 */
+	protected function isValidDocumentationKey($documentationKey) {
+		return preg_match('/^[a-z][a-z0-9]*(\.[a-z0-9]+)*$/', $documentationKey);
 	}
 
 }

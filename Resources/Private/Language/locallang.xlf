@@ -127,7 +127,7 @@
 				<source>Unknown error while saving changes.</source>
 			</trans-unit>
 			<trans-unit id="dashboard.action.error.invalidDocumentationKey">
-				<source>Invalid documentation key (probably already used).</source>
+				<source>Invalid documentation key (either wrong format or already used).</source>
 			</trans-unit>
 			<trans-unit id="dashboard.action.error.invalidDirectory">
 				<source>No Sphinx project found in specified directory.</source>
