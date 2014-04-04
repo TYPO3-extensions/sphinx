@@ -60,6 +60,12 @@
 			<trans-unit id="project.directory">
 				<source>Directory</source>
 			</trans-unit>
+			<trans-unit id="project.gitRepository">
+				<source>Git Repository</source>
+			</trans-unit>
+			<trans-unit id="project.gitRepository.description">
+				<source>If you provide a Git URL, the directory you specify above should either be empty or will be created for you. Afterwards, a new documentation project will be instantiated by automatically cloning the repository.</source>
+			</trans-unit>
 			<trans-unit id="tx_sphinx_domain_model_extension.title">
 				<source>Title</source>
 			</trans-unit>
@@ -125,6 +131,12 @@
 			</trans-unit>
 			<trans-unit id="dashboard.action.error.invalidDirectory">
 				<source>No Sphinx project found in specified directory.</source>
+			</trans-unit>
+			<trans-unit id="dashboard.action.error.invalidGitRepository">
+				<source>Invalid Git repository.</source>
+			</trans-unit>
+			<trans-unit id="dashboard.action.error.directoryNotEmpty">
+				<source>Directory is not empty.</source>
 			</trans-unit>
 			<trans-unit id="dashboard.message.yes">
 				<source>Yes</source>

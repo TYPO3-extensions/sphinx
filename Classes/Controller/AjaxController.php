@@ -51,6 +51,9 @@ class AjaxController extends AbstractActionController {
 	 * @return void
 	 */
 	protected function addCustomProjectAction() {
+		$hasGitCommand = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('git') !== '';
+		$this->view->assign('hasGit', $hasGitCommand);
+
 		$locales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
 		asort($locales);
 		$locales = array('' => $this->translate('language.default')) + $locales;
@@ -73,19 +76,59 @@ class AjaxController extends AbstractActionController {
 	 * @param string $description
 	 * @param string $documentationKey
 	 * @param string $directory
+	 * @param string $git
 	 * @return void
 	 */
-	protected function createCustomProjectAction($group, $name, $lang, $description, $documentationKey, $directory) {
+	protected function createCustomProjectAction($group, $name, $lang, $description, $documentationKey, $directory, $git = '') {
 		$response = array();
 		$success = FALSE;
+		$hasGitCommand = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('git') !== '';
+		$mayCloneFromGit = FALSE;
 
 		// Sanitize directory
 		$directory = rtrim($directory, '/') . '/';
 
-		$projectStructure = MiscUtility::getProjectStructure($directory);
-		if ($projectStructure !== MiscUtility::PROJECT_STRUCTURE_UNKNOWN) {
-			$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
+		$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
 
+		if ($existingProject === NULL && $hasGitCommand && !empty($git)) {
+			$mayCloneFromGit = \Causal\Sphinx\Utility\MiscUtility::checkUrl(str_replace('git://', 'http://', $git));
+			if (!$mayCloneFromGit) {
+				$response['status'] = 'error';
+				$response['statusText'] = $this->translate('dashboard.action.error.invalidGitRepository');
+				$this->returnAjax($response);
+			}
+		}
+
+		$projectStructure = MiscUtility::getProjectStructure($directory);
+		if ($mayCloneFromGit) {
+			$absoluteDirectory = GeneralUtility::getFileAbsFileName($directory);
+			if ($projectStructure !== MiscUtility::PROJECT_STRUCTURE_UNKNOWN || is_dir($absoluteDirectory . '.git')) {
+				$response['status'] = 'error';
+				$response['statusText'] = $this->translate('dashboard.action.error.directoryNotEmpty');
+				$this->returnAjax($response);
+			}
+
+			GeneralUtility::mkdir_deep($absoluteDirectory);
+
+			// -C flag does not work under Windows, thus we do a "cd" and then a "git clone"
+			$cmd = 'cd ' . escapeshellarg($absoluteDirectory) . ' && ' .
+				\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('git') .
+				' clone ' . $git . ' .';
+			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $out, $returnValue);
+
+			// Try to discover project structure again
+			$projectStructure = MiscUtility::getProjectStructure($directory);
+			if ($projectStructure === MiscUtility::PROJECT_STRUCTURE_UNKNOWN) {
+				// Maybe a TYPO3 project after all, but anyway, make sure project will be registered and let
+				// the user fix herself any possible problem with the git clone
+				$projectStructure = MiscUtility::PROJECT_STRUCTURE_TYPO3;
+
+				if (is_dir($absoluteDirectory . 'Documentation')) {
+					$directory .= 'Documentation/';
+				}
+			}
+		}
+		if ($projectStructure !== MiscUtility::PROJECT_STRUCTURE_UNKNOWN) {
 			// $existingProject must be NULL otherwise it means we try to reuse an existing project's key
 			if ($existingProject === NULL) {
 				/** @var \Causal\Sphinx\Domain\Model\Project $project */

@@ -815,6 +815,7 @@ HTML;
 		$indent = '  ';
 
 		if (!is_file($filename)) {
+			$currentYear = date('Y');
 			$configuration = <<<YAML
 # This is the project specific Settings.yml file.
 # Place Sphinx specific build information here.
@@ -822,7 +823,7 @@ HTML;
 
 ---
 conf.py:
-  copyright: 2013
+  copyright: $currentYear
   project: No project name
   version: 1.0
   release: 1.0.0
@@ -1100,6 +1101,22 @@ YAML;
 		$http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url);
 		try {
 			return $http->send()->getBody();
+		} catch (\Exception $e) {
+			return FALSE;
+		}
+	}
+
+	/**
+	 * Checks if a given URL is valid.
+	 *
+	 * @param string $url URL to check
+	 * @return bool
+	 */
+	static public function checkUrl($url) {
+		/** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
+		$http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url, \TYPO3\CMS\Core\Http\HttpRequest::METHOD_HEAD);
+		try {
+			return count($http->send()->getHeader()) > 0;
 		} catch (\Exception $e) {
 			return FALSE;
 		}
