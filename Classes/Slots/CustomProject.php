@@ -25,6 +25,7 @@ namespace Causal\Sphinx\Slots;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use Causal\Sphinx\Utility\MiscUtility;
 
 /**
@@ -113,6 +114,34 @@ class CustomProject {
 				$sourceDirectory = '.';
 				$buildDirectory = '_make/build/';
 				$confFilename = '_make/conf.py';
+
+				if (!is_dir($absoluteBasePath . '_make')) {
+					// Prepare the project so that it may be properly rendered
+					GeneralUtility::mkdir($absoluteBasePath . '_make');
+
+					/** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
+					$contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+
+					$projectName = str_replace(' ', '', $project->getName());
+					$markers = array(
+						'PROJECT'            => $projectName,
+						'PROJECT_NAME'       => $projectName,
+						'CURRENT_DATE'       => date('r'),
+						'YEAR'               => date('Y'),
+						'MASTER_DOCUMENT'    => 'Index',
+						'PATH_TEMPLATES'     => '_templates',
+						'PATH_STATIC'        => '_static',
+						'SOURCE_FILE_SUFFIX' => '.rst',
+						'EXCLUDE_PATTERN'    => '_make',
+					);
+
+					$confPyTemplate = ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/Templates/Projects/TYPO3DocEmptyProject/_make/conf.py.tmpl';
+
+					$contents = file_get_contents($confPyTemplate);
+					('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+					$contents = $contentObj->substituteMarkerArray($contents, $markers, '###|###');
+					GeneralUtility::writeFile($absoluteBasePath . '_make/conf.py', $contents);
+				}
 				break;
 		}
 
