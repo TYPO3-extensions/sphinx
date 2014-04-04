@@ -172,7 +172,7 @@ class SphinxBuilder {
 				}
 			}
 
-			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $cmd . LF . $output, 1366212039);
 		}
 
 		$output .= LF;
@@ -258,7 +258,7 @@ class SphinxBuilder {
 				}
 			}
 
-			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $cmd . LF . $output, 1366212039);
 		}
 
 		$output .= LF;
@@ -353,7 +353,7 @@ class SphinxBuilder {
 				}
 			}
 
-			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $cmd . LF . $output, 1366212039);
 		}
 
 		$output .= LF;
@@ -477,7 +477,7 @@ class SphinxBuilder {
 		// Prepend previous command output
 		$output = $outputLaTeX . LF . $output;
 		if ($ret !== 0) {
-			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $cmd . LF . $output, 1366212039);
 		}
 
 		$output .= LF;
@@ -564,7 +564,7 @@ class SphinxBuilder {
 				}
 			}
 
-			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1372003276);
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $cmd . LF . $output, 1372003276);
 		}
 
 		$output .= LF;
@@ -633,7 +633,7 @@ class SphinxBuilder {
 			$output = static::colorize($output);
 		}
 		if ($ret !== 0) {
-			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $output, 1366212039);
+			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $cmd . LF . $output, 1366212039);
 		}
 
 		$output .= LF;
@@ -686,7 +686,7 @@ class SphinxBuilder {
 		if (empty($sphinxVersion)) {
 			throw new \RuntimeException('Sphinx is not configured. Please use Extension Manager.', 1366210198);
 		} elseif (!is_executable($sphinxBuilder)) {
-			throw new \RuntimeException('Sphinx ' . $sphinxVersion . ' cannot be executed.', 1366280021);
+			throw new \RuntimeException('Sphinx ' . $sphinxVersion . ' (' . $sphinxBuilder . ') cannot be executed.', 1366280021);
 		}
 
 		$pythonPath = $sphinxPath . 'lib/python';
