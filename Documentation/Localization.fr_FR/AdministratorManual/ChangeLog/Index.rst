@@ -3,13 +3,13 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../../Includes.txt
+.. include:: ../../../Includes.txt
 
 
 .. _changelog:
 
 Journal des modifications
-=========================
+-------------------------
 
 Ce qui suit est une vue d'ensemble très haut niveau des changements de cette extension. Pour plus de détails,
 `lisez le journal des modifications en ligne <https://git.typo3.org/TYPO3CMS/Extensions/sphinx.git/log>`_.
@@ -25,6 +25,9 @@ Ce qui suit est une vue d'ensemble très haut niveau des changements de cette ex
 =======  ===========================================================================
 Version  Changements
 =======  ===========================================================================
+1.4.0    - Nouveau tableau de bord avec gestion des projets personnalisés
+         - Démarrage d'un projet personnalisé à partir d'un dépôt Git
+         - Support des projets personnalisés en langue étrangère
 1.3.0    - Coloration syntaxique pour les fichiers reStructuredText et YAML
          - Raccourcis clavier
          - Correction automatique des préfixes inconnus de références croisées
@@ -47,5 +50,6 @@ Version  Changements
          - Compilation en PDF si pdflatex est disponible
 0.2.0    Assistant pour créer une documentation TYPO3 avec le modèle officiel
 0.1.0    Première publication sur le TER (alpha pour un premier retour d'expérience)
-0.0.1    Non publiée sur le TER, l'extension est compatible avec TYPO3 4.5-4.7 et peut être récupérée depuis `le tag Subversion 0.0.1 <https://svn.typo3.org/TYPO3v4/Extensions/sphinx/tags/0.0.1/>`_
+0.0.1    Non publiée sur le TER, l'extension est compatible avec TYPO3 4.5-4.7 et peut être
+         récupérée depuis `le tag Subversion 0.0.1 <https://svn.typo3.org/TYPO3v4/Extensions/sphinx/tags/0.0.1/>`_
 =======  ===========================================================================

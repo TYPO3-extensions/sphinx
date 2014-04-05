@@ -11,7 +11,9 @@
 Manual du développeur
 =====================
 
-Ce chapitre décrit certains mécanismes internes de l'extension Sphinx pour vous permettre de l'étendre facilement.
+.. only:: html
+
+	Ce chapitre décrit certains mécanismes internes de l'extension Sphinx pour vous permettre de l'étendre facilement.
 
 
 Signaux et slots

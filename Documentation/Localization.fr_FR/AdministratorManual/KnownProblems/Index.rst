@@ -3,13 +3,13 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../../Includes.txt
+.. include:: ../../../Includes.txt
 
 
 .. _known-problems:
 
 Problèmes connus
-================
+----------------
 
 .. index::
 	single: Message d'erreur; Python interpreter was not found

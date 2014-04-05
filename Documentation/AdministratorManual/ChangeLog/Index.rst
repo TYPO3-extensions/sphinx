@@ -3,13 +3,13 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../Includes.txt
+.. include:: ../../Includes.txt
 
 
 .. _changelog:
 
 ChangeLog
-=========
+---------
 
 The following is a very high level overview of the changes in this extension. For more details, `read the online log <https://git.typo3.org/TYPO3CMS/Extensions/sphinx.git/log>`_.
 
@@ -23,6 +23,9 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ===========================================================================
 Version  Changes
 =======  ===========================================================================
+1.4.0    - New dashboard with management of custom projects
+         - Kickstart custom projects from a Git repository
+         - Support of custom projects in foreign languages
 1.3.0    - Syntax highlighting for reStructuredText and YAML files
          - Keyboard shortcuts
          - Automatic fix of unknown Intersphinx mapping prefixes
@@ -45,5 +48,6 @@ Version  Changes
          - Compilation in PDF if pdflatex is available
 0.2.0    Kickstarter to create a TYPO3 documentation using official template
 0.1.0    First release to the TER (alpha to gather more initial feedback)
-0.0.1    Not released to TER, extension is compatible with TYPO3 4.5-4.7. Can be retrieved from `Subversion's tag 0.0.1 <https://svn.typo3.org/TYPO3v4/Extensions/sphinx/tags/0.0.1/>`_
+0.0.1    Not released to TER, extension is compatible with TYPO3 4.5-4.7. Can be
+         retrieved from `Subversion's tag 0.0.1 <https://svn.typo3.org/TYPO3v4/Extensions/sphinx/tags/0.0.1/>`_
 =======  ===========================================================================

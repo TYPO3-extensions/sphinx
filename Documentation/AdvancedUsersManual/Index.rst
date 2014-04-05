@@ -6,20 +6,20 @@
 .. include:: ../Includes.txt
 
 
-.. _users-manual:
+.. _advanced-users-manual:
 
-Users manual
-============
+Advanced users manual
+=====================
 
 .. only:: html
 
-	This chapter describes how to use the extension from a user point of view.
+	This chapter describes how to use the extension from an advanced user point of view.
 
 .. toctree::
 	:maxdepth: 5
 	:titlesonly:
 
-	Requirements/Index
-	CreatingBuildingSphinxDocumentationProject/Index
-	SphinxDocumentationViewer/Index
-	ToDoList/Index
+	RenderingPdf/Index
+	Plugins/Index
+	AdvancedCrossLinks/Index
+	UsingSphinxCommandLine/Index

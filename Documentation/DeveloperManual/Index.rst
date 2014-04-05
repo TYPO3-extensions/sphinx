@@ -11,7 +11,9 @@
 Developer manual
 ================
 
-This chapter describes some internals of the Sphinx extension to let you extend it easily.
+.. only:: html
+
+	This chapter describes some internals of the Sphinx extension to let you extend it easily.
 
 
 Signals and Slots

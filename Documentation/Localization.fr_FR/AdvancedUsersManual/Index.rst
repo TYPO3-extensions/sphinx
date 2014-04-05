@@ -6,21 +6,20 @@
 .. include:: ../../Includes.txt
 
 
-.. _admin-manual:
+.. _advanced-users-manual:
 
-Manuel de l'administrateur
-==========================
+Manuel des utilisateurs avancés
+===============================
 
 .. only:: html
 
-	Ce chapitre décrit comment gérer l'extension du point de vue d'un administrateur.
+	Ce chapitre décrit comment utiliser l'extension du point de vue des utilisateurs avancés.
 
 .. toctree::
 	:maxdepth: 5
 	:titlesonly:
 
-	InstallingExtension/Index
 	RenderingPdf/Index
-	WindowsSetup/Index
-	KnownProblems/Index
-	ChangeLog/Index
+	Plugins/Index
+	AdvancedCrossLinks/Index
+	UsingSphinxCommandLine/Index

@@ -55,10 +55,10 @@ Sphinx Python Documentation Generator and Viewer
 	**Other versions of this document**
 
 	:PDF:
-		http://docs.typo3.org/typo3cms/extensions/sphinx/1.3.2/_pdf/
+		http://docs.typo3.org/typo3cms/extensions/sphinx/1.4.0/_pdf/
 
 	:French Manual:
-		http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/1.3.2/
+		http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/1.4.0/
 
 
 	**Table of Contents**
@@ -66,13 +66,10 @@ Sphinx Python Documentation Generator and Viewer
 .. toctree::
 	:maxdepth: 5
 	:titlesonly:
-	:glob:
 
 	Introduction/Index
 	UsersManual/Index
-	AdministratorManual/Index
+	WritersManual/Index
+	AdvancedUsersManual/Index
 	DeveloperManual/Index
-	KnownProblems/Index
-	ToDoList/Index
-	ChangeLog/Index
-	Targets
+	AdministratorManual/Index

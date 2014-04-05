@@ -3,20 +3,20 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../../Includes.txt
+.. include:: ../../../Includes.txt
 
 
 .. _to-do-list:
 
 Liste de tâches
-===============
+---------------
 
 Ce projet évolue et mûrit au gré des nouveaux cas d'utilisation qui sont découverts. Vous souhaitez
 disposer d'une fonction de fou ? Vous avez pensé à une meilleure expérience utilisateur ? Super !
 
 .. only:: html
 
-	.. figure:: ../../Images/finger.png
+	.. figure:: ../../../Images/finger.png
 		:alt: Une seule adresse
 
 .. note::
@@ -25,7 +25,7 @@ disposer d'une fonction de fou ? Vous avez pensé à une meilleure expérience u
 
 
 Traduction
-----------
+^^^^^^^^^^
 
 .. index::
 	single: Traduction
@@ -37,7 +37,7 @@ Une autre façon toute simple de contribuer au succès de cette extension est de
 
 
 Continuez de partager
----------------------
+^^^^^^^^^^^^^^^^^^^^^
 
 Pour terminer, utilisez donc les listes de diffusion et les réseaux sociaux pour partager vos
 impressions et faire quelques commentaires sur votre voyage au pays de la documentation "pur texte"

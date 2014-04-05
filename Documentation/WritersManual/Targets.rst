@@ -8,7 +8,7 @@
 
 .. _labels-for-crossreferencing:
 
-Index : Étiquettes pour références croisées
-===========================================
+Labels for cross-referencing
+----------------------------
 
 .. ref-targets-list::

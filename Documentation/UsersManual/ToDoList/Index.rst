@@ -3,20 +3,20 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: ../Includes.txt
+.. include:: ../../Includes.txt
 
 
 .. _to-do-list:
 
 To-Do list
-==========
+----------
 
 This project evolves and matures as new use cases pop up. You would like to see a killer feature?
 You have thought of better user experience? Great!
 
 .. only:: html
 
-	.. figure:: ../Images/finger.png
+	.. figure:: ../../Images/finger.png
 		:alt: A single address
 
 .. note::
@@ -24,7 +24,7 @@ You have thought of better user experience? Great!
 
 
 Translation
------------
+^^^^^^^^^^^
 
 .. index::
 	single: Translation
@@ -36,7 +36,7 @@ Another very easy way to contribute to the success of this extension is to trans
 
 
 Keep sharing
-------------
+^^^^^^^^^^^^
 
 Finally, please use mailing lists and social networks to share and give feedback about your journey
 into text-based documentation with reStructuredText and Sphinx, how you feel about it, which tools

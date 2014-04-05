@@ -11,20 +11,15 @@
 Manuel des utilisateurs
 =======================
 
-Ce chapitre décrit comment utiliser l'extension du point de vue des utilisateurs. De plus, il fournit quelques liens et
-astuces pour se mettre au diapason avec Sphinx et reStructuredText pour vos propres projets.
+.. only:: html
+
+	Ce chapitre décrit comment utiliser l'extension du point de vue des utilisateurs.
 
 .. toctree::
 	:maxdepth: 5
 	:titlesonly:
-	:glob:
 
 	Requirements/Index
 	CreatingBuildingSphinxDocumentationProject/Index
 	SphinxDocumentationViewer/Index
-	SphinxDocumentationEditor/Index
-	RenderingPdf/Index
-	Plugins/Index
-	SphinxRest/Index
-	DocsTypo3Org/Index
-	AdvancedCrossLinks/Index
+	ToDoList/Index

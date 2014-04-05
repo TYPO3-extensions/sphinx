@@ -18,6 +18,8 @@ conf.py:
     papersize: a4paper
     pointsize: 10pt
     preamble: \usepackage{typo3}
+  latex_use_parts: True
+  latex_show_pagerefs: True
   intersphinx_mapping:
     restdoc:
     - http://docs.typo3.org/typo3cms/extensions/restdoc/

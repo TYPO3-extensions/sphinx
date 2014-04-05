@@ -55,7 +55,6 @@ Le reste de ce chapitre vous donne quelques informations supplémentaires sur La
 .. toctree::
 	:maxdepth: 5
 	:titlesonly:
-	:glob:
 
 	LaTeXVsRst2pdf
 	IntroductionLaTeX

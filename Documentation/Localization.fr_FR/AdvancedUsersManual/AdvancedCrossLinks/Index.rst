@@ -127,7 +127,7 @@ retrouver avec deux répertoires :file:`html` et :file:`xml` (en gardant les opt
 
 Exécutez ensuite le script suivant :
 
-.. literalinclude:: ../../../UsersManual/AdvancedCrossLinks/prepare-objects-inv.sh
+.. literalinclude:: ../../../AdvancedUsersManual/AdvancedCrossLinks/prepare-objects-inv.sh
 	:language: bash
 
 .. caution::

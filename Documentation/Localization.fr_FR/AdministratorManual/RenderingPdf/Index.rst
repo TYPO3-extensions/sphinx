@@ -29,7 +29,6 @@ Le reste de ce chapitre vous guide au travers de l'installation et de la configu
 .. toctree::
 	:maxdepth: 5
 	:titlesonly:
-	:glob:
 
 	InstallingLaTeXLinux
 	InstallingLaTeXWindows
