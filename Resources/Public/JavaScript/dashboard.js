@@ -11,6 +11,7 @@ String.prototype.format = function () {
 CausalSphinxDashboard = {
 
 	messages: {},
+	officialDocuments: {},
 
 	datatable1: null,
 	datatable2: null,
@@ -54,6 +55,8 @@ CausalSphinxDashboard = {
 				width: 500,
 				modal: true,
 				open: function (event, ui) {
+					eval(ajaxData['js']);
+
 					$('.ui-state-error').hide();
 					form = $('#tx-sphinx-customProject');
 					group = $('#group');
@@ -160,6 +163,21 @@ CausalSphinxDashboard = {
 				}
 			]
 		});
+	},
+
+	fillFromOfficialDocument: function (key) {
+		var self = CausalSphinxDashboard;
+		var data = self.officialDocuments[key];
+		if (data) {
+			$('#group').val(data.type);
+			$('#name').val(data.title);
+			$('#lang').val('');
+			$('#documentationKey').val(data.key);
+			$('#git').val(data.git);
+			$('#template').val('');
+		} else {
+			$('#git').val('');
+		}
 	},
 
 	// Utility method to retrieve query parameters

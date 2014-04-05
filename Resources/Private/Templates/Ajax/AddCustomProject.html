@@ -1,3 +1,5 @@
+{namespace sphinx=Causal\Sphinx\ViewHelpers}
+
 <div title="{f:translate(key:'dashboard.action.addCustomProject')}">
 	<div class="ui-state-error"></div>
 	<f:form action="createCustomProject" id="tx-sphinx-customProject">
@@ -25,7 +27,12 @@
 			<p><f:translate key="dashboard.action.label.newProjectDescription" /></p>
 
 			<label for="template"><f:translate key="project.template" /></label>
-			<f:form.select name="template" id="template" options="{templates}" prependOptionLabel="" class="ui-widget-content ui-corner-all" />
+			<sphinx:form.select
+					name="template" id="template"
+					options="{templates}" groupOptions="1"
+					prependOptionLabel=""
+					onchange="CausalSphinxDashboard.fillFromOfficialDocument(this.value);"
+					class="ui-widget-content ui-corner-all" />
 
 			<f:if condition="{hasGit}">
 				<label for="git" title="{f:translate(key:'project.gitRepository.description')}"><f:translate key="project.gitRepository" /></label>

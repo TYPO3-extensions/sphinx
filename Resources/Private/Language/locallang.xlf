@@ -132,6 +132,9 @@
 			<trans-unit id="dashboard.action.label.newProjectDescription">
 				<source>Options below let you kickstart a new project instead of just adding a reference to an existing project.</source>
 			</trans-unit>
+			<trans-unit id="dashboard.action.label.customProject">
+				<source>Custom Project</source>
+			</trans-unit>
 			<trans-unit id="dashboard.action.error.unknownError">
 				<source>Unknown error while saving changes.</source>
 			</trans-unit>

@@ -46,6 +46,12 @@ class AjaxController extends AbstractActionController {
 	protected $projectRepository;
 
 	/**
+	 * @var \Causal\Sphinx\Domain\Repository\DocumentationRepository
+	 * @inject
+	 */
+	protected $documentationRepository;
+
+	/**
 	 * Returns a form to add a custom project.
 	 *
 	 * @return void
@@ -59,15 +65,46 @@ class AjaxController extends AbstractActionController {
 		$locales = array('' => $this->translate('language.default')) + $locales;
 
 		$projectTemplates = $this->getProjectTemplates();
+		$templates = array();
+
+		if ($hasGitCommand) {
+			$officialDocuments = $this->documentationRepository->getOfficialDocuments();
+
+			$gitDocuments = array();
+			foreach ($officialDocuments as $officialDocument) {
+				if (!empty($officialDocument['git'])) {
+					$officialDocument['type'] = 'TYPO3 ' . $officialDocument['type'];
+					$masterKey = $officialDocument['type'];
+					$key = $officialDocument['key'];
+					$templates[$masterKey][$key] = $officialDocument['title'];
+					$gitDocuments[$key] = $officialDocument;
+
+					// Sort by title
+					asort($templates[$masterKey][$key]);
+				}
+			}
+			// Sort by type
+			ksort($templates);
+		}
+
+		// Prepend with custom project templates
+		$templates = array($this->translate('dashboard.action.label.customProject') => $projectTemplates) + $templates;
 
 		$this->view->assignMultiple(array(
 			'locales' => $locales,
-			'templates' => $projectTemplates,
+			'templates' => $templates,
 		));
 
 		$response = array();
 		$response['status'] = 'success';
 		$response['statusText'] = $this->view->render();
+
+		if ($hasGitCommand) {
+			$officialDocuments = json_encode($gitDocuments);
+			$response['js'] = <<<JS
+CausalSphinxDashboard.officialDocuments = $officialDocuments;
+JS;
+		}
 
 		$this->returnAjax($response);
 	}
