@@ -15,14 +15,15 @@
 		</f:else>
 	</f:if>
 	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
-	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
 	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/jquery-ui.smoothness/jquery-ui-1.10.4.custom.min.css')}" />
+	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
 	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/codemirror.css')}" />
 
 	<sphinx:includeJs.jQuery version="1.10"/>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-migrate-1.2.1.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.10.4.custom.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.treetable-3.1.0.min.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.ui-contextmenu.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/editor.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/flashmessages.js')}"></script>
@@ -42,6 +43,7 @@
 		CausalSphinxEditor.actions.open = "{f:uri.action(action:'open')}";
 		CausalSphinxEditor.actions.save = "{f:uri.action(action:'save')}";
 		CausalSphinxEditor.actions.move = "{f:uri.action(action:'move')}";
+		CausalSphinxEditor.actions.rename = "{f:uri.action(action:'renameDialog', arguments:{reference:reference, filename:'FILENAME'})}";
 		CausalSphinxEditor.actions.redirect = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{reference:reference, document:document})}"
 		CausalSphinxEditor.actions.references = "{f:uri.action(action:'accordionReferences', arguments:{reference:'REFERENCE', remoteUrl:'URL', usePrefix:'USE_PREFIX'})}";
 	</script>

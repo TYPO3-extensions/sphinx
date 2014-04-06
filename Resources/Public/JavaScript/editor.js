@@ -27,6 +27,7 @@ CausalSphinxEditor = {
 		open: null,
 		save: null,
 		move: null,
+		rename: null,
 		redirect: null,
 		references: null
 	},
@@ -95,7 +96,7 @@ CausalSphinxEditor = {
 		);
 	},
 
-	moveFile: function(source, destination) {
+	moveFile: function (source, destination) {
 		var ajaxData;
 		$.ajax({
 			type: 'POST',
@@ -113,7 +114,15 @@ CausalSphinxEditor = {
 		return (ajaxData['status'] == 'success');
 	},
 
-	loadProjectTree: function() {
+	renameFile: function (file) {
+		this.customDialog(
+			this.actions.rename
+				.replace(/FILENAME/, file),
+			'editor.message.rename'
+		);
+	},
+
+	loadProjectTree: function () {
 		var self = CausalSphinxEditor;
 		$.ajax({
 			url: self.actions.projectTree
@@ -121,6 +130,66 @@ CausalSphinxEditor = {
 		}).done(function (content) {
 			$('#projectTree').html(content)
 		});
+	},
+
+	customDialog: function (loadAction, saveLabelKey) {
+		var self = CausalSphinxEditor;
+
+		var ajaxData;
+		$.ajax({
+			url: loadAction,
+			async: false,
+			success: function (data) {
+				ajaxData = data;
+			}
+		});
+
+		if (ajaxData['status'] == 'success') {
+			var formHtml = ajaxData['statusText'];
+			var form;
+
+			var NewDialog = $(formHtml).dialog({
+				height: 'auto',
+				width: 500,
+				modal: true,
+				open: function (event, ui) {
+					$('.ui-state-error').hide();
+					form = $('#tx-sphinx-formdialog');
+				},
+				buttons: [
+					{
+						text: this.messages[saveLabelKey],
+						click: function () {
+							var thisDialog = $(this);
+
+							$.ajax({
+								type: 'POST',
+								url: form.prop('action'),
+								data: form.serialize(),
+								success: function (data) {
+									if (data['status'] === 'success') {
+										thisDialog.dialog('destroy');
+										// TODO automatically select new name (rename)
+										self.loadProjectTree();
+									} else {
+										$('.ui-state-error').html(data['statusText']).show();
+										setTimeout(function () {
+											$('.ui-state-error').fadeOut(1500);
+										}, 3000);
+									}
+								},
+							});
+						}
+					},
+					{
+						text: this.messages['editor.message.cancel'],
+						click: function () {
+							$(this).dialog('destroy');
+						}
+					}
+				]
+			});
+		}
 	},
 
 	closeEditor: function () {

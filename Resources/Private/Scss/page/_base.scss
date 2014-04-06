@@ -92,3 +92,8 @@ label.has-tooltip {
 	padding: .5em;
 	margin-bottom: 1em;
 }
+
+.ui-menu {
+	/* on top of layout separators */
+	z-index: 10;
+}

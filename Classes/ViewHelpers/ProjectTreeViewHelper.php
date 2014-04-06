@@ -101,7 +101,7 @@ HTML;
 			}
 			$identifier = md5($path);
 			$trTag = '<tr data-tt-id="' . $identifier . '"';
-			$trTag .= ' data-path="' . htmlspecialchars($unifiedPath) . '"';
+			$trTag .= ' data-path="' . htmlspecialchars($unifiedPath . ($item->isDir() ? '/' : '')) . '"';
 			if (PathUtility::basename($path) === $path) {
 				// 1st level
 				$parentId = md5('/');
@@ -112,7 +112,7 @@ HTML;
 
 			/** @var \splFileInfo $item */
 			if ($item->isDir()) {
-				$out[] = '<td><span class="folder">' . htmlspecialchars(PathUtility::basename($path)) . '</span></td>';
+				$out[] = '<td><span class="folder hasmenu">' . htmlspecialchars(PathUtility::basename($path)) . '</span></td>';
 			} else {
 				if (($pos = strrpos($path, '.')) !== FALSE) {
 					$extension = strtolower(substr($path, $pos + 1));
@@ -124,10 +124,10 @@ HTML;
 					case 'jpg':
 					case 'jpeg':
 					case 'png':
-						$class = 'image';
+						$class = 'image hasmenu';
 					break;
 					default:
-						$class = 'file';
+						$class = 'file hasmenu';
 					break;
 				}
 				$out[] = '<td><span class="' . $class . '">' . htmlspecialchars(PathUtility::basename($path)) . '</span></td>';
@@ -141,6 +141,7 @@ HTML;
 </table>
 HTML;
 
+		$menuRename = $this->translate('editor.message.rename');
 		$out[] = '<script type="text/javascript">';
 		$out[] = <<<JS
 $(document).ready(function () {
@@ -195,6 +196,20 @@ $(document).ready(function () {
 		});
 	});
 
+	$("#$pluginId").contextmenu({
+		delegate: ".hasmenu",
+		menu: [
+			{title: "$menuRename", cmd: "rename", uiIcon: "ui-icon-pencil"}
+		],
+		select: function(event, ui) {
+			switch (ui.cmd) {
+				case 'rename':
+					CausalSphinxEditor.renameFile(ui.target.closest("tr").attr('data-path'));
+					break;
+			}
+		}
+	});
+
 	try {
 		$("#$pluginId").treetable("reveal", '$reveal');
 		$("#$pluginId tr[data-tt-id='$reveal']").toggleClass("selected");
@@ -207,6 +222,16 @@ JS;
 		$out[] = '</script>';
 
 		return implode(LF, $out);
+	}
+
+	/**
+	 * Returns the localized label of a given key.
+	 *
+	 * @param string $key The label key
+	 * @return string Localized label
+	 */
+	protected function translate($key) {
+		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'sphinx');
 	}
 
 }

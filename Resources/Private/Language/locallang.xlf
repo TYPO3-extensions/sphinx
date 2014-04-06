@@ -225,6 +225,9 @@
 			<trans-unit id="editor.message.no">
 				<source>No</source>
 			</trans-unit>
+			<trans-unit id="editor.message.cancel">
+				<source>Cancel</source>
+			</trans-unit>
 			<trans-unit id="editor.message.open.title">
 				<source>Open file</source>
 			</trans-unit>
@@ -249,6 +252,9 @@
 			<trans-unit id="editor.message.compile.failure">
 				<source>Could not compile documentation.</source>
 			</trans-unit>
+			<trans-unit id="editor.message.rename">
+				<source>Rename</source>
+			</trans-unit>
 			<trans-unit id="editor.message.intersphinx.title">
 				<source>Update Intersphinx mapping</source>
 			</trans-unit>
@@ -267,6 +273,9 @@
 			<trans-unit id="editor.label.filename">
 				<source>File:</source>
 			</trans-unit>
+			<trans-unit id="editor.label.newName">
+				<source>New name</source>
+			</trans-unit>
 			<trans-unit id="editor.tooltip.input">
 				<source>Search an extension to load corresponding references. You may enter an extension key, part of a title or description.</source>
 			</trans-unit>
@@ -275,6 +284,18 @@
 			</trans-unit>
 			<trans-unit id="editor.tooltip.references.insert">
 				<source>Click to insert a cross-link to this section</source>
+			</trans-unit>
+			<trans-unit id="editor.action.error.invalidName">
+				<source>Invalid name.</source>
+			</trans-unit>
+			<trans-unit id="editor.action.error.cannotRename">
+				<source>Cannot rename file/folder.</source>
+			</trans-unit>
+			<trans-unit id="editor.action.error.destinationExists">
+				<source>A file/folder with this name already exists.</source>
+			</trans-unit>
+			<trans-unit id="editor.action.error.unknownError">
+				<source>Unknown error while performing action.</source>
 			</trans-unit>
 
 			<trans-unit id="language.default">

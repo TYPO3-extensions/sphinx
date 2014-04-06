@@ -196,13 +196,79 @@ class RestEditorController extends AbstractActionController {
 
 		if (is_dir($parts['basePath'])) {
 			$sourceFile = $parts['basePath'] . DIRECTORY_SEPARATOR . $source;
-			$targetFile = $parts['basePath'] . DIRECTORY_SEPARATOR . $destination . DIRECTORY_SEPARATOR . PathUtility::basename($sourceFile);
+			$targetFile = $parts['basePath'] . DIRECTORY_SEPARATOR . rtrim($destination, '/') . DIRECTORY_SEPARATOR . PathUtility::basename($sourceFile);
 			if (!(PathUtility::basename($sourceFile) === 'conf.py' || is_file($targetFile))) {
 				$success = rename($sourceFile, $targetFile);
 			}
 		}
 
 		$response = array();
+		$response['status'] = $success ? 'success' : 'error';
+
+		$this->returnAjax($response);
+	}
+
+	/**
+	 * Shows a form to rename a file/folder.
+	 *
+	 * @param string $reference
+	 * @param string $filename
+	 * @return void
+	 */
+	protected function renameDialogAction($reference, $filename) {
+		$response = array();
+
+		$fileParts = explode('/', rtrim($filename, '/'));
+
+		$this->view->assignMultiple(array(
+			'reference' => $reference,
+			'filename' => $filename,
+			'newName' => end($fileParts),
+		));
+
+		$response['status'] = 'success';
+		$response['statusText'] = $this->view->render();
+
+		$this->returnAjax($response);
+	}
+
+	/**
+	 * Actual renaming action.
+	 *
+	 * @param string $reference
+	 * @param string $filename
+	 * @param string $newName
+	 * @return void
+	 */
+	protected function renameAction($reference, $filename, $newName) {
+		$response = array();
+		$success = FALSE;
+
+		$parts = $this->parseReferenceDocument($reference, '');
+		$fileParts = explode('/', rtrim($filename, '/'));
+
+		if (empty($newName) || preg_match('#[/?*:;{}\\]#', $newName)) {
+			$response['statusText'] = $this->translate('editor.action.error.invalidName');
+		} elseif (is_dir($parts['basePath'])) {
+			$sourceFile = $parts['basePath'] . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $fileParts);
+			array_pop($fileParts);
+			if (count($fileParts) > 0) {
+				$destinationFile = $parts['basePath'] . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $fileParts) . DIRECTORY_SEPARATOR . $newName;
+			} else {
+				$destinationFile = $parts['basePath'] . DIRECTORY_SEPARATOR . $newName;
+			}
+			if (!(is_file($destinationFile) || is_dir($destinationFile))) {
+				$success = rename($sourceFile, $destinationFile);
+				if (!$success) {
+					$response['statusText'] = $this->translate('editor.action.error.cannotRename');
+				}
+			} else {
+				$response['statusText'] = $this->translate('editor.action.error.destinationExists');
+			}
+		} else {
+			$response['statusText'] = $this->translate('editor.action.error.unknownError');
+		}
+
 		$response['status'] = $success ? 'success' : 'error';
 
 		$this->returnAjax($response);

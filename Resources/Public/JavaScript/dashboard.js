@@ -33,7 +33,7 @@ CausalSphinxDashboard = {
 		}
 	},
 
-	customProjectDialog: function (loadAction, saveLabelKey) {
+	customDialog: function (loadAction, saveLabelKey) {
 		var self = CausalSphinxDashboard;
 
 		var ajaxData;
@@ -58,7 +58,7 @@ CausalSphinxDashboard = {
 					eval(ajaxData['js']);
 
 					$('.ui-state-error').hide();
-					form = $('#tx-sphinx-customProject');
+					form = $('#tx-sphinx-formdialog');
 					group = $('#group');
 					updateGroup = $('#updateGroup') || $('');
 					name = $('#name');
@@ -88,7 +88,7 @@ CausalSphinxDashboard = {
 									data: form.serialize(),
 									success: function (data) {
 										if (data['status'] === 'success') {
-											thisDialog.dialog('close');
+											thisDialog.dialog('destroy');
 											// Trick to force reload with correct active tab
 											var redirectUri = document.location.href.replace(/#.*/, '#tabs-custom');
 											document.location.href = redirectUri;
@@ -107,7 +107,7 @@ CausalSphinxDashboard = {
 					{
 						text: this.messages['dashboard.message.cancel'],
 						click: function () {
-							$(this).dialog('close');
+							$(this).dialog('destroy');
 						}
 					}
 				]
@@ -117,7 +117,7 @@ CausalSphinxDashboard = {
 
 	addCustomProject: function () {
 		var self = CausalSphinxDashboard;
-		self.customProjectDialog(
+		self.customDialog(
 			self.actions.addCustomProject,
 			'dashboard.message.add'
 		);
@@ -125,7 +125,7 @@ CausalSphinxDashboard = {
 
 	editCustomProject: function (documentationKey) {
 		var self = CausalSphinxDashboard;
-		self.customProjectDialog(
+		self.customDialog(
 			self.actions.editCustomProject.replace(/DOCUMENTATION_KEY/, documentationKey),
 			'dashboard.message.update'
 		);
