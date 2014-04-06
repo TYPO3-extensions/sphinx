@@ -89,7 +89,7 @@ class MiscUtility {
 		$type = static::PROJECT_STRUCTURE_UNKNOWN;
 
 		// To deal with both relative and absolute $path
-		$absolutePath = GeneralUtility::getFileAbsFileName($path);
+		$absolutePath = GeneralUtility::getFileAbsFileName(rtrim($path, '/') . '/');
 
 		if (is_file($absolutePath . 'conf.py')) {
 			// All in one directory

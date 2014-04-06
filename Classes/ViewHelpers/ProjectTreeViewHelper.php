@@ -25,6 +25,7 @@ namespace Causal\Sphinx\ViewHelpers;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\PathUtility;
+use Causal\Sphinx\Utility\MiscUtility;
 
 /**
  * Creates a project tree browser using jquery-treetable.
@@ -47,6 +48,19 @@ class ProjectTreeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
 	public function render($projectPath, $reveal = '') {
 		if (!empty($reveal)) {
 			$reveal = md5($reveal);
+		}
+
+		$excludePatterns = array(
+			'#(^\\.|/\\.).+#',
+		);
+		$projectStructure = MiscUtility::getProjectStructure($projectPath);
+		switch ($projectStructure) {
+			case MiscUtility::PROJECT_STRUCTURE_SINGLE:
+				$excludePatterns[] = '#^_build/?.*#';
+				break;
+			case MiscUtility::PROJECT_STRUCTURE_TYPO3:
+				$excludePatterns[] = '#^_make/build/?.*#';
+				break;
 		}
 
 		$pluginId = 'tx-sphinx-projecttree';
@@ -74,6 +88,16 @@ HTML;
 		);
 		foreach ($iterator as $item) {
 			$path = $iterator->getSubPathName();
+			$skip = FALSE;
+			foreach ($excludePatterns as $excludePattern) {
+				if (preg_match($excludePattern, $path)) {
+					$skip = TRUE;
+					break;
+				}
+			}
+			if ($skip) {
+				continue;
+			}
 			$identifier = md5($path);
 			$trTag = '<tr data-tt-id="' . $identifier . '"';
 			$trTag .= ' data-path="' . htmlspecialchars(str_replace('\\', '/', $path)) . '"';
