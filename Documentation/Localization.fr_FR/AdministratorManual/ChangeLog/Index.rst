@@ -28,6 +28,8 @@ Version  Changements
 2.0.0    - Nouveau tableau de bord avec gestion des projets personnalisés
          - Démarrage d'un projet personnalisé à partir d'un dépôt Git
          - Support des projets personnalisés en langue étrangère
+         - Glisser et déposer dans l'arborescence de projet pour déplacer des
+           fichiers avec l'éditeur de documentation
          - Réorganisation complète du manuel
 1.3.0    - Coloration syntaxique pour les fichiers reStructuredText et YAML
          - Raccourcis clavier

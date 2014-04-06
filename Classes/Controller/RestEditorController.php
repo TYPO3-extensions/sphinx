@@ -183,6 +183,32 @@ class RestEditorController extends AbstractActionController {
 	}
 
 	/**
+	 * Moves a file (source) to a given destination.
+	 *
+	 * @param string $reference
+	 * @param string $source
+	 * @param string $destination
+	 * @return void
+	 */
+	protected function moveAction($reference, $source, $destination) {
+		$success = FALSE;
+		$parts = $this->parseReferenceDocument($reference, '');
+
+		if (is_dir($parts['basePath'])) {
+			$sourceFile = $parts['basePath'] . DIRECTORY_SEPARATOR . $source;
+			$targetFile = $parts['basePath'] . DIRECTORY_SEPARATOR . $destination . DIRECTORY_SEPARATOR . PathUtility::basename($sourceFile);
+			if (!(PathUtility::basename($sourceFile) === 'conf.py' || is_file($targetFile))) {
+				$success = rename($sourceFile, $targetFile);
+			}
+		}
+
+		$response = array();
+		$response['status'] = $success ? 'success' : 'error';
+
+		$this->returnAjax($response);
+	}
+
+	/**
 	 * Autocomplete action to retrieve an documentation key.
 	 *
 	 * @return void

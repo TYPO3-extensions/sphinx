@@ -61,6 +61,11 @@ class ProjectTreeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
 	<tbody>
 HTML;
 
+		$root = '<tr data-tt-id="' . md5('/') . '" data-path="/">';
+		$root .= '<td><span class="folder">/</span></td>';
+		$root .= '</tr>';
+		$out[] = $root;
+
 		/** @var \RecursiveDirectoryIterator $iterator */
 		$iterator = new \RecursiveIteratorIterator(
 			new \RecursiveDirectoryIterator($projectPath,
@@ -71,13 +76,14 @@ HTML;
 			$path = $iterator->getSubPathName();
 			$identifier = md5($path);
 			$trTag = '<tr data-tt-id="' . $identifier . '"';
-			$trTag .= ' data-path="' . str_replace('\\', '/', $path) . '"';
+			$trTag .= ' data-path="' . htmlspecialchars(str_replace('\\', '/', $path)) . '"';
 			if (PathUtility::basename($path) === $path) {
 				// 1st level
-				$out[] = $trTag . '>';
+				$parentId = md5('/');
 			} else {
-				$out[] = $trTag . ' data-tt-parent-id="' . md5(PathUtility::dirname($path)) . '">';
+				$parentId = md5(PathUtility::dirname($path));
 			}
+			$out[] = $trTag . ' data-tt-parent-id="' . $parentId . '">';
 
 			/** @var \splFileInfo $item */
 			if ($item->isDir()) {
@@ -125,6 +131,43 @@ $(document).ready(function () {
 	$("#$pluginId td span[class='file']").on("dblclick", function (e) {
 		var file = $(event.target).closest("tr").attr('data-path');
 		CausalSphinxEditor.openFile(file);
+	});
+
+	// Drag & Drop implementation for files
+	$("#$pluginId .file").draggable({
+		helper: "clone",
+		opacity: .75,
+		refreshPositions: true,
+		revert: "invalid",
+		revertDuration: 300,
+		scroll: true
+	});
+
+	$("#$pluginId .folder").each(function() {
+		$(this).parents("#$pluginId tr").droppable({
+			accept: ".file, .folder",
+			drop: function(e, ui) {
+				var droppedEl = ui.draggable.parents("tr");
+				var source = droppedEl.attr('data-path');
+				var destination = $(this).attr('data-path');
+
+				// Update server-side project tree
+				if (CausalSphinxEditor.moveFile(source, destination)) {
+					$("#$pluginId").treetable("move", droppedEl.data("ttId"), $(this).data("ttId"));
+
+					// Update the internal reference
+					droppedEl.attr('data-path', destination + '/' + /([^/]+)$/.exec(source)[1]);
+				}
+			},
+			hoverClass: "accept",
+			over: function(e, ui) {
+				var droppedEl = ui.draggable.parents("tr");
+				if(this != droppedEl[0] && !$(this).is(".expanded")) {
+					$("#$pluginId").treetable("expandNode", $(this).data("ttId")
+);
+				}
+			}
+		});
 	});
 
 	try {

@@ -25,6 +25,7 @@ CausalSphinxEditor = {
 		autocomplete: null,
 		open: null,
 		save: null,
+		move: null,
 		redirect: null,
 		references: null
 	},
@@ -91,6 +92,24 @@ CausalSphinxEditor = {
 				}
 			}
 		);
+	},
+
+	moveFile: function(source, destination) {
+		var ajaxData;
+		$.ajax({
+			type: 'POST',
+			url: this.actions.move,
+			async: false,
+			data: {
+				'tx_sphinx_help_sphinxdocumentation[reference]': this.reference,
+				'tx_sphinx_help_sphinxdocumentation[source]': source,
+				'tx_sphinx_help_sphinxdocumentation[destination]': destination
+			},
+			success: function (data) {
+				ajaxData = data;
+			}
+		});
+		return (ajaxData['status'] == 'success');
 	},
 
 	closeEditor: function () {

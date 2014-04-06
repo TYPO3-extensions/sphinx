@@ -26,6 +26,7 @@ Version  Changes
 2.0.0    - New dashboard with management of custom projects
          - Kickstart custom projects from a Git repository
          - Support of custom projects in foreign languages
+         - Drag and drop in project tree to move files with documentation editor
          - Full reorganization of the manual
 1.3.0    - Syntax highlighting for reStructuredText and YAML files
          - Keyboard shortcuts
