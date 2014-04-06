@@ -44,8 +44,8 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame('Causal Sàrl', $metadata['author_company']);
 		$this->assertSame('xavier@causal.ch', $metadata['author_email']);
 		$this->assertSame('6.0.0-6.2.99', $metadata['constraints']['depends']['typo3']);
-		//$this->assertSame('1.2.1', $metadata['release']);
-		$this->assertSame('1.4', $metadata['version']);
+		$this->assertFalse(empty($metadata['release']));
+		$this->assertFalse(empty($metadata['version']));
 	}
 
 	/**

@@ -21,13 +21,14 @@ vous permet de rapidement l'afficher **localement** :
 
 .. figure:: ../../../Images/viewer_choose_extension.png
 	:alt: Choix du manuel d'extension à afficher localement
-	:width: 711
 
 .. tip::
 	La visionneuse de documentation Sphinx recharge automatiquement le dernier manuel que vous avez sélectionné et si
 	vous choisissez le gabarit interactif, il va même vous ramener au chapitre que vous lisiez.
 
 
+.. _dashboard:
+.. _documentation-viewer-custom-project:
 .. _kickstart-sphinx-project:
 
 Tableau de bord
@@ -36,23 +37,37 @@ Tableau de bord
 Si aucune documentation n'est sélectionnée dans la liste déroulante, c.-à-d. que "Tableau de bord" (*Dashboard*) est
 sélectionné :
 
-.. figure:: ../../../Images/kickstart.png
+.. figure:: ../../../Images/dashboard.png
 	:alt: Aucune documentation sélectionnée
 
+une liste de projets personnalisés peut être gérée :
 
-une liste d'extensions utilisées contenant uniquement un manuel OpenOffice est affichée et vous permet de facilement le
-convertir en Sphinx à l'aide d'un outil en ligne disponible sur http://docs.typo3.org :
+.. figure:: ../../../Images/manage-custom-projects.png
+	:alt: Gestion de projets personnalisés
+
+Ensuite, en fonction de votre environnement, jusqu'à deux onglets supplémentaires peuvent être montrés. L'un vous montre
+une liste d'extensions utilisées ne contenant qu'un manuel OpenOffice. Des icônes d'action vous permettent de facilement
+convertir leur manuel en Sphinx à l'aide d'un outil en ligne disponible sur http://docs.typo3.org :
 
 .. figure:: ../../../Images/convert-openoffice.png
 	:alt: Conversion facile des manuels OpenOffice en projets Sphinx
-	:width: 711
+
+.. note::
+	Si vous ne pouvez pas utiliser l'assistant de conversion, le dépot RestTools
+	(http://git.typo3.org/Documentation/RestTools.git) fournit un script dans le
+	répertoire :file:`T3PythonDocBuilderPackage/src/T3PythonDocBuilder` pour convertir votre manuel OpenOffice en
+	Sphinx/reStructuredText.
+
+	Veuillez lire le fichier :file:`README` correspondant pour plus d'informations.
+
+	Si vous préférez, vous pouvez utiliser le convertisseur en ligne
+	manuellement : http://docs.typo3.org/getthedocs/service-convert.html.
 
 De façon similaire, un projet de documention Sphinx vide peut être créé pour les extensions qui n'ont pas encore de
 manuel :
 
 .. figure:: ../../../Images/kickstart-sphinx.png
 	:alt: Démarrer un projet de documentation Sphinx
-	:width: 711
 
 
 .. _layouts:
@@ -72,7 +87,6 @@ Les manuels d'extensions peuvent être générés avec différents "gabarits" :
 
   .. figure:: ../../../Images/render_pdf.png
       :alt: Génération d'une documentation en PDF
-      :width: 691
 
 .. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
 
@@ -127,46 +141,3 @@ En fonction du gabarit choisi, le document principal est :
 - **Interactif:** Le document principal en JSON est :file:`typo3conf/Documentation/{extension-key}/` :file:`default/json/Index.fjson`
 
 - **PDF:** Le document principal en PDF est :file:`typo3conf/Documentation/{extension-key}/` :file:`default/pdf/<extension-key>.pdf`
-
-
-.. _documentation-viewer-custom-project:
-
-Référencement d'un projet personnel
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Si vous avez un projet Sphinx complet quelque part dans votre site. comme un projet démarré avec
-la :ref:`Console Sphinx <kickstart-sphinx-project>`, vous pouvez l'enregistrer avec la visionneuse de documentation
-Sphinx.
-
-En effet, nous avons implémenté notre propre signal pour :ref:`enregistrer une documentation personnelle <register-custom-documentation>`.
-
-La liste des projets personnels est stockée dans le fichier :file:`typo3conf/sphinx-projects.json`. Si ce fichier n'existe
-pas, vous pouvez simplement le créer avec votre éditeur de texte préféré :
-
-.. code-block:: json
-
-	[
-	  {
-	    "name": "Mon projet ABC",
-	    "description": "Projet ABC qui décrit...",
-	    "group": "Nom de société",
-	    "key": "company.project.abc",
-	    "directory": "fileadmin/restructuredtext-projects/abc/"
-	  },
-	  {
-	    "name": "mon projet DEF",
-	    "description": "Projet DEF qui décrit...",
-	    "group": "Nom de société",
-	    "key": "company.project.def",
-	    "directory": "fileadmin/restructuredtext-projects/def/"
-	  }
-	]
-
-Lorsque vous faites cela, votre projet va apparaître dans la liste des documents et vous pourrez le compiler comme la
-documentation de n'importe quelle extension.
-
-.. caution::
-	Les utilisateurs MS Windows auront peut-être à faire face à une liste de documents n'affichant pas leurs propres
-	documents. Ce comportement peut être provoqué par le fichier :file:`typo3conf/sphinx-projects.json` qui est encodé en
-	UTF-8 avec `BOM <http://fr.wikipedia.org/wiki/Byte_Order_Mark>`_ alors que votre serveur web ne s'attend pas à avoir
-	ce BOM présent.

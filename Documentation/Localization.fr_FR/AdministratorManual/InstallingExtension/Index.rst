@@ -33,7 +33,6 @@ Depuis le gestionnaire d'extensions, exécutez le script de mise à niveau que c
 
 .. figure:: ../../../Images/em_update.png
 	:alt: Lancement du script de mise à niveau dans le gestionnaire d'extensions
-	:width: 711
 
 Sélectionnez la version de Sphinx que vous souhaitez utiliser et démarrez le processus d'importation avec le bouton
 "import" :
@@ -125,7 +124,6 @@ Depuis le gestionnaire d'extensions, configurez l'extension de façon habituelle
 
 .. figure:: ../../../Images/em_configure.png
 	:alt: Configuration de l'extension dans le gestionnaire d'extensions
-	:width: 711
 
 Le premier onglet "basic" vous permet de choisir quelle version de Sphinx vous souhaitez utiliser pour
 générer vos documents :

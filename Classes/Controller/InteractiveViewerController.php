@@ -239,22 +239,32 @@ class InteractiveViewerController extends AbstractActionController {
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
 	public function processImage(array $data) {
-		$image = GeneralUtility::getFileAbsFileName($data['src']);
-		if (is_file($image)) {
-			$info = getimagesize($image);
-			$data['style'] = 'max-width:' . $info[0] . 'px;' . (!empty($data['style']) ? $data['style'] : '');
+		$fixedHeight = !empty($data['style']) && preg_match('/height/', $data['style']);
+		if (!$fixedHeight) {
+			$image = GeneralUtility::getFileAbsFileName($data['src']);
+			if (is_file($image)) {
+				$info = getimagesize($image);
+				$data['style'] = 'max-width:' . $info[0] . 'px;' . (!empty($data['style']) ? $data['style'] : '');
+			}
 		}
 
 		$tag = '<img src="../' . htmlspecialchars($data['src']) . '"';
 		$tag .= ' alt="' . (!empty($data['alt']) ? htmlspecialchars($data['alt']) : '') . '"';
 
 		// Styling
-		$classes = array('img-scaling');	// From standard TYPO3 theme
+		$classes = array();
 		if (!empty($data['class'])) {
-			$classes = array_unique(array_merge($classes, explode(' ', $data['class'])));
+			$classes = explode(' ', $data['class']);
 		}
-		$tag .= ' class="' . htmlspecialchars(implode(' ', $classes)) . '"';
-		$tag .= ' style="' . htmlspecialchars($data['style']) . '"';
+		if (!$fixedHeight) {
+			$classes[] = 'img-scaling';	// From standard TYPO3 theme
+		}
+		if (count($classes) > 0) {
+			$tag .= ' class="' . htmlspecialchars(implode(' ', array_unique($classes))) . '"';
+		}
+		if (!empty($data['style'])) {
+			$tag .= ' style="' . htmlspecialchars($data['style']) . '"';
+		}
 
 		$tag .= ' />';
 		return $tag;

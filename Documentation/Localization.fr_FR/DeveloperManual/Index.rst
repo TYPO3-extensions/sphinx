@@ -8,7 +8,7 @@
 
 .. _developer-manual:
 
-Manual du développeur
+Manuel du développeur
 =====================
 
 .. only:: html

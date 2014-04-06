@@ -25,9 +25,10 @@ Ce qui suit est une vue d'ensemble très haut niveau des changements de cette ex
 =======  ===========================================================================
 Version  Changements
 =======  ===========================================================================
-1.4.0    - Nouveau tableau de bord avec gestion des projets personnalisés
+2.0.0    - Nouveau tableau de bord avec gestion des projets personnalisés
          - Démarrage d'un projet personnalisé à partir d'un dépôt Git
          - Support des projets personnalisés en langue étrangère
+         - Réorganisation complète du manuel
 1.3.0    - Coloration syntaxique pour les fichiers reStructuredText et YAML
          - Raccourcis clavier
          - Correction automatique des préfixes inconnus de références croisées

@@ -14,14 +14,12 @@ généré la documentation que vous êtes en train de lire une fois avec :progra
 
 .. figure:: ../../../Images/pdf_rst2pdf.png
 	:alt: PDF généré avec rst2pdf
-	:width: 711
 
 
 et ensuite avec LaTeX :
 
 .. figure:: ../../../Images/pdf_latex.png
 	:alt: PDF généré avec LaTeX
-	:width: 711
 
 Les fichiers ont été générés sans configuration ou réglages spéciaux.
 

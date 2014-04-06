@@ -31,7 +31,6 @@ the documentation if you click on toolbar icon "save and close":
 
 .. figure:: ../../Images/save_compile.png
 	:alt: Save and compile your reStructuredText chapter
-	:width: 711
 
 **Keyboard shorcuts:**
 

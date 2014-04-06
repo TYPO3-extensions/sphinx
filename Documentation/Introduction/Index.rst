@@ -58,15 +58,18 @@ Sphinx was originally created for the Python documentation and a few features ar
 And this extension?
 ^^^^^^^^^^^^^^^^^^^
 
-Setting up a Sphinx environment to build documentation may be complicated for some users. This extension takes for granted that Python interpreter is available on your web server and will install and configure Sphinx **locally** (thus in your website) in a few clicks.
+Setting up a Sphinx environment to build documentation may be complicated for some users. This extension takes for
+granted that Python interpreter is available on your web server and will install and configure Sphinx **locally** (thus
+in your website) in a few clicks.
 
 In addition, this extension comes with a few goodies such as:
 
 - Backend documentation viewer
-- Backend module to kickstart a Sphinx documentation project
-- Backend module to compile a Sphinx project
+- Backend module to kickstart and render custom documentation project
+- Extends TYPO3 6.2 to render extension manuals on demand
 - Integrated reStructuredText editor
-- Wizard to convert an OpenOffice document (:file:`manual.sxw`) to a Sphinx project (using an online tool on http://docs.typo3.org)
+- Wizard to convert an OpenOffice document (:file:`manual.sxw`) to a Sphinx project (using an online tool
+  on http://docs.typo3.org)
 
 
 What can I do with a Sphinx project?
@@ -94,3 +97,10 @@ Screenshots
 
 	The new project wizard lets you reference existing documentation projects and create new ones, either based on
 	standard templates or by cloning an external Git repository (handy to work on official TYPO3 manuals).
+
+
+.. figure:: ../Images/rest-editor.png
+	:alt: reStructuredText editor
+
+	The built-in reStructuredText editor with syntax highlighting lets you easily modify your documents and to
+	cross-link to other manuals.

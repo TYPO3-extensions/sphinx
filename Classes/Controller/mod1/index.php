@@ -40,7 +40,7 @@ use Causal\Sphinx\Utility\MiscUtility;
  * @author      Xavier Perseguers <xavier@causal.ch>
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
- * @deprecated  This module is deprecated since version 1.4.0 and may be removed with any upcoming version
+ * @deprecated  This module is deprecated since version 2.0.0 and may be removed with any upcoming version
  */
 class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 

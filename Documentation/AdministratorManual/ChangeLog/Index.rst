@@ -23,9 +23,10 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ===========================================================================
 Version  Changes
 =======  ===========================================================================
-1.4.0    - New dashboard with management of custom projects
+2.0.0    - New dashboard with management of custom projects
          - Kickstart custom projects from a Git repository
          - Support of custom projects in foreign languages
+         - Full reorganization of the manual
 1.3.0    - Syntax highlighting for reStructuredText and YAML files
          - Keyboard shortcuts
          - Automatic fix of unknown Intersphinx mapping prefixes

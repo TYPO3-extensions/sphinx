@@ -19,13 +19,13 @@ Qu'est-ce que ça fait ?
 
 .. only:: latex or missing_sphinxcontrib_youtube
 
-	Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (the générateur de
+	Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (le générateur de
 	documentation Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le
 	backend de TYPO3. Regarder le `tutoriel vidéo de 5 min`_ (anglais).
 
 .. only:: html and not missing_sphinxcontrib_youtube
 
-	Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (the générateur de
+	Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (le générateur de
 	documentation Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le
 	backend de TYPO3 :
 
@@ -45,7 +45,7 @@ mises en évidence :
   d'informations, veuillez consulter la page `Trucs et astuces <http://wiki.typo3.org/Tips_and_Tricks_%28reST%29>`_
   (anglais) dans le wiki de TYPO3
 
-- **Structure hiérarchie :** définition simple d'une arborescence de documentation, avec liens automatiques vers les
+- **Structure hiérarchique :** définition simple d'une arborescence de documentation, avec liens automatiques vers les
   documents frères, parents ou fils
 
 - **Index automatique :** index général des termes utilisés dans votre documentation
@@ -68,8 +68,8 @@ charge d'installer et de configurer Sphinx **localement** (c.-à-d. dans votre s
 Par ailleurs, cette extension fournit quelques utilitaires comme :
 
 - Une visionneuse de documentation en backend
-- Un module de création rapide d'un project de documentation Sphinx
-- Un module pour compiler un projet Sphinx
+- Un module de création et de rendu de projets de documentation personnalisés
+- Étend TYPO3 6.2 pour générer les manuels des extensions à la demande
 - Un éditeur reStructuredText intégré
 - Un assistant pour convertir un document OpenOffice (:file:`manual.sxw`) en un projet Sphinx (à l'aide d'un utilitaire
   en ligne disponible sur http://docs.typo3.org)
@@ -101,3 +101,9 @@ Copies d'écran
 	L'assistant de nouveau projet vous permet de référencer des projets de documentation existants et d'en créer de
 	nouveaux, soit basé sur des modèles ou en clonant un dépôt Git externe (pratique pour travailler sur les manuels
 	officiels TYPO3).
+
+.. figure:: ../../Images/rest-editor.png
+	:alt: Éditeur reStructuredText
+
+	L'éditeur reStructuredText intégré avec coloration syntaxique vous permet de modifier facilement vos documents et de
+	faire des références croisées vers d'autres manuels.

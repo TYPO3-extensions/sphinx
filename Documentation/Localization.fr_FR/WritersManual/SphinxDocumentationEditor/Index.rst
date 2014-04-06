@@ -32,7 +32,6 @@ fermer" :
 
 .. figure:: ../../../Images/save_compile.png
 	:alt: Sauvegarder et compiler votre chapitre reStructuredText
-	:width: 711
 
 **Raccourcis clavier :**
 

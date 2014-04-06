@@ -80,7 +80,7 @@
 			</trans-unit>
 			<trans-unit id="kickstart.title">
 				<source>Kickstart Sphinx Documentation</source>
-				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.1.4.</note>
+				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.2.0.</note>
 			</trans-unit>
 			<trans-unit id="dashboard.tabs.kickstart.label">
 				<source>Kickstart</source>
@@ -191,15 +191,15 @@
 			</trans-unit>
 			<trans-unit id="kickstart.action">
 				<source>Action</source>
-				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.1.4.</note>
+				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.2.0.</note>
 			</trans-unit>
 			<trans-unit id="kickstart.action.createExtensionProject">
 				<source>Create documentation project</source>
-				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.1.4.</note>
+				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.2.0.</note>
 			</trans-unit>
 			<trans-unit id="kickstart.action.convert">
 				<source>Convert OpenOffice manual to Sphinx</source>
-				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.1.4.</note>
+				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.2.0.</note>
 			</trans-unit>
 			<trans-unit id="toolbar.alwaysRender">
 				<source>Always render documentation</source>

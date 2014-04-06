@@ -14,21 +14,18 @@ Démarrer avec Sphinx et reStructuredText
 .. index::
 	pair: reStructuredText; Syntaxe
 
-Quelques liens pour bien démarrer avec Sphinx et reStructuredText :
+.. note::
+	Vous ne savez pas comment démarrer avec reStructuredText et Sphinx ? Vous pouvez peut-être jeter un œil au
+	document `reStructuredText Primer for TYPO3 Users <https://github.com/xperseguers/TYPO3.docs.rst-primer>`_. C'est
+	une brève introduction aux concepts et à la syntaxe reStructuredText (reST), qui a pour but de permettre aux
+	rédacteurs d'avoir suffisamment d'information pour rédiger des documents de façon efficace.
+
+Quelques liens (en anglais) pour bien démarrer avec Sphinx et reStructuredText :
 
 - `reStructuredText Primer for TYPO3 users <https://github.com/xperseguers/TYPO3.docs.rst-primer>`_
-- `First Steps with Sphinx <http://sphinx-doc.org/tutorial.html>`_
-- `reStructuredText Syntax <http://wiki.typo3.org/ReST_Syntax>`_
-
-
-Conversion d'un manuel OpenOffice en Sphinx
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Le dépot RestTools (http://git.typo3.org/Documentation/RestTools.git) fournit un script dans le répertoire
-:file:`T3PythonDocBuilderPackage/src/T3PythonDocBuilder` pour convertir votre manuel OpenOffice en Sphinx/reStructuredText.
-Veuillez lire le fichier :file:`README` correspondant pour plus d'informations.
-
-Si vous préférez, vous pouvez utiliser un convertisseur en ligne : http://docs.typo3.org/getthedocs/service-convert.html.
+- `Premiers pas avec Sphinx <http://sphinx-doc.org/tutorial.html>`_
+- `Syntaxe reStructuredText <http://wiki.typo3.org/ReST_Syntax>`_
+- `Informations sur reStructuredText <http://wiki.typo3.org/ReST>`_
 
 
 Trucs et astuces pour le rendu PDF

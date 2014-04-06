@@ -21,13 +21,14 @@ show it **locally**:
 
 .. figure:: ../../Images/viewer_choose_extension.png
 	:alt: Selector to show an extension manual locally
-	:width: 711
 
 .. tip::
 	The Sphinx documentation viewer automatically reloads the last manual you selected and if you choose the interactive
 	layout, it will even bring you to the chapter you were reading.
 
 
+.. _dashboard:
+.. _documentation-viewer-custom-project:
 .. _kickstart-sphinx-project:
 
 Dashboard
@@ -35,21 +36,35 @@ Dashboard
 
 If no documentation has been selected in the drop-down menu; that is, "Dashboard" is selected:
 
-.. figure:: ../../Images/kickstart.png
+.. figure:: ../../Images/dashboard.png
 	:alt: No documentation selected
 
-a list of locally available extensions with an OpenOffice manual only is shown and lets you easily convert it to Sphinx
+a list of custom projects may be managed:
+
+.. figure:: ../../Images/manage-custom-projects.png
+	:alt: Manage custom projects
+
+Then, depending on your environment, up to two additional tabs may be present. One that shows a list of
+locally-available extensions with an OpenOffice manual only. Action icons let you easily convert their manual to Sphinx
 using an online tool on http://docs.typo3.org:
 
 .. figure:: ../../Images/convert-openoffice.png
 	:alt: Easily convert OpenOffice manuals to Sphinx projects
-	:width: 711
+
+.. note::
+	If you are unable to use the automatic converter, the RestTools repository
+	(http://git.typo3.org/Documentation/RestTools.git) provides a script in
+	directory :file:`T3PythonDocBuilderPackage/src/T3PythonDocBuilder` to convert your OpenOffice manual to
+	Sphinx/reStructuredText.
+
+	Please read corresponding :file:`README` file for instructions.
+
+	If you prefer, you may use the online converter manually: http://docs.typo3.org/getthedocs/service-convert.html.
 
 Similarly, an empty Sphinx documentation project may be created for local extensions without any manual yet:
 
 .. figure:: ../../Images/kickstart-sphinx.png
 	:alt: Kickstart a Sphinx documentation project
-	:width: 711
 
 
 .. _layouts:
@@ -69,7 +84,6 @@ Extension manuals may be rendered with different "layouts":
 
   .. figure:: ../../Images/render_pdf.png
       :alt: Render a documentation as PDF
-      :width: 691
 
 .. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
 
@@ -119,44 +133,3 @@ According to the selected layout, the main document is:
 - **Interactive:** Main document of JSON output is :file:`typo3conf/Documentation/{extension-key}/` :file:`default/json/Index.fjson`
 
 - **PDF:** Main document of PDF output is :file:`typo3conf/Documentation/{extension-key}/` :file:`default/pdf/{extension-key}.pdf`
-
-
-.. _documentation-viewer-custom-project:
-
-Registering a custom project
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-If you have a complete Sphinx project somewhere in your website, such as project you kickstarted with
-the :ref:`Sphinx Console <kickstart-sphinx-project>`, you may register it with the Sphinx Documentation Viewer.
-
-In fact, we implemented our own signal for :ref:`registering custom documentation <register-custom-documentation>`.
-
-The list of custom projects is stored within file :file:`typo3conf/sphinx-projects.json`. If this file does not exist,
-simply create it with your preferred text editor:
-
-.. code-block:: json
-
-	[
-	  {
-	    "name": "My Custom Project ABC",
-	    "description": "Custom project ABC describing...",
-	    "group": "Company Name",
-	    "key": "company.project.abc",
-	    "directory": "fileadmin/restructuredtext-projects/abc/"
-	  },
-	  {
-	    "name": "My Custom Project DEF",
-	    "description": "Custom project describing...",
-	    "group": "Company Name",
-	    "key": "company.project.def",
-	    "directory": "fileadmin/restructuredtext-projects/def/"
-	  }
-	]
-
-When you do so, your project will appear in the list of documents and you will be able to render it just as any
-documentation of an extension.
-
-.. caution::
-	MS Windows users may experience that their list of custom projects "is not loaded". This may due to the file
-	``typo3conf/sphinx-projects.json`` being encoded as UTF-8 with `BOM <http://en.wikipedia.org/wiki/Byte_order_mark>`_
-	whereas your web server expects it *not* to contain BOM.

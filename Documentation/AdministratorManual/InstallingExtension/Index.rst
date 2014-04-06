@@ -33,7 +33,6 @@ In the Extension Manager, execute the update script this extension is providing:
 
 .. figure:: ../../Images/em_update.png
 	:alt: Launching the update script within Extension Manager
-	:width: 711
 
 Select a version of Sphinx you would like to use and start the import process with the "import" button:
 
@@ -118,7 +117,6 @@ In the Extension Manager, configure this extension as usual:
 
 .. figure:: ../../Images/em_configure.png
 	:alt: Configuring the extension within Extension Manager
-	:width: 711
 
 The first tab "basic" lets you choose which version of Sphinx should be used to render your documents:
 
