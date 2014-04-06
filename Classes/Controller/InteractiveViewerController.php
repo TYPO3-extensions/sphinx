@@ -239,6 +239,12 @@ class InteractiveViewerController extends AbstractActionController {
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
 	public function processImage(array $data) {
+		$image = GeneralUtility::getFileAbsFileName($data['src']);
+		if (is_file($image)) {
+			$info = getimagesize($image);
+			$data['style'] = 'max-width:' . $info[0] . 'px;' . (!empty($data['style']) ? $data['style'] : '');
+		}
+
 		$tag = '<img src="../' . htmlspecialchars($data['src']) . '"';
 		$tag .= ' alt="' . (!empty($data['alt']) ? htmlspecialchars($data['alt']) : '') . '"';
 
@@ -248,9 +254,7 @@ class InteractiveViewerController extends AbstractActionController {
 			$classes = array_unique(array_merge($classes, explode(' ', $data['class'])));
 		}
 		$tag .= ' class="' . htmlspecialchars(implode(' ', $classes)) . '"';
-		if (!empty($data['style'])) {
-			$tag .= ' style="' . htmlspecialchars($data['style']) . '"';
-		}
+		$tag .= ' style="' . htmlspecialchars($data['style']) . '"';
 
 		$tag .= ' />';
 		return $tag;
