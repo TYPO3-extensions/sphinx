@@ -129,6 +129,7 @@ JS;
 		$mayCloneFromGit = FALSE;
 
 		// Sanitize directory and documentation key
+		$directory = str_replace('\\', '/', $directory);
 		$directory = rtrim($directory, '/') . '/';
 		$documentationKey = strtolower(trim($documentationKey));
 
@@ -272,6 +273,7 @@ JS;
 		$success = FALSE;
 
 		// Sanitize directory and documentation key
+		$directory = str_replace('\\', '/', $directory);
 		$directory = rtrim($directory, '/') . '/';
 		$documentationKey = strtolower(trim($documentationKey));
 

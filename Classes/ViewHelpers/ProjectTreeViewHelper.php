@@ -88,9 +88,10 @@ HTML;
 		);
 		foreach ($iterator as $item) {
 			$path = $iterator->getSubPathName();
+			$unifiedPath = str_replace('\\', '/', $path);
 			$skip = FALSE;
 			foreach ($excludePatterns as $excludePattern) {
-				if (preg_match($excludePattern, $path)) {
+				if (preg_match($excludePattern, $unifiedPath)) {
 					$skip = TRUE;
 					break;
 				}
@@ -100,7 +101,7 @@ HTML;
 			}
 			$identifier = md5($path);
 			$trTag = '<tr data-tt-id="' . $identifier . '"';
-			$trTag .= ' data-path="' . htmlspecialchars(str_replace('\\', '/', $path)) . '"';
+			$trTag .= ' data-path="' . htmlspecialchars($unifiedPath) . '"';
 			if (PathUtility::basename($path) === $path) {
 				// 1st level
 				$parentId = md5('/');
