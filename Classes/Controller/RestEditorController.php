@@ -92,7 +92,7 @@ class RestEditorController extends AbstractActionController {
 	 * @param string $filename The filename (relative to basePath)
 	 * @return string Contents of the file
 	 */
-	protected function openAction($reference, $filename) {
+	public function openAction($reference, $filename) {
 		$response = array();
 		$response['statusTitle'] = $this->translate('editor.message.open.title');
 
@@ -119,7 +119,7 @@ class RestEditorController extends AbstractActionController {
 	 * @param boolean $compile
 	 * @return void
 	 */
-	protected function saveAction($reference, $filename, $contents, $compile = FALSE) {
+	public function saveAction($reference, $filename, $contents, $compile = FALSE) {
 		$response = array();
 		$response['statusTitle'] = $this->translate('editor.message.save.title');
 
@@ -190,7 +190,7 @@ class RestEditorController extends AbstractActionController {
 	 * @param string $destination
 	 * @return void
 	 */
-	protected function moveAction($reference, $source, $destination) {
+	public function moveAction($reference, $source, $destination) {
 		$success = FALSE;
 		$parts = $this->parseReferenceDocument($reference, '');
 
@@ -209,13 +209,55 @@ class RestEditorController extends AbstractActionController {
 	}
 
 	/**
+	 * Removes a file/folder.
+	 *
+	 * @param string $reference
+	 * @param string $path
+	 * @throws \RuntimeException
+	 * @throws \BadFunctionCallException
+	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+	 * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+	 */
+	public function removeAction($reference, $path) {
+		$response = array();
+		$success = FALSE;
+
+		$path = str_replace('/', DIRECTORY_SEPARATOR, rtrim($path, '/'));
+		$parts = $this->parseReferenceDocument($reference, '');
+
+		if (is_dir($parts['basePath'])) {
+			$target = $parts['basePath'] . DIRECTORY_SEPARATOR . $path;
+			if (is_file($target)) {
+				$success = @unlink($target);
+				if (!$success) {
+					$response['statusText'] = $this->translate('editor.action.error.unknownError');
+				}
+			} else {
+				$files = GeneralUtility::getAllFilesAndFoldersInPath(array(), $target . DIRECTORY_SEPARATOR);
+				if (count($files) === 0) {
+					$success = @rmdir($target);
+					if (!$success) {
+						$response['statusText'] = $this->translate('editor.action.error.unknownError');
+					}
+				} else {
+					$response['statusText'] = $this->translate('editor.action.error.folderIsNotEmpty');
+				}
+			}
+		}
+
+		$response['status'] = $success ? 'success' : 'error';
+
+		$this->returnAjax($response);
+	}
+
+	/**
 	 * Shows a form to rename a file/folder.
 	 *
 	 * @param string $reference
 	 * @param string $filename
 	 * @return void
 	 */
-	protected function renameDialogAction($reference, $filename) {
+	public function renameDialogAction($reference, $filename) {
 		$response = array();
 
 		$fileParts = explode('/', rtrim($filename, '/'));
@@ -240,7 +282,7 @@ class RestEditorController extends AbstractActionController {
 	 * @param string $newName
 	 * @return void
 	 */
-	protected function renameAction($reference, $filename, $newName) {
+	public function renameAction($reference, $filename, $newName) {
 		$response = array();
 		$success = FALSE;
 
@@ -277,13 +319,96 @@ class RestEditorController extends AbstractActionController {
 	}
 
 	/**
+	 * Shows a form to create a file/folder.
+	 *
+	 * @param string $reference
+	 * @param string $type
+	 * @param string $path
+	 * @return void
+	 */
+	public function createDialogAction($reference, $type, $path) {
+		$response = array();
+
+		$this->view->assignMultiple(array(
+			'reference' => $reference,
+			'type' => $type,
+			'path' => $path,
+		));
+
+		$response['status'] = 'success';
+		$response['statusText'] = $this->view->render();
+
+		$this->returnAjax($response);
+	}
+
+	/**
+	 * Actual file creation.
+	 *
+	 * @param string $reference
+	 * @param string $path
+	 * @param string $name
+	 * @return void
+	 */
+	public function createFileAction($reference, $path, $name) {
+		$this->createFileOrFolder($reference, $path, $name, TRUE);
+	}
+
+	/**
+	 * Actual folder creation.
+	 *
+	 * @param string $reference
+	 * @param string $path
+	 * @param string $name
+	 * @return void
+	 */
+	public function createFolderAction($reference, $path, $name) {
+		$this->createFileOrFolder($reference, $path, $name, FALSE);
+	}
+
+	/**
+	 * File or folder creation.
+	 *
+	 * @param string $reference
+	 * @param string $path
+	 * @param string $name
+	 * @param bool $isFile
+	 * @return void
+	 */
+	protected function createFileOrFolder($reference, $path, $name, $isFile) {
+		$response = array();
+		$success = FALSE;
+
+		$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+		$parts = $this->parseReferenceDocument($reference, '');
+
+		if (empty($name) || preg_match('#[/?*:;{}\\]#', $name)) {
+			$response['statusText'] = $this->translate('editor.action.error.invalidName');
+		} elseif (is_dir($parts['basePath'])) {
+			$target = $parts['basePath'] . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR) . $name;
+			if (!(is_file($target) || is_dir($target))) {
+				if ($isFile) {
+					$success = GeneralUtility::writeFile($target, '');
+				} else {
+					$success = GeneralUtility::mkdir($target);
+				}
+			} else {
+				$response['statusText'] = $this->translate('editor.action.error.destinationExists');
+			}
+		}
+
+		$response['status'] = $success ? 'success' : 'error';
+
+		$this->returnAjax($response);
+	}
+
+	/**
 	 * Returns the project tree.
 	 *
 	 * @param string $path
 	 * @param string $filename
 	 * @return string
 	 */
-	protected function projectTreeAction($path, $filename) {
+	public function projectTreeAction($path, $filename) {
 		$this->view->assignMultiple(array(
 			'projectPath' => $path,
 			'filename' => $filename,
@@ -297,7 +422,7 @@ class RestEditorController extends AbstractActionController {
 	 *
 	 * @return void
 	 */
-	protected function autocompleteAction() {
+	public function autocompleteAction() {
 		// no term passed - just exit early with no response
 		if (empty($_GET['term'])) exit;
 		$q = strtolower($_GET['term']);
@@ -415,7 +540,7 @@ class RestEditorController extends AbstractActionController {
 	 * @return void
 	 * @throws \RuntimeException
 	 */
-	protected function updateIntersphinxAction($reference, $prefix, $remoteUrl = '') {
+	public function updateIntersphinxAction($reference, $prefix, $remoteUrl = '') {
 		list($type, $identifier) = explode(':', $reference, 2);
 
 		switch ($type) {

@@ -255,6 +255,18 @@
 			<trans-unit id="editor.message.rename">
 				<source>Rename</source>
 			</trans-unit>
+			<trans-unit id="editor.message.remove">
+				<source>Remove</source>
+			</trans-unit>
+			<trans-unit id="editor.message.remove.description">
+				<source>Are you sure you want to remove file/folder “{0}”?</source>
+			</trans-unit>
+			<trans-unit id="editor.message.createFile">
+				<source>New file</source>
+			</trans-unit>
+			<trans-unit id="editor.message.createFolder">
+				<source>New folder</source>
+			</trans-unit>
 			<trans-unit id="editor.message.intersphinx.title">
 				<source>Update Intersphinx mapping</source>
 			</trans-unit>
@@ -276,6 +288,15 @@
 			<trans-unit id="editor.label.newName">
 				<source>New name</source>
 			</trans-unit>
+			<trans-unit id="editor.label.path">
+				<source>Path:</source>
+			</trans-unit>
+			<trans-unit id="editor.label.createFile">
+				<source>File to create:</source>
+			</trans-unit>
+			<trans-unit id="editor.label.createFolder">
+				<source>Folder to create:</source>
+			</trans-unit>
 			<trans-unit id="editor.tooltip.input">
 				<source>Search an extension to load corresponding references. You may enter an extension key, part of a title or description.</source>
 			</trans-unit>
@@ -293,6 +314,9 @@
 			</trans-unit>
 			<trans-unit id="editor.action.error.destinationExists">
 				<source>A file/folder with this name already exists.</source>
+			</trans-unit>
+			<trans-unit id="editor.action.error.folderIsNotEmpty">
+				<source>Folder is not empty.</source>
 			</trans-unit>
 			<trans-unit id="editor.action.error.unknownError">
 				<source>Unknown error while performing action.</source>

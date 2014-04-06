@@ -27,7 +27,9 @@ CausalSphinxEditor = {
 		open: null,
 		save: null,
 		move: null,
+		remove: null,
 		rename: null,
+		create: null,
 		redirect: null,
 		references: null
 	},
@@ -54,13 +56,13 @@ CausalSphinxEditor = {
 						text: this.messages['editor.message.yes'],
 						click: function () {
 							self._openFile(file);
-							$(this).dialog('close');
+							$(this).dialog('destroy');
 						}
 					},
 					{
 						text: this.messages['editor.message.no'],
 						click: function () {
-							$(this).dialog('close');
+							$(this).dialog('destroy');
 						}
 					}
 				]
@@ -114,7 +116,7 @@ CausalSphinxEditor = {
 		return (ajaxData['status'] == 'success');
 	},
 
-	renameFile: function (ui, file) {
+	renameFileFolder: function (ui, file) {
 		this.customDialog(
 			this.actions.rename.replace(/FILENAME/, file),
 			'editor.message.rename',
@@ -124,6 +126,64 @@ CausalSphinxEditor = {
 				ui.find('td span.hasmenu').first().html(/([^/]+)[/]?$/.exec(newName)[1]);
 			}
 		);
+	},
+
+	removeFileFolder: function (path) {
+		var self = this;
+		var NewDialog = $('<div id="MenuDialog"><p>' + this.messages['editor.message.remove.description'].format(path) + '</p></div>');
+		NewDialog.dialog({
+			modal: true,
+			title: this.messages['editor.message.remove'],
+			show: 'clip',
+			hide: 'clip',
+			buttons: [
+				{
+					text: this.messages['editor.message.yes'],
+					click: function () {
+						$.ajax({
+							type: 'POST',
+							url: self.actions.remove.replace(/PATH/, path),
+							success: function (data) {
+								if (data['status'] === 'success') {
+									self.loadProjectTree();
+								} else {
+									CausalSphinx.Flashmessage.display(4, self.messages['editor.message.remove'], data.statusText);
+								}
+							}
+						});
+						$(this).dialog('destroy');
+					}
+				},
+				{
+					text: this.messages['editor.message.no'],
+					click: function () {
+						$(this).dialog('destroy');
+					}
+				}
+			]
+		});
+	},
+
+	createFile: function (path) {
+		var self = this;
+		this.customDialog(
+			this.actions.create.replace(/PATH/, path).replace(/TYPE/, 'createFile'),
+			'editor.message.createFile',
+			function () {
+				self.loadProjectTree();
+			}
+		)
+	},
+
+	createFolder: function (path) {
+		var self = this;
+		this.customDialog(
+			this.actions.create.replace(/PATH/, path).replace(/TYPE/, 'createFolder'),
+			'editor.message.createFolder',
+			function () {
+				self.loadProjectTree();
+			}
+		)
 	},
 
 	loadProjectTree: function () {

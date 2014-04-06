@@ -76,7 +76,7 @@ class ProjectTreeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
 HTML;
 
 		$root = '<tr data-tt-id="' . md5('/') . '" data-path="/">';
-		$root .= '<td><span class="folder">/</span></td>';
+		$root .= '<td><span class="folder hasmenu">/</span></td>';
 		$root .= '</tr>';
 		$out[] = $root;
 
@@ -142,6 +142,10 @@ HTML;
 HTML;
 
 		$menuRename = $this->translate('editor.message.rename');
+		$menuRemove = $this->translate('editor.message.remove');
+		$menuCreateFile = $this->translate('editor.message.createFile');
+		$menuCreateFolder = $this->translate('editor.message.createFolder');
+
 		$out[] = '<script type="text/javascript">';
 		$out[] = <<<JS
 $(document).ready(function () {
@@ -172,7 +176,7 @@ $(document).ready(function () {
 	$("#$pluginId .folder").each(function() {
 		$(this).parents("#$pluginId tr").droppable({
 			accept: ".file, .image, .folder",
-			drop: function(e, ui) {
+			drop: function (e, ui) {
 				var droppedEl = ui.draggable.parents("tr");
 				var source = droppedEl.attr('data-path');
 				var destination = $(this).attr('data-path');
@@ -186,7 +190,7 @@ $(document).ready(function () {
 				}
 			},
 			hoverClass: "accept",
-			over: function(e, ui) {
+			over: function (e, ui) {
 				var droppedEl = ui.draggable.parents("tr");
 				if(this != droppedEl[0] && !$(this).is(".expanded")) {
 					$("#$pluginId").treetable("expandNode", $(this).data("ttId")
@@ -199,15 +203,42 @@ $(document).ready(function () {
 	$("#$pluginId").contextmenu({
 		delegate: ".hasmenu",
 		menu: [
-			{title: "$menuRename", cmd: "rename", uiIcon: "ui-icon-pencil"}
+			{title: "$menuRename", cmd: "rename", uiIcon: "ui-icon-pencil"},
+			{title: "$menuRemove", cmd: "remove", uiIcon: "ui-icon-trash"},
+			{title: "$menuCreateFile", cmd: "createFile", uiIcon: "ui-icon-document"},
+			{title: "$menuCreateFolder", cmd: "createFolder", uiIcon: "ui-icon-folder-collapsed"},
 		],
+		beforeOpen: function(event, ui) {
+			var menu = ui.menu,
+				target = ui.target;
+
+			if (target.closest("tr").attr('data-path') == '/') {
+				// root cannot be renamed
+				$("#$pluginId").contextmenu("showEntry", "rename", false);
+				$("#$pluginId").contextmenu("showEntry", "remove", false);
+			} else {
+				$("#$pluginId").contextmenu("showEntry", "rename", true);
+				$("#$pluginId").contextmenu("showEntry", "remove", true);
+			}
+
+			// Only folder may have the create file/folder menus
+			$("#$pluginId").contextmenu("showEntry", "createFile", target.hasClass("folder"));
+			$("#$pluginId").contextmenu("showEntry", "createFolder", target.hasClass("folder"));
+		},
 		select: function(event, ui) {
+			var path = ui.target.closest("tr").attr('data-path');
 			switch (ui.cmd) {
 				case 'rename':
-					CausalSphinxEditor.renameFile(
-						ui.target.closest("tr"),
-						ui.target.closest("tr").attr('data-path')
-					);
+					CausalSphinxEditor.renameFileFolder(ui.target.closest("tr"), path);
+					break;
+				case 'remove':
+					CausalSphinxEditor.removeFileFolder(path);
+					break;
+				case 'createFile':
+					CausalSphinxEditor.createFile(path);
+					break;
+				case 'createFolder':
+					CausalSphinxEditor.createFolder(path);
 					break;
 			}
 		}
