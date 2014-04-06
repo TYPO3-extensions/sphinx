@@ -8,14 +8,16 @@
 
 .. _sphinx-rest:
 
-Sphinx and reStructuredText
----------------------------
+Starting with Sphinx and reStructuredText
+-----------------------------------------
 
 .. index::
 	pair: reStructuredText; Syntax
 
 A few links to get started with Sphinx projects and reStructuredText:
 
+- `reStructuredText Primer for TYPO3 users <https://github.com/xperseguers/TYPO3.docs.rst-primer>`_
+- `First Steps with Sphinx <http://sphinx-doc.org/tutorial.html>`_
 - `reStructuredText Syntax <http://wiki.typo3.org/ReST_Syntax>`_
 
 

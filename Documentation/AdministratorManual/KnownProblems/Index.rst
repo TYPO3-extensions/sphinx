@@ -29,7 +29,7 @@ Known problems
                                             'unzip=/usr/bin/unzip,tar=/bin/tar';
 
   Another reason for seeing this error, even when ``binSetup`` is manually configured is that you accidentally disabled
-  execution of programs in the Backend by setting ``$TYPO3_CONF_VARS['BE']['disable_exec_function']`` to ``1``.
+  execution of programs in the backend by setting ``$TYPO3_CONF_VARS['BE']['disable_exec_function']`` to ``1``.
 
 - A few Linux distributions (such as Fedora) do not provide ``docutils`` or the header files and libraries to
   develop Python extensions. With a vanilla Fedora, you may install missing components with:

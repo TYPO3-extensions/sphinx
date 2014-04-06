@@ -11,7 +11,7 @@
 Sphinx documentation editor
 ---------------------------
 
-When showing an extension's manual using the :ref:`interactive layout <layouts>`, the standard TYPO3 Backend toolbar
+When showing an extension's manual using the :ref:`interactive layout <layouts>`, the standard TYPO3 backend toolbar
 shows a pencil icon to let you edit the corresponding chapter:
 
 .. figure:: ../../Images/edit_chapter.png

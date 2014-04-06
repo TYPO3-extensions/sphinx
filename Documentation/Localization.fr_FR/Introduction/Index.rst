@@ -21,13 +21,13 @@ Qu'est-ce que ça fait ?
 
 	Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (the générateur de
 	documentation Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le
-	Backend de TYPO3. Regarder le `tutoriel vidéo de 5 min`_ (anglais).
+	backend de TYPO3. Regarder le `tutoriel vidéo de 5 min`_ (anglais).
 
 .. only:: html and not missing_sphinxcontrib_youtube
 
 	Cette extension vous permet de générer des projets de documentation écrits avec Sphinx_ (the générateur de
 	documentation Python que l'équipe de documentation de TYPO3 a choisi pour tous les manuels officiels) depuis le
-	Backend de TYPO3 :
+	backend de TYPO3 :
 
 	.. youtube:: YeGqHMDT7R8
 		:width: 100%
@@ -67,7 +67,7 @@ charge d'installer et de configurer Sphinx **localement** (c.-à-d. dans votre s
 
 Par ailleurs, cette extension fournit quelques utilitaires comme :
 
-- Une visionneuse de documentation en Backend
+- Une visionneuse de documentation en backend
 - Un module de création rapide d'un project de documentation Sphinx
 - Un module pour compiler un projet Sphinx
 - Un éditeur reStructuredText intégré
@@ -89,28 +89,15 @@ site. Le meilleur moyen est d'utiliser l'extension TYPO3 `Sphinx/reStructuredTex
 Copies d'écran
 --------------
 
-.. figure:: ../../Images/project_wizard_overview.png
-	:alt: Vue d'ensemble de l'assistant de création d'un nouveau projet
-
-
-Générer un project de documentation Sphinx existant
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. figure:: ../../Images/mod1_overview.png
-	:alt: Vue d'ensemble du module Backend pour générer des projets Sphinx
-	:width: 711
-
-
-Générer un PDF avec pdflatex
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. figure:: ../../Images/build_buttons.png
-	:alt: Boutons de la barre d'outils
-
-
-Générer et parcourir les manuels d'autres extensions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 .. figure:: ../../Images/viewer.png
-	:alt: Visionneuse intégrée au Backend pour les manuels des extensions
-	:width: 711
+	:alt: Visionneuse intégrée au backend pour les manuels des extensions
+
+	La visionneuse intégrée vous permet de parcourir les manuels depuis le backend TYPO3 et de les modifier directement.
+
+
+.. figure:: ../../Images/wizard-new-project.png
+	:alt: Assistant pour la création de projets personnalisés
+
+	L'assistant de nouveau projet vous permet de référencer des projets de documentation existants et d'en créer de
+	nouveaux, soit basé sur des modèles ou en clonant un dépôt Git externe (pratique pour travailler sur les manuels
+	officiels TYPO3).

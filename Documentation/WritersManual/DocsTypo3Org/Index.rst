@@ -268,9 +268,11 @@ translated as well, making it impossible to match chapters with their translated
 Cross-link to other documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-By default, Sphinx on http://docs.typo3.org lets you cross-link to official manuals and thus looking up references in a
-foreign set by prefixing the link target appropriately. A link like ``:ref:`stdWrap in details <t3tsref:stdwrap>``` will
-create a link to the stable version of the official TYPO3 "TypoScript Reference", within chapter "stdWrap":
+Sphinx lets you easily cross-link to other documentation such as official manuals and guides or extensions' manuals
+(granted that they have been written with Sphinx and not in OpenOffice) by prefixing the link target appropriately.
+
+A construction like ``:ref:`stdWrap in details <t3tsref:stdwrap>``` will create a link to the stable version of the
+official TYPO3 "TypoScript Reference", within chapter "stdWrap":
 
 * :ref:`stdWrap in details <t3tsref:stdwrap>`
 
@@ -297,11 +299,6 @@ The list of official manuals and corresponding prefixes may be found on http://d
 		Title of your extension
 		===================================
 
-.. caution::
-	Although Sphinx on http://docs.typo3.org automagically lets you cross-link to official manuals, it is considered
-	bad practice to rely on it. It is even planned to change this behavior altogether. As such, please **always**
-	explicitly load the references you would like to cross-link to, as explained hereafter.
-
 You may link to any other documentation on http://docs.typo3.org (or elsewhere) by configuring the Intersphinx mapping
 within :file:`Settings.yml`. To do so, add configuration options (lines 6 to 9):
 
@@ -324,11 +321,6 @@ This will register prefix ``restdoc`` and let us link to any chapter of the docu
 other manuals:
 
 * :ref:`ChangeLog for EXT:restdoc <restdoc:changelog>`
-
-.. caution::
-	Once you define some Intersphinx mapping within configuration file :file:`Settings.yml`, it empties the list of
-	official manual references. If you want to cross-link to an official documentation as well, make sure to define the
-	corresponding mapping as well.
 
 
 .. _docs-typo3-org-crosslink-code:

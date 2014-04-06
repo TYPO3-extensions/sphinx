@@ -14,7 +14,7 @@ Using Sphinx from a command line
 	single: Symbolic Link
 
 Although this extension is primarily meant at providing a full-fledged environment to build documentation from a TYPO3
-Backend, it is likely that a few users will use it to easily set up a Sphinx environment on their local machine.
+backend, it is likely that a few users will use it to easily set up a Sphinx environment on their local machine.
 
 This extension automatically generates shortcut scripts within directory :file:`typo3temp/tx_sphinx/sphinx-doc/bin/`:
 

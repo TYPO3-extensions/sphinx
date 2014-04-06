@@ -11,7 +11,7 @@
 Sphinx documentation viewer
 ---------------------------
 
-This extension provides another Backend module under section "Help":
+This extension provides a backend module under section "Help":
 
 .. figure:: ../../Images/section_help.png
 	:alt: Sphinx documentation viewer
@@ -28,8 +28,10 @@ show it **locally**:
 	layout, it will even bring you to the chapter you were reading.
 
 
-Welcome screen
-^^^^^^^^^^^^^^
+.. _kickstart-sphinx-project:
+
+Dashboard
+^^^^^^^^^
 
 If no documentation has been selected in the drop-down menu; that is, "Dashboard" is selected:
 

@@ -21,7 +21,7 @@ files using the integrated :ref:`reStructuredText editor <sphinx-documentation-e
 .. tip::
 	Before going on implementing signals to register your own documentation, make sure to read
 	the :ref:`instructions to register a project <documentation-viewer-custom-project>` with the built-in facility. As a
-	bonus, if you do so, your documentation will automatically show up in the documentation Backend module starting
+	bonus, if you do so, your documentation will automatically show up in the documentation backend module starting
 	from TYPO3 6.2.
 
 

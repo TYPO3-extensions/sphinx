@@ -21,7 +21,7 @@ permettre l'édition des fichiers sources avec l':ref:`éditeur reStructuredText
 .. tip::
 	Avant de vous lancer dans l'implémentation de signaux pour enregistrer votre propre documentation, assurez-vous de
 	lire les :ref:`instructions pour enregistrer un projet <documentation-viewer-custom-project>` avec le mécanisme
-	intégré. En prime, si vous le faites ainsi, votre documentation apparaîtra automatiquement dans le module Backend
+	intégré. En prime, si vous le faites ainsi, votre documentation apparaîtra automatiquement dans le module backend
 	de documentation à partir de TYPO3 6.2.
 
 

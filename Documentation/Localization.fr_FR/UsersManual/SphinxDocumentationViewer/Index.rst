@@ -11,7 +11,7 @@
 Visionneuse de documentation Sphinx
 -----------------------------------
 
-Cette extension fournit un autre module Backend dans la partie "Aide" :
+Cette extension fournit un module backend dans la partie "Aide" :
 
 .. figure:: ../../../Images/section_help.png
 	:alt: Visionneuse de documentation Sphinx
@@ -28,7 +28,9 @@ vous permet de rapidement l'afficher **localement** :
 	vous choisissez le gabarit interactif, il va même vous ramener au chapitre que vous lisiez.
 
 
-Écran d'accueil
+.. _kickstart-sphinx-project:
+
+Tableau de bord
 ^^^^^^^^^^^^^^^
 
 Si aucune documentation n'est sélectionnée dans la liste déroulante, c.-à-d. que "Tableau de bord" (*Dashboard*) est

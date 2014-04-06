@@ -20,6 +20,5 @@ Users manual
 	:titlesonly:
 
 	Requirements/Index
-	CreatingBuildingSphinxDocumentationProject/Index
 	SphinxDocumentationViewer/Index
 	ToDoList/Index

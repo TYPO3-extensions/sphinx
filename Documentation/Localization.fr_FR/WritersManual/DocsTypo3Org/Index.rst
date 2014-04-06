@@ -291,9 +291,11 @@ chapitres traduits :
 Références croisées vers une autre documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Par défaut, Sphinx sur http://docs.typo3.org vous permet de créer des références croisées vers les manuels officiels
-et donc de rechercher les références dans un jeu externe de références en préfixant la cible du lien de façon appropriée.
-Un lien tel que ``:ref:`stdWrap en détails <t3tsref:stdwrap>``` va créer un lien vers la version stable de la
+Sphinx vous permet de créer facilement des références croisées vers d'autres documentations telles que les manuels et
+guides officiels ou les manuels des extensions (pour autant qu'ils aient été écrits avec Sphinx et pas avec OpenOffice)
+en préfixant la cible du lien de façon appropriée.
+
+Une construction telle que ``:ref:`stdWrap en détails <t3tsref:stdwrap>``` va créer un lien vers la version stable de la
 "Référence TypoScript" officielle de TYPO3, vers le chapitre "stdWrap" :
 
 * :ref:`stdWrap en détails <t3tsref:stdwrap>`
@@ -309,12 +311,6 @@ Derrière les coulisses, voici ce qui se passe :
 
 La liste des manuels officiels et leurs préfixes correspondants peut être trouvée sur
 http://docs.typo3.org/typo3cms/Index.html.
-
-.. caution::
-	Bien que Sphinx sur http://docs.typo3.org vous permette de façon automatique et magique de créer des références
-	croisées vers les manuels officiels, il est considéré comme mauvaise pratique de se baser dessus. Il est même
-	question de changer ce comportement par défaut. C'est pourquoi vous devriez **toujours** charger explicitement les
-	références vers lesquelles vous souhaitez créer des références croisées, comme décrit ci-après.
 
 Vous êtes en mesure de créer des liens vers d'autres documentations de http://docs.typo3.org (ou ailleurs) en configurant
 la correspondance Intersphinx dans :file:`Settings.yml`. Pour se faire, ajoutez des options de configuration
@@ -339,12 +335,6 @@ son journal des modifications avec ``:ref:`Journal des modifications pour EXT:re
 convention, vous devriez la clé d'extension comme préfixe vers d'autres manuels :
 
 * :ref:`Journal des modifications pour EXT:restdoc <restdoc:changelog>`
-
-.. caution::
-	Dès lors que vous définissez des correspondances Intersphinx dans le fichier de configuration :file:`Settings.yml`,
-	la liste de références vers les manuels officiels est supprimée. Si vous souhaitez créer des références croisées
-	vers une documentation officielle TYPO3 en plus d'autres documentation arbitraires, assurez-vous de définir les
-	correspondances correspondantes également.
 
 
 .. _docs-typo3-org-crosslink-code:

@@ -14,7 +14,7 @@ Utilisation de Sphinx depuis la ligne de commande
 	single: Lien symbolique
 
 Bien que cette extension soit principalement destinée à fournir un environnement complet de rendu de la documentation
-depuis le Backend de TYPO3, il est probable que certains utilisateurs vont l'installer plutôt pour configurer rapidement
+depuis le backend de TYPO3, il est probable que certains utilisateurs vont l'installer plutôt pour configurer rapidement
 environnement Sphinx sur leur machine locale.
 
 Cette extension crée automatiquement des scripts de raccourci dans le répertoire

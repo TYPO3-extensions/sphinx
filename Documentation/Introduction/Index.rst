@@ -20,13 +20,13 @@ What does it do?
 .. only:: latex or missing_sphinxcontrib_youtube
 
 	This extension lets you build documentation projects written with Sphinx_ (the Python Documentation Generator used
-	by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend.
+	by the TYPO3 documentation team for all official documentation) from within the TYPO3 backend.
 	Watch `5 min tutorial video`_.
 
 .. only:: html and not missing_sphinxcontrib_youtube
 
 	This extension lets you build documentation projects written with Sphinx_ (the Python Documentation Generator used
-	by the TYPO3 documentation team for all official documentation) from within the TYPO3 Backend:
+	by the TYPO3 documentation team for all official documentation) from within the TYPO3 backend:
 
 	.. youtube:: YeGqHMDT7R8
 		:width: 100%
@@ -83,28 +83,14 @@ is to use TYPO3 extension `Sphinx/reStructuredText Documentation Viewer (restdoc
 Screenshots
 -----------
 
-.. figure:: ../Images/project_wizard_overview.png
-	:alt: Overview of the new project wizard
-
-
-Build an existing Sphinx documentation project
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. figure:: ../Images/mod1_overview.png
-	:alt: Overview of the Backend module to build Sphinx projects
-	:width: 711
-
-
-Build PDF with pdflatex
-^^^^^^^^^^^^^^^^^^^^^^^
-
-.. figure:: ../Images/build_buttons.png
-	:alt: Toolbar buttons
-
-
-Render and browse other extension manuals locally
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 .. figure:: ../Images/viewer.png
-	:alt: Integrated Backend viewer for extension manuals
-	:width: 711
+	:alt: Integrated backend viewer for extension manuals
+
+	The integrated viewer lets you browse manuals from TYPO3 backend and edit them right away.
+
+
+.. figure:: ../Images/wizard-new-project.png
+	:alt: Wizard to create custom projects
+
+	The new project wizard lets you reference existing documentation projects and create new ones, either based on
+	standard templates or by cloning an external Git repository (handy to work on official TYPO3 manuals).
