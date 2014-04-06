@@ -160,7 +160,7 @@ $(document).ready(function () {
 	});
 
 	// Drag & Drop implementation for files
-	$("#$pluginId .file").draggable({
+	$("#$pluginId .file, #$pluginId .image").draggable({
 		helper: "clone",
 		opacity: .75,
 		refreshPositions: true,
@@ -171,7 +171,7 @@ $(document).ready(function () {
 
 	$("#$pluginId .folder").each(function() {
 		$(this).parents("#$pluginId tr").droppable({
-			accept: ".file, .folder",
+			accept: ".file, .image, .folder",
 			drop: function(e, ui) {
 				var droppedEl = ui.draggable.parents("tr");
 				var source = droppedEl.attr('data-path');
