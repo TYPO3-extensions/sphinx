@@ -204,7 +204,10 @@ $(document).ready(function () {
 		select: function(event, ui) {
 			switch (ui.cmd) {
 				case 'rename':
-					CausalSphinxEditor.renameFile(ui.target.closest("tr").attr('data-path'));
+					CausalSphinxEditor.renameFile(
+						ui.target.closest("tr"),
+						ui.target.closest("tr").attr('data-path')
+					);
 					break;
 			}
 		}

@@ -259,7 +259,9 @@ class RestEditorController extends AbstractActionController {
 			}
 			if (!(is_file($destinationFile) || is_dir($destinationFile))) {
 				$success = rename($sourceFile, $destinationFile);
-				if (!$success) {
+				if ($success) {
+					$response['statusText'] = implode('/', $fileParts) . '/' . $newName . (is_dir($destinationFile) ? '/' : '');
+				} else {
 					$response['statusText'] = $this->translate('editor.action.error.cannotRename');
 				}
 			} else {

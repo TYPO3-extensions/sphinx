@@ -114,11 +114,15 @@ CausalSphinxEditor = {
 		return (ajaxData['status'] == 'success');
 	},
 
-	renameFile: function (file) {
+	renameFile: function (ui, file) {
 		this.customDialog(
-			this.actions.rename
-				.replace(/FILENAME/, file),
-			'editor.message.rename'
+			this.actions.rename.replace(/FILENAME/, file),
+			'editor.message.rename',
+			function (newName) {
+				// Update node directly
+				ui.attr('data-path', newName);
+				ui.find('td span.hasmenu').first().html(/([^/]+)[/]?$/.exec(newName)[1]);
+			}
 		);
 	},
 
@@ -132,7 +136,7 @@ CausalSphinxEditor = {
 		});
 	},
 
-	customDialog: function (loadAction, saveLabelKey) {
+	customDialog: function (loadAction, saveLabelKey, callback) {
 		var self = CausalSphinxEditor;
 
 		var ajaxData;
@@ -169,8 +173,7 @@ CausalSphinxEditor = {
 								success: function (data) {
 									if (data['status'] === 'success') {
 										thisDialog.dialog('destroy');
-										// TODO automatically select new name (rename)
-										self.loadProjectTree();
+										callback(data['statusText']);
 									} else {
 										$('.ui-state-error').html(data['statusText']).show();
 										setTimeout(function () {
