@@ -209,6 +209,22 @@ class RestEditorController extends AbstractActionController {
 	}
 
 	/**
+	 * Returns the project tree.
+	 *
+	 * @param string $path
+	 * @param string $filename
+	 * @return string
+	 */
+	protected function projectTreeAction($path, $filename) {
+		$this->view->assignMultiple(array(
+			'projectPath' => $path,
+			'filename' => $filename,
+		));
+		$out = $this->view->render();
+		return $out;
+	}
+
+	/**
 	 * Autocomplete action to retrieve an documentation key.
 	 *
 	 * @return void

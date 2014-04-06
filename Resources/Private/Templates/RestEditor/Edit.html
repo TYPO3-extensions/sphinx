@@ -37,12 +37,13 @@
 		CausalSphinxEditor.isReadOnly = '{readOnly}';
 
 		// Initialize the editor's actions
+		CausalSphinxEditor.actions.projectTree = "{f:uri.action(action:'projectTree', arguments:{path:projectPath, filename:'FILENAME'})}";
 		CausalSphinxEditor.actions.autocomplete = "{f:uri.action(action:'autocomplete')}";
 		CausalSphinxEditor.actions.open = "{f:uri.action(action:'open')}";
 		CausalSphinxEditor.actions.save = "{f:uri.action(action:'save')}";
 		CausalSphinxEditor.actions.move = "{f:uri.action(action:'move')}";
 		CausalSphinxEditor.actions.redirect = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{reference:reference, document:document})}"
-		CausalSphinxEditor.actions.references = "{f:uri.action(action:'accordionReferences',arguments:{reference:'REFERENCE', remoteUrl:'URL', usePrefix:'USE_PREFIX'})}";
+		CausalSphinxEditor.actions.references = "{f:uri.action(action:'accordionReferences', arguments:{reference:'REFERENCE', remoteUrl:'URL', usePrefix:'USE_PREFIX'})}";
 	</script>
 	<script type="text/javascript"><![CDATA[
 		var myLayout; // a var is required because this page utilizes: myLayout.allowOverflow() method
@@ -99,7 +100,7 @@
 		<span id="filename">{filename}</span>
 		<span id="editor-readonly" class="file-locked t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-locked">&nbsp;</span>
 	</div>
-	<div class="ui-layout-center layout-content-container layout-scroll">
+	<div class="ui-layout-center layout-content-container layout-scroll" id="projectTree">
 		<sphinx:projectTree projectPath="{projectPath}" reveal="{filename}" />
 	</div>
 </div>

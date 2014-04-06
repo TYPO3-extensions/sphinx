@@ -22,6 +22,7 @@ CausalSphinxEditor = {
 	isReadOnly: false,
 
 	actions: {
+		projectTree: null,
 		autocomplete: null,
 		open: null,
 		save: null,
@@ -110,6 +111,16 @@ CausalSphinxEditor = {
 			}
 		});
 		return (ajaxData['status'] == 'success');
+	},
+
+	loadProjectTree: function() {
+		var self = CausalSphinxEditor;
+		$.ajax({
+			url: self.actions.projectTree
+				.replace(/FILENAME/, self.filename)
+		}).done(function (content) {
+			$('#projectTree').html(content)
+		});
 	},
 
 	closeEditor: function () {

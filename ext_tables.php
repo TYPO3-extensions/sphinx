@@ -18,7 +18,7 @@ if (TYPO3_MODE === 'BE') {
 		array(
 			'Documentation' => 'index,dashboard,render,convert,createExtensionProject',
 			'InteractiveViewer' => 'render,missingRestdoc,outdatedRestdoc',
-			'RestEditor' => 'edit,open,save,move,autocomplete,accordionReferences,updateIntersphinx',
+			'RestEditor' => 'edit,open,save,move,projectTree,autocomplete,accordionReferences,updateIntersphinx',
 			'Ajax' => 'addCustomProject,createCustomProject,editCustomProject,updateCustomProject,removeCustomProject',
 		),
 		array(
