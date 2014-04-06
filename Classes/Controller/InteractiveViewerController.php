@@ -239,12 +239,21 @@ class InteractiveViewerController extends AbstractActionController {
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
 	public function processImage(array $data) {
-		return sprintf(
-			'<img src="../%s" alt="%s" style="%s" />',
-			htmlspecialchars($data['src']),
-			htmlspecialchars($data['alt']),
-			htmlspecialchars($data['style'])
-		);
+		$tag = '<img src="../' . htmlspecialchars($data['src']) . '"';
+		$tag .= ' alt="' . (!empty($data['alt']) ? htmlspecialchars($data['alt']) : '') . '"';
+
+		// Styling
+		$classes = array('img-scaling');	// From standard TYPO3 theme
+		if (!empty($data['class'])) {
+			$classes = array_unique(array_merge($classes, explode(' ', $data['class'])));
+		}
+		$tag .= ' class="' . htmlspecialchars(implode(' ', $classes)) . '"';
+		if (!empty($data['style'])) {
+			$tag .= ' style="' . htmlspecialchars($data['style']) . '"';
+		}
+
+		$tag .= ' />';
+		return $tag;
 	}
 
 	/**
