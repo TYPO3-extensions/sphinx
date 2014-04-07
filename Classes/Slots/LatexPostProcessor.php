@@ -48,15 +48,10 @@ class LatexPostProcessor {
 		$texContents = file_get_contents($texFileName);
 
 		// Fix single quotes (@see http://forge.typo3.org/issues/53408)
-		$pattern = <<<TEX
-\makeatother
-
-\begin{document}
-TEX;
-
+		$pattern = '\\makeatother' . PHP_EOL . PHP_EOL . '\\begin{document}';
 		$texContents = preg_replace(
-			'/' . preg_quote($pattern, '/') . '/',
-			'\def\PYGZsq{\textquotesingle}' . LF . $pattern,
+			'/' . preg_quote($pattern, '/') . '/i',
+			'\\def\\PYGZsq{\\textquotesingle}' . PHP_EOL . $pattern,
 			$texContents
 		);
 
