@@ -219,6 +219,14 @@ CausalSphinxEditor = {
 				open: function (event, ui) {
 					$('.ui-state-error').hide();
 					form = $('#tx-sphinx-formdialog');
+					form.keypress(function (e) {
+						if (e.keyCode == $.ui.keyCode.ENTER) {
+							// We do not want a default button
+							e.preventDefault();
+						} else if (e.keyCode == $.ui.keyCode.ESC) {
+							$(this).parent().find('button:eq(1)').trigger('click');
+						}
+					});
 				},
 				buttons: [
 					{
