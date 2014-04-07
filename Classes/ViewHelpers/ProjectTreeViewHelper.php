@@ -157,14 +157,19 @@ $(document).ready(function () {
 		$(this).toggleClass("selected");
 	});
 
-	// Open selected file on double-click
-	$("#$pluginId td span[class='file']").on("dblclick", function (e) {
+	// Drag & Drop implementation for files
+	$("#$pluginId .file").draggable({
+		helper: "clone",
+		opacity: .75,
+		refreshPositions: true,
+		revert: "invalid",
+		revertDuration: 300,
+		scroll: true
+	}).dblclick(function (e) {
 		var file = $(event.target).closest("tr").attr('data-path');
 		CausalSphinxEditor.openFile(file);
 	});
-
-	// Drag & Drop implementation for files
-	$("#$pluginId .file, #$pluginId .image").draggable({
+	$("#$pluginId .image").draggable({
 		helper: "clone",
 		opacity: .75,
 		refreshPositions: true,
