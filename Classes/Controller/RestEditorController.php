@@ -26,6 +26,8 @@ namespace Causal\Sphinx\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use Causal\Sphinx\Utility\GitUtility;
 use Causal\Sphinx\Utility\MiscUtility;
 
 /**
@@ -194,11 +196,20 @@ class RestEditorController extends AbstractActionController {
 		$success = FALSE;
 		$parts = $this->parseReferenceDocument($reference, '');
 
+		$source = str_replace('/', DIRECTORY_SEPARATOR, ltrim($source, '/'));
+		$destination = str_replace('/', DIRECTORY_SEPARATOR, rtrim($destination, '/') . '/');
+
 		if (is_dir($parts['basePath'])) {
 			$sourceFile = $parts['basePath'] . DIRECTORY_SEPARATOR . $source;
-			$targetFile = $parts['basePath'] . DIRECTORY_SEPARATOR . rtrim($destination, '/') . DIRECTORY_SEPARATOR . PathUtility::basename($sourceFile);
+			$targetFile = $parts['basePath'] . DIRECTORY_SEPARATOR . ltrim($destination, DIRECTORY_SEPARATOR) . PathUtility::basename($sourceFile);
 			if (!(PathUtility::basename($sourceFile) === 'conf.py' || is_file($targetFile))) {
-				$success = rename($sourceFile, $targetFile);
+				if ($parts['usingGit']) {
+					$sourceFile = substr($sourceFile, strlen($parts['basePath']) + 1);
+					$targetFile = substr($targetFile, strlen($parts['basePath']) + 1);
+					$success = GitUtility::move($parts['basePath'], $sourceFile, $targetFile);
+				} else {
+					$success = rename($sourceFile, $targetFile);
+				}
 			}
 		}
 
@@ -228,14 +239,24 @@ class RestEditorController extends AbstractActionController {
 		if (is_dir($parts['basePath'])) {
 			$target = $parts['basePath'] . DIRECTORY_SEPARATOR . $path;
 			if (is_file($target)) {
-				$success = @unlink($target);
+				if ($parts['usingGit']) {
+					$target = substr($target, strlen($parts['basePath']) + 1);
+					$success = GitUtility::remove($parts['basePath'], $target);
+				} else {
+					$success = @unlink($target);
+				}
 				if (!$success) {
 					$response['statusText'] = $this->translate('editor.action.error.unknownError');
 				}
 			} else {
 				$files = GeneralUtility::getAllFilesAndFoldersInPath(array(), $target . DIRECTORY_SEPARATOR);
 				if (count($files) === 0) {
-					$success = @rmdir($target);
+					if ($parts['usingGit']) {
+						$target = substr($target, strlen($parts['basePath']) + 1);
+						$success = GitUtility::remove($parts['basePath'], $target);
+					} else {
+						$success = @rmdir($target);
+					}
 					if (!$success) {
 						$response['statusText'] = $this->translate('editor.action.error.unknownError');
 					}
@@ -287,7 +308,7 @@ class RestEditorController extends AbstractActionController {
 		$success = FALSE;
 
 		$parts = $this->parseReferenceDocument($reference, '');
-		$fileParts = explode('/', rtrim($filename, '/'));
+		$fileParts = explode('/', trim($filename, '/'));
 
 		if (empty($newName) || preg_match('#[/?*:;{}\\]#', $newName)) {
 			$response['statusText'] = $this->translate('editor.action.error.invalidName');
@@ -300,7 +321,13 @@ class RestEditorController extends AbstractActionController {
 				$destinationFile = $parts['basePath'] . DIRECTORY_SEPARATOR . $newName;
 			}
 			if (!(is_file($destinationFile) || is_dir($destinationFile))) {
-				$success = rename($sourceFile, $destinationFile);
+				if ($parts['usingGit']) {
+					$sourceFile = substr($sourceFile, strlen($parts['basePath']) + 1);
+					$destinationFile = substr($destinationFile, strlen($parts['basePath']) + 1);
+					$success = GitUtility::move($parts['basePath'], $sourceFile, $destinationFile);
+				} else {
+					$success = rename($sourceFile, $destinationFile);
+				}
 				if ($success) {
 					$response['statusText'] = implode('/', $fileParts) . '/' . $newName . (is_dir($destinationFile) ? '/' : '');
 				} else {
@@ -388,6 +415,10 @@ class RestEditorController extends AbstractActionController {
 			if (!(is_file($target) || is_dir($target))) {
 				if ($isFile) {
 					$success = GeneralUtility::writeFile($target, '');
+					if ($parts['usingGit']) {
+						$target = substr($target, strlen($parts['basePath']) + 1);
+						GitUtility::add($parts['basePath'], $target);
+					}
 				} else {
 					$success = GeneralUtility::mkdir($target);
 				}
@@ -667,13 +698,17 @@ class RestEditorController extends AbstractActionController {
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163472);
 		}
 
+		$basePath = realpath($basePath);
+		$usingGit = GitUtility::isAvailable() && GitUtility::status($basePath);
+
 		return array(
-			'basePath'     => realpath($basePath),
+			'basePath'     => $basePath,
 			'filename'     => realpath($filename),
 			'type'         => $type,
 			'identifier'   => $identifier,
 			'extensionKey' => $extensionKey,
-			'locale'       => $locale
+			'locale'       => $locale,
+			'usingGit'     => $usingGit,
 		);
 	}
 

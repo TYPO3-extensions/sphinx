@@ -25,6 +25,8 @@ namespace Causal\Sphinx\Controller;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use Causal\Sphinx\Utility\GitUtility;
 use Causal\Sphinx\Utility\MiscUtility;
 
 /**
@@ -57,8 +59,8 @@ class AjaxController extends AbstractActionController {
 	 * @return void
 	 */
 	public function addCustomProjectAction() {
-		$hasGitCommand = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('git') !== '';
-		$this->view->assign('hasGit', $hasGitCommand);
+		$isGitAvailable = GitUtility::isAvailable();
+		$this->view->assign('hasGit', $isGitAvailable);
 
 		$locales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
 		asort($locales);
@@ -67,7 +69,7 @@ class AjaxController extends AbstractActionController {
 		$projectTemplates = $this->getProjectTemplates();
 		$templates = array();
 
-		if ($hasGitCommand) {
+		if ($isGitAvailable) {
 			$officialDocuments = $this->documentationRepository->getOfficialDocuments();
 
 			$gitDocuments = array();
@@ -99,7 +101,7 @@ class AjaxController extends AbstractActionController {
 		$response['status'] = 'success';
 		$response['statusText'] = $this->view->render();
 
-		if ($hasGitCommand) {
+		if ($isGitAvailable) {
 			$officialDocuments = json_encode($gitDocuments);
 			$response['js'] = <<<JS
 CausalSphinxDashboard.officialDocuments = $officialDocuments;
@@ -125,7 +127,7 @@ JS;
 	public function createCustomProjectAction($group, $name, $lang, $description, $documentationKey, $directory, $template = '', $git = '') {
 		$response = array();
 		$success = FALSE;
-		$hasGitCommand = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('git') !== '';
+		$isGitAvailable = GitUtility::isAvailable();
 		$mayCloneFromGit = FALSE;
 
 		// Sanitize directory and documentation key
@@ -141,8 +143,8 @@ JS;
 
 		$existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
 
-		if ($existingProject === NULL && $hasGitCommand && !empty($git)) {
-			$mayCloneFromGit = \Causal\Sphinx\Utility\MiscUtility::checkUrl(str_replace('git://', 'http://', $git));
+		if ($existingProject === NULL && $isGitAvailable && !empty($git)) {
+			$mayCloneFromGit = GitUtility::isValidRepository($git);
 			if (!$mayCloneFromGit) {
 				$response['status'] = 'error';
 				$response['statusText'] = $this->translate('dashboard.action.error.invalidGitRepository');
@@ -160,12 +162,7 @@ JS;
 			}
 
 			GeneralUtility::mkdir_deep($absoluteDirectory);
-
-			// -C flag does not work under Windows, thus we do a "cd" and then a "git clone"
-			$cmd = 'cd ' . escapeshellarg($absoluteDirectory) . ' && ' .
-				\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('git') .
-				' clone ' . $git . ' .';
-			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $out, $returnValue);
+			GitUtility::cloneRepository($git, $absoluteDirectory, '.');
 
 			// Try to discover project structure again
 			$projectStructure = MiscUtility::getProjectStructure($directory);

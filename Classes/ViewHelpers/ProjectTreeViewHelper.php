@@ -191,7 +191,7 @@ $(document).ready(function () {
 					$("#$pluginId").treetable("move", droppedEl.data("ttId"), $(this).data("ttId"));
 
 					// Update the internal reference
-					droppedEl.attr('data-path', destination + '/' + /([^/]+)$/.exec(source)[1]);
+					droppedEl.attr('data-path', destination.replace(/\/$/,'') + '/' + /([^/]+)$/.exec(source)[1]);
 				}
 			},
 			hoverClass: "accept",

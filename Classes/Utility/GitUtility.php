@@ -1,0 +1,173 @@
+<?php
+namespace Causal\Sphinx\Utility;
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2014 Xavier Perseguers <xavier@causal.ch>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use Causal\Sphinx\Utility\MiscUtility;
+
+/**
+ * Git utility.
+ *
+ * @category    Utility
+ * @package     TYPO3
+ * @subpackage  tx_sphinx
+ * @author      Xavier Perseguers <xavier@causal.ch>
+ * @copyright   Causal Sàrl
+ * @license     http://www.gnu.org/copyleft/gpl.html
+ */
+class GitUtility {
+
+	/**
+	 * Returns TRUE if git is available, otherwise FALSE.
+	 *
+	 * @return bool
+	 */
+	static public function isAvailable() {
+		return CommandUtility::getCommand('git') !== '';
+	}
+
+	/**
+	 * Returns TRUE if $uri is (well, looks like) a valid Git URI.
+	 *
+	 * @param string $uri
+	 * @return bool
+	 * @throws \InvalidArgumentException
+	 */
+	static public function isValidRepository($uri) {
+		if (substr($uri, 0, 6) === 'git://') {
+			$isValid = MiscUtility::checkUrl(str_replace('git://', 'https://', $uri))
+				|| MiscUtility::checkUrl(str_replace('git://', 'http://', $uri));
+		} else {
+			$isValid = MiscUtility::checkUrl($uri);
+		}
+		return $isValid;
+	}
+
+	/**
+	 * Clones a Git repository.
+	 *
+	 * @param string $uri
+	 * @param string $contextPath Base path
+	 * @param string $targetDirectory Optional alternate target directory
+	 * @param NULL|array $output
+	 * @return bool
+	 */
+	static public function cloneRepository($uri, $contextPath, $targetDirectory = '', &$output = NULL) {
+		// -C flag does not work under Windows, thus we do a "cd" and then a "git clone"
+		$cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
+			CommandUtility::getCommand('git') . ' clone ' . $uri;
+		if (!empty($targetDirectory)) {
+			$cmd .= ' ' . escapeshellarg($targetDirectory);
+		}
+		CommandUtility::exec($cmd, $output, $returnValue);
+		return $returnValue == 0;
+	}
+
+	/**
+	 * Checks status of a Git repository.
+	 *
+	 * @param string $contextPath Base path
+	 * @param NULL|array $output
+	 * @return bool TRUE if status succeeded, otherwise FALSE
+	 */
+	static public function status($contextPath, &$output = NULL) {
+		$cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
+			CommandUtility::getCommand('git') . ' status';
+		CommandUtility::exec($cmd, $output, $returnValue);
+		return $returnValue == 0;
+	}
+
+	/**
+	 * Adds a file.
+	 *
+	 * @param string $contextPath Base path for relative path/filename
+	 * @param string $fileName Relative filename
+	 * @param NULL|array $output
+	 * @return bool TRUE if add succeeded, otherwise FALSE
+	 */
+	static public function add($contextPath, $fileName, &$output = NULL) {
+		$cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
+			CommandUtility::getCommand('git') . ' add ' . escapeshellarg($fileName);
+		CommandUtility::exec($cmd, $output, $returnValue);
+		return $returnValue == 0;
+	}
+
+	/**
+	 * Moves a file.
+	 *
+	 * @param string $contextPath Base path for relative path/filename (NO trailing directory separator)
+	 * @param string $sourceFileName Relative source path/filename
+	 * @param string $targetFileName Relative target path/filename
+	 * @param NULL|array $output
+	 * @return bool TRUE if move succeeded, otherwise FALSE
+	 */
+	static public function move($contextPath, $sourceFileName, $targetFileName, &$output = NULL) {
+		if (static::isFileTracked($contextPath, $sourceFileName)) {
+			$cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
+				CommandUtility::getCommand('git') . ' mv ' . escapeshellarg($sourceFileName) . ' ' . escapeshellarg($targetFileName);
+			CommandUtility::exec($cmd, $output, $returnValue);
+			$success = $returnValue == 0;
+		} else {
+			$success = rename($contextPath . DIRECTORY_SEPARATOR . $sourceFileName, $contextPath . DIRECTORY_SEPARATOR . $targetFileName);
+		}
+		return $success;
+	}
+
+	/**
+	 * Removes a file.
+	 *
+	 * @param string $contextPath Base path for relative path/filename (NO trailing directory separator)
+	 * @param string $fileName Relative filename
+	 * @param NULL|array $output
+	 * @return bool TRUE if remove succeeded, otherwise FALSE
+	 */
+	static public function remove($contextPath, $fileName, &$output = NULL) {
+		if (static::isFileTracked($contextPath, $fileName)) {
+			$cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
+				CommandUtility::getCommand('git') . ' rm -f ' . escapeshellarg($fileName);
+			CommandUtility::exec($cmd, $output, $returnValue);
+			$success = $returnValue == 0;
+		} else {
+			$success = @unlink($contextPath . DIRECTORY_SEPARATOR . $fileName);
+		}
+		return $success;
+	}
+
+	/**
+	 * Returns TRUE if a given file is tracked in a Git repository.
+	 *
+	 * @param string $contextPath Base path for relative filename
+	 * @param string $fileName Relative filename
+	 * @param NULL|array $output
+	 * @return bool TRUE if file is tracked, otherwise FALSE
+	 */
+	static public function isFileTracked($contextPath, $fileName, &$output = NULL) {
+		$cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
+			CommandUtility::getCommand('git') . ' ls-files ' . escapeshellarg($fileName) . ' --error-unmatch';
+		CommandUtility::exec($cmd, $output, $returnValue);
+		return $returnValue == 0;
+	}
+
+}
