@@ -145,7 +145,7 @@ class SphinxBuilder {
 			' -a -E' .													// always read all files (force compilation)
 			(is_writable($basePath) ? ' -w warnings.txt' : '') .		// store warnings and errors to disk
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
-			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
+			' ' . static::safeEscapeshellarg($sourceDirectory) .		// source directory
 			' ' . static::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
 
@@ -231,7 +231,7 @@ class SphinxBuilder {
 			' -a -E' .													// always read all files (force compilation)
 			(is_writable($basePath) ? ' -w warnings.txt' : '') .		// store warnings and errors to disk
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
-			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
+			' ' . static::safeEscapeshellarg($sourceDirectory) .		// source directory
 			' ' . static::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
 
@@ -323,7 +323,7 @@ class SphinxBuilder {
 			(is_writable($basePath) ? ' -w warnings.txt' : '') .		// store warnings and errors to disk
 			(!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
 			' -D latex_paper_size=' . $paperSize .						// paper size for LaTeX output
-			' ' . static::safeEscapeshellarg($sourceDirectory) .			// source directory
+			' ' . static::safeEscapeshellarg($sourceDirectory) .		// source directory
 			' ' . static::safeEscapeshellarg($buildPath) .				// build directory
 			' 2>&1';													// redirect errors to STDOUT
 
@@ -354,6 +354,29 @@ class SphinxBuilder {
 			}
 
 			throw new \RuntimeException('Cannot build Sphinx project:' . LF . $cmd . LF . $output, 1366212039);
+		}
+
+		$texFileNames = glob($basePath . $buildPath . DIRECTORY_SEPARATOR . '*.tex');
+		if (is_array($texFileNames) && count($texFileNames) > 0) {
+			$texFileName = $texFileNames[0];
+
+			/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+			$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			/** @var $signalSlotDispatcher \TYPO3\CMS\Extbase\SignalSlot\Dispatcher */
+			$signalSlotDispatcher = $objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+
+			$signalSlotDispatcher->dispatch(
+				__CLASS__,
+				'afterBuildLatex',
+				array(
+					'texFileName' => $texFileName,
+					'basePath' => $basePath,
+					'sourceDirectory' => $sourceDirectory,
+					'buildDirectory' => $buildDirectory,
+					'conf' => $conf,
+					'language' => $language,
+				)
+			);
 		}
 
 		$output .= LF;
@@ -443,7 +466,7 @@ class SphinxBuilder {
 		if (!empty($make)) {
 			$cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
 				MiscUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . PathUtility::dirname($pdflatex) . '"') . ' && ' .
-				$make . ' -C ' . static::safeEscapeshellarg($buildDirectory . '/latex') . ' clean all-pdf' .
+				escapeshellarg($make) . ' -C ' . static::safeEscapeshellarg($buildDirectory . '/latex') . ' clean all-pdf' .
 				' 2>&1';	// redirect errors to STDOUT
 		} else {
 			// We are on Windows and "make" is not available,

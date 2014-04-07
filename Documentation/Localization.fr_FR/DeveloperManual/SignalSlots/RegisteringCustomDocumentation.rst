@@ -38,7 +38,7 @@ Votre slot doit implémenter une méthode de la forme :
 .. code-block:: php
 
 	public function postprocessReferences(array &$references) {
-	    // Custom code
+	    // Votre code
 	}
 
 Le paramètre ``$references`` est un tableau bidimensionnel contenant une liste d'extensions locales, globales et systèmes
@@ -58,7 +58,7 @@ Votre slot doit implémenter une méthode de la forme :
 .. code-block:: php
 
 	public function render($identifier, $layout, $force, &$documentationUrl) {
-	    // Custom code
+	    // Votre code
 	}
 
 
@@ -75,7 +75,7 @@ Votre slot doit implémenter une méthode de la forme :
 .. code-block:: php
 
 	public function retrieveBasePath($identifier, &$path) {
-	    // Custom code
+	    // Votre code
 	}
 
 
@@ -91,7 +91,7 @@ Votre slot doit implémenter une méthode de la forme :
 .. code-block:: php
 
 	public function retrieveRestFilename($identifier, $document, &$basePath, &$filename) {
-	    // Custom code
+	    // Votre code
 	}
 
 

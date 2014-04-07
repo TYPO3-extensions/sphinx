@@ -18,6 +18,14 @@ $signalSlotDispatcher->connect(
 	'postProcessDocuments'
 );
 
+// Hook into ourselves to post-process LaTeX generated files
+$signalSlotDispatcher->connect(
+	'Causal\\Sphinx\\Utility\\SphinxBuilder',
+	'afterBuildLatex',
+	'Causal\\Sphinx\\Slots\\LatexPostProcessor',
+	'postprocess'
+);
+
 // Hook into ourselves to handle custom projects
 $signalSlotDispatcher->connect(
 	'Causal\\Sphinx\\Controller\\DocumentationController',

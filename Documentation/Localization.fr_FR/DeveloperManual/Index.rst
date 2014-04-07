@@ -31,3 +31,4 @@ Signaux et slots disponibles :
 	:maxdepth: 2
 
 	SignalSlots/RegisteringCustomDocumentation
+	SignalSlots/PostProcessingLaTeX
