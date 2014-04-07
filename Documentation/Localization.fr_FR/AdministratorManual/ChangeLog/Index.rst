@@ -30,6 +30,9 @@ Version  Changements
          - Support des projets personnalisés en langue étrangère
          - Glisser et déposer dans l'arborescence de projet pour déplacer des
            fichiers avec l'éditeur de documentation
+         - Menu contextuel pour renommer, créer et supprimer des fichiers et
+           répertoires, avec utilisation des commandes Git correspondantes si le
+           projet utilise Git
          - Réorganisation complète du manuel
 1.3.0    - Coloration syntaxique pour les fichiers reStructuredText et YAML
          - Raccourcis clavier

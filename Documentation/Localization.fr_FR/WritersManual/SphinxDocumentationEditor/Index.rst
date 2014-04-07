@@ -39,6 +39,18 @@ fermer" :
 - **Maj+Ctrl+S** / **Maj+Cmd+S** : sauvegarde et ferme le document (et donc génère à nouveau la documentation)
 - **Esc** / **Alt+W** / **Ctrl+W** : ferme le document
 
+**Autres caractéristiques :**
+
+L'arborescence du projet vous permet de :
+
+- **Déplacer** les fichiers et les images par glisser et déposer
+- **Renommer**, **créer** et **supprimer** les fichiers et les répertoires par clic droit sur leur nom et en utilisant
+  le menu contextuel
+
+.. tip::
+	Si votre projet utilise Git, le déplacement, le renommage, la création et la suppression de fichiers et de
+	répertoires seront effectués avec les commandes Git correspondantes.
+
 
 Liens croisés
 ^^^^^^^^^^^^^

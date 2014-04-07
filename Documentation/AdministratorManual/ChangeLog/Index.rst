@@ -27,6 +27,8 @@ Version  Changes
          - Kickstart custom projects from a Git repository
          - Support of custom projects in foreign languages
          - Drag and drop in project tree to move files with documentation editor
+         - Context menu to rename, create and remove files and directories, using
+           corresponding Git commands if the project is using Git
          - Full reorganization of the manual
 1.3.0    - Syntax highlighting for reStructuredText and YAML files
          - Keyboard shortcuts

@@ -38,6 +38,17 @@ the documentation if you click on toolbar icon "save and close":
 - **Shift+Ctrl+S** / **Shift+Cmd+S** : saves and closes the document (thus recompiles the documentation)
 - **Esc** / **Alt+W** / **Ctrl+W** : closes the document
 
+**Further features:**
+
+The project tree lets you:
+
+- **Move** files and pictures by drag and drop
+- **Rename**, **create** and **remove** files and directories by right clicking on their name and using the context menu
+
+.. tip::
+	If your project is using Git, moving, renaming, creating and removing files and directories will be done using
+	corresponding Git commands.
+
 
 Cross-linking
 ^^^^^^^^^^^^^
