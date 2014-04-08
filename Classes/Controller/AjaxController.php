@@ -82,7 +82,7 @@ class AjaxController extends AbstractActionController {
 					$gitDocuments[$key] = $officialDocument;
 
 					// Sort by title
-					asort($templates[$masterKey][$key]);
+					asort($templates[$masterKey]);
 				}
 			}
 			// Sort by type
