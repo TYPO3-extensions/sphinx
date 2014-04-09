@@ -201,9 +201,12 @@ class InteractiveViewerController extends AbstractActionController {
 	 * @param boolean $absolute Whether absolute URI should be generated
 	 * @param integer $rootPage UID of the page showing the documentation
 	 * @return string
+	 * @throws \RuntimeException
 	 * @private This method is made public to be accessible from a lambda-function scope
 	 */
 	public function getLink($document, $absolute = FALSE, $rootPage = 0) {
+		static $basePath = NULL;
+
 		$anchor = '';
 		if ($document !== '') {
 			if (($pos = strrpos($document, '#')) !== FALSE) {
@@ -225,7 +228,30 @@ class InteractiveViewerController extends AbstractActionController {
 			case substr($document, 0, 11) === '_downloads/':
 			case substr($document, 0, 8) === '_images/':
 			case substr($document, 0, 9) === '_sources/':
-				$link = '../typo3conf/Documentation/typo3cms.extensions.' . $this->extension . '/' . $this->languageDirectory . '/json/' . $document;
+				list($type, $identifier) = explode(':', $this->reference, 2);
+				switch ($type) {
+					case 'EXT':
+						$link = '../typo3conf/Documentation/typo3cms.extensions.' . $this->extension . '/' . $this->languageDirectory . '/json/' . $document;
+					break;
+					case 'USER':
+						if ($basePath === NULL) {
+							$basePath = '';
+							$this->signalSlotDispatcher->dispatch(
+								__CLASS__,
+								'retrieveBasePath',
+								array(
+									'identifier' => $identifier,
+									'path' => &$basePath,
+								)
+							);
+							$basePath = substr($basePath, strlen(PATH_site));
+						}
+						$link = '../' . $basePath . $document;
+					break;
+					default:
+						throw new \RuntimeException('Unknown reference "' . $this->reference . '"', 1397042689);
+				}
+
 			break;
 		}
 		return $link;
