@@ -986,7 +986,6 @@ YAML;
 			$i++;
 		}
 		while ($i < count($lines)) {
-			$i++;
 			if (preg_match('/^(\s+)([^:]+):\s*(.*)$/', $lines[$i], $matches)) {
 				switch ($matches[2]) {
 					case 'latex_documents':
@@ -1080,6 +1079,7 @@ YAML;
 					$pythonConfiguration[] = $pythonLine;
 				}
 			}
+			$i++;
 		}
 
 		return $pythonConfiguration;
