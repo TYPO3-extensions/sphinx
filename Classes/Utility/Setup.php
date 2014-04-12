@@ -635,6 +635,7 @@ EOT;
 			'mscgen' => 'embed mscgen-formatted MSC (Message Sequence Chart)s.',
 			'napoleon' => 'supports Google style and NumPy style docstrings.',
 			'nicoviceo' => 'embed videos from nicovideo',
+			'numfig' => 'numbered figures',
 			'nwdiag' => 'embed network diagrams by using nwdiag',
 			'omegat' => 'support tools to collaborate with OmegaT (Sphinx 1.1 needed)',
 			'osaka' => 'convert standard Japanese doc to Osaka dialect (it is joke extension)',
@@ -664,6 +665,7 @@ EOT;
 			'googlechart',
 			'googlemaps',
 			'httpdomain',
+			'numfig',
 			'slide',
 			'youtube',
 		);
