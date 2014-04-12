@@ -310,7 +310,7 @@ class RestEditorController extends AbstractActionController {
 		$parts = $this->parseReferenceDocument($reference, '');
 		$fileParts = explode('/', trim($filename, '/'));
 
-		if (empty($newName) || preg_match('#[/?*:;{}\\]#', $newName)) {
+		if (empty($newName) || preg_match('#[/?*:;{}\\\\]#', $newName)) {
 			$response['statusText'] = $this->translate('editor.action.error.invalidName');
 		} elseif (is_dir($parts['basePath'])) {
 			$sourceFile = $parts['basePath'] . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $fileParts);
@@ -408,7 +408,7 @@ class RestEditorController extends AbstractActionController {
 		$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
 		$parts = $this->parseReferenceDocument($reference, '');
 
-		if (empty($name) || preg_match('#[/?*:;{}\\]#', $name)) {
+		if (empty($name) || preg_match('#[/?*:;{}\\\\]#', $name)) {
 			$response['statusText'] = $this->translate('editor.action.error.invalidName');
 		} elseif (is_dir($parts['basePath'])) {
 			$target = $parts['basePath'] . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR) . $name;
