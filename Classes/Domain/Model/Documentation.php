@@ -105,9 +105,19 @@ class Documentation {
 		return $toc;
 	}
 
+	/**
+	 * Returns TRUE if a table of contents exists.
+	 *
+	 * @return bool
+	 * @throws \RuntimeException
+	 */
 	public function getHasTableOfContents() {
 		// Must have an inner <ul> after the first one
-		return strpos($this->getTableOfContents(), '<ul>', 4) !== FALSE;
+		$tableOfContents = $this->getTableOfContents();
+		if (strlen($tableOfContents) > 4) {
+			return strpos($tableOfContents, '<ul>', 4) !== FALSE;
+		}
+		return FALSE;
 	}
 
 	/**
