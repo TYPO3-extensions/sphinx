@@ -138,9 +138,6 @@ class DocumentationController extends AbstractActionController {
 		switch ($type) {
 			case 'EXT':
 				list($extensionKey, $locale) = explode('.', $identifier, 2);
-				if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
-					$this->redirect('dashboard');
-				}
 				$documentationUrl = MiscUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
 			break;
 			case 'USER':
@@ -210,7 +207,7 @@ class DocumentationController extends AbstractActionController {
 	 * @return void
 	 */
 	protected function convertAction($extensionKey) {
-		$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+		$extensionPath = MiscUtility::extPath($extensionKey);
 		$sxwFilename = $extensionPath . 'doc/manual.sxw';
 		$documentationDirectory = $extensionPath . 'Documentation';
 		$reference = NULL;
@@ -243,7 +240,7 @@ class DocumentationController extends AbstractActionController {
 	 * @return void
 	 */
 	protected function createExtensionProjectAction($extensionKey) {
-		$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+		$extensionPath = MiscUtility::extPath($extensionKey);
 		$documentationDirectory = $extensionPath . 'Documentation';
 		$reference = NULL;
 

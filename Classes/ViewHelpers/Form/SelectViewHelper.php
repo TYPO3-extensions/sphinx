@@ -24,6 +24,8 @@ namespace Causal\Sphinx\ViewHelpers\Form;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Causal\Sphinx\Utility\MiscUtility;
+
 /**
  * Extends the EXT:fluid's select VH to support onchange attribute.
  *
@@ -75,15 +77,15 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 				foreach ($valueLabel as $value => $label) {
 					if (substr($value, 0, 4) === 'EXT:') {
 						list($extensionKey, $_) = explode('.', substr($value, 4), 2);
-						$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
-						$extRelPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($extensionKey);
+						$extPath = MiscUtility::extPath($extensionKey);
+						$extRelPath = '../' . MiscUtility::extRelPath($extensionKey);
 						$icon = $extRelPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon($extPath);
 						$hiresIcon = 'ext_icon@2x.png';
 						if (is_file($extPath . $hiresIcon)) {
 							$icon = $extRelPath . $hiresIcon;
 						}
 					} else {
-						$icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) .
+						$icon = '../' . MiscUtility::extRelPath($this->extKey) .
 							'Resources/Public/Images/default_icon@2x.png';
 					}
 					$isSelected = $this->isSelected($value);

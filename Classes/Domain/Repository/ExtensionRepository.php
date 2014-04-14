@@ -40,22 +40,29 @@ use Causal\Sphinx\Utility\MiscUtility;
 class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+	 * @inject
+	 */
+	protected $listUtility;
+
+	/**
 	 * Returns the list of loaded extensions with no documentation,
 	 * sorted by extension title.
 	 *
-	 * @param string $allowedInstallTypes Defaults to 'S,G,L' to include System, Global and Local
+	 * @param string $allowedInstallTypes Defaults to 'G,L' to include Global and Local but exclude System ('S')
 	 * @return \Causal\Sphinx\Domain\Model\Extension[]
 	 */
-	public function findByHasNoDocumentation($allowedInstallTypes = 'S,G,L') {
-		$loadedExtensionKeys = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+	public function findByHasNoDocumentation($allowedInstallTypes = 'G,L') {
+		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 		$extensions = array();
 		$titles = array();
 
-		foreach ($loadedExtensionKeys as $extensionKey) {
+		foreach ($availableAndInstalledExtensions as $extensionKey => $info) {
+			if (!GeneralUtility::inList($allowedInstallTypes, $info['type']{0})) {
+				continue;
+			}
 			$documentationType = MiscUtility::getDocumentationType($extensionKey);
-			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_UNKNOWN
-				&& GeneralUtility::inList($allowedInstallTypes, $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'])) {
-
+			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_UNKNOWN) {
 				$extension = $this->createExtensionObject($extensionKey);
 				$extensions[$extensionKey] = $extension;
 				$titles[$extensionKey] = strtolower($extension->getTitle());
@@ -74,16 +81,16 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \Causal\Sphinx\Domain\Model\Extension[]
 	 */
 	public function findByHasSphinxDocumentation($allowedInstallTypes = 'S,G,L') {
-		$loadedExtensionKeys = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 		$extensions = array();
 		$titles = array();
 
-		foreach ($loadedExtensionKeys as $extensionKey) {
+		foreach ($availableAndInstalledExtensions as $extensionKey => $info) {
+			if (!GeneralUtility::inList($allowedInstallTypes, $info['type']{0})) {
+				continue;
+			}
 			$documentationType = MiscUtility::getDocumentationType($extensionKey);
-			if (($documentationType === MiscUtility::DOCUMENTATION_TYPE_SPHINX
-				|| $documentationType === MiscUtility::DOCUMENTATION_TYPE_README)
-				&& GeneralUtility::inList($allowedInstallTypes, $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'])) {
-
+			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_SPHINX || $documentationType === MiscUtility::DOCUMENTATION_TYPE_README) {
 				$extension = $this->createExtensionObject($extensionKey);
 				$extensions[$extensionKey] = $extension;
 				$titles[$extensionKey] = strtolower($extension->getTitle());
@@ -115,19 +122,20 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns the list of loaded extensions with OpenOffice documentation,
 	 * sorted by extension title.
 	 *
-	 * @param string $allowedInstallTypes Defaults to 'S,G,L' to include System, Global and Local
+	 * @param string $allowedInstallTypes Defaults to 'G,L' to include Global and Local but exclude System ('S')
 	 * @return \Causal\Sphinx\Domain\Model\Extension[]
 	 */
-	public function findByHasOpenOffice($allowedInstallTypes = 'S,G,L') {
-		$loadedExtensionKeys = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+	public function findByHasOpenOffice($allowedInstallTypes = 'G,L') {
+		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
 		$extensions = array();
 		$titles = array();
 
-		foreach ($loadedExtensionKeys as $extensionKey) {
+		foreach ($availableAndInstalledExtensions as $extensionKey => $info) {
+			if (!GeneralUtility::inList($allowedInstallTypes, $info['type']{0})) {
+				continue;
+			}
 			$documentationType = MiscUtility::getDocumentationType($extensionKey);
-			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_OPENOFFICE
-				&& GeneralUtility::inList($allowedInstallTypes, $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['type'])) {
-
+			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_OPENOFFICE) {
 				$extension = $this->createExtensionObject($extensionKey);
 				$extensions[$extensionKey] = $extension;
 				$titles[$extensionKey] = strtolower($extension->getTitle());
@@ -296,15 +304,14 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \Causal\Sphinx\Domain\Model\Extension
 	 */
 	protected function createExtensionObject($extensionKey) {
-		$info = $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey];
 		$metadata = MiscUtility::getExtensionMetaData($extensionKey);
 
 		/** @var \Causal\Sphinx\Domain\Model\Extension $extension */
 		$extension = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Extension');
 		$extension->setExtensionKey($extensionKey);
 		$extension->setTitle($metadata['title']);
-		$extension->setIcon($info['siteRelPath'] . $info['ext_icon']);
-		$extension->setInstallType($info['type']);
+		$extension->setIcon($metadata['siteRelPath'] . $metadata['ext_icon']);
+		$extension->setInstallType($metadata['type']);
 		$extension->setDescription($metadata['description']);
 
 		return $extension;

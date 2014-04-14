@@ -395,7 +395,7 @@ class InteractiveViewerController extends AbstractActionController {
 
 			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_SPHINX) {
 				$localizationDirectories = MiscUtility::getLocalizationDirectories($extensionKey);
-				$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+				$extensionPath = MiscUtility::extPath($extensionKey);
 
 				$filename = ($document ? substr($document, 0, -1) : 'Index') . '.rst';
 				$absoluteFilename = $extensionPath . 'Documentation/' . $filename;
@@ -486,7 +486,7 @@ class InteractiveViewerController extends AbstractActionController {
 		if ($parts['type'] === 'EXT') {
 			// $basePath is potentially the physical path (in case of symbolic link)
 			// but we need a path within PATH_site to be detected and replaced
-			$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($parts['extensionKey']) . 'Documentation/';
+			$basePath = MiscUtility::extPath($parts['extensionKey']) . 'Documentation/';
 
 			if (!empty($parts['locale'])) {
 				$basePath .= 'Localization.' . $parts['locale'] . '/';

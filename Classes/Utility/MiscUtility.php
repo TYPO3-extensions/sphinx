@@ -53,6 +53,9 @@ class MiscUtility {
 	/** @var string */
 	static protected $extKey = 'sphinx';
 
+	/** @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility */
+	static protected $listUtility;
+
 	/**
 	 * Returns meta-data for a given extension.
 	 *
@@ -62,7 +65,7 @@ class MiscUtility {
 	static public function getExtensionMetaData($extensionKey) {
 		$_EXTKEY = $extensionKey;
 		$EM_CONF = array();
-		$extPath = ExtensionManagementUtility::extPath($extensionKey);
+		$extPath = static::extPath($extensionKey);
 		include($extPath . 'ext_emconf.php');
 
 		$release = $EM_CONF[$_EXTKEY]['version'];
@@ -74,6 +77,18 @@ class MiscUtility {
 		$EM_CONF[$_EXTKEY]['version'] = $major . '.' . $minor;
 		$EM_CONF[$_EXTKEY]['release'] = $release;
 		$EM_CONF[$_EXTKEY]['extensionKey'] = $extensionKey;
+
+		// Uncommon:
+		$EM_CONF[$_EXTKEY]['siteRelPath'] = substr($extPath, strlen(PATH_site));
+		$EM_CONF[$_EXTKEY]['ext_icon'] = ExtensionManagementUtility::getExtensionIcon($extPath);
+
+		if (GeneralUtility::isFirstPartOfStr($EM_CONF[$_EXTKEY]['siteRelPath'], 'typo3conf/ext/')) {
+			$EM_CONF[$_EXTKEY]['type'] = 'L';
+		} elseif (GeneralUtility::isFirstPartOfStr($EM_CONF[$_EXTKEY]['siteRelPath'], 'typo3/sysext/')) {
+			$EM_CONF[$_EXTKEY]['type'] = 'S';
+		} else {
+			$EM_CONF[$_EXTKEY]['type'] = 'G';
+		}
 
 		return $EM_CONF[$_EXTKEY];
 	}
@@ -119,7 +134,7 @@ class MiscUtility {
 			'README.rst'              => static::DOCUMENTATION_TYPE_README,
 			'doc/manual.sxw'          => static::DOCUMENTATION_TYPE_OPENOFFICE,
 		);
-		$extPath = ExtensionManagementUtility::extPath($extensionKey);
+		$extPath = static::extPath($extensionKey);
 
 		foreach ($supportedDocuments as $supportedDocument => $type) {
 			if (is_file($extPath . $supportedDocument)) {
@@ -146,7 +161,7 @@ class MiscUtility {
 
 			$pattern = 'Documentation/Localization.*';
 			$supportedLocales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
-			$extPath = ExtensionManagementUtility::extPath($extensionKey);
+			$extPath = static::extPath($extensionKey);
 			$directories = glob($extPath . $pattern);
 			if ($directories === FALSE) {
 				// An error occured
@@ -197,7 +212,7 @@ class MiscUtility {
 		$localizationDirectories = static::getLocalizationDirectories($extensionKey);
 
 		if (isset($localizationDirectories[$locale])) {
-			$extPath = ExtensionManagementUtility::extPath($extensionKey);
+			$extPath = static::extPath($extensionKey);
 			if (is_file($extPath . $localizationDirectories[$locale]['directory'] . '/Index.rst')) {
 				return static::DOCUMENTATION_TYPE_SPHINX;
 			}
@@ -225,7 +240,7 @@ class MiscUtility {
 			}
 			$settingsFilename = $localizationDirectories[$locale]['directory'] . '/Settings.yml';
 		}
-		$extPath = ExtensionManagementUtility::extPath($extensionKey);
+		$extPath = static::extPath($extensionKey);
 
 		if (is_file($extPath . $settingsFilename)) {
 			$settings = file_get_contents($extPath . $settingsFilename);
@@ -576,7 +591,7 @@ HTML;
 		// Recursively instantiate template files
 		switch ($documentationType) {
 			case static::DOCUMENTATION_TYPE_SPHINX:
-				$source = ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
+				$source = static::extPath($extensionKey) . 'Documentation';
 				static::recursiveCopy($source, $basePath);
 
 				// Remove Localization.* directories to prevent clash with references
@@ -592,7 +607,7 @@ HTML;
 				}
 			break;
 			case static::DOCUMENTATION_TYPE_README:
-				$extensionPath = ExtensionManagementUtility::extPath($extensionKey);
+				$extensionPath = static::extPath($extensionKey);
 				$source = $extensionPath . 'README.rst';
 				copy($source, $basePath . '/Index.rst');
 				if (is_dir($extensionPath . 'Resources')) {
@@ -650,7 +665,7 @@ HTML;
 			// Automatically fix Intersphinx mapping, if needed
 			if ($documentationType === static::DOCUMENTATION_TYPE_SPHINX) {
 				// Original files
-				$settingsYamlFilename = ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
+				$settingsYamlFilename = static::extPath($extensionKey) . 'Documentation';
 				if (!empty($locale)) {
 					$settingsYamlFilename .= '/Localization.' . $locale;
 				}
@@ -1121,6 +1136,62 @@ YAML;
 		} catch (\Exception $e) {
 			return FALSE;
 		}
+	}
+
+	/**
+	 * Returns the path to a given extension, relative to site root.
+	 *
+	 * @param string $extensionKey
+	 * @return string|NULL
+	 */
+	static public function extRelPath($extensionKey) {
+		static $availableAndInstalledExtensions = NULL;
+
+		if (isset($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey])) {
+			return $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['siteRelPath'];
+		}
+		if ($availableAndInstalledExtensions === NULL) {
+			try {
+				$availableAndInstalledExtensions = static::getListUtility()->getAvailableAndInstalledExtensionsWithAdditionalInformation();
+			} catch (\Exception $e) {
+				$availableAndInstalledExtensions = array();
+			}
+		}
+		if (isset($availableAndInstalledExtensions[$extensionKey])) {
+			return $availableAndInstalledExtensions[$extensionKey]['siteRelPath'];
+		} else {
+			return NULL;
+		}
+	}
+
+	/**
+	 * Returns the absolute path to a given extension.
+	 *
+	 * @param string $extensionKey
+	 * @return string|NULL
+	 */
+	static public function extPath($extensionKey) {
+		$relPath = static::extRelPath($extensionKey);
+		if ($relPath !== NULL) {
+			return PATH_site . $relPath;
+		} else {
+			return NULL;
+		}
+	}
+
+	/**
+	 * @return \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+	 * @throws \InvalidArgumentException
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
+	 */
+	static protected function getListUtility() {
+		if (static::$listUtility === NULL) {
+			/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+			$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+			static::$listUtility = $objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility');
+		}
+		return static::$listUtility;
 	}
 
 }

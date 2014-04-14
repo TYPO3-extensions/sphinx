@@ -577,7 +577,7 @@ class RestEditorController extends AbstractActionController {
 		switch ($type) {
 			case 'EXT':
 				list($documentationExtension, $locale) = explode('.', $identifier, 2);
-				$settingsFilename = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($documentationExtension) .
+				$settingsFilename = MiscUtility::extPath($documentationExtension) .
 					'Documentation/' . ($locale ? 'Localization.' . $locale . '/' : '') . 'Settings.yml';
 			break;
 			default:
@@ -662,10 +662,10 @@ class RestEditorController extends AbstractActionController {
 				}
 				switch ($documentationType) {
 					case MiscUtility::DOCUMENTATION_TYPE_SPHINX:
-						$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Documentation';
+						$basePath = MiscUtility::extPath($extensionKey) . 'Documentation';
 					break;
 					case MiscUtility::DOCUMENTATION_TYPE_README:
-						$basePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+						$basePath = MiscUtility::extPath($extensionKey);
 					break;
 					default:
 						throw new \RuntimeException('Unsupported documentation type for extension "' . $extensionKey . '"', 1379086939);
@@ -730,7 +730,7 @@ class RestEditorController extends AbstractActionController {
 		}
 		switch ($documentationType) {
 			case MiscUtility::DOCUMENTATION_TYPE_SPHINX:
-				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+				$path = MiscUtility::extPath($extensionKey);
 				if (empty($locale)) {
 					$path .= 'Documentation/';
 				} elseif (!empty($filename)) {
@@ -747,7 +747,7 @@ class RestEditorController extends AbstractActionController {
 				}
 			break;
 			case MiscUtility::DOCUMENTATION_TYPE_README:
-				$path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+				$path = MiscUtility::extPath($extensionKey);
 				$filename = $path . 'README.rst';
 			break;
 			default:
