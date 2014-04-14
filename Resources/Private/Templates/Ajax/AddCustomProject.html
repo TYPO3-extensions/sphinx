@@ -5,7 +5,7 @@
 	<f:form action="createCustomProject" id="tx-sphinx-formdialog">
 		<fieldset>
 			<label for="group"><f:translate key="project.group" /></label>
-			<f:form.textfield name="group" id="group" class="text ui-widget-content ui-corner-all" />
+			<f:form.textfield name="group" id="group" placeholder="1. Projects" class="text ui-widget-content ui-corner-all" />
 
 			<label for="name"><f:translate key="project.name" /></label>
 			<f:form.textfield name="name" id="name" class="text ui-widget-content ui-corner-all" />
@@ -17,10 +17,10 @@
 			<f:form.textarea name="description" id="description" class="text ui-widget-content ui-corner-all" />
 
 			<label for="documentationKey"><f:translate key="project.documentationKey" /></label>
-			<f:form.textfield name="documentationKey" id="documentationKey" class="text ui-widget-content ui-corner-all" />
+			<f:form.textfield name="documentationKey" id="documentationKey" placeholder="user.myproject" class="text ui-widget-content ui-corner-all" />
 
-			<label for="directory"><f:translate key="project.directory" /></label>
-			<f:form.textfield name="directory" id="directory" class="text ui-widget-content ui-corner-all" />
+			<label for="directory" title="{f:translate(key:'project.directory.description')}"><f:translate key="project.directory" /></label>
+			<f:form.textfield name="directory" id="directory" placeholder="fileadmin/sphinx/myproject/" class="text ui-widget-content ui-corner-all" />
 
 			<hr />
 			<h2><f:translate key="dashboard.action.label.newProject" /></h2>

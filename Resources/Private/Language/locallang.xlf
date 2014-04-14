@@ -60,6 +60,9 @@
 			<trans-unit id="project.directory">
 				<source>Directory</source>
 			</trans-unit>
+			<trans-unit id="project.directory.description">
+				<source>Where you want to store your project. This is a path relative to your site root, typically starting with 'fileadmin/'.</source>
+			</trans-unit>
 			<trans-unit id="project.template">
 				<source>Template</source>
 			</trans-unit>
