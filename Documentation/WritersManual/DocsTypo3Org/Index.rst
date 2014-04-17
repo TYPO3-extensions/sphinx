@@ -319,8 +319,8 @@ within :file:`Settings.yml`. To do so, add configuration options (lines 6 to 9):
 
 This will register prefix ``restdoc`` and let us link to any chapter of the documentation of extension
 *Sphinx/reStructuredText Documentation Viewer*. For instance its ChangeLog with
-``:ref:`ChangeLog for EXT:restdoc <restdoc:changelog>```. By convention, you should use the extension key as prefix for
-other manuals:
+``:ref:`ChangeLog for EXT:restdoc <restdoc:changelog>```. By convention, you should use the extension key (without
+underscore "``_``") as prefix for other manuals:
 
 * :ref:`ChangeLog for EXT:restdoc <restdoc:changelog>`
 

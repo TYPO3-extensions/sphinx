@@ -481,6 +481,7 @@ class RestEditorController extends AbstractActionController {
 			case 'EXT':
 				list($prefix, $locale) = explode('.', $identifier, 2);
 				$reference = $prefix;
+				$prefix = str_replace('_', '', $prefix);
 			break;
 			case 'USER':
 				$path = '';

@@ -444,6 +444,62 @@ HTML;
 	}
 
 	/**
+	 * Converts an intersphinx key to an extension key.
+	 *
+	 * We do this by looking for a mapping between all existing extension keys (without
+	 * underscore character '_' and the given intersphinx key).
+	 *
+	 * As of 19.04.2014, it is known that it fails to disambiguate two extensions:
+	 * "bzd_staff_directory" and "bzdstaffdirectory" but this later is the real one
+	 * because bzd_staff_directory was abandonned and "recreated" as bzdstaffdirectory
+	 * when version 0.8.0 came out. By ordering by last_updated, we ensure the most
+	 * recent extension will take precedence.
+	 *
+	 * @param string $intersphinxKey
+	 * @return string
+	 */
+	static public function intersphinxKeyToExtensionKey($intersphinxKey) {
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection */
+		$databaseConnection = $GLOBALS['TYPO3_DB'];
+
+		// We filter the query by using the first two letters of the intersphinx key
+		// or first letter and an underscore
+		//
+		// In the worst case, this query:
+		//
+		// SELECT SUBSTR(extension_key, 1, 2), COUNT(*) FROM (
+		//     SELECT DISTINCT extension_key FROM tx_extensionmanager_domain_model_extension
+		// ) as tmp
+		// GROUP BY SUBSTR(extension_key, 1, 2)
+		//
+		// shows that about 120 rows containing a single (short) string will be returned.
+		// The additional condition "WHERE extension_key LIKE '%\_%'" has not been added
+		// because it did not seem to be really significant to trim down the list even more.
+		$table = 'tx_extensionmanager_domain_model_extension';
+		$rows = $databaseConnection->exec_SELECTgetRows(
+			'DISTINCT extension_key',
+			$table,
+			'extension_key LIKE ' . $databaseConnection->fullQuoteStr(
+				$databaseConnection->escapeStrForLike(substr($intersphinxKey, 0, 2), $table) . '%',
+				$table
+			) . ' OR extension_key LIKE ' . $databaseConnection->fullQuoteStr(
+				$databaseConnection->escapeStrForLike($intersphinxKey{0} . '_', $table) . '%',
+				$table
+			),
+			'',
+			'last_updated'
+		);
+
+		$mapping = array();
+		foreach ($rows as $row) {
+			$key = str_replace('_', '', $row['extension_key']);
+			$mapping[$key] = $row['extension_key'];
+		}
+
+		return isset($mapping[$intersphinxKey]) ? $mapping[$intersphinxKey] : $intersphinxKey;
+	}
+
+	/**
 	 * Returns the Intersphinx references of a given documentation reference.
 	 *
 	 * @param string $reference Reference of a documentation or an extension key
@@ -726,21 +782,22 @@ HTML;
 			if (preg_match('/ WARNING: undefined label: ([^:]+):/', $warningLine, $matches)) {
 				$remoteUrl = '';
 				$additionalInformation = array();
-				if (in_array($matches[1], $prefixes)) {
+				$prefix = $matches[1];
+				if (in_array($prefix, $prefixes)) {
 					continue;
 				}
-				$reference = static::getReferenceFromIntersphinxKey($matches[1], $additionalInformation);
+				$reference = static::getReferenceFromIntersphinxKey($prefix, $additionalInformation);
 				if ($reference !== NULL) {
 					$remoteUrl = $additionalInformation['url'];
 				} else {
-					$reference = $matches[1];
+					$reference = static::intersphinxKeyToExtensionKey($prefix);
 				}
 				// $remoteUrl will be "updated" by next call if $reference is an extension key
 				$anchors = static::getIntersphinxReferences($reference, $locale, $remoteUrl);
-				if (count($anchors) > 0 && static::addIntersphinxMapping($settingsYamlFilename, $matches[1], $remoteUrl) === TRUE) {
+				if (count($anchors) > 0 && static::addIntersphinxMapping($settingsYamlFilename, $prefix, $remoteUrl) === TRUE) {
 					$intersphinxMappingUpdated = TRUE;
 				}
-				$prefixes[] = $matches[1];
+				$prefixes[] = $prefix;
 			}
 		}
 
