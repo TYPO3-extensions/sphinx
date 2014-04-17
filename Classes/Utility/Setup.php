@@ -362,7 +362,7 @@ EOT;
 		$url = 'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3';
 		static::$log[] = '[INFO] Fetching ' . $url;
 		$body = MiscUtility::getUrl($url);
-		if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">snapshot</a>#', $body, $matches)) {
+		if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">tar\.gz</a>#', $body, $matches)) {
 			$commit = $matches[1];
 			$url = 'https://git.typo3.org/Documentation/RestTools.git/snapshot/' . $commit . '.tar.gz';
 			$archiveFilename = $tempPath . 'RestTools.tar.gz';
