@@ -38,6 +38,7 @@ paramètres par défaut :
 
 .. code-block:: yaml
 	:linenos:
+	:emphasize-lines: 6-14
 
 	conf.py:
 	  copyright: 2013

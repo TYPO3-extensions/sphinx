@@ -109,6 +109,7 @@ documentation folder) and make sure it contains following configuration options 
 
 .. code-block:: yaml
 	:linenos:
+	:emphasize-lines: 6-15
 
 	conf.py:
 	  copyright: 2013
@@ -304,6 +305,7 @@ within :file:`Settings.yml`. To do so, add configuration options (lines 6 to 9):
 
 .. code-block:: yaml
 	:linenos:
+	:emphasize-lines: 6-9
 
 	conf.py:
 	  copyright: 2013
@@ -336,6 +338,7 @@ file :file:`Settings.yml` and add an Intersphinx mapping ``t3cmsapi``:
 
 .. code-block:: yaml
 	:linenos:
+	:emphasize-lines: 7-9
 
 	conf.py:
 	  copyright: 2013

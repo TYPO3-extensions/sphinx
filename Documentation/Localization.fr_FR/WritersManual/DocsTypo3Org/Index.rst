@@ -114,6 +114,7 @@ au besoin) et doit être explicitement activée pour votre extension. Pour se fa
 
 .. code-block:: yaml
 	:linenos:
+	:emphasize-lines: 6-15
 
 	conf.py:
 	  copyright: 2013
@@ -318,6 +319,7 @@ la correspondance Intersphinx dans :file:`Settings.yml`. Pour se faire, ajoutez 
 
 .. code-block:: yaml
 	:linenos:
+	:emphasize-lines: 6-9
 
 	conf.py:
 	  copyright: 2013
@@ -352,6 +354,7 @@ Intersphinx ``t3cmsapi`` :
 
 .. code-block:: yaml
 	:linenos:
+	:emphasize-lines: 7-9
 
 	conf.py:
 	  copyright: 2013

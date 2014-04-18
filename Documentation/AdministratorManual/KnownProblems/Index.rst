@@ -60,6 +60,7 @@ Known problems
 
   .. code-block:: yaml
       :linenos:
+      :emphasize-lines: 9
 
       extensions:
         - sphinx.ext.extlinks
