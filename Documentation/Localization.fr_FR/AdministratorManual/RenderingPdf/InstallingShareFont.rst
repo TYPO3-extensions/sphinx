@@ -19,7 +19,7 @@ Les instructions sont disponibles dans le dépôt des commandes liées à TYPO3 
 .. _`famille de fontes corporate Share`: http://typo3.org/the-brand/style-guide/the-typo3-font/
 
 Au lieu de simplement récupérer ce répertoire :file:`LaTeX` depuis le dépôt officiel, nous vous suggérons de remplacement
-complètement le répertoire :file:`RestTools` et d'utiliser un clone du dépôt git complet :
+complètement le répertoire :file:`RestTools` et d'utiliser un clone du dépôt Git complet :
 
 .. code-block:: bash
 

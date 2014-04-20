@@ -76,7 +76,7 @@ is stored as :file:`typo3temp/tx_sphinx/IMPORT-{date}.log`. The general process 
 #. Install TYPO3-related commands provided by the TYPO3 Documentation Team (TYPO3 ReST tools)
 
 The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if
-you want to use the `git repository of the TYPO3 ReST tools`_ instead of a snapshot.
+you want to use the `Git repository of the TYPO3 ReST tools`_ instead of a snapshot.
 
 .. _`git repository of the TYPO3 ReST tools`: https://git.typo3.org/Documentation/RestTools.git/
 
@@ -90,7 +90,10 @@ Pygments library, ... if they are not available locally.
 	are unable to install :program:`rst2pdf` locally.
 
 .. tip::
-	Instead of fetching once for all the TYPO3-related commands, you may prefer to clone the official git repository.
+	If the command :program:`git` is detected on your system, the Git repository will be cloned instead of fetching once
+	for all the TYPO3-related commands. However, if it fails, or if :program:`git` is not detected, it will fetch a
+	snapshot instead. In such case, you may prefer to clone the official Git repository manually.
+
 	To do so, open a terminal and run:
 
 	.. code-block:: bash

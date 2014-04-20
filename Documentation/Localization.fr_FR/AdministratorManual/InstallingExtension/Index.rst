@@ -94,8 +94,11 @@ la bibliothèque Pygments, ... si elles ne sont pas disponibles localement.
 	si vous ne pouvez pas installer :program:`rst2pdf` localement.
 
 .. tip::
-	Au lieu de télécharger une fois pour toutes les commandes liées à TYPO3, vous pouvez préférer cloner le dépôt git
-	officiel. Pour cela, ouvrez un terminal et exécutez :
+	Si la commande :program:`git` est détectée sur votre système, le dépôt Git sera cloné au lieu de télécharger une
+	fois pour toutes les commandes liées à TYPO3. Cependant, si cette étape échoue, ou que :program:`git` n'est pas
+	trouvée, vous pouvez préférer cloner le dépôt Git officiel manuellement.
+
+	Pour cela, ouvrez un terminal et exécutez :
 
 	.. code-block:: bash
 
@@ -114,7 +117,7 @@ Pour terminer, le bouton "remove" supprime à la fois les sources et la version 
 	la bibliothèque graphique Python ou de :program:`rst2pdf`.
 
 .. Liens :
-.. _`dépôt git des utilitaires ReST TYPO3`: https://git.typo3.org/Documentation/RestTools.git/
+.. _`dépôt Git des utilitaires ReST TYPO3`: https://git.typo3.org/Documentation/RestTools.git/
 
 
 Choix de la version de Sphinx à utiliser

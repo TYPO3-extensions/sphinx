@@ -27,6 +27,7 @@ namespace Causal\Sphinx\Utility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use Causal\Sphinx\Utility\GitUtility;
 
 /**
  * Sphinx environment setup.
@@ -358,6 +359,21 @@ EOT;
 		$success = TRUE;
 		$tempPath = static::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
+
+		// Try to clone from Git before falling back to downloading a snapshot
+		if (GitUtility::isAvailable()) {
+			$url = 'git://git.typo3.org/Documentation/RestTools.git';
+			static::$log[] = '[INFO] Cloning ' . $url;
+			if (GitUtility::cloneRepository($url, $sphinxSourcesPath)) {
+				$output[] = '[INFO] TYPO3 ReStructuredText Tools have been cloned.';
+				return $success;
+			} else {
+				$output[] = '[WARNING] Failed to clone TYPO3 ReStructured Text Tools, will use a snapshot.';
+				if (is_dir($sphinxSourcesPath . 'RestTools')) {
+					GeneralUtility::rmdir($sphinxSourcesPath . 'RestTools', TRUE);
+				}
+			}
+		}
 
 		$url = 'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3';
 		static::$log[] = '[INFO] Fetching ' . $url;

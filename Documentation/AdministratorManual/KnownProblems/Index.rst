@@ -79,7 +79,7 @@ Known problems
        LaTeX Error: File `typo3.sty' not found.
 
   This happens if your documentation is trying to produce a PDF with TYPO3 branding but without having followed the
-  instructions from chapter :ref:`installing-share-font`. What is actually needed is the clone of the RestTools git
+  instructions from chapter :ref:`installing-share-font`. What is actually needed is the clone of the RestTools Git
   repository, not the Share font per se.
 
 - With FAL (TYPO3 6.x) only LocalStorage has been implemented and tested, meaning code will need to be adapted in order to deal with other types of remote storage.

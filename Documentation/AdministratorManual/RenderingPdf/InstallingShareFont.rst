@@ -18,7 +18,7 @@ found in the repository of the TYPO3-related commands for Sphinx, within directo
 .. _`Share corporate font family`: http://typo3.org/the-brand/style-guide/the-typo3-font/
 
 Instead of just fetching this :file:`LaTeX` directory from the official repository, we suggest to replace the whole
-:file:`RestTools` directory and use a clone of the whole git repository:
+:file:`RestTools` directory and use a clone of the whole Git repository:
 
 .. code-block:: bash
 
