@@ -41,8 +41,9 @@ Sélectionnez la version de Sphinx que vous souhaitez utiliser et démarrez le p
 	:alt: Importation de Sphinx dans l'environnement local
 
 .. important::
-	Si la liste des versions disponibles de Sphinx est vide, il est vraisemblable qu'il vous manque le support d'OpenSSL
-	dans PHP (c'est un piège classique sous MS Windows).
+	Si la liste des versions disponibles de Sphinx est vide, il est vraisemblable qu'il
+	vous `manque le support d'OpenSSL <http://wiki.typo3.org/Exception/CMS/1318283565>`_ dans PHP (c'est un piège
+	classique sous MS Windows).
 
 .. index::
 	single: Install; Journal
