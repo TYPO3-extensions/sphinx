@@ -6,6 +6,9 @@
 			<trans-unit id="mod1Title">
 				<source>Sphinx Python Documentation Generator</source>
 			</trans-unit>
+			<trans-unit id="em.downloadSphinx">
+				<source>Download Sphinx</source>
+			</trans-unit>
 			<trans-unit id="folderNotFoundTitle">
 				<source>Folder not found.</source>
 			</trans-unit>

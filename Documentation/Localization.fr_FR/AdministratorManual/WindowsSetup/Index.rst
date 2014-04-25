@@ -17,10 +17,13 @@ systématique un interpréteur Python and certains utilitaires généraux.
 Comme cette extension a besoin de Python et des utilitaires d'extraction d'archives unzip et tar, les utilisateurs
 MS Windows doivent tout d'abord configurer leur environnement avec le framework Python. Depuis un Windows de base,
 lorsque vous exécutez le script de mise à niveau de cette extension dans le gestionnaire d'extensions en cliquant sur
-l'icône d'action |update_script| vous verrez quelques messages d'erreurs :
+l'icône d'action |download_python| (|update_script| avant TYPO3 6.2) vous verrez quelques messages d'erreurs :
 
 .. |update_script| image:: ../../../Images/update_script.png
 	:alt: Exécution du script de mise à niveau dans le gestionnaire d'extensions
+
+.. |download_python| image:: ../../../Images/download.png
+	:alt: Téléchargement de Sphinx
 
 .. index::
 	single: Message d'erreur; Python interpreter was not found

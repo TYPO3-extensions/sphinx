@@ -16,10 +16,14 @@ utilities being globally available.
 
 As this extension requires Python, unzip and tar extraction utilities to be present, MS Windows users should first set
 up their environment with the Python framework. On a vanilla Windows environment, when you run the update script of this
-extension in Extension Manager by clicking on action icon |update_script| you will see a few error messages:
+extension in Extension Manager by clicking on action icon |download_python| (|update_script| before TYPO3 6.2) you will
+see a few error messages:
 
 .. |update_script| image:: ../../Images/update_script.png
 	:alt: Running the update script in Extension Manager
+
+.. |download_python| image:: ../../Images/download.png
+	:alt: Download Python
 
 .. index::
 	single: Error Message; Python interpreter was not found

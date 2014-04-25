@@ -28,4 +28,11 @@ if (TYPO3_MODE === 'BE') {
 			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod_documentation.xlf',
 		)
 	);
+
+	// Register additional sprite icons
+	// @link http://blog.tolleiv.de/2010/07/typo3-4-4-sprites-in-your-extension/
+	$icons = array(
+		'download'   => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/download.png',
+	);
+	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
 }
