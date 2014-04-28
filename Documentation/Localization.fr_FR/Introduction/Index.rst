@@ -37,7 +37,7 @@ Qu'est-ce que ça fait ?
 Sphinx a été créé à l'origine pour préparer la documentation Python et certaines caractéristiques valent la peine d'être
 mises en évidence :
 
-- **Formats de sortie :** HTML, JSON (un dérivé de HTML utilisé par l'extension TYPO3 "`restdoc <http://typo3.org/extensions/repository/view/restdoc>`_"), LaTeX (pour une version PDF imprimable), texte simple, ...
+- **Formats de sortie :** HTML, JSON (un dérivé de HTML utilisé par l':ter:`restdoc`, LaTeX (pour une version PDF imprimable), texte simple, ...
 
 - **Références croisées :** balisage sémantique et liens automatiques pour les citations, glossaire de termes et éléments
   d'information similaires. Par exemple, la documentation officielle de TYPO3 offre des ressources pour référencer
@@ -79,9 +79,8 @@ Que puis-je faire avec un project Sphinx ?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Plein de choses ! Et avant tout, si vous compilez votre documentation en JSON, vous pouvez facilement l'intégrer à votre
-site. Le meilleur moyen est d'utiliser l'extension TYPO3 `Sphinx/reStructuredText Documentation Viewer (restdoc)`_.
-
-.. _`Sphinx/reStructuredText Documentation Viewer (restdoc)`: http://typo3.org/extensions/repository/view/restdoc
+site. Le meilleur moyen est d'utiliser l'extension
+TYPO3 :ter:`Sphinx/reStructuredText Documentation Viewer (restdoc) <restdoc>`.
 
 
 .. _screenshots:

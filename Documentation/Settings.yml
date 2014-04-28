@@ -30,8 +30,13 @@ conf.py:
     t3cmsapi:
     - http://typo3.org/api/typo3cms/
     - null
+  extlinks:
+    ter:
+    - http://www.typo3.org/extensions/repository/view/%s
+    - 'TYPO3 extension '
   extensions:
   - sphinx.ext.intersphinx
+  - sphinx.ext.extlinks
   - t3sphinx.ext.t3extras
   - t3sphinx.ext.t3tablerows
   - t3sphinx.ext.targets
