@@ -1113,6 +1113,36 @@ YAML;
 						}
 						$pythonLine .= ']';
 					break;
+					case 'extlinks':
+						$pythonLine = 'extlinks = {' . LF;
+						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
+							$indent = $matches[1];
+							$firstLine = TRUE;
+							while (preg_match('/^' . $indent . '(.+):/', $lines[++$i], $matches)) {
+								if (!$firstLine) {
+									$pythonLine .= ',' . LF;
+								}
+								$pythonLine .= sprintf('\'%s\': (', $matches[1]);
+								$firstItem = TRUE;
+								while (preg_match('/^' . $indent . '- (.+)/', $lines[++$i], $matches)) {
+									if (!$firstItem) {
+										$pythonLine .= ', ';
+									}
+									if ($matches[1] === 'null') {
+										$pythonLine .= 'None';
+									} else {
+										$pythonLine .= sprintf('\'%s\'', trim(trim($matches[1]), '\''));
+									}
+									$firstItem = FALSE;
+								}
+								$pythonLine .= ')';
+								$firstLine = FALSE;
+								$i--;
+							}
+						}
+						$pythonLine .= LF . '}';
+						$i--;
+					break;
 					case 'intersphinx_mapping':
 						$pythonLine = 'intersphinx_mapping = {' . LF;
 						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
@@ -1131,7 +1161,7 @@ YAML;
 									if ($matches[1] === 'null') {
 										$pythonLine .= 'None';
 									} else {
-										$pythonLine .= sprintf('\'%s\'', $matches[1]);
+										$pythonLine .= sprintf('\'%s\'', trim($matches[1]));
 									}
 									$firstItem = FALSE;
 								}

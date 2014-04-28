@@ -38,7 +38,7 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	public function canExtractMetadataForExtensionSphinx() {
 		$metadata = MiscUtility::getExtensionMetaData('sphinx');
 		$this->assertTrue(is_array($metadata));
-		$this->assertSame(24, count($metadata));
+		$this->assertSame(27, count($metadata));
 		$this->assertSame('sphinx', $metadata['extensionKey']);
 		$this->assertSame('Xavier Perseguers (Causal)', $metadata['author']);
 		$this->assertSame('Causal Sàrl', $metadata['author_company']);
@@ -454,6 +454,66 @@ YAML;
 			'intersphinx_mapping = {' . LF .
 				"'t3tsref': ('http://docs.typo3.org/typo3cms/TyposcriptReference/', None)," . LF .
 				"'restdoc': ('http://docs.typo3.org/typo3cms/extensions/restdoc/', None)" . LF .
+			'}',
+		);
+		$this->assertSame($expected, $pythonConfiguration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canParseSingleExtlinksYamlMapping() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  extlinks:
+    issue:
+    - https://bitbucket.org/birkenfeld/sphinx/issue/%s
+    -     'issue '
+YAML;
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
+		$expected = array(
+			'extlinks = {' . LF .
+			"'issue': ('https://bitbucket.org/birkenfeld/sphinx/issue/%s', 'issue ')" . LF .
+			'}',
+		);
+		$this->assertSame($expected, $pythonConfiguration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canParseDoubleExtlinksYamlMapping() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  extlinks:
+    forge:
+    - https://forge.typo3.org/issues/%s
+    - 'forge: '
+    ter:
+    - http://www.typo3.org/extensions/repository/view/%s
+    - null
+YAML;
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
+		$expected = array(
+			'extlinks = {' . LF .
+			"'forge': ('https://forge.typo3.org/issues/%s', 'forge: ')," . LF .
+			"'ter': ('http://www.typo3.org/extensions/repository/view/%s', None)" . LF .
 			'}',
 		);
 		$this->assertSame($expected, $pythonConfiguration);
