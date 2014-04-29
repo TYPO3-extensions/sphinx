@@ -30,6 +30,7 @@ CausalSphinxEditor = {
 		remove: null,
 		rename: null,
 		create: null,
+		upload: null,
 		redirect: null,
 		references: null
 	},
@@ -186,6 +187,20 @@ CausalSphinxEditor = {
 		)
 	},
 
+	uploadFiles: function (path) {
+		var self = this;
+		this.customDialog(
+			this.actions.upload.replace(/PATH/, path),
+			'editor.message.upload',
+			function (messages) {
+				if (messages) {
+					CausalSphinx.Flashmessage.display(5, '', messages, 2);
+				}
+				self.loadProjectTree();
+			}
+		);
+	},
+
 	loadProjectTree: function () {
 		var self = CausalSphinxEditor;
 		$.ajax({
@@ -233,11 +248,15 @@ CausalSphinxEditor = {
 						text: this.messages[saveLabelKey],
 						click: function () {
 							var thisDialog = $(this);
+							var transferFiles = (form.prop('enctype') == 'multipart/form-data');
 
 							$.ajax({
 								type: 'POST',
 								url: form.prop('action'),
-								data: form.serialize(),
+								data: transferFiles ? $(':input', form).serializeArray() : form.serialize(),
+								files: $(':file', form),
+								iframe: transferFiles,
+								processData: !transferFiles,
 								success: function (data) {
 									if (data['status'] === 'success') {
 										thisDialog.dialog('destroy');

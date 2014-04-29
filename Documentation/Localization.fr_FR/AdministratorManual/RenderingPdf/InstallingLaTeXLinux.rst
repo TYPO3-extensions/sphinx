@@ -48,7 +48,7 @@ et :program:`make`:
 Mac OS X
 """"""""
 
-Vous pouvez installer un environnement Tex Live en utilisant le paquet MacTeX_. Autrement, si vous êtes habitué à utiliser
+Vous pouvez installer un environnement TeX Live en utilisant le paquet MacTeX_. Autrement, si vous êtes habitué à utiliser
 MacPorts_, le processus est similaire à un système Debian :
 
 .. code-block:: bash

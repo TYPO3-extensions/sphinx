@@ -63,11 +63,18 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 	 * Returns an AJAX response.
 	 *
 	 * @param array $response
+	 * @param bool $wrapForIframe see http://cmlenz.github.io/jquery-iframe-transport/#section-13
 	 * return void
 	 */
-	protected function returnAjax(array $response) {
-		header('Content-type: application/json');
-		echo json_encode($response);
+	protected function returnAjax(array $response, $wrapForIframe = FALSE) {
+		$payload = json_encode($response);
+		if (!$wrapForIframe) {
+			header('Content-type: application/json');
+		} else {
+			header('Content-type: text/html');
+			$payload = '<textarea data-type="application/json">' . $payload . '</textarea>';
+		}
+		echo $payload;
 		exit;
 	}
 

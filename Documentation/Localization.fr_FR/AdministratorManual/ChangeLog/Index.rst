@@ -25,6 +25,7 @@ Ce qui suit est une vue d'ensemble très haut niveau des changements de cette ex
 =======  ===========================================================================
 Version  Changements
 =======  ===========================================================================
+2.1.x    - Téléchargement/mise en ligne de fichiers depuis l'éditeur reStructuredText
 2.0.x    - Nouveau tableau de bord avec gestion des projets personnalisés
          - Démarrage d'un projet personnalisé à partir d'un dépôt Git
          - Support des projets personnalisés en langue étrangère
@@ -54,8 +55,8 @@ Version  Changements
          - Visionneuse de documentation Sphinx
 0.3.x    - Support des couleurs dans le terminal
          - Compilation en PDF si pdflatex est disponible
-0.2.x    Assistant pour créer une documentation TYPO3 avec le modèle officiel
-0.1.x    Première publication sur le TER (alpha pour un premier retour d'expérience)
-0.0.1    Non publiée sur le TER, l'extension est compatible avec TYPO3 4.5-4.7 et peut être
-         récupérée depuis `le tag Subversion 0.0.1 <https://svn.typo3.org/TYPO3v4/Extensions/sphinx/tags/0.0.1/>`_
+0.2.x    - Assistant pour créer une documentation TYPO3 avec le modèle officiel
+0.1.x    - Première publication sur le TER (alpha pour un premier retour d'expérience)
+0.0.1    - Non publiée sur le TER, l'extension est compatible avec TYPO3 4.5-4.7 et peut être
+           récupérée depuis `le tag Subversion 0.0.1 <https://svn.typo3.org/TYPO3v4/Extensions/sphinx/tags/0.0.1/>`_
 =======  ===========================================================================

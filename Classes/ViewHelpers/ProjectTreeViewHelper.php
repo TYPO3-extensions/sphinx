@@ -144,6 +144,7 @@ HTML;
 		$menuRename = $this->translate('editor.message.rename');
 		$menuRemove = $this->translate('editor.message.remove');
 		$menuCreateFile = $this->translate('editor.message.createFile');
+		$menuUploadFiles = $this->translate('editor.message.uploadFiles');
 		$menuCreateFolder = $this->translate('editor.message.createFolder');
 
 		$out[] = '<script type="text/javascript">';
@@ -211,6 +212,7 @@ $(document).ready(function () {
 			{title: "$menuRename", cmd: "rename", uiIcon: "ui-icon-pencil"},
 			{title: "$menuRemove", cmd: "remove", uiIcon: "ui-icon-trash"},
 			{title: "$menuCreateFile", cmd: "createFile", uiIcon: "ui-icon-document"},
+			{title: "$menuUploadFiles", cmd: "uploadFiles", uiIcon: "ui-icon-arrowthickstop-1-n"},
 			{title: "$menuCreateFolder", cmd: "createFolder", uiIcon: "ui-icon-folder-collapsed"},
 		],
 		beforeOpen: function(event, ui) {
@@ -226,8 +228,9 @@ $(document).ready(function () {
 				$("#$pluginId").contextmenu("showEntry", "remove", true);
 			}
 
-			// Only folder may have the create file/folder menus
+			// Only folders may have the create/upload file/folder menus
 			$("#$pluginId").contextmenu("showEntry", "createFile", target.hasClass("folder"));
+			$("#$pluginId").contextmenu("showEntry", "uploadFiles", target.hasClass("folder"));
 			$("#$pluginId").contextmenu("showEntry", "createFolder", target.hasClass("folder"));
 		},
 		select: function(event, ui) {
@@ -241,6 +244,9 @@ $(document).ready(function () {
 					break;
 				case 'createFile':
 					CausalSphinxEditor.createFile(path);
+					break;
+				case 'uploadFiles':
+					CausalSphinxEditor.uploadFiles(path);
 					break;
 				case 'createFolder':
 					CausalSphinxEditor.createFolder(path);

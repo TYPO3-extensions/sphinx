@@ -106,3 +106,12 @@ Copies d'écran
 
 	L'éditeur reStructuredText intégré avec coloration syntaxique vous permet de modifier facilement vos documents et de
 	faire des références croisées vers d'autres manuels.
+
+.. figure:: ../../Images/context-menu.png
+	:alt: Menu contextuel dans l'arborescence du projet
+
+	Un menu contextuel pour les fichiers et les dossiers est à disposition dans l'arborescence du projet et vous permet
+	de créer de nouveaux fichiers, de télécharger/mettre en ligne des fichiers et des images depuis votre disque local
+	et de les nenommer ou les supprimer. Si votre projet utilise Git comme système de gestion de versions, alors toutes
+	ces opérations seront effectuées avec les commandes correspondantes au lieu des commandes simples de votre système
+	d'exploitation.

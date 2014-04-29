@@ -38,10 +38,10 @@ if (typeof CausalSphinx == 'undefined') CausalSphinx = {};
  */
 CausalSphinx.Flashmessage = function () {
 	var messageContainer;
-	var severities = ['notice', 'information', 'ok', 'warning', 'error'];
+	var severities = ['notice', 'information', 'ok', 'warning', 'error', 'raw'];
 
 	function createBox(severity, title, message) {
-		return ['<div class="typo3-message message-', severity, '">',
+		return severity == 'raw' ? message : ['<div class="typo3-message message-', severity, '">',
 			'<div class="t3-icon t3-icon-actions t3-icon-actions-message t3-icon-actions-message-close t3-icon-message-' + severity + '-close"></div>',
 			'<div class="header-container">',
 			'<div class="message-header">', title, '</div>',
@@ -54,7 +54,7 @@ CausalSphinx.Flashmessage = function () {
 		/**
 		 * Shows popup
 		 * @member CausalSphinx.Flashmessage
-		 * @param int severity (0=notice, 1=information, 2=ok, 3=warning, 4=error)
+		 * @param int severity (0=notice, 1=information, 2=ok, 3=warning, 4=error, 5=raw)
 		 * @param string title
 		 * @param string message
 		 * @param float duration in sec (default 5)

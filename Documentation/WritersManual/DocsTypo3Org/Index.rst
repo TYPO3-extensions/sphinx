@@ -18,7 +18,7 @@ Sphinx/reStructuredText-based documentation gets automatically rendered on http:
 For instance, this documentation gets rendered to http://docs.typo3.org/typo3cms/extensions/sphinx/.
 
 In addition, a zip archive is automatically created for each combination of version and language and contains a copy of
-the HTML output (aka "static layout" within this extension) and its PDF counterpart (if activated, see
+the HTML output (a.k.a. "static layout" within this extension) and its PDF counterpart (if activated, see
 :ref:`below <docs-typo3-org-pdf>`). Archives are stored within
 :file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/packages/` :file:`{extension-key}-{version}-{language}.zip`.
 E.g.,

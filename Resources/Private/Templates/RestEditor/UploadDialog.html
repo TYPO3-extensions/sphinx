@@ -1,0 +1,14 @@
+{namespace sphinx=Causal\Sphinx\ViewHelpers}
+
+<div title="{f:translate(key:'editor.message.uploadFiles')}">
+	<div class="ui-state-error"></div>
+	<f:form action="upload" id="tx-sphinx-formdialog" enctype="multipart/form-data">
+		<fieldset>
+			<f:form.hidden name="reference" value="{reference}" />
+			<f:form.hidden name="path" value="{path}" />
+
+			<label for="uploadFiles"><f:translate key="editor.label.uploadFiles" arguments="{0: allowedExtensions, 1: deniedExtensions}" /></label><br />
+			<sphinx:form.upload name="files" id="uploadFiles" multiple="multiple" />
+		</fieldset>
+	</f:form>
+</div>

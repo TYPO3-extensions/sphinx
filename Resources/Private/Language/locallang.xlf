@@ -264,11 +264,17 @@
 			<trans-unit id="editor.message.remove">
 				<source>Remove</source>
 			</trans-unit>
+			<trans-unit id="editor.message.upload">
+				<source>Upload</source>
+			</trans-unit>
 			<trans-unit id="editor.message.remove.description">
 				<source>Are you sure you want to remove file/folder “{0}”?</source>
 			</trans-unit>
 			<trans-unit id="editor.message.createFile">
 				<source>New file</source>
+			</trans-unit>
+			<trans-unit id="editor.message.uploadFiles">
+				<source>Upload files</source>
 			</trans-unit>
 			<trans-unit id="editor.message.createFolder">
 				<source>New folder</source>
@@ -299,6 +305,9 @@
 			</trans-unit>
 			<trans-unit id="editor.label.createFile">
 				<source>File to create:</source>
+			</trans-unit>
+			<trans-unit id="editor.label.uploadFiles">
+				<source>Extensions allowed: %s / Extensions denied: %s</source>
 			</trans-unit>
 			<trans-unit id="editor.label.createFolder">
 				<source>Folder to create:</source>

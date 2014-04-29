@@ -25,6 +25,7 @@
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.treetable-3.1.0.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.ui-contextmenu.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
+	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.iframe-transport.min.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/editor.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/flashmessages.js')}"></script>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/codemirror.min.js')}"></script>
@@ -46,6 +47,7 @@
 		CausalSphinxEditor.actions.remove = "{f:uri.action(action:'remove', arguments:{reference:reference, path:'PATH'})}";
 		CausalSphinxEditor.actions.rename = "{f:uri.action(action:'renameDialog', arguments:{reference:reference, filename:'FILENAME'})}";
 		CausalSphinxEditor.actions.create = "{f:uri.action(action:'createDialog', arguments:{reference:reference, type: 'TYPE', path:'PATH'})}";
+		CausalSphinxEditor.actions.upload = "{f:uri.action(action:'uploadDialog', arguments:{reference:reference, path:'PATH'})}";
 		CausalSphinxEditor.actions.redirect = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{reference:reference, document:document})}"
 		CausalSphinxEditor.actions.references = "{f:uri.action(action:'accordionReferences', arguments:{reference:'REFERENCE', remoteUrl:'URL', usePrefix:'USE_PREFIX'})}";
 	</script>

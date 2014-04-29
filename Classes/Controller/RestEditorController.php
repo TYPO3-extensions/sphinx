@@ -433,6 +433,122 @@ class RestEditorController extends AbstractActionController {
 	}
 
 	/**
+	 * Shows a form to upload files.
+	 *
+	 * @param string $reference
+	 * @param string $path
+	 * @return void
+	 */
+	public function uploadDialogAction($reference, $path) {
+		$response = array();
+
+		$fileExtensions = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions'];
+		$this->view->assignMultiple(array(
+			'reference' => $reference,
+			'path' => $path,
+			'allowedExtensions' => $fileExtensions['webspace']['allow'] ?: '*',
+			'deniedExtensions' => $fileExtensions['webspace']['deny'],
+		));
+
+		$response['status'] = 'success';
+		$response['statusText'] = $this->view->render();
+
+		$this->returnAjax($response);
+	}
+
+	/**
+	 * Handles upload of files.
+	 *
+	 * @param string $reference
+	 * @param string $path
+	 * @return void
+	 */
+	public function uploadAction($reference, $path) {
+		$response = array();
+		$success = FALSE;
+
+		$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+		$parts = $this->parseReferenceDocument($reference, '');
+
+		if (is_dir($parts['basePath']) && GeneralUtility::isFirstPartOfStr($parts['basePath'], PATH_site)) {
+			$targetDirectory = substr($parts['basePath'] . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $path), strlen(PATH_site));
+			$overwriteExistingFiles = FALSE;
+
+			$data = array();
+			$namespace = key($_FILES);
+
+			// Register every upload field from the form:
+			$this->registerUploadField($data, $namespace, 'files', $targetDirectory);
+
+			// Initializing:
+			/** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $fileProcessor */
+			$fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
+			$fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+			$fileProcessor->setActionPermissions(array('addFile' => TRUE));
+			$fileProcessor->dontCheckForUnique = $overwriteExistingFiles ? 1 : 0;
+
+			// Actual upload
+			$fileProcessor->start($data);
+			try {
+				$result = $fileProcessor->processData();
+				$response['statusText'] = $this->getFlashMessages();
+				$success = TRUE;
+			} catch (\Exception $e) {
+				$response['statusText'] = $e->getMessage();
+			}
+		} else {
+			$response['statusText'] = 'Invalid target directory';
+		}
+
+		$response['status'] = $success ? 'success' : 'error';
+
+		$this->returnAjax($response, TRUE);
+	}
+
+	/**
+	 * Registers an uploaded file for TYPO3 native upload handling.
+	 *
+	 * @param array &$data
+	 * @param string $namespace
+	 * @param string $fieldName
+	 * @param string $targetDirectory
+	 * @return void
+	 */
+	protected function registerUploadField(array &$data, $namespace, $fieldName, $targetDirectory = '1:/_temp_/') {
+		if (!isset($data['upload'])) {
+			$data['upload'] = array();
+		}
+		$counter = count($data['upload']) + 1;
+
+		$keys = array_keys($_FILES[$namespace]);
+		foreach ($keys as $key) {
+			$_FILES['upload_' . $counter][$key] = $_FILES[$namespace][$key][$fieldName];
+		}
+		$data['upload'][$counter] = array(
+			'data' => $counter,
+			'target' => $targetDirectory,
+		);
+	}
+
+	/**
+	 * Returns the default rendered FlashMessages from queue.
+	 *
+	 * @return string
+	 * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getFlashMessages()
+	 */
+	protected function getFlashMessages() {
+		/** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
+		$flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+		/** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
+		$defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+		$flashMessages = $defaultFlashMessageQueue->renderFlashMessages();
+		if (!empty($flashMessages)) {
+			$flashMessages = '<div id="typo3-messages">' . $flashMessages . '</div>';
+		}
+		return $flashMessages;
+	}
+
+	/**
 	 * Returns the project tree.
 	 *
 	 * @param string $path

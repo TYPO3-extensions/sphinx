@@ -102,3 +102,11 @@ Screenshots
 
 	The built-in reStructuredText editor with syntax highlighting lets you easily modify your documents and to
 	cross-link to other manuals.
+
+.. figure:: ../Images/context-menu.png
+	:alt: Context menu in the project tree
+
+	A context menu for files and folders in the project tree lets you create empty files, upload files and images from
+	your local drive and rename or remove them at the same place. If you project is under revision control (a.k.a.
+	version control) with Git, then all those management operations will take advantage of it and use the corresponding
+	commands instead of bare OS ones.

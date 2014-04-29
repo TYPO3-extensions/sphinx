@@ -23,6 +23,7 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ===========================================================================
 Version  Changes
 =======  ===========================================================================
+2.1.x    - Upload of files in reStructuredText editor
 2.0.x    - New dashboard with management of custom projects
          - Kickstart custom projects from a Git repository
          - Support of custom projects in foreign languages
@@ -50,8 +51,8 @@ Version  Changes
          - Sphinx documentation viewer
 0.3.x    - Colored console output
          - Compilation in PDF if pdflatex is available
-0.2.x    Kickstarter to create a TYPO3 documentation using official template
-0.1.x    First release to the TER (alpha to gather more initial feedback)
-0.0.1    Not released to TER, extension is compatible with TYPO3 4.5-4.7. Can be
-         retrieved from `Subversion's tag 0.0.1 <https://svn.typo3.org/TYPO3v4/Extensions/sphinx/tags/0.0.1/>`_
+0.2.x    - Kickstarter to create a TYPO3 documentation using official template
+0.1.x    - First release to the TER (alpha to gather more initial feedback)
+0.0.1    - Not released to TER, extension is compatible with TYPO3 4.5-4.7. Can be
+           retrieved from `Subversion's tag 0.0.1 <https://svn.typo3.org/TYPO3v4/Extensions/sphinx/tags/0.0.1/>`_
 =======  ===========================================================================
