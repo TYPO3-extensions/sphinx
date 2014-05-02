@@ -1299,7 +1299,14 @@ EOT;
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 */
 	static protected function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, array &$output = NULL) {
-		$python = escapeshellarg(CommandUtility::getCommand('python'));
+		$export = '';
+		$clientInfo = GeneralUtility::clientInfo();
+		if ($clientInfo['SYSTEM'] === 'mac') {
+			// See http://forge.typo3.org/issues/58424
+			$export = 'ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future ';
+		}
+
+		$python = $export . escapeshellarg(CommandUtility::getCommand('python'));
 		$cmd = 'cd ' . escapeshellarg(PathUtility::dirname($setupFile)) . ' && ' .
 			$python . ' setup.py clean 2>&1 && ' .
 			$python . ' setup.py build 2>&1';
