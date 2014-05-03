@@ -28,6 +28,7 @@ namespace Causal\Sphinx\ViewHelpers\Link;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use Causal\Sphinx\Utility\MiscUtility;
 
 /**
  * A view helper for creating links to sphinx actions using the loading mask.
@@ -108,11 +109,9 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
 			switch ($check) {
 				case 'isWritable':
 					if (strpos($value, 'EXT:') === 0) {
-						$value .= '/__sphinx.tmp';
-					}
-					$fileName = GeneralUtility::getFileAbsFileName($value);
-					if (strpos($value, 'EXT:') === 0) {
-						$fileName = PathUtility::dirname($fileName);
+						$fileName = MiscUtility::extPath(substr($value, 4));
+					} else {
+						$fileName = GeneralUtility::getFileAbsFileName($value);
 					}
 					if (!is_writable($fileName)) {
 						$content .= sprintf(
