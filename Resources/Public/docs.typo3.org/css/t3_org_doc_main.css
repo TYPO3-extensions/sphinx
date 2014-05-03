@@ -883,3 +883,7 @@ hnav-related a:hover {
 .doc table.highlighttable td pre {
 	margin-bottom: 0;
 }
+
+abbr {
+	border-bottom: 1px dotted black;
+}
