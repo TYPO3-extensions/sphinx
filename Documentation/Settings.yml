@@ -36,10 +36,10 @@ conf.py:
     - 'TYPO3 extension '
   extensions:
   - sphinx.ext.intersphinx
-  - sphinx.ext.extlinks
   - t3sphinx.ext.t3extras
   - t3sphinx.ext.t3tablerows
   - t3sphinx.ext.targets
+  - sphinx.ext.extlinks
   - sphinxcontrib.googlechart
   - sphinxcontrib.googlemaps
   - sphinxcontrib.slide
