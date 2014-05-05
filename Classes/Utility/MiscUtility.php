@@ -1077,7 +1077,8 @@ YAML;
 						$i--;
 					break;
 					case 'latex_elements':
-						$pythonLine = 'latex_elements = {' . LF;
+					case 'html_theme_options':
+						$pythonLine = $matches[2] . ' = {' . LF;
 						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
 							$indent = $matches[1];
 							$firstLine = TRUE;
@@ -1085,7 +1086,16 @@ YAML;
 								if (!$firstLine) {
 									$pythonLine .= ',' . LF;
 								}
-								$pythonLine .= sprintf('\'%s\': \'%s\'', $matches[1], addcslashes($matches[2], "\\'"));
+								$pythonLine .= sprintf('\'%s\': ', $matches[1]);
+								if ($matches[2] === 'null') {
+									$pythonLine .= 'None';
+								} elseif (GeneralUtility::inList('true,false', $matches[2])) {
+									$pythonLine .= ucfirst($matches[2]);
+								} elseif (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($matches[2])) {
+									$pythonLine .= intval($matches[2]);
+								} else {
+									$pythonLine .= sprintf('\'%s\'', addcslashes($matches[2], "\\'"));
+								}
 								$firstLine = FALSE;
 							}
 						}
@@ -1106,7 +1116,7 @@ YAML;
 								if (!$firstItem) {
 									$pythonLine .= ', ';
 								}
-								$pythonLine .= sprintf('\'%s\'', $matches[1]);
+								$pythonLine .= sprintf('\'%s\'', addcslashes($matches[1], "\\'"));
 								$firstItem = FALSE;
 							}
 							$i--;
@@ -1114,7 +1124,8 @@ YAML;
 						$pythonLine .= ']';
 					break;
 					case 'extlinks':
-						$pythonLine = 'extlinks = {' . LF;
+					case 'intersphinx_mapping':
+						$pythonLine = $matches[2] . ' = {' . LF;
 						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
 							$indent = $matches[1];
 							$firstLine = TRUE;
@@ -1132,36 +1143,6 @@ YAML;
 										$pythonLine .= 'None';
 									} else {
 										$pythonLine .= sprintf('\'%s\'', trim(trim($matches[1]), '\''));
-									}
-									$firstItem = FALSE;
-								}
-								$pythonLine .= ')';
-								$firstLine = FALSE;
-								$i--;
-							}
-						}
-						$pythonLine .= LF . '}';
-						$i--;
-					break;
-					case 'intersphinx_mapping':
-						$pythonLine = 'intersphinx_mapping = {' . LF;
-						if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
-							$indent = $matches[1];
-							$firstLine = TRUE;
-							while (preg_match('/^' . $indent . '(.+):/', $lines[++$i], $matches)) {
-								if (!$firstLine) {
-									$pythonLine .= ',' . LF;
-								}
-								$pythonLine .= sprintf('\'%s\': (', $matches[1]);
-								$firstItem = TRUE;
-								while (preg_match('/^' . $indent . '- (.+)/', $lines[++$i], $matches)) {
-									if (!$firstItem) {
-										$pythonLine .= ', ';
-									}
-									if ($matches[1] === 'null') {
-										$pythonLine .= 'None';
-									} else {
-										$pythonLine .= sprintf('\'%s\'', trim($matches[1]));
 									}
 									$firstItem = FALSE;
 								}

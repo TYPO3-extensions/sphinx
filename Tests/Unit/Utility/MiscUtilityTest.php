@@ -525,6 +525,60 @@ YAML;
 	/**
 	 * @test
 	 */
+	public function canParseSingleHtmlThemeOptions() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  html_theme_options:
+    sidebarwidth: 300
+YAML;
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
+		$expected = array(
+			'html_theme_options = {' . LF .
+			"'sidebarwidth': 300" . LF .
+			'}',
+		);
+		$this->assertSame($expected, $pythonConfiguration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canParseDoubleHtmlThemeOptions() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  html_theme_options:
+    nosidebar: true
+    sidebarwidth: 300
+YAML;
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
+		$expected = array(
+			'html_theme_options = {' . LF .
+			"'nosidebar': True," . LF .
+			"'sidebarwidth': 300" . LF .
+			'}',
+		);
+		$this->assertSame($expected, $pythonConfiguration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
 	public function canParseExtensionsConfiguration() {
 		// Setup
 		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
