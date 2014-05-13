@@ -470,7 +470,7 @@ class RestEditorController extends AbstractActionController {
 		$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
 		$parts = $this->parseReferenceDocument($reference, '');
 
-		if (is_dir($parts['basePath']) && GeneralUtility::isFirstPartOfStr($parts['basePath'], PATH_site)) {
+		if (is_dir($parts['basePath']) && GeneralUtility::isFirstPartOfStr(str_replace(DIRECTORY_SEPARATOR, '/', $parts['basePath']), PATH_site)) {
 			$targetDirectory = substr($parts['basePath'] . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $path), strlen(PATH_site));
 			$overwriteExistingFiles = FALSE;
 
