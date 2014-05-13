@@ -336,6 +336,9 @@
 			<trans-unit id="editor.action.error.unknownError">
 				<source>Unknown error while performing action.</source>
 			</trans-unit>
+			<trans-unit id="editor.action.error.invalidUploadDirectory">
+				<source>Invalid target directory: %s</source>
+			</trans-unit>
 
 			<trans-unit id="language.default">
 				<source>Default (English)</source>

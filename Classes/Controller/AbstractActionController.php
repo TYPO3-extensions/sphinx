@@ -81,11 +81,12 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 	/**
 	 * Returns the localized label of a given key.
 	 *
-	 * @param string $key The label key
+	 * @param string $key The key from the LOCAL_LANG array for which to return the value.
+	 * @param array $arguments the arguments of the extension, being passed over to vsprintf
 	 * @return string Localized label
 	 */
-	protected function translate($key) {
-		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->request->getControllerExtensionKey());
+	protected function translate($key, $arguments = NULL) {
+		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->request->getControllerExtensionKey(), $arguments);
 	}
 
 	/**

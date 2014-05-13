@@ -497,7 +497,7 @@ class RestEditorController extends AbstractActionController {
 				$response['statusText'] = $e->getMessage();
 			}
 		} else {
-			$response['statusText'] = 'Invalid target directory';
+			$response['statusText'] = $this->translate('editor.action.error.invalidUploadDirectory', array($parts['basePath']));
 		}
 
 		$response['status'] = $success ? 'success' : 'error';
