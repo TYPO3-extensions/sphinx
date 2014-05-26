@@ -666,9 +666,12 @@ HTML;
 				$extensionPath = static::extPath($extensionKey);
 				$source = $extensionPath . 'README.rst';
 				copy($source, $basePath . '/Index.rst');
-				if (is_dir($extensionPath . 'Resources')) {
-					GeneralUtility::mkdir($basePath . '/Resources');
-					static::recursiveCopy($extensionPath . 'Resources', $basePath . '/Resources');
+				$resourceDirectories = array('Documentation', 'Resources');
+				foreach ($resourceDirectories as $resourceDirectory) {
+					if (is_dir($extensionPath . $resourceDirectory)) {
+						GeneralUtility::mkdir($basePath . '/' . $resourceDirectory);
+						static::recursiveCopy($extensionPath . $resourceDirectory, $basePath . '/' . $resourceDirectory);
+					}
 				}
 			break;
 		}
