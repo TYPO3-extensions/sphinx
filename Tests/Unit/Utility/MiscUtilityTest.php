@@ -52,16 +52,16 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function extensionSphinxHasSphinxDocumentation() {
-		$documentationType = MiscUtility::getDocumentationType('sphinx');
-		$this->assertSame(MiscUtility::DOCUMENTATION_TYPE_SPHINX, $documentationType);
+		$documentationTypes = MiscUtility::getDocumentationTypes('sphinx');
+		$this->assertTrue($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX ? TRUE : FALSE);
 	}
 
 	/**
 	 * @test
 	 */
 	public function extensionAboutHasUnknownDocumentation() {
-		$documentationType = MiscUtility::getDocumentationType('about');
-		$this->assertSame(MiscUtility::DOCUMENTATION_TYPE_UNKNOWN, $documentationType);
+		$documentationTypes = MiscUtility::getDocumentationTypes('about');
+		$this->assertTrue($documentationTypes === MiscUtility::DOCUMENTATION_TYPE_UNKNOWN);
 	}
 
 	/**
@@ -74,8 +74,8 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			);
 		}
 
-		$documentationType = MiscUtility::getDocumentationType('documentation');
-		$this->assertSame(MiscUtility::DOCUMENTATION_TYPE_README, $documentationType);
+		$documentationTypes = MiscUtility::getDocumentationTypes('documentation');
+		$this->assertTrue($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_README ? TRUE : FALSE);
 	}
 
 	/**

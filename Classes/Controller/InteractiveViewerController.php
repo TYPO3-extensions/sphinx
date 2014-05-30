@@ -388,12 +388,12 @@ class InteractiveViewerController extends AbstractActionController {
 			list($extensionKey, $locale) = explode('.', $identifier, 2);
 
 			if (empty($locale)) {
-				$documentationType = MiscUtility::getDocumentationType($extensionKey);
+				$documentationTypes = MiscUtility::getDocumentationTypes($extensionKey);
 			} else {
-				$documentationType = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
+				$documentationTypes = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
 			}
 
-			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_SPHINX) {
+			if ($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX) {
 				$localizationDirectories = MiscUtility::getLocalizationDirectories($extensionKey);
 				$extensionPath = MiscUtility::extPath($extensionKey);
 

@@ -772,22 +772,29 @@ class RestEditorController extends AbstractActionController {
 		switch ($type) {
 			case 'EXT':
 				list($extensionKey, $locale) = explode('.', $identifier, 2);
+				$originalExtensionKey = $extensionKey;
 				if (empty($locale)) {
-					$documentationType = MiscUtility::getDocumentationType($extensionKey);
+					$lengthSuffixReadme = strlen(\Causal\Sphinx\Domain\Repository\ExtensionRepository::SUFFIX_README);
+					if (substr($extensionKey, -$lengthSuffixReadme) === \Causal\Sphinx\Domain\Repository\ExtensionRepository::SUFFIX_README) {
+						$extensionKey = substr($extensionKey, 0, -$lengthSuffixReadme);
+						$documentationTypes = MiscUtility::DOCUMENTATION_TYPE_README;
+					} else {
+						$documentationTypes = MiscUtility::getDocumentationTypes($extensionKey);
+					}
 				} else {
-					$documentationType = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
+					$documentationTypes = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
 				}
-				switch ($documentationType) {
-					case MiscUtility::DOCUMENTATION_TYPE_SPHINX:
+				switch (TRUE) {
+					case $documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX:
 						$basePath = MiscUtility::extPath($extensionKey) . 'Documentation';
 					break;
-					case MiscUtility::DOCUMENTATION_TYPE_README:
+					case $documentationTypes & MiscUtility::DOCUMENTATION_TYPE_README:
 						$basePath = MiscUtility::extPath($extensionKey);
 					break;
 					default:
 						throw new \RuntimeException('Unsupported documentation type for extension "' . $extensionKey . '"', 1379086939);
 				}
-				$filename = $this->getFilename($extensionKey, $document, $filename, $locale);
+				$filename = $this->getFilename($originalExtensionKey, $document, $filename, $locale);
 			break;
 			case 'USER':
 				$basePath = NULL;
@@ -832,7 +839,7 @@ class RestEditorController extends AbstractActionController {
 	/**
 	 * Returns the ReST filename corresponding to a given document.
 	 *
-	 * @param string $extensionKey The TYPO3 extension key
+	 * @param string $extensionKey The TYPO3 extension key (possibly with a __README suffix)
 	 * @param string $document The document
 	 * @param string $filename The relative filename (if given instead of $document)
 	 * @param string $locale The locale to use
@@ -841,12 +848,18 @@ class RestEditorController extends AbstractActionController {
 	 */
 	protected function getFilename($extensionKey, $document, $filename, $locale) {
 		if (empty($locale)) {
-			$documentationType = MiscUtility::getDocumentationType($extensionKey);
+			$lengthSuffixReadme = strlen(\Causal\Sphinx\Domain\Repository\ExtensionRepository::SUFFIX_README);
+			if (substr($extensionKey, -$lengthSuffixReadme) === \Causal\Sphinx\Domain\Repository\ExtensionRepository::SUFFIX_README) {
+				$extensionKey = substr($extensionKey, 0, -$lengthSuffixReadme);
+				$documentationTypes = MiscUtility::DOCUMENTATION_TYPE_README;
+			} else {
+				$documentationTypes = MiscUtility::getDocumentationTypes($extensionKey);
+			}
 		} else {
-			$documentationType = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
+			$documentationTypes = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
 		}
-		switch ($documentationType) {
-			case MiscUtility::DOCUMENTATION_TYPE_SPHINX:
+		switch (TRUE) {
+			case $documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX:
 				$path = MiscUtility::extPath($extensionKey);
 				if (empty($locale)) {
 					$path .= 'Documentation/';
@@ -863,7 +876,7 @@ class RestEditorController extends AbstractActionController {
 					$filename = $path . $filename;
 				}
 			break;
-			case MiscUtility::DOCUMENTATION_TYPE_README:
+			case $documentationTypes & MiscUtility::DOCUMENTATION_TYPE_README:
 				$path = MiscUtility::extPath($extensionKey);
 				$filename = $path . 'README.rst';
 			break;

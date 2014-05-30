@@ -77,6 +77,10 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 				foreach ($valueLabel as $value => $label) {
 					if (substr($value, 0, 4) === 'EXT:') {
 						list($extensionKey, $_) = explode('.', substr($value, 4), 2);
+						$lengthSuffixReadme = strlen(\Causal\Sphinx\Domain\Repository\ExtensionRepository::SUFFIX_README);
+						if (substr($extensionKey, -$lengthSuffixReadme) === \Causal\Sphinx\Domain\Repository\ExtensionRepository::SUFFIX_README) {
+							$extensionKey = substr($extensionKey, 0, -$lengthSuffixReadme);
+						}
 						$extPath = MiscUtility::extPath($extensionKey);
 						$extRelPath = '../' . MiscUtility::extRelPath($extensionKey);
 						$icon = $extRelPath . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon($extPath);

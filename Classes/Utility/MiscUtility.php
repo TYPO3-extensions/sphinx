@@ -45,10 +45,11 @@ class MiscUtility {
 	const PROJECT_STRUCTURE_SEPARATE    = 2;
 	const PROJECT_STRUCTURE_TYPO3       = 3;
 
+	// Constants below are power of 2 so that they may be combined
 	const DOCUMENTATION_TYPE_UNKNOWN    = 0;
 	const DOCUMENTATION_TYPE_SPHINX     = 1;
 	const DOCUMENTATION_TYPE_README     = 2;
-	const DOCUMENTATION_TYPE_OPENOFFICE = 3;
+	const DOCUMENTATION_TYPE_OPENOFFICE = 4;
 
 	/** @var string */
 	static protected $extKey = 'sphinx';
@@ -122,13 +123,13 @@ class MiscUtility {
 	}
 
 	/**
-	 * Returns the type of the master documentation document of a given
-	 * loaded extension as one of the DOCUMENTATION_TYPE_* constants.
+	 * Returns the types of the documentation document(s) of a given loaded extension
+	 * as a binary combination of the DOCUMENTATION_TYPE_* constants.
 	 *
 	 * @param string $extensionKey The TYPO3 extension key
-	 * @return integer One of the DOCUMENTATION_TYPE_* constants
+	 * @return integer Binary combination of the DOCUMENTATION_TYPE_* constants
 	 */
-	static public function getDocumentationType($extensionKey) {
+	static public function getDocumentationTypes($extensionKey) {
 		$supportedDocuments = array(
 			'Documentation/Index.rst' => static::DOCUMENTATION_TYPE_SPHINX,
 			'README.rst'              => static::DOCUMENTATION_TYPE_README,
@@ -136,13 +137,14 @@ class MiscUtility {
 		);
 		$extPath = static::extPath($extensionKey);
 
+		$types = static::DOCUMENTATION_TYPE_UNKNOWN;
 		foreach ($supportedDocuments as $supportedDocument => $type) {
 			if (is_file($extPath . $supportedDocument)) {
-				return $type;
+				$types |= $type;
 			}
 		}
 
-		return static::DOCUMENTATION_TYPE_UNKNOWN;
+		return $types;
 	}
 
 	/**
@@ -583,17 +585,25 @@ HTML;
 	 * @return string The documentation URL
 	 */
 	static public function generateDocumentation($extensionKey, $format = 'html', $force = FALSE, $locale = '') {
+		$originalExtensionKey = $extensionKey;
+
 		if (empty($locale)) {
-			$documentationType = static::getDocumentationType($extensionKey);
+			$lengthSuffixReadme = strlen(\Causal\Sphinx\Domain\Repository\ExtensionRepository::SUFFIX_README);
+			if (substr($extensionKey, -$lengthSuffixReadme) === \Causal\Sphinx\Domain\Repository\ExtensionRepository::SUFFIX_README) {
+				$documentationTypes = static::DOCUMENTATION_TYPE_README;
+				$extensionKey = substr($extensionKey, 0, -$lengthSuffixReadme);
+			} else {
+				$documentationTypes = $type ?: static::getDocumentationTypes($extensionKey);
+			}
 			$projectTitle = static::getDocumentationProjectTitle($extensionKey);
 			$languageDirectory = 'default';
 		} else {
-			$documentationType = static::getLocalizedDocumentationType($extensionKey, $locale);
+			$documentationTypes = static::getLocalizedDocumentationType($extensionKey, $locale);
 			$projectTitle = static::getDocumentationProjectTitle($extensionKey, $locale);
 			$languageDirectory = $locale;
 		}
-		if (!($documentationType === static::DOCUMENTATION_TYPE_SPHINX
-			|| $documentationType === static::DOCUMENTATION_TYPE_README)) {
+		if (!($documentationTypes & static::DOCUMENTATION_TYPE_SPHINX
+			|| $documentationTypes & static::DOCUMENTATION_TYPE_README)) {
 
 			$filename = 'typo3temp/tx_' . static::$extKey . '/1369679343.log';
 			$content = 'ERROR 1369679343: No documentation found for extension "' . $extensionKey . '"';
@@ -617,7 +627,7 @@ HTML;
 			break;
 		}
 
-		$relativeOutputDirectory = 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey . '/' . $languageDirectory . '/' . $documentationFormat;
+		$relativeOutputDirectory = 'typo3conf/Documentation/typo3cms.extensions.' . $originalExtensionKey . '/' . $languageDirectory . '/' . $documentationFormat;
 		$absoluteOutputDirectory = GeneralUtility::getFileAbsFileName($relativeOutputDirectory);
 		if (!$force && is_file($absoluteOutputDirectory . '/' . $masterDocument)) {
 			// Do not render the documentation again
@@ -645,8 +655,8 @@ HTML;
 		);
 
 		// Recursively instantiate template files
-		switch ($documentationType) {
-			case static::DOCUMENTATION_TYPE_SPHINX:
+		switch (TRUE) {
+			case $documentationTypes & static::DOCUMENTATION_TYPE_SPHINX:
 				$source = static::extPath($extensionKey) . 'Documentation';
 				static::recursiveCopy($source, $basePath);
 
@@ -662,7 +672,7 @@ HTML;
 					}
 				}
 			break;
-			case static::DOCUMENTATION_TYPE_README:
+			case $documentationTypes & static::DOCUMENTATION_TYPE_README:
 				$extensionPath = static::extPath($extensionKey);
 				$source = $extensionPath . 'README.rst';
 				copy($source, $basePath . '/Index.rst');
@@ -722,7 +732,7 @@ HTML;
 			$warnings = file_get_contents($warningsFilename);
 
 			// Automatically fix Intersphinx mapping, if needed
-			if ($documentationType === static::DOCUMENTATION_TYPE_SPHINX) {
+			if ($documentationTypes & static::DOCUMENTATION_TYPE_SPHINX) {
 				// Original files
 				$settingsYamlFilename = static::extPath($extensionKey) . 'Documentation';
 				if (!empty($locale)) {

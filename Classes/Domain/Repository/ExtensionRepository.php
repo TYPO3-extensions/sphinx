@@ -39,6 +39,8 @@ use Causal\Sphinx\Utility\MiscUtility;
  */
 class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 
+	const SUFFIX_README = '__README';
+
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
 	 * @inject
@@ -61,8 +63,8 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			if (!GeneralUtility::inList($allowedInstallTypes, $info['type']{0})) {
 				continue;
 			}
-			$documentationType = MiscUtility::getDocumentationType($extensionKey);
-			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_UNKNOWN) {
+			$documentationTypes = MiscUtility::getDocumentationTypes($extensionKey);
+			if ($documentationTypes === MiscUtility::DOCUMENTATION_TYPE_UNKNOWN) {
 				$extension = $this->createExtensionObject($extensionKey);
 				$extensions[$extensionKey] = $extension;
 				$titles[$extensionKey] = strtolower($extension->getTitle());
@@ -89,17 +91,29 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			if (!GeneralUtility::inList($allowedInstallTypes, $info['type']{0})) {
 				continue;
 			}
-			$documentationType = MiscUtility::getDocumentationType($extensionKey);
-			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_SPHINX || $documentationType === MiscUtility::DOCUMENTATION_TYPE_README) {
+			$documentationTypes = MiscUtility::getDocumentationTypes($extensionKey);
+			if ($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX || $documentationTypes & MiscUtility::DOCUMENTATION_TYPE_README) {
 				$extension = $this->createExtensionObject($extensionKey);
 				$extensions[$extensionKey] = $extension;
 				$titles[$extensionKey] = strtolower($extension->getTitle());
 
+				if ($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX && $documentationTypes & MiscUtility::DOCUMENTATION_TYPE_README) {
+					// Both README.rst and Sphinx project
+					$documentationKey = $extensionKey . static::SUFFIX_README;
+
+					$extension = $this->createExtensionObject($extensionKey);
+					$extension->setExtensionKey($documentationKey);
+					$extension->setTitle($extension->getTitle() . ' [README]');
+
+					$extensions[$documentationKey] = $extension;
+					$titles[$documentationKey] = strtolower($extension->getTitle());
+				}
+
 				// Look for possible translations
 				$supportedLocales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
 				foreach ($supportedLocales as $locale => $name) {
-					$documentationType = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
-					if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_SPHINX) {
+					$documentationTypes = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
+					if ($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX) {
 						$localizationDirectories = MiscUtility::getLocalizationDirectories($extensionKey);
 						$documentationKey = $extensionKey . '.' . $localizationDirectories[$locale]['locale'];
 
@@ -134,8 +148,8 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			if (!GeneralUtility::inList($allowedInstallTypes, $info['type']{0})) {
 				continue;
 			}
-			$documentationType = MiscUtility::getDocumentationType($extensionKey);
-			if ($documentationType === MiscUtility::DOCUMENTATION_TYPE_OPENOFFICE) {
+			$documentationTypes = MiscUtility::getDocumentationTypes($extensionKey);
+			if ($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_OPENOFFICE) {
 				$extension = $this->createExtensionObject($extensionKey);
 				$extensions[$extensionKey] = $extension;
 				$titles[$extensionKey] = strtolower($extension->getTitle());
