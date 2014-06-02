@@ -1229,7 +1229,7 @@ YAML;
 			}
 		}
 		if (isset($availableAndInstalledExtensions[$extensionKey])) {
-			return $availableAndInstalledExtensions[$extensionKey]['siteRelPath'];
+			return rtrim($availableAndInstalledExtensions[$extensionKey]['siteRelPath'], '/') . '/';
 		} else {
 			return NULL;
 		}
