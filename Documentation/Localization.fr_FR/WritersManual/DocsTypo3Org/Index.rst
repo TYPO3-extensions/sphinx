@@ -65,10 +65,10 @@ Un fichier standard :file:`Settings.yml` devrait définir certaines informations
 	:linenos:
 
 	conf.py:
-	  copyright: 2013
+	  copyright: 2013-2014
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 1.2
-	  release: 1.2.0
+	  version: 2.1
+	  release: 2.1.0
 
 project
 	Le nom du projet de documentation.
@@ -117,10 +117,10 @@ au besoin) et doit être explicitement activée pour votre extension. Pour se fa
 	:emphasize-lines: 6-15
 
 	conf.py:
-	  copyright: 2013
+	  copyright: 2013-2014
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 1.1
-	  release: 1.1.0
+	  version: 2.1
+	  release: 2.1.0
 	  latex_documents:
 	  - - Index
 	    - sphinx.tex
@@ -322,10 +322,10 @@ la correspondance Intersphinx dans :file:`Settings.yml`. Pour se faire, ajoutez 
 	:emphasize-lines: 6-9
 
 	conf.py:
-	  copyright: 2013
+	  copyright: 2013-2014
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 1.2
-	  release: 1.2.0
+	  version: 2.1
+	  release: 2.1.0
 	  intersphinx_mapping:
 	    restdoc:
 	    - http://docs.typo3.org/typo3cms/extensions/restdoc/
@@ -358,10 +358,10 @@ Intersphinx ``t3cmsapi`` :
 	:emphasize-lines: 7-9
 
 	conf.py:
-	  copyright: 2013
+	  copyright: 2013-2014
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 1.2
-	  release: 1.2.0
+	  version: 2.1
+	  release: 2.1.0
 	  intersphinx_mapping:
 	    t3cmsapi:
 	    - http://typo3.org/api/typo3cms/
@@ -402,3 +402,38 @@ Ancre              Cible
 ``todo``           :ref:`t3cmsapi:todo`
 ``variables``      :ref:`t3cmsapi:variables`
 ================== =================================
+
+
+.. _docs-typo3-org-edit-github:
+
+Modifier le manuel sur GitHub
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Si votre extension est hébergée sur GitHub, vous pouvez configurer le manuel de telle façon qu'il puisse être facilement
+modifiable lorsqu'il est publié sur http://docs.typo3.org:
+
+.. figure:: ../../../Images/edit-me-github.png
+	:alt: Lien pour modifier le chapitre courant sur GitHub
+
+Afin de rendre ce lien visible, vous devez ajouter l'URI GitHub relative du dépôt de votre projet et la branche utilisée
+(typiquement "master") au fichier de configuration :file:`Configuration/Settings.yml`:
+
+.. code-block:: yaml
+	:linenos:
+	:emphasize-lines: 6-8
+
+	conf.py:
+	  copyright: 2013-2014
+	  project: Générateur et visionneuse de documentation Sphinx Python
+	  version: 2.1
+	  release: 2.1.0
+	  html_theme_options:
+	    github_repository: xperseguers/t3ext-sphinx
+	    github_branch: master
+
+où ``xperseguers/t3ext-sphinx`` correspond à l'URI relative de ``http://github.com/xperseguers/t3ext-sphinx``.
+
+.. note::
+	Tous les manuels, guides et références TYPO3 officiels utilisent cette option. Cela vous permet de contribuer de
+	façon extrêmement simple si vous découvrez une faute de frappe, ou que vous souhaitez reformuler ou améliorer un
+	chapitre ou une section.

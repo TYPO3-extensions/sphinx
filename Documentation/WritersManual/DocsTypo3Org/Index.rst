@@ -62,10 +62,10 @@ A basic :file:`Settings.yml` file should define a few basic project information:
 	:linenos:
 
 	conf.py:
-	  copyright: 2013
+	  copyright: 2013-2014
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 1.2
-	  release: 1.2.0
+	  version: 2.1
+	  release: 2.1.0
 
 project
 	The documented project's name.
@@ -112,10 +112,10 @@ documentation folder) and make sure it contains following configuration options 
 	:emphasize-lines: 6-15
 
 	conf.py:
-	  copyright: 2013
+	  copyright: 2013-2014
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 1.1
-	  release: 1.1.0
+	  version: 2.1
+	  release: 2.1.0
 	  latex_documents:
 	  - - Index
 	    - sphinx.tex
@@ -308,10 +308,10 @@ within :file:`Settings.yml`. To do so, add configuration options (lines 6 to 9):
 	:emphasize-lines: 6-9
 
 	conf.py:
-	  copyright: 2013
+	  copyright: 2013-2014
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 1.2
-	  release: 1.2.0
+	  version: 2.1
+	  release: 2.1.0
 	  intersphinx_mapping:
 	    restdoc:
 	    - http://docs.typo3.org/typo3cms/extensions/restdoc/
@@ -341,10 +341,10 @@ file :file:`Settings.yml` and add an Intersphinx mapping ``t3cmsapi``:
 	:emphasize-lines: 7-9
 
 	conf.py:
-	  copyright: 2013
+	  copyright: 2013-2014
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 1.2
-	  release: 1.2.0
+	  version: 2.1
+	  release: 2.1.0
 	  intersphinx_mapping:
 	    t3cmsapi:
 	    - http://typo3.org/api/typo3cms/
@@ -385,3 +385,37 @@ Anchor             Target
 ``todo``           :ref:`t3cmsapi:todo`
 ``variables``      :ref:`t3cmsapi:variables`
 ================== =================================
+
+
+.. _docs-typo3-org-edit-github:
+
+Edit manual on GitHub
+^^^^^^^^^^^^^^^^^^^^^
+
+In case your extension is hosted on GitHub, you may configure the manual so that it gets easily editable when published
+on http://docs.typo3.org:
+
+.. figure:: ../../Images/edit-me-github.png
+	:alt: Link to edit the chapter on GitHub
+
+To make this link visible, you should add the relative URI of your GitHub project repository and the branch you are
+using (typically "master") to the configuration file :file:`Configuration/Settings.yml`:
+
+.. code-block:: yaml
+	:linenos:
+	:emphasize-lines: 6-8
+
+	conf.py:
+	  copyright: 2013-2014
+	  project: Sphinx Python Documentation Generator and Viewer
+	  version: 2.1
+	  release: 2.1.0
+	  html_theme_options:
+	    github_repository: xperseguers/t3ext-sphinx
+	    github_branch: master
+
+where ``xperseguers/t3ext-sphinx`` is the relative URI in ``http://github.com/xperseguers/t3ext-sphinx``.
+
+.. note::
+	Every official TYPO3 manual, guide and reference is using this option, making it a breeze to contribute if you
+	spot a typo or wish something got rephrased or better explained.
