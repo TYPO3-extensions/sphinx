@@ -119,11 +119,11 @@ Sinon :
 |
 
 .. tip::
-	Une case à cocher à droite vous permet de forcer le manuel d'extension à être généré à nouveau (ce qui recrée par
+	Un bouton à droite vous permet de forcer le manuel d'extension à être généré à nouveau (ce qui recrée par
 	conséquent la version mise en cache) :
 
-	.. image:: ../../../Images/checkbox.png
-		:alt: Case à cocher pour forcer un manuel d'extension à être généré
+	.. image:: ../../../Images/render-again.png
+		:alt: Bouton pour forcer un manuel d'extension à être généré
 
 .. note::
 	La visionneuse de documentation Sphinx supporte deux types de manuels d'extensions :

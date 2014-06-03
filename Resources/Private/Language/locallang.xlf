@@ -23,6 +23,7 @@
 			</trans-unit>
 			<trans-unit id="loadDocumentation">
 				<source>Go</source>
+				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.2.1</note>
 			</trans-unit>
 			<trans-unit id="documentationLayout">
 				<source>Layout:</source>
@@ -209,6 +210,10 @@
 			</trans-unit>
 			<trans-unit id="toolbar.alwaysRender">
 				<source>Always render documentation</source>
+				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.2.1</note>
+			</trans-unit>
+			<trans-unit id="toolbar.renderAgain">
+				<source>Render documentation</source>
 			</trans-unit>
 			<trans-unit id="toolbar.interactive.edit">
 				<source>Edit document</source>

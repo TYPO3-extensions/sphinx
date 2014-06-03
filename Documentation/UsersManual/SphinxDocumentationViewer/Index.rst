@@ -113,10 +113,10 @@ Otherwise:
 |
 
 .. tip::
-	A checkbox on the right lets you force the extension's manual to be recompiled (thus recreating the cached version):
+	A button on the right lets you force the extension's manual to be recompiled (thus recreating the cached version):
 
-	.. image:: ../../Images/checkbox.png
-		:alt: Checkbox to force an extension manual to be rendered
+	.. image:: ../../Images/render-again.png
+		:alt: Button to force an extension manual to be rendered
 
 .. note::
 	The Sphinx Documentation Viewer supports two types of extension's manual:
