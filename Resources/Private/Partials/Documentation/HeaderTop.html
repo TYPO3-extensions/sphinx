@@ -10,6 +10,7 @@
 		<f:translate key="documentationFormat">Layout:</f:translate>
 	</label>
 	<sphinx:form.select id="layout" name="layout" options="{layouts}" value="{currentLayout}" onchange="this.form.submit();" />
+	<f:form.submit value="{f:translate(key:'loadDocumentation')}" />
 
 	<div class="right">
 		<f:form.submit name="force" value="{f:translate(key:'toolbar.renderAgain')}" />

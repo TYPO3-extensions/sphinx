@@ -23,7 +23,6 @@
 			</trans-unit>
 			<trans-unit id="loadDocumentation">
 				<source>Go</source>
-				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.2.1</note>
 			</trans-unit>
 			<trans-unit id="documentationLayout">
 				<source>Layout:</source>
