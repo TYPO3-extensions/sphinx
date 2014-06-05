@@ -416,7 +416,7 @@ modifiable lorsqu'il est publié sur http://docs.typo3.org:
 	:alt: Lien pour modifier le chapitre courant sur GitHub
 
 Afin de rendre ce lien visible, vous devez ajouter l'URI GitHub relative du dépôt de votre projet et la branche utilisée
-(typiquement "master") au fichier de configuration :file:`Configuration/Settings.yml`:
+(typiquement "master") au fichier de configuration :file:`Documentation/Settings.yml`:
 
 .. code-block:: yaml
 	:linenos:

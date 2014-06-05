@@ -399,7 +399,7 @@ on http://docs.typo3.org:
 	:alt: Link to edit the chapter on GitHub
 
 To make this link visible, you should add the relative URI of your GitHub project repository and the branch you are
-using (typically "master") to the configuration file :file:`Configuration/Settings.yml`:
+using (typically "master") to the configuration file :file:`Documentation/Settings.yml`:
 
 .. code-block:: yaml
 	:linenos:
