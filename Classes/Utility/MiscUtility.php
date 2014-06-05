@@ -671,6 +671,18 @@ HTML;
 						}
 					}
 				}
+
+				// Remove *.tmpl directories
+				// @see http://forge.typo3.org/issues/59356
+				$templateDirectories = array_filter(
+					GeneralUtility::get_dirs($source),
+					function ($directory) {
+						return substr($directory, -5) === '.tmpl';
+					}
+				);
+				foreach ($templateDirectories as $directory) {
+					GeneralUtility::rmdir($basePath . DIRECTORY_SEPARATOR . $directory, TRUE);
+				}
 			break;
 			case $documentationTypes & static::DOCUMENTATION_TYPE_README:
 				$extensionPath = static::extPath($extensionKey);
