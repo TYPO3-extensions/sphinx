@@ -31,6 +31,11 @@ Known problems
   Another reason for seeing this error, even when ``binSetup`` is manually configured is that you accidentally disabled
   execution of programs in the backend by setting ``$TYPO3_CONF_VARS['BE']['disable_exec_function']`` to ``1``.
 
+  Yet another related problem has been reported by someone using `Homebrew <http://brew.sh/>`_ with Mac OS X. Although
+  Python was properly detected and could be used, the Sphinx binaries were not built correctly. This was fixed by
+  changing the order of paths to be searched for in ``$TYPO3_CONF_VARS['SYS']['binPath']`` to ensure the system version
+  of Python being used instead of the one coming with Homebrew.
+
 - A few Linux distributions (such as Fedora) do not provide ``docutils`` or the header files and libraries to
   develop Python extensions. With a vanilla Fedora, you may install missing components with:
 

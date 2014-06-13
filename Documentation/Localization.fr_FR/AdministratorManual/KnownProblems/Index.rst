@@ -32,6 +32,12 @@ Problèmes connus
   désactivé l'exécution des programmes dans le backend en définissant ``$TYPO3_CONF_VARS['BE']['disable_exec_function']``
   à ``1``.
 
+  Un autre problème a été rapporté par une personne utilisant `Homebrew <http://brew.sh/>`_ avec Mac OS X. Bien que
+  Python ait été correctement détecté et pouvait être utilisé, les binaires Sphinx n'étaient pas compilés. Ce problème
+  a été corrigé en changeant l'ordre des chemins d'inclusion à utiliser avec ``$TYPO3_CONF_VARS['SYS']['binPath']`` et
+  en s'assurant que la version de Python du système d'exploitation était utilisée en lieu et place de celle fournie par
+  Homebrew.
+
 - Certaines distributions de Linux (comme Fedora) ne fournissent pas ``docutils`` ou les fichiers d'en-tête (*header files*)
   et les bibliothèques pour développer des extensions Python. Depuis une Fedora en version standard, vous pouvez installer
   les composants manquants avec :
