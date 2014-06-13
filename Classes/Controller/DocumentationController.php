@@ -120,6 +120,7 @@ class DocumentationController extends AbstractActionController {
 			'extensionsOpenOffice' => $extensionWithOpenOfficeDocumentation,
 			'customProjects' => $customProjects,
 			'oldTYPO3' => version_compare(TYPO3_version, '6.1.99', '<='),
+			'layout' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc') ? 'json' : 'html',
 		));
 	}
 

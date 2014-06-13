@@ -10,7 +10,7 @@
 	</thead>
 	<tbody>
 		<f:for each="{customProjects}" as="project">
-			<f:render partial="Documentation/Table/ProjectRow" arguments="{project: project}"/>
+			<f:render partial="Documentation/Table/ProjectRow" arguments="{project: project, layout: layout}"/>
 		</f:for>
 	</tbody>
 </table>

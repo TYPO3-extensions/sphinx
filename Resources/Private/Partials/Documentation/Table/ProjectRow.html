@@ -3,7 +3,9 @@
 	<td>{project.group}</td>
 	<td class="title">
 		<f:image src="EXT:sphinx/Resources/Public/Images/default_icon.png" alt="{project.name}" />
-		{project.name}
+		<f:link.action action="index" arguments="{reference: project.reference, layout: layout}" target="_parent">
+			{project.name}
+		</f:link.action>
 	</td>
 	<td>{project.description}</td>
 	<td class="actions">

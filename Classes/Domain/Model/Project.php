@@ -115,6 +115,15 @@ class Project {
 	}
 
 	/**
+	 * Returns the reference.
+	 *
+	 * @return string
+	 */
+	public function getReference() {
+		return 'USER:' . $this->documentationKey;
+	}
+
+	/**
 	 * Returns the name.
 	 *
 	 * @return string
