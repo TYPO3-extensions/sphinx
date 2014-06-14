@@ -454,6 +454,10 @@ class InteractiveViewerController extends AbstractActionController {
 	protected function htmlizeWarnings($path, $reference) {
 		$path = rtrim($path, '/') . '/';
 		$mtime = filemtime($path . 'warnings.txt');
+		$userToken = substr(GeneralUtility::hmac(
+			$GLOBALS['BE_USER']->getSessionData('formSessionToken'),
+			$GLOBALS['BE_USER']->user['uid']
+		), 0, 10);
 
 		$cacheDirectory = GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/');
 		$cacheFiles = glob($cacheDirectory . 'warnings-' . md5($path) . '.*');
@@ -461,15 +465,19 @@ class InteractiveViewerController extends AbstractActionController {
 			// An error occured
 			$cacheFiles = array();
 		}
-		if (count($cacheFiles) > 0) {
-			list($_, $timestamp) = explode('.', PathUtility::basename($cacheFiles[0]));
-			if ($timestamp == $mtime) {
-				return PathUtility::getRelativePathTo(PathUtility::dirname($cacheFiles[0]),
-					PATH_site) . PathUtility::basename($cacheFiles[0]);
-			} else {
-				// Cache file is now outdated
-				@unlink($cacheFiles[0]);
+		$validCacheFile = NULL;
+		foreach ($cacheFiles as $cacheFile) {
+			list($_, $token, $timestamp) = explode('.', PathUtility::basename($cacheFile));
+			if ($timestamp != $mtime) {
+				// Cache file is outdated
+				@unlink($cacheFile);
+			} elseif ($userToken === $token) {
+				$validCacheFile = $cacheFile;
 			}
+		}
+		if ($validCacheFile) {
+			return PathUtility::getRelativePathTo(PathUtility::dirname($validCacheFile),
+				PATH_site) . PathUtility::basename($validCacheFile);
 		}
 
 		// Cache does not exist or was outdated
@@ -556,10 +564,22 @@ class InteractiveViewerController extends AbstractActionController {
 HTML;
 
 		$contents = str_replace('###CONTENTS###', $contents, $htmlTemplate);
-		$cacheFile = $cacheDirectory . 'warnings-' . md5($path) . '.' . $mtime . '.html';
-		GeneralUtility::writeFile($cacheFile, $contents);
+		$cacheFile = $cacheDirectory . 'warnings-' . md5($path) . '.' . $userToken . '.' . $mtime . '.html';
+		try {
+			$success = GeneralUtility::writeFile($cacheFile, $contents);
+		} catch (\Exception $e) {
+			// Warnings (cannot write file) turned into fatals in development context
+			$success = FALSE;
+		}
 
-		return PathUtility::getRelativePathTo(dirname($cacheFile), PATH_site) . PathUtility::basename($cacheFile);
+
+		if ($success) {
+			$htmlFileName = PathUtility::getRelativePathTo(dirname($cacheFile), PATH_site) . PathUtility::basename($cacheFile);
+		} else {
+			$htmlFileName = '../' . substr($path, strlen(PATH_site)) . 'warnings.txt';
+		}
+
+		return $htmlFileName;
 	}
 
 }
