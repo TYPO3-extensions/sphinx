@@ -256,10 +256,35 @@ class CustomProject {
 					);
 			}
 		} catch (\RuntimeException $e) {
-			$filename = 'typo3temp/tx_myext_' . $e->getCode() . '.log';
-			$content = $e->getMessage();
-			GeneralUtility::writeFile(PATH_site . $filename, $content);
-			$documentationUrl = '../' . $filename;
+			switch ($e->getCode()) {
+				case 1366210198:	// Sphinx is not configured
+				case 1366280021:	// Sphinx cannot be executed
+					$baseUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
+					$emLink = $baseUrl . MiscUtility::getExtensionManagerLink('sphinx', 'Configuration', 'showConfigurationForm');
+					$templateContent = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Exception</title>
+  </head>
+  <body>
+    <pre>###CONTENT###</pre>
+    <p><a href="$emLink" target="_parent">Click here</a> to configure the sphinx extension.</p>
+  </body>
+</html>
+HTML;
+					$extensionFileName = '.html';
+					break;
+				default:
+					$templateContent = '###CONTENT###';
+					$extensionFileName = '.log';
+					break;
+			}
+			$fileName = 'typo3temp/tx_myext_' . $e->getCode() . $extensionFileName;
+			$content = str_replace('###CONTENT###', $e->getMessage(), $templateContent);
+			GeneralUtility::writeFile(PATH_site . $fileName, $content);
+			$documentationUrl = '../' . $fileName;
 		}
 
 		// Automatically fix Intersphinx mapping, if needed

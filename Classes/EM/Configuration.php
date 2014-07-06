@@ -75,7 +75,12 @@ class Configuration {
 
 		if (!$versions) {
 			$emLink = \Causal\Sphinx\Utility\MiscUtility::getExtensionManagerLink('sphinx', 'UpdateScript', 'show');
-			$out[] = sprintf('No versions of Sphinx available. Please <a href="%s">run Update script</a> first.', $emLink);
+			$message = sprintf('Please <a href="%s">run Update script</a> first.', $emLink);
+
+			$out[] = '<div class="typo3-message message-warning">';
+			$out[] = '<div class="message-header">No versions of Sphinx available</div>';
+			$out[] = '<div class="message-body">' . $message . '</div>';
+			$out[] = '</div>';
 		}
 
 		$selectedVersion = $params['fieldValue'];

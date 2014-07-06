@@ -161,7 +161,7 @@ class DocumentationController extends AbstractActionController {
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371162948);
 		}
 
-		if (substr($documentationUrl, -4) === '.pdf') {
+		if (GeneralUtility::inList('.pdf,.html,.log', substr($documentationUrl, strrpos($documentationUrl, '.')))) {
 			// Prevent browser-cache issue
 			$documentationUrl .= '?t=' . $GLOBALS['EXEC_TIME'];
 		}

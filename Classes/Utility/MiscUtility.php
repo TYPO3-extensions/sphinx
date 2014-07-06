@@ -725,11 +725,36 @@ HTML;
 				SphinxBuilder::buildHtml($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale);
 			}
 		} catch (\RuntimeException $e) {
-			$relativeFilename = 'typo3temp/tx_' . static::$extKey . '/' . $e->getCode() . '.log';
-			$absoluteFilename = GeneralUtility::getFileAbsFileName($relativeFilename);
-			$content = $e->getMessage();
-			GeneralUtility::writeFile($absoluteFilename, $content);
-			return '../' . $relativeFilename;
+			switch ($e->getCode()) {
+				case 1366210198:	// Sphinx is not configured
+				case 1366280021:	// Sphinx cannot be executed
+					$baseUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
+					$emLink = $baseUrl . static::getExtensionManagerLink('sphinx', 'Configuration', 'showConfigurationForm');
+					$templateContent = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Exception</title>
+  </head>
+  <body>
+    <pre>###CONTENT###</pre>
+    <p><a href="$emLink" target="_parent">Click here</a> to configure the sphinx extension.</p>
+  </body>
+</html>
+HTML;
+					$extensionFileName = '.html';
+					break;
+				default:
+					$templateContent = '###CONTENT###';
+					$extensionFileName = '.log';
+					break;
+			}
+			$relativeFileName = 'typo3temp/tx_' . static::$extKey . '/' . $e->getCode() . $extensionFileName;
+			$absoluteFileName = GeneralUtility::getFileAbsFileName($relativeFileName);
+			$content = str_replace('###CONTENT###', $e->getMessage(), $templateContent);
+			GeneralUtility::writeFile($absoluteFileName, $content);
+			return '../' . $relativeFileName;
 		}
 
 		GeneralUtility::rmdir($absoluteOutputDirectory, TRUE);
@@ -1302,6 +1327,7 @@ YAML;
 		$urlParameters = $additionalUrlParameters;
 
 		if (!empty($extensionKey)) {
+			$urlParameters[$namespace . '[extension][key]'] = $extensionKey;
 			$urlParameters[$namespace . '[extensionKey]'] = $extensionKey;
 		}
 		if (!empty($controller) && !empty($action)) {
