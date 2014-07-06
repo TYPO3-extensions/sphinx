@@ -115,7 +115,7 @@ HTML;
 		}
 
 		// Handle form operation, if needed
-		$operation = CoreGeneralUtility::_POST('operation');
+		$operation = CoreGeneralUtility::_GP('operation');
 		if ($operation) {
 			list($action, $version) = explode('-', $operation, 2);
 

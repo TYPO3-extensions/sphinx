@@ -1287,4 +1287,30 @@ YAML;
 		return static::$listUtility;
 	}
 
+	/**
+	 * Returns a link to the Extension Manager (EM) for an optional given action.
+	 *
+	 * @param string $extensionKey
+	 * @param string $controller
+	 * @param string $action
+	 * @param array $additionalUrlParameters
+	 * @return string
+	 */
+	static public function getExtensionManagerLink($extensionKey = '', $controller = '', $action = '', array $additionalUrlParameters = array()) {
+		$namespace = 'tx_extensionmanager_tools_extensionmanagerextensionmanager';
+		$moduleName = 'tools_ExtensionmanagerExtensionmanager';
+		$urlParameters = $additionalUrlParameters;
+
+		if (!empty($extensionKey)) {
+			$urlParameters[$namespace . '[extensionKey]'] = $extensionKey;
+		}
+		if (!empty($controller) && !empty($action)) {
+			$urlParameters[$namespace . '[controller]'] = $controller;
+			$urlParameters[$namespace . '[action]'] = $action;
+		}
+
+		$extensionManagerUri = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName, $urlParameters);
+		return $extensionManagerUri;
+	}
+
 }

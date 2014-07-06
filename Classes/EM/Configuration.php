@@ -25,6 +25,8 @@ namespace Causal\Sphinx\EM;
  ***************************************************************/
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\CommandUtility;
+use Causal\Sphinx\Utility\Setup;
 
 /**
  * Configuration class for the TYPO3 Extension Manager.
@@ -60,11 +62,11 @@ class Configuration {
 		$versions = array_diff($versions, array('bin'));
 
 		// Maybe a global install of Sphinx is available
-		$sphinxBuilder = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build');
+		$sphinxBuilder = CommandUtility::getCommand('sphinx-build');
 		// Do not resolve symbolic link here, no need if after all one wants to link to a local version of sphinx-build
 		if ($sphinxBuilder && !GeneralUtility::isFirstPartOfStr($$sphinxBuilder, $sphinxPath)) {
 			$output = array();
-			\TYPO3\CMS\Core\Utility\CommandUtility::exec(escapeshellarg($sphinxBuilder) . ' --version 2>&1', $output);
+			CommandUtility::exec(escapeshellarg($sphinxBuilder) . ' --version 2>&1', $output);
 			$versionLine = $output[0];
 			$versionParts = explode(' ', $versionLine);
 			$globalVersion = end($versionParts);
@@ -72,7 +74,8 @@ class Configuration {
 		}
 
 		if (!$versions) {
-			$out[] = 'No versions of Sphinx available. Please run Update script first.';
+			$emLink = \Causal\Sphinx\Utility\MiscUtility::getExtensionManagerLink('sphinx', 'UpdateScript', 'show');
+			$out[] = sprintf('No versions of Sphinx available. Please <a href="%s">run Update script</a> first.', $emLink);
 		}
 
 		$selectedVersion = $params['fieldValue'];
@@ -105,7 +108,7 @@ class Configuration {
 		if (count($versions) > 0) {
 			// Sphinx actually relies by default on Jinja2 as templating engine and Jinja2 requires Python 2.6
 			// We don't check this as a hard requirement but will issue a warning
-			$pythonVersion = \Causal\Sphinx\Utility\Setup::getPythonVersion();
+			$pythonVersion = Setup::getPythonVersion();
 			if (version_compare($pythonVersion, '2.6', '<')) {
 				$out[] = '<div class="typo3-message message-warning">';
 				//$out[] = '<div class="message-header">Message head</div>';
@@ -163,7 +166,7 @@ JS;
 	 */
 	public function getPlugins(array $params, \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj) {
 		$out = array();
-		$plugins = \Causal\Sphinx\Utility\Setup::getAvailableThirdPartyPlugins();
+		$plugins = Setup::getAvailableThirdPartyPlugins();
 
 		$out[] = '<div class="typo3-message message-warning">';
 		//$out[] = '<div class="message-header">Message head</div>';
@@ -175,7 +178,18 @@ JS;
 		$out[] = '<div class="typo3-message message-information">';
 		//$out[] = '<div class="message-header">Message head</div>';
 		$out[] = '<div class="message-body">';
-		$out[] = 'Please rebuild your Sphinx environment after activating plugins.';
+		$sphinxVersion = \Causal\Sphinx\Utility\SphinxBuilder::getSphinxVersion();
+		// Fix parameter value for beta releases
+		$sphinxVersion = str_replace('b', ' beta ', $sphinxVersion);
+		$emLink = \Causal\Sphinx\Utility\MiscUtility::getExtensionManagerLink(
+			'sphinx',
+			'UpdateScript',
+			'show',
+			array(
+				'operation' => 'BUILD-' . $sphinxVersion,
+			)
+		);
+		$out[] = sprintf('Please <a href="%s">rebuild your Sphinx environment</a> after activating plugins.', $emLink);
 		$out[] = '</div>';
 		$out[] = '</div>';
 
