@@ -746,8 +746,30 @@ HTML;
 					$extensionFileName = '.html';
 					break;
 				default:
-					$templateContent = '###CONTENT###';
-					$extensionFileName = '.log';
+					$templateContent = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Exception</title>
+    <style type="text/css">
+    pre {
+      width: 80em;
+
+      white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
+      white-space: -pre-wrap; /* Opera */
+      white-space: -o-pre-wrap; /* Opera */
+      white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
+      word-wrap: break-word; /* IE 5.5+ */
+    }
+    </style>
+  </head>
+  <body>
+    <pre>###CONTENT###</pre>
+  </body>
+</html>
+HTML;
+					$extensionFileName = '.html';
 					break;
 			}
 			$relativeFileName = 'typo3temp/tx_' . static::$extKey . '/' . $e->getCode() . $extensionFileName;

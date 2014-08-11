@@ -757,7 +757,7 @@ class SphinxBuilder {
 			$COL_GRAY    => '<span style="color:#a9a9a9">',
 			$COL_RESET   => '</span>',
 		);
-		$output = preg_replace($ESC_SEQ . '01m/', '', $output);
+		$output = preg_replace($ESC_SEQ . '01m/', '<span>', $output);
 		foreach ($mapping as $pattern => $html) {
 			$output = preg_replace($pattern, $html, $output);
 		}
