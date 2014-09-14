@@ -85,7 +85,7 @@ class Configuration {
 
 		$selectedVersion = $params['fieldValue'];
 
-		if ($selectedVersion && $selectedVersion !== 'SYSTEM') {
+		if ($selectedVersion && $selectedVersion !== 'SYSTEM' && is_dir($sphinxPath . '/bin')) {
 			// Recreate the shortcut links to selected version
 			// /path/to/sphinx-doc/sphinx-build -> /path/to/sphinx-doc/sphinx-build-1.2b1
 			$scripts = array(
