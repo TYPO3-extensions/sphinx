@@ -64,11 +64,20 @@ class OpenOfficeConverter {
 		curl_setopt($ch, CURLOPT_USERAGENT, 'TYPO3 Sphinx');
 		curl_setopt($ch, CURLOPT_URL, $serviceUrl);
 		curl_setopt($ch, CURLOPT_POST, TRUE);
-		// same as <input type="file" name="manual">
+
+		// PHP 5.5 introduced a CurlFile object that deprecates the old @filename syntax
+		// See: https://wiki.php.net/rfc/curl-file-upload
+		if (function_exists('curl_file_create')) {
+			$value = curl_file_create($sxwFilename);
+		} else {
+			$value = '@' . $sxwFilename;
+		}
 		$post = array(
 			'action' => 'convert',
-			'manual' => '@' . $sxwFilename,
+			// same as <input type="file" name="manual">
+			'manual' => $value,
 		);
+
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 		$response = curl_exec($ch);
 		curl_close($ch);
