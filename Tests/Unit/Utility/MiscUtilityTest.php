@@ -68,12 +68,6 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function extensionDocumentationHasREADMEDocumentation() {
-		if (version_compare(TYPO3_version, '6.1.99', '<=')) {
-			$this->markTestIncomplete(
-				'This test can only run with TYPO3 6.2 LTS and above.'
-			);
-		}
-
 		$documentationTypes = MiscUtility::getDocumentationTypes('documentation');
 		$this->assertTrue($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_README ? TRUE : FALSE);
 	}

@@ -151,10 +151,6 @@ class ConsoleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		// Generate the list
 		$filelist->generateList();
-		if (version_compare(TYPO3_version, '6.1.99', '<=')) {
-			// Write the footer
-			$filelist->writeBottom();
-		}
 
 		// Setting up the buttons and markers for docheader
 		list($_, $markers) = $filelist->getButtonsAndOtherMarkers($this->folderObject);

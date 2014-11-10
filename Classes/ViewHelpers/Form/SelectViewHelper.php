@@ -49,11 +49,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 		parent::initializeArguments();
 		$this->registerTagAttribute('onchange', 'string', 'Javascript for the onchange event');
 		$this->registerArgument('groupOptions', 'boolean', 'Whether options should be grouped by 1st-dimension key');
-
-		if (version_compare(TYPO3_version, '6.1.0', '<')) {
-			$this->registerArgument('prependOptionLabel', 'string', 'If specified, will provide an option at first position with the specified label.');
-			$this->registerArgument('prependOptionValue', 'string', 'If specified, will provide an option at first position with the specified value.');
-		}
 	}
 
 	/**
