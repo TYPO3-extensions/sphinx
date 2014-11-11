@@ -54,10 +54,3 @@ $signalSlotDispatcher->connect(
 	'Causal\\Sphinx\\Slots\\CustomProject',
 	'retrieveRestFilename'
 );
-
-$signalSlotDispatcher->connect(
-	'TYPO3\\CMS\\Extensionmanager\\ViewHelpers\\ProcessAvailableActionsViewHelper',
-	'processActions',
-	'Causal\\Sphinx\\Slots\\ExtensionManager',
-	'processActions'
-);
