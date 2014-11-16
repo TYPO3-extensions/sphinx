@@ -25,6 +25,7 @@ namespace Causal\Sphinx\Domain\Model;
  ***************************************************************/
 
 use Causal\Sphinx\Utility\MiscUtility;
+use Causal\Restdoc\Utility\RestHelper;
 
 /**
  * Domain model for a Documentation.
@@ -85,8 +86,8 @@ class Documentation {
 		static $masterToc = NULL;
 		if ($masterToc === NULL) {
 			$masterToc = $this->sphinxReader->getMasterTableOfContents($this->callbackLinks, TRUE);
-			$data = $masterToc ? \Tx_Restdoc_Utility_Helper::getMenuData(\Tx_Restdoc_Utility_Helper::xmlstr_to_array($masterToc)) : array();
-			\Tx_Restdoc_Utility_Helper::processMasterTableOfContents($data, $this->sphinxReader->getDocument(), $this->callbackLinks);
+			$data = $masterToc ? RestHelper::getMenuData(RestHelper::xmlstr_to_array($masterToc)) : array();
+			RestHelper::processMasterTableOfContents($data, $this->sphinxReader->getDocument(), $this->callbackLinks);
 			$masterToc = $this->createMasterMenu($data);
 		}
 		return $masterToc;
@@ -154,7 +155,7 @@ class Documentation {
 
 					$contentCategory = '<h2 id="' . $anchor . '">' . htmlspecialchars($category) . '</h2>' . LF;
 					$contentCategory .= '<div class="tx-sphinx-genindextable">' . LF;
-					$contentCategory .= \Tx_Restdoc_Utility_Helper::getIndexDefinitionList($this->sphinxReader->getPath(), $indexGroup[1], $this->callbackLinks);
+					$contentCategory .= RestHelper::getIndexDefinitionList($this->sphinxReader->getPath(), $indexGroup[1], $this->callbackLinks);
 					$contentCategory .= '</div>' . LF;
 
 					$contentCategories[] = $contentCategory;
@@ -200,7 +201,7 @@ class Documentation {
 		if ($data === NULL) {
 			$previousDocument = $this->sphinxReader->getPreviousDocument();
 			if ($previousDocument !== NULL) {
-				$absolute = \Tx_Restdoc_Utility_Helper::relativeToAbsolute($this->sphinxReader->getPath() . $this->sphinxReader->getDocument(), '../' . $previousDocument['link']);
+				$absolute = RestHelper::relativeToAbsolute($this->sphinxReader->getPath() . $this->sphinxReader->getDocument(), '../' . $previousDocument['link']);
 				$link = call_user_func($this->callbackLinks, substr($absolute, strlen($this->sphinxReader->getPath())));
 
 				$data = array(
@@ -227,7 +228,7 @@ class Documentation {
 				} else {
 					$nextDocumentPath = $this->sphinxReader->getPath() . $this->sphinxReader->getDocument();
 				}
-				$absolute = \Tx_Restdoc_Utility_Helper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
+				$absolute = RestHelper::relativeToAbsolute($nextDocumentPath, '../' . $nextDocument['link']);
 				$link = call_user_func($this->callbackLinks, substr($absolute, strlen($this->sphinxReader->getPath())));
 
 				$data = array(
@@ -256,7 +257,7 @@ class Documentation {
 				$parentDocument = end($parentDocuments);
 				$parentDocumentPath = $this->sphinxReader->getPath() . $this->sphinxReader->getDocument();
 
-				$absolute = \Tx_Restdoc_Utility_Helper::relativeToAbsolute($parentDocumentPath, '../' . $parentDocument['link']);
+				$absolute = RestHelper::relativeToAbsolute($parentDocumentPath, '../' . $parentDocument['link']);
 				$link = call_user_func($this->callbackLinks, substr($absolute, strlen($this->sphinxReader->getPath())));
 
 				$data = array(

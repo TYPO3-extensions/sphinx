@@ -24,6 +24,7 @@ namespace Causal\Sphinx\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use Causal\Sphinx\Utility\MiscUtility;
@@ -40,7 +41,7 @@ use Causal\Sphinx\Utility\MiscUtility;
  */
 class InteractiveViewerController extends AbstractActionController {
 
-	/** @var \Tx_Restdoc_Reader_SphinxJson */
+	/** @var \Causal\Restdoc\Reader\SphinxJson */
 	protected $sphinxReader;
 
 	/** @var string */
@@ -61,8 +62,8 @@ class InteractiveViewerController extends AbstractActionController {
 	 * @return void
 	 */
 	protected function initializeAction() {
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc')) {
-			$this->sphinxReader = GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
+		if (ExtensionManagementUtility::isLoaded('restdoc')) {
+			$this->sphinxReader = GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
 			$this->sphinxReader
 				->setKeepPermanentLinks(FALSE)
 				->setDefaultFile('Index')
@@ -131,7 +132,7 @@ class InteractiveViewerController extends AbstractActionController {
 		$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference-' . $reference, $document);
 
 		/** @var \Causal\Sphinx\Domain\Model\Documentation $documentation */
-		$documentation = GeneralUtility::makeInstance('Causal\Sphinx\Domain\Model\Documentation', $this->sphinxReader);
+		$documentation = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Documentation', $this->sphinxReader);
 		$documentation->setCallbackLinks(array($this, 'getLink'));
 		$documentation->setCallbackImages(array($this, 'processImage'));
 
@@ -175,10 +176,10 @@ class InteractiveViewerController extends AbstractActionController {
 	 * @return void
 	 */
 	protected function checkExtensionRestdoc() {
-		if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc')) {
+		if (!ExtensionManagementUtility::isLoaded('restdoc')) {
 			$this->forward('missingRestdoc');
 		}
-		$restdocVersion = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionVersion('restdoc');
+		$restdocVersion = ExtensionManagementUtility::getExtensionVersion('restdoc');
 		// Removes -dev -alpha -beta -RC states from a version number
 		// and replaces them by .0
 		if (stripos($restdocVersion, '-dev') || stripos($restdocVersion, '-alpha') || stripos($restdocVersion, '-beta') || stripos($restdocVersion, '-RC')) {
