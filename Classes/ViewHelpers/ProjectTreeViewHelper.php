@@ -166,7 +166,7 @@ $(document).ready(function () {
 		revert: "invalid",
 		revertDuration: 300,
 		scroll: true
-	}).dblclick(function (e) {
+	}).dblclick(function (event) {
 		var file = $(event.target).closest("tr").attr('data-path');
 		CausalSphinxEditor.openFile(file);
 	});
