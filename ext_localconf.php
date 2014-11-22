@@ -1,7 +1,5 @@
 <?php
-if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
-}
+defined('TYPO3_MODE') or die();
 
 $textFileExtensions = explode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext']);
 $textFileExtensions = array_merge($textFileExtensions, array('json', 'py', 'rst', 'yml'));
