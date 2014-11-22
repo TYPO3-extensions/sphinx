@@ -285,7 +285,7 @@ class DocumentationController extends AbstractActionController {
 		$references = array();
 		foreach ($extensions as $extension) {
 			$typeLabel = $this->translate('extensionType_' . $extension->getInstallType());
-			$references[$typeLabel]['EXT:' . $extension->getExtensionKey()] = sprintf('%s (%s)', $extension->getTitle(), $extension->getExtensionKey());
+			$references[$typeLabel]['EXT:' . $extension->getExtensionKey()] = sprintf('[%2$s] %1$s', $extension->getTitle(), $extension->getExtensionKey());
 		}
 
 		$this->signalSlotDispatcher->dispatch(
@@ -295,6 +295,10 @@ class DocumentationController extends AbstractActionController {
 				'references' => &$references,
 			)
 		);
+
+		foreach (array_keys($references) as $key) {
+			asort($references[$key]);
+		}
 
 		return $references;
 	}
