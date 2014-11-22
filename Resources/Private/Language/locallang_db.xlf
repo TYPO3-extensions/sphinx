@@ -27,9 +27,6 @@
 			<trans-unit id="settings.build.rst2pdf">
 				<source>Install rst2pdf: Locally build rst2pdf, additional gcc libraries are needed</source>
 			</trans-unit>
-			<trans-unit id="settings.module.load_console">
-				<source>Load console module [DEPRECATED]: If ticked, the Sphinx Console module will be present under section "File". Please note that this module is deprecated and will be dropped sooner or later.</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

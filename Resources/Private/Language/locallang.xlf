@@ -9,12 +9,6 @@
 			<trans-unit id="em.downloadSphinx">
 				<source>Download Sphinx</source>
 			</trans-unit>
-			<trans-unit id="folderNotFoundTitle">
-				<source>Folder not found.</source>
-			</trans-unit>
-			<trans-unit id="folderNotFoundMessage">
-				<source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
-			</trans-unit>
 			<trans-unit id="showDocumentation">
 				<source>Show documentation:</source>
 			</trans-unit>
@@ -83,10 +77,6 @@
 			</trans-unit>
 			<trans-unit id="dashboard.title">
 				<source>Sphinx Dashboard</source>
-			</trans-unit>
-			<trans-unit id="kickstart.title">
-				<source>Kickstart Sphinx Documentation</source>
-				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.2.0.</note>
 			</trans-unit>
 			<trans-unit id="dashboard.tabs.kickstart.label">
 				<source>Kickstart</source>
