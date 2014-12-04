@@ -5,7 +5,7 @@
   "keywords": ["TYPO3 CMS", "reStructuredText", "sphinx-doc", "LaTeX", "documentation"],
   "homepage": "https://forge.typo3.org/projects/extension-sphinx",
   "license": "GPL-2.0+",
-  "version": "2.2.0-dev",
+  "version": "2.2.0",
   "support": {
 	"issues": "https://forge.typo3.org/projects/extension-sphinx/issues"
   }
