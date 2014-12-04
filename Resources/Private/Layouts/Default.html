@@ -6,6 +6,9 @@
 
 	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
 	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
+	<f:if condition="{typo3_7x}">
+		<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/typo3-7x.css')}" />
+	</f:if>
 
 	<sphinx:includeJs.jQuery version="1.8"/>
 	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>

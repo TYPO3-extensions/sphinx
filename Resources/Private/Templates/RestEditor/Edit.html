@@ -4,8 +4,15 @@
 <head>
 	<title>{document}</title>
 
-	<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/structure/element_message.css" />
-	<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/visual/element_message.css" />
+	<f:if condition="{typo3_7x}">
+		<f:then>
+			<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/visual/t3skin.css" />
+		</f:then>
+		<f:else>
+			<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/structure/element_message.css" />
+			<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/visual/element_message.css" />
+		</f:else>
+	</f:if>
 	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
 	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/jquery-ui.smoothness/jquery-ui-1.10.4.custom.min.css')}" />
 	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
@@ -29,6 +36,9 @@
 		CausalSphinxEditor.filename = "{filename}";
 		CausalSphinxEditor.startLine = {startLine};
 		CausalSphinxEditor.isReadOnly = '{readOnly}';
+
+		// Initialize flash messages
+		CausalSphinx.Flashmessage.isTYPO3v7 = {f:if(condition:typo3_7x,then:'true',else:'false')};
 
 		// Initialize the editor's actions
 		CausalSphinxEditor.actions.projectTree = "{f:uri.action(action:'projectTree', arguments:{path:projectPath, filename:'FILENAME'})}";

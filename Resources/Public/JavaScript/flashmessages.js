@@ -37,20 +37,38 @@ if (typeof CausalSphinx == 'undefined') CausalSphinx = {};
  * CausalSphinx.Flashmessage.display(1, 'TYPO3 Backend - Version 4.4', 'Ready for take off', 3);
  */
 CausalSphinx.Flashmessage = function () {
+
 	var messageContainer;
 	var severities = ['notice', 'information', 'ok', 'warning', 'error', 'raw'];
 
-	function createBox(severity, title, message) {
-		return severity == 'raw' ? message : ['<div class="typo3-message message-', severity, '">',
-			'<div class="t3-icon t3-icon-actions t3-icon-actions-message t3-icon-actions-message-close t3-icon-message-' + severity + '-close"></div>',
-			'<div class="header-container">',
-			'<div class="message-header">', title, '</div>',
-			'</div>',
-			'<div class="message-body">', message, '</div>',
-			'</div>'].join('');
+	function createBox(severity, title, message, isTYPO3v7) {
+		if (severity == 'raw') return message;
+		if (isTYPO3v7) {
+			if (severity == 'notice' || severity == 'information') {
+				severity = 'info';
+			} else if (severity == 'ok') {
+				severity = 'success';
+			} else if (severity == 'error') {
+				severity = 'danger';
+			}
+			return ['<div class="alert alert-', severity, '">',
+				'<h4>', title, '</h4>',
+				'<div class="alert-body">', message, '</div>'].join('');
+		} else {
+			return ['<div class="typo3-message message-', severity, '">',
+				'<div class="t3-icon t3-icon-actions t3-icon-actions-message t3-icon-actions-message-close t3-icon-message-' + severity + '-close"></div>',
+				'<div class="header-container">',
+				'<div class="message-header">', title, '</div>',
+				'</div>',
+				'<div class="message-body">', message, '</div>',
+				'</div>'].join('');
+		}
 	}
 
 	return {
+
+		isTYPO3v7: false,
+
 		/**
 		 * Shows popup
 		 * @member CausalSphinx.Flashmessage
@@ -70,7 +88,7 @@ CausalSphinx.Flashmessage = function () {
 				});
 			}
 
-			var box = createBox(severities[severity], title, message);
+			var box = createBox(severities[severity], title, message, CausalSphinx.Flashmessage.isTYPO3v7);
 			messageContainer.html(box);
 			messageContainer.css('top', -messageContainer.outerHeight());
 

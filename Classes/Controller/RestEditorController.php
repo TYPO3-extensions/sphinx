@@ -79,6 +79,8 @@ class RestEditorController extends AbstractActionController {
 		$this->view->assign('buttons', $buttons);
 
 		$this->view->assign('controller', $this);
+
+		$this->view->assign('typo3_7x', version_compare(TYPO3_branch, '7', '>='));
 	}
 
 	// -----------------------------------------------

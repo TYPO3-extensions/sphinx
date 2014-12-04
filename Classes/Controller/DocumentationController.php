@@ -62,7 +62,7 @@ class DocumentationController extends AbstractActionController {
 	 * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
 	 * @return void
 	 */
-	protected function indexAction($reference = NULL, $document = '', $layout = '', $force = FALSE) {
+	public function indexAction($reference = NULL, $document = '', $layout = '', $force = FALSE) {
 		$references = $this->getReferences();
 		$layouts = $this->getLayouts();
 
@@ -102,6 +102,7 @@ class DocumentationController extends AbstractActionController {
 			'currentReference' => $currentReference,
 			'currentLayout' => $currentLayout,
 			'contentActionUrl' => $contentActionUrl,
+			'typo3_7x' => version_compare(TYPO3_branch, '7', '>='),
 		));
 	}
 
@@ -110,7 +111,7 @@ class DocumentationController extends AbstractActionController {
 	 *
 	 * @return void
 	 */
-	protected function dashboardAction() {
+	public function dashboardAction() {
 		$extensionsWithoutDocumentation = $this->extensionRepository->findByHasNoDocumentation('G,L');
 		$extensionWithOpenOfficeDocumentation = $this->extensionRepository->findByHasOpenOffice('G,L');
 		$customProjects = $this->projectRepository->findAll();
@@ -133,7 +134,7 @@ class DocumentationController extends AbstractActionController {
 	 * @return void
 	 * @throws \RuntimeException
 	 */
-	protected function renderAction($reference = '', $document = '', $layout = 'html', $force = FALSE) {
+	public function renderAction($reference = '', $document = '', $layout = 'html', $force = FALSE) {
 		list($type, $identifier) = explode(':', $reference, 2);
 		switch ($type) {
 			case 'EXT':
@@ -206,7 +207,7 @@ class DocumentationController extends AbstractActionController {
 	 * @param string $extensionKey The TYPO3 extension key
 	 * @return void
 	 */
-	protected function convertAction($extensionKey) {
+	public function convertAction($extensionKey) {
 		$extensionPath = MiscUtility::extPath($extensionKey);
 		$sxwFilename = $extensionPath . 'doc/manual.sxw';
 		$documentationDirectory = $extensionPath . 'Documentation';
@@ -239,7 +240,7 @@ class DocumentationController extends AbstractActionController {
 	 * @param string $extensionKey The TYPO3 extension key
 	 * @return void
 	 */
-	protected function createExtensionProjectAction($extensionKey) {
+	public function createExtensionProjectAction($extensionKey) {
 		$extensionPath = MiscUtility::extPath($extensionKey);
 		$documentationDirectory = $extensionPath . 'Documentation';
 		$reference = NULL;
