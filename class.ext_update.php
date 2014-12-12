@@ -91,7 +91,6 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		}
 
 		// Fetch the list of official versions of Sphinx
-		$report = array();
 		$availableVersions = Setup::getSphinxAvailableVersions();
 		// Load the list of locally available versions of Sphinx
 		$localVersions = Setup::getSphinxLocalVersions();
@@ -173,11 +172,11 @@ HTML;
 		$out[] = '<form action="' . CoreGeneralUtility::linkThisScript() . '" method="post">';
 		$out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
 
-		$out[] = '<table class="typo3-dblist" style="width:auto">';
-		$out[] = '<tr class="t3-row-header">';
-		$out[] = '<td colspan="2">&nbsp;</td>';
-		$out[] = '<td>1-click Process</td>';
-		$out[] = '<td>Manual Process</td>';
+		$out[] = '<table class="t3-table" style="width:auto">';
+		$out[] = '<tr>';
+		$out[] = '<th colspan="2">&nbsp;</th>';
+		$out[] = '<th>1-click Process</th>';
+		$out[] = '<th>Manual Process</th>';
 		$out[] = '</tr>';
 
 		$installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
@@ -195,7 +194,7 @@ HTML;
 				$hasLibraries &= Setup::hasRst2Pdf();
 			}
 
-			$out[] = '<tr class="' . (++$i % 2 == 0 ? 't3-row-even' : 't3-row-odd') . '" style="padding:5px">';
+			$out[] = '<tr>';
 			$out[] = '<td>' . ($isInstalled ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '</td>';
 			$out[] = '<td>';
 			$out[] = 'Sphinx ' . htmlspecialchars($version['name']);
