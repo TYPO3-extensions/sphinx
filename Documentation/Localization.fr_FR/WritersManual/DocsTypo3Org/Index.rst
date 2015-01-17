@@ -65,20 +65,20 @@ Un fichier standard :file:`Settings.yml` devrait définir certaines informations
 	:linenos:
 
 	conf.py:
-	  copyright: 2013-2014
+	  copyright: 2013-2015
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 2.1
-	  release: 2.1.0
+	  version: 2.2
+	  release: 2.2.1
 
 project
 	Le nom du projet de documentation.
 
 copyright
-	Une mention de copyright du genre ``2013, Nom de l'auteur``.
+	Une mention de copyright du genre ``2015, Nom de l'auteur``.
 
 	.. tip::
 		Au sein de la documention TYPO3 officielle, nous ne renseignons généralement que l'année ou l'intervalle
-		d'années comme ``2013`` ou ``2010-2013``.
+		d'années comme ``2015`` ou ``2010-2015``.
 
 version
 	La version majeure du projet, utilisé comme remplacement pour ``|version|``. Par exemple, pour la documentation
@@ -117,10 +117,10 @@ au besoin) et doit être explicitement activée pour votre extension. Pour se fa
 	:emphasize-lines: 6-15
 
 	conf.py:
-	  copyright: 2013-2014
+	  copyright: 2013-2015
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 2.1
-	  release: 2.1.0
+	  version: 2.2
+	  release: 2.2.1
 	  latex_documents:
 	  - - Index
 	    - sphinx.tex
@@ -322,10 +322,10 @@ la correspondance Intersphinx dans :file:`Settings.yml`. Pour se faire, ajoutez 
 	:emphasize-lines: 6-9
 
 	conf.py:
-	  copyright: 2013-2014
+	  copyright: 2013-2015
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 2.1
-	  release: 2.1.0
+	  version: 2.2
+	  release: 2.2.1
 	  intersphinx_mapping:
 	    restdoc:
 	    - http://docs.typo3.org/typo3cms/extensions/restdoc/
@@ -358,10 +358,10 @@ Intersphinx ``t3cmsapi`` :
 	:emphasize-lines: 7-9
 
 	conf.py:
-	  copyright: 2013-2014
+	  copyright: 2013-2015
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 2.1
-	  release: 2.1.0
+	  version: 2.2
+	  release: 2.2.1
 	  intersphinx_mapping:
 	    t3cmsapi:
 	    - http://typo3.org/api/typo3cms/
@@ -423,10 +423,10 @@ Afin de rendre ce lien visible, vous devez ajouter l'URI GitHub relative du dép
 	:emphasize-lines: 6-8
 
 	conf.py:
-	  copyright: 2013-2014
+	  copyright: 2013-2015
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 2.1
-	  release: 2.1.0
+	  version: 2.2
+	  release: 2.2.1
 	  html_theme_options:
 	    github_repository: xperseguers/t3ext-sphinx
 	    github_branch: master

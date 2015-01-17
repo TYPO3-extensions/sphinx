@@ -62,20 +62,20 @@ A basic :file:`Settings.yml` file should define a few basic project information:
 	:linenos:
 
 	conf.py:
-	  copyright: 2013-2014
+	  copyright: 2013-2015
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 2.1
-	  release: 2.1.0
+	  version: 2.2
+	  release: 2.2.1
 
 project
 	The documented project's name.
 
 copyright
-	A copyright statement in the style ``2013, Author Name``.
+	A copyright statement in the style ``2015, Author Name``.
 
 	.. tip::
-		Within TYPO3 official documentation, we usually only show the year(s) of copyright, e.g., ``2013``
-		or ``2010-2013``.
+		Within TYPO3 official documentation, we usually only show the year(s) of copyright, e.g., ``2015``
+		or ``2010-2015``.
 
 version
 	The major project version, used as the replacement for ``|version|``. For example, for the TYPO3
@@ -112,10 +112,10 @@ documentation folder) and make sure it contains following configuration options 
 	:emphasize-lines: 6-15
 
 	conf.py:
-	  copyright: 2013-2014
+	  copyright: 2013-2015
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 2.1
-	  release: 2.1.0
+	  version: 2.2
+	  release: 2.2.1
 	  latex_documents:
 	  - - Index
 	    - sphinx.tex
@@ -308,10 +308,10 @@ within :file:`Settings.yml`. To do so, add configuration options (lines 6 to 9):
 	:emphasize-lines: 6-9
 
 	conf.py:
-	  copyright: 2013-2014
+	  copyright: 2013-2015
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 2.1
-	  release: 2.1.0
+	  version: 2.2
+	  release: 2.2.1
 	  intersphinx_mapping:
 	    restdoc:
 	    - http://docs.typo3.org/typo3cms/extensions/restdoc/
@@ -341,10 +341,10 @@ file :file:`Settings.yml` and add an Intersphinx mapping ``t3cmsapi``:
 	:emphasize-lines: 7-9
 
 	conf.py:
-	  copyright: 2013-2014
+	  copyright: 2013-2015
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 2.1
-	  release: 2.1.0
+	  version: 2.2
+	  release: 2.2.1
 	  intersphinx_mapping:
 	    t3cmsapi:
 	    - http://typo3.org/api/typo3cms/
@@ -406,10 +406,10 @@ using (typically "master") to the configuration file :file:`Documentation/Settin
 	:emphasize-lines: 6-8
 
 	conf.py:
-	  copyright: 2013-2014
+	  copyright: 2013-2015
 	  project: Sphinx Python Documentation Generator and Viewer
-	  version: 2.1
-	  release: 2.1.0
+	  version: 2.2
+	  release: 2.2.1
 	  html_theme_options:
 	    github_repository: xperseguers/t3ext-sphinx
 	    github_branch: master
