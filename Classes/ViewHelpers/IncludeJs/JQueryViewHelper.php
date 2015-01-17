@@ -39,6 +39,7 @@ class JQueryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		$isEmpty = empty($version);
 		$isThreeDigits = !$isEmpty && preg_match('/^\d+\.\d+\.\d+$/', $version);
 		$isTwoDigits = !$isEmpty && !$isThreeDigits && preg_match('/^\d+\.\d+$/', $version);
+		$origVersion = $version;
 
 		if (!$isThreeDigits) {
 			$files = GeneralUtility::getFilesInDir(PATH_typo3 . 'contrib/jquery');
@@ -46,10 +47,9 @@ class JQueryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 				if (preg_match('/^jquery-([0-9.]+).min.js$/', $file, $matches)) {
 					if ($isTwoDigits) {
 						if (version_compare($matches[1], $version, '>=')
-							&& version_compare($matches[1], $version . '.99', '<=')) {
+							&& version_compare($matches[1], $origVersion . '.99', '<=')) {
 
 							$version = $matches[1];
-							break;
 						}
 					} elseif (empty($version) || version_compare($version, $matches[1], '<')) {
 						$version = $matches[1];
