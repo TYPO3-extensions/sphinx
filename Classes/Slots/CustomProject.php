@@ -135,6 +135,23 @@ class CustomProject {
 				break;
 		}
 
+		$configurationFilename = $absoluteBasePath . $confFilename;
+		$backupConfigurationFilename = $configurationFilename . '.bak';
+		if (!copy($configurationFilename, $backupConfigurationFilename)) {
+			throw new \RuntimeException('Could not pre-process configuration file "' . $configurationFilename . '"', 1423582193);
+		}
+
+		if ($confFilename === '_make/conf.py') {
+			$settingsYamlFilename = $absoluteBasePath . 'Settings.yml';
+			MiscUtility::overrideThemeT3Sphinx($absoluteBasePath);
+			if (is_file($settingsYamlFilename)) {
+				$confpy = file_get_contents($configurationFilename);
+				$pythonConfiguration = MiscUtility::yamlToPython($settingsYamlFilename);
+				$confpy .= LF . '# Additional options from Settings.yml' . LF . implode(LF, $pythonConfiguration);
+				GeneralUtility::writeFile($configurationFilename, $confpy);
+			}
+		}
+
 		try {
 			switch ($layout) {
 				case 'html':        // Static
@@ -162,42 +179,21 @@ class CustomProject {
 				case 'json':        // Interactive
 					$masterFile = $buildDirectory . 'json/Index.fjson';
 					if ($force || !is_file($absoluteBasePath . $masterFile)) {
-						$configurationFilename = $absoluteBasePath . $confFilename;
-						$backupConfigurationFilename = $configurationFilename . '.bak';
-						if (copy($configurationFilename, $backupConfigurationFilename)) {
-							if ($confFilename === '_make/conf.py') {
-								$settingsYamlFilename = $absoluteBasePath . 'Settings.yml';
-								MiscUtility::overrideThemeT3Sphinx($absoluteBasePath);
-								if (is_file($settingsYamlFilename)) {
-									$confpyFilename = $absoluteBasePath . $confFilename;
-									$confpy = file_get_contents($confpyFilename);
-									$pythonConfiguration = MiscUtility::yamlToPython($settingsYamlFilename);
-									$confpy .= LF . '# Additional options from Settings.yml' . LF . implode(LF, $pythonConfiguration);
-									GeneralUtility::writeFile($confpyFilename, $confpy);
-								}
-							}
-
-							if (is_file($warningsFilename)) {
-								@unlink($warningsFilename);
-							}
-							\Causal\Sphinx\Utility\SphinxBuilder::buildJson(
-								$absoluteBasePath,
-								$sourceDirectory,
-								$buildDirectory,
-								$confFilename,
-								$project->getLanguage()
-							);
-							$targetWarningsFilename = $absoluteBasePath . $buildDirectory . 'json/warnings.txt';
-							if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
-								copy($warningsFilename, $targetWarningsFilename);
-							} elseif (is_file($targetWarningsFilename)) {
-								@unlink($targetWarningsFilename);
-							}
-
-							if (file_exists($backupConfigurationFilename)) {
-								// Replace special-crafted conf.py by the backup version
-								rename($backupConfigurationFilename, $configurationFilename);
-							}
+						if (is_file($warningsFilename)) {
+							@unlink($warningsFilename);
+						}
+						\Causal\Sphinx\Utility\SphinxBuilder::buildJson(
+							$absoluteBasePath,
+							$sourceDirectory,
+							$buildDirectory,
+							$confFilename,
+							$project->getLanguage()
+						);
+						$targetWarningsFilename = $absoluteBasePath . $buildDirectory . 'json/warnings.txt';
+						if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
+							copy($warningsFilename, $targetWarningsFilename);
+						} elseif (is_file($targetWarningsFilename)) {
+							@unlink($targetWarningsFilename);
 						}
 					}
 					$documentationUrl = '../' . $basePath . $masterFile;
@@ -275,6 +271,11 @@ HTML;
 			$content = str_replace('###CONTENT###', $e->getMessage(), $templateContent);
 			GeneralUtility::writeFile(PATH_site . $fileName, $content);
 			$documentationUrl = '../' . $fileName;
+		}
+
+		if (file_exists($backupConfigurationFilename)) {
+			// Replace special-crafted conf.py by the backup version
+			rename($backupConfigurationFilename, $configurationFilename);
 		}
 
 		// Automatically fix Intersphinx mapping, if needed

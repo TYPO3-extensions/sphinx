@@ -876,6 +876,7 @@ HTML;
 	 * @see http://forge.typo3.org/issues/48311
 	 */
 	static public function overrideThemeT3Sphinx($basePath) {
+		$basePath = rtrim($basePath, '/');
 		$configuration = file_get_contents($basePath . '/_make/conf.py');
 		$t3sphinxImportPattern = '/^(\s*)import\s+t3sphinx\s*$/m';
 
