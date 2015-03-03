@@ -42,6 +42,62 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 	}
 
 	/**
+	 * Gets the select options.
+	 *
+	 * @return array an associative array of options, key will be the value of the option tag
+	 * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+	 */
+	protected function getOptions() {
+		if (!is_array($this->arguments['options']) && !$this->arguments['options'] instanceof \Traversable) {
+			return array();
+		}
+		$options = array();
+		$optionsArgument = $this->arguments['options'];
+		foreach ($optionsArgument as $key => $value) {
+			// Additional test for $this->hasArgument below is what is different with parent method
+			if (is_object($value) || (is_array($value) && $this->hasArgument('optionValueField'))) {
+				if ($this->hasArgument('optionValueField')) {
+					$key = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
+					if (is_object($key)) {
+						if (method_exists($key, '__toString')) {
+							$key = (string) $key;
+						} else {
+							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428);
+						}
+					}
+					// TODO: use $this->persistenceManager->isNewObject() once it is implemented
+				} elseif ($this->persistenceManager->getIdentifierByObject($value) !== NULL) {
+					$key = $this->persistenceManager->getIdentifierByObject($value);
+				} elseif (method_exists($value, '__toString')) {
+					$key = (string) $value;
+				} else {
+					throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
+				}
+				if ($this->hasArgument('optionLabelField')) {
+					$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
+					if (is_object($value)) {
+						if (method_exists($value, '__toString')) {
+							$value = (string) $value;
+						} else {
+							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
+						}
+					}
+				} elseif (method_exists($value, '__toString')) {
+					$value = (string) $value;
+					// TODO: use $this->persistenceManager->isNewObject() once it is implemented
+				} elseif ($this->persistenceManager->getIdentifierByObject($value) !== NULL) {
+					$value = $this->persistenceManager->getIdentifierByObject($value);
+				}
+			}
+			$options[$key] = $value;
+		}
+		if ($this->arguments['sortByOptionLabel']) {
+			asort($options, SORT_LOCALE_STRING);
+		}
+		return $options;
+	}
+
+	/**
 	 * Renders the option tags.
 	 *
 	 * @param array $options the options for the form.
