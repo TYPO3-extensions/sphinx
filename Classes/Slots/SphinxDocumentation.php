@@ -208,7 +208,7 @@ class SphinxDocumentation {
 	protected function getRenderLink($reference, $format, $referenceType = 'EXT') {
 		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
 		$uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
-		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Request');
+		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$uriBuilder->setRequest($request)->setArguments(array('M' => 'help_SphinxDocumentation'));
 
 		$link = 'typo3/' . $uriBuilder->uriFor(
