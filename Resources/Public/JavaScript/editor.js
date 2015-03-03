@@ -506,7 +506,7 @@ CausalSphinxEditor = {
 		this._initEditor('.rst');
 	}
 
-}
+};
 
 $(document).ready(function () {
 	CausalSphinxEditor.initialize();
