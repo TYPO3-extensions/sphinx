@@ -492,6 +492,7 @@ EOT;
 				$setupFile,
 				$pythonHome,
 				$pythonLib,
+				'',
 				$output
 			);
 		} else {
@@ -600,6 +601,7 @@ EOT;
 				$setupFile,
 				$pythonHome,
 				$pythonLib,
+				'',
 				$output
 			);
 		} else {
@@ -789,8 +791,21 @@ EOT;
 				$setupFile,
 				$pythonHome,
 				$pythonLib,
+				'',
 				$output
 			);
+			if (!$success) {
+				// Possible known problem: libyaml is not found, try to compile without it
+				$output[] = '[WARNING] Could not build PyYAML, trying again without libyaml';
+				$success = static::buildWithPython(
+					'PyYAML',
+					$setupFile,
+					$pythonHome,
+					$pythonLib,
+					'--without-libyaml',
+					$output
+				);
+			}
 		} else {
 			$success = FALSE;
 			$output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
@@ -879,6 +894,7 @@ EOT;
 				$setupFile,
 				$pythonHome,
 				$pythonLib,
+				'',
 				$output
 			);
 		} else {
@@ -971,6 +987,7 @@ EOT;
 				$setupFile,
 				$pythonHome,
 				$pythonLib,
+				'',
 				$output
 			);
 		} else {
@@ -1097,6 +1114,7 @@ EOT;
 				$setupFile,
 				$pythonHome,
 				$pythonLib,
+				'',
 				$output
 			);
 		} else {
@@ -1293,10 +1311,11 @@ EOT;
 	 * @param string $setupFile Absolute path to the setup file
 	 * @param string $pythonHome Absolute path to Python HOME
 	 * @param string $pythonLib Absolute path to Python libraries
+	 * @param string $extraFlags Optional extra compilation flags
 	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 */
-	static protected function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, array &$output = NULL) {
+	static protected function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, $extraFlags = '', array &$output = NULL) {
 		$export = '';
 		$clientInfo = GeneralUtility::clientInfo();
 		if ($clientInfo['SYSTEM'] === 'mac') {
@@ -1307,13 +1326,13 @@ EOT;
 		$python = $export . escapeshellarg(CommandUtility::getCommand('python'));
 		$cmd = 'cd ' . escapeshellarg(PathUtility::dirname($setupFile)) . ' && ' .
 			$python . ' setup.py clean 2>&1 && ' .
-			$python . ' setup.py build 2>&1';
+			$python . ' setup.py' . ($extraFlags ? ' ' . $extraFlags : '') . ' build 2>&1';
 		$out = array();
 		static::exec($cmd, $out, $ret);
 		if ($ret === 0) {
 			$cmd = 'cd ' . escapeshellarg(PathUtility::dirname($setupFile)) . ' && ' .
 				MiscUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
-				$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
+				$python . ' setup.py' . ($extraFlags ? ' ' . $extraFlags : '') . ' install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 			$out = array();
 			static::exec($cmd, $out, $ret);
 			if ($ret === 0) {
@@ -1325,7 +1344,7 @@ EOT;
 			}
 		} else {
 			$success = FALSE;
-			$output[] = '[ERROR] Could not build ' . $name . ':' . LF . LF . implode($out, LF);
+			$output[] = '[WARNING] Could not build ' . $name . ':' . LF . LF . implode($out, LF);
 		}
 
 		return $success;
