@@ -456,7 +456,7 @@ YAML;
 conf.py:
   extlinks:
     issue:
-    - https://bitbucket.org/birkenfeld/sphinx/issue/%s
+    - https://github.com/sphinx-doc/sphinx/issues/%s
     -     'issue '
 YAML;
 		GeneralUtility::writeFile($fixtureFilename, $yaml);
@@ -465,7 +465,7 @@ YAML;
 		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
 		$expected = array(
 			'extlinks = {' . LF .
-			"'issue': ('https://bitbucket.org/birkenfeld/sphinx/issue/%s', 'issue ')" . LF .
+			"'issue': ('https://github.com/sphinx-doc/sphinx/issues/%s', 'issue ')" . LF .
 			'}',
 		);
 		$this->assertSame($expected, $pythonConfiguration);

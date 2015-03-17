@@ -214,7 +214,7 @@ HTML;
 		$success = TRUE;
 		$installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
 		$version = $data['key'];
-		$url = 'https://bitbucket.org' . $data['url'];
+		$url = 'https://github.com' . $data['url'];
 
 		if (!Setup::hasSphinxSources($version)) {
 			$success &= Setup::downloadSphinxSources($version, $url, $output);

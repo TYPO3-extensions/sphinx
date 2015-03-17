@@ -124,12 +124,20 @@ class Setup {
 	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
-	 * @see https://bitbucket.org/birkenfeld/sphinx/
+	 * @see https://github.com/sphinx-doc/sphinx
 	 */
 	static public function downloadSphinxSources($version, $url, array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = static::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
+
+		// There is a redirect from the URI in the web interface. E.g.,
+		// https://github.com/sphinx-doc/sphinx/archive/1.3.zip
+		// and the actual download link:
+		// https://codeload.github.com/sphinx-doc/sphinx/zip/1.3
+		if (preg_match('#https://github.com/sphinx-doc/sphinx/archive/([0-9b.]+?)\\.zip#', $url, $matches)) {
+			$url = 'https://codeload.github.com/sphinx-doc/sphinx/zip/' . $matches[1];
+		}
 
 		$zipFilename = $tempPath . $version . '.zip';
 		static::$log[] = '[INFO] Fetching ' . $url;
@@ -140,7 +148,7 @@ class Setup {
 
 			// Unzip the Sphinx archive
 			$out = array();
-			if (static::unarchive($zipFilename, $targetPath, 'birkenfeld-sphinx-')) {
+			if (static::unarchive($zipFilename, $targetPath, 'sphinx-' . $version)) {
 				$output[] = '[INFO] Sphinx ' . $version . ' has been unpacked.';
 
 				// Patch Sphinx to let us get colored output
@@ -1128,7 +1136,7 @@ EOT;
 	 * @return array
 	 */
 	static public function getSphinxAvailableVersions() {
-		$sphinxUrl = 'https://bitbucket.org/birkenfeld/sphinx/downloads';
+		$sphinxUrl = 'https://github.com/sphinx-doc/sphinx/releases';
 
 		$cacheFilename = static::getTemporaryPath() . static::$extKey . '.' . md5($sphinxUrl) . '.html';
 		if (!file_exists($cacheFilename)
@@ -1141,12 +1149,12 @@ EOT;
 			$html = file_get_contents($cacheFilename);
 		}
 
-		$tagsHtml = substr($html, strpos($html, '<section class="tabs-pane" id="tag-downloads">'));
-		$tagsHtml = substr($tagsHtml, 0, strpos($tagsHtml, '</section>'));
+		$tagsHtml = substr($html, strpos($html, '<ul class="release-timeline-tags">'));
+		$tagsHtml = substr($tagsHtml, 0, strpos($tagsHtml, '<div data-pjax class="paginate-container">'));
 
 		$versions = array();
 		preg_replace_callback(
-			'#<tr class="iterable-item">.*?<td class="name">([^<]*)</td>.*?<a href="([^"]+)">zip</a>#s',
+			'#<div class="tag-info commit js-details-container">.*?<span class="tag-name">([^<]*)</span>.*?<a href="([^"]+)" rel="nofollow">.*?zip.*?</a>#s',
 			function($matches) use (&$versions) {
 				if ($matches[1] !== 'tip' && version_compare($matches[1], '1.1.3', '>=')) {
 					$key = $matches[1];

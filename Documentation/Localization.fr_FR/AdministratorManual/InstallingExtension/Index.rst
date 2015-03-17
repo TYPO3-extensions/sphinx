@@ -58,7 +58,7 @@ Les différents composants devraient s'installer sans écueil. Les éventuels pr
 et un journal de toutes les opérations est sauvegardé sous :file:`typo3temp/tx_sphinx/IMPORT-{date}.log`. Le processus
 général d'importation de Sphinx est le suivant :
 
-#. Récupération de la version comme archive zip depuis https://bitbucket.org/birkenfeld/sphinx/downloads ("Tags") dans
+#. Récupération de la version comme archive zip depuis https://github.com/sphinx-doc/sphinx/releases dans
    le répertoire :file:`typo3temp/`
 
 #. Extraction de l'archive zip dans le répertoire :file:`uploads/tx_sphinx/{version}/`

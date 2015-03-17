@@ -55,7 +55,7 @@ Select a version of Sphinx you would like to use and start the import process wi
 Everything should work out-of-the-box. Possible problems will be reported as Flash messages and a log of all operations
 is stored as :file:`typo3temp/tx_sphinx/IMPORT-{date}.log`. The general process of importing Sphinx is as follows:
 
-#. Fetch the version as a zip archive from https://bitbucket.org/birkenfeld/sphinx/downloads ("Tags") into
+#. Fetch the version as a zip archive from https://github.com/sphinx-doc/sphinx/releases into
    directory :file:`typo3temp/`
 
 #. Unpack the zip archive into directory :file:`uploads/tx_sphinx/{version}/`
