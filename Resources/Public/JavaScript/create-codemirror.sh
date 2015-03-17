@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SOURCE=~/Downloads/codemirror-4.12
+SOURCE=~/Downloads/codemirror-5.0
 
 cp $SOURCE/lib/codemirror.js .
 cp $SOURCE/lib/codemirror.css ../Css/
