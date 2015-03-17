@@ -33,7 +33,7 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertSame('Xavier Perseguers (Causal)', $metadata['author']);
 		$this->assertSame('Causal Sàrl', $metadata['author_company']);
 		$this->assertSame('xavier@causal.ch', $metadata['author_email']);
-		$this->assertSame('6.0.0-6.2.99', $metadata['constraints']['depends']['typo3']);
+		$this->assertSame('6.2.0-7.99.99', $metadata['constraints']['depends']['typo3']);
 		$this->assertFalse(empty($metadata['release']));
 		$this->assertFalse(empty($metadata['version']));
 	}
@@ -268,6 +268,7 @@ YAML;
 			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
 		);
 		$configuration = file_get_contents($fixtureFilename);
+		$currentYear = date('Y');
 		$expected = <<<YAML
 # This is the project specific Settings.yml file.
 # Place Sphinx specific build information here.
@@ -275,7 +276,7 @@ YAML;
 
 ---
 conf.py:
-  copyright: 2014
+  copyright: $currentYear
   project: No project name
   version: 1.0
   release: 1.0.0
