@@ -1187,6 +1187,37 @@ EOT;
 	}
 
 	/**
+	 * Returns the changes for a given version of Sphinx.
+	 *
+	 * @param string $sphinxVersion
+	 * @return string
+	 */
+	static public function getChanges($sphinxVersion) {
+		$html = MiscUtility::getUrlWithCache('http://sphinx-doc.org/latest/changes.html');
+
+		// Fix name in case the human-readable version is given as parameter
+		$sphinxVersion = str_replace(' beta ', 'b', $sphinxVersion);
+		if (strlen($sphinxVersion) > 4 && substr($sphinxVersion, -2) === '.0') {
+			$sphinxVersion = substr($sphinxVersion, 0, -2);
+		}
+
+		$releaseId = 'release-' . str_replace('.', '-', $sphinxVersion) . '-released-';
+
+		$changesHtml = substr($html, strpos($html, '<div class="section" id="' . $releaseId));
+		if (strlen($changesHtml) === strlen($html)) {
+			return NULL;
+		}
+
+		$changesHtml = trim(substr($changesHtml, strpos($changesHtml, '>') + 1));
+		if (($pos = strpos($changesHtml, '<h2>', 10)) !== FALSE) {
+			$changesHtml = substr($changesHtml, 0, $pos);
+			$changesHtml = trim(substr($changesHtml, 0, strrpos($changesHtml, '</div>')));
+		}
+
+		return $changesHtml;
+	}
+
+	/**
 	 * Returns a list of locally available versions of Sphinx.
 	 *
 	 * @return array

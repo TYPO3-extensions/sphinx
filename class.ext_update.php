@@ -24,7 +24,7 @@ use Causal\Sphinx\Utility\Setup;
  * @package     TYPO3
  * @subpackage  tx_sphinx
  * @author      Xavier Perseguers <xavier@causal.ch>
- * @copyright   2013 Causal Sàrl
+ * @copyright   2013-2015 Causal Sàrl
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
@@ -158,10 +158,32 @@ HTML;
 			}
 		}
 
+		$out[] = '<style type="text/css">';
+		$out[] = <<<CSS
+form { position: relative; }
+
+.leftColumn {
+	width: 45em;
+	margin-bottom: .5em;
+}
+
+@media screen and (min-width: 90em) {
+	.rightColumn {
+		position: absolute;
+		top: 0;
+		left: 46em;
+		width: 44em;
+	}
+}
+CSS;
+
+		$out[] = '</style>';
+
 		$out[] = '<form action="' . GeneralUtility::linkThisScript() . '" method="post">';
+		$out[] = '<div class="leftColumn">';
 		$out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
 
-		$out[] = '<table class="t3-table" style="width:auto">';
+		$out[] = '<table id="sphinx-versions" class="t3-table" style="width:auto">';
 		$out[] = '<tr>';
 		$out[] = '<th colspan="2">&nbsp;</th>';
 		$out[] = '<th>1-click Process</th>';
@@ -169,8 +191,8 @@ HTML;
 		$out[] = '</tr>';
 
 		$installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
+		$changes = array();
 
-		$i = 0;
 		foreach ($availableVersions as $version) {
 			$isInstalled = GeneralUtility::inArray($localVersions, $version['key']);
 			$hasSources = Setup::hasSphinxSources($version['key']);
@@ -183,7 +205,7 @@ HTML;
 				$hasLibraries &= Setup::hasRst2Pdf();
 			}
 
-			$out[] = '<tr>';
+			$out[] = '<tr data-version="' . htmlspecialchars($version['key']) . '">';
 			$out[] = '<td>' . ($isInstalled ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '</td>';
 			$out[] = '<td>';
 			$out[] = 'Sphinx ' . htmlspecialchars($version['name']);
@@ -196,9 +218,29 @@ HTML;
 			$out[] = '<button name="operation" value="REMOVE-' . htmlspecialchars($version['name']) . '"' . (!($hasSources || $isInstalled) ? ' disabled="disabled"' : '') . '>remove</button>';
 			$out[] = '</td>';
 			$out[] = '</tr>';
+
+			$changes[$version['key']] = Setup::getChanges($version['key']);
 		}
 		$out[] = '</table>';
+		$out[] = '</div>';	// .leftColumn
+		$out[] = '<div id="sphinx-changes" class="rightColumn"></div>';
 		$out[] = '</form>';
+
+		// JSON-encoding inspired by \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue()
+		$json = strtr(
+			json_encode($changes, JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT|JSON_HEX_TAG),
+			array(
+				'"' => '\'',
+				'\\\\' => '\\u005C',
+				' ' => '\\u0020',
+				'!' => '\\u0021',
+				'\\t' => '\\u0009',
+				'\\n' => '\\u000A',
+				'\\r' => '\\u000D'
+			)
+		);
+		$out[] = '<script type="text/javascript">var sphinxChanges=' . $json . ';</script>';
+		$out[] = '<script src="../typo3conf/ext/sphinx/Resources/Public/JavaScript/setup.js" type="text/javascript"></script>';
 
 		return implode(LF, $out);
 	}
