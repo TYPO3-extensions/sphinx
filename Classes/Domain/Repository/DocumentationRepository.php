@@ -109,20 +109,8 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	protected function getExtensionManuals() {
-		$cacheFile = GeneralUtility::getFileAbsFileName(
-			'typo3temp/manuals.json'
-		);
-		if (!is_file($cacheFile) || $GLOBALS['EXEC_TIME'] - filemtime($cacheFile) > 86400) {
-			$json = MiscUtility::getUrl('http://docs.typo3.org/typo3cms/extensions/manuals.json');
-			if ($json) {
-				GeneralUtility::writeFile($cacheFile, $json);
-			}
-		}
-		$manuals = array();
-		if (is_file($cacheFile)) {
-			$manuals = json_decode(file_get_contents($cacheFile), TRUE);
-		}
-
+		$json = MiscUtility::getUrlWithCache('http://docs.typo3.org/typo3cms/extensions/manuals.json');
+		$manuals = json_decode($json, TRUE);
 		return is_array($manuals) ? $manuals : array();
 	}
 
@@ -130,23 +118,11 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns the list of official documents.
 	 *
 	 * @return array
+	 * @see \TYPO3\CMS\Documentation\Service\DocumentationService::getOfficialDocuments()
 	 */
 	public function getOfficialDocuments() {
-		// See \TYPO3\CMS\Documentation\Service\DocumentationService::getOfficialDocuments()
-		$cacheFile = GeneralUtility::getFileAbsFileName(
-			'typo3temp/documents.json'
-		);
-		if (!is_file($cacheFile) || $GLOBALS['EXEC_TIME'] - filemtime($cacheFile) > 86400) {
-			$json = MiscUtility::getUrl('http://docs.typo3.org/typo3cms/documents.json');
-			if ($json) {
-				GeneralUtility::writeFile($cacheFile, $json);
-			}
-		}
-		$documents = array();
-		if (is_file($cacheFile)) {
-			$documents = json_decode(file_get_contents($cacheFile), TRUE);
-		}
-
+		$json = MiscUtility::getUrlWithCache('http://docs.typo3.org/typo3cms/documents.json');
+		$documents = json_decode($json, TRUE);
 		return is_array($documents) ? $documents : array();
 	}
 

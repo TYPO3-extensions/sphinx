@@ -1233,13 +1233,16 @@ YAML;
 
 	/**
 	 * Reads the file or url $url and returns the content
-	 * If you are having trouble with proxys when reading URLs you can configure your way out of that with settings like $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] etc.
+	 * If you are having trouble with proxies when reading URLs you can configure your way out of that with settings
+	 * like $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] etc.
 	 *
 	 * @param string $url File/URL to read
-	 * @return mixed The content from the resource given as input. FALSE if an error has occured.
+	 * @return mixed The content from the resource given as input. FALSE if an error has occurred.
 	 */
 	static public function getUrl($url) {
 		// Known problems when using GeneralUtility::getUrl() with https:// resources
+		// E.g., https://bitbucket.org/xperseguers/sphinx-contrib/downloads
+		// where text/html is expected
 		if (!GeneralUtility::isFirstPartOfStr($url, 'https://')) {
 			return GeneralUtility::getUrl($url);
 		}
@@ -1251,6 +1254,37 @@ YAML;
 		} catch (\Exception $e) {
 			return FALSE;
 		}
+	}
+
+	/**
+	 * Reads the file or url $url and returns the content and cache result for quicker
+	 * consecutive access.
+	 *
+	 * @param string $url File/URL to read
+	 * @param int $cacheLifetime Lifetime of cache, in seconds
+	 * @return mixed The content from the resource given as input. FALSE in an error has occured.
+	 */
+	static public function getUrlWithCache($url, $cacheLifetime = 86400) {
+		$extension = '';
+		if (($pos = strrpos($url, '.')) !== FALSE) {
+			$extension = strtolower(substr($url, $pos + 1));
+		}
+		if ($extension === '' || strlen($extension) > 5) {
+			$extension = 'html';
+		}
+		$cacheFilename = static::getTemporaryPath() . static::$extKey . '.' . md5($url) . '.' . $extension;
+		if (!file_exists($cacheFilename)
+			|| $GLOBALS['EXEC_TIME'] - filemtime($cacheFilename) > $cacheLifetime
+			|| filesize($cacheFilename) == 0) {
+
+			$content = static::getUrl($url);
+			if ($content) {
+				GeneralUtility::writeFile($cacheFilename, $content);
+			}
+		} else {
+			$content = file_get_contents($cacheFilename);
+		}
+		return $content;
 	}
 
 	/**
@@ -1350,6 +1384,19 @@ YAML;
 
 		$extensionManagerUri = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName, $urlParameters);
 		return $extensionManagerUri;
+	}
+
+	/**
+	 * Returns the path to the website's temporary directory.
+	 *
+	 * @return string Absolute path to typo3temp/
+	 */
+	static public function getTemporaryPath() {
+		$temporaryPath = GeneralUtility::getFileAbsFileName('typo3temp/');
+		// Compatibility with Windows platform
+		$temporaryPath = str_replace('/', DIRECTORY_SEPARATOR, $temporaryPath);
+
+		return $temporaryPath;
 	}
 
 }

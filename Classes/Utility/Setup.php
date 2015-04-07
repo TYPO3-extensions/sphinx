@@ -17,7 +17,6 @@ namespace Causal\Sphinx\Utility;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use Causal\Sphinx\Utility\GitUtility;
 
 /**
  * Sphinx environment setup.
@@ -128,7 +127,7 @@ class Setup {
 	 */
 	static public function downloadSphinxSources($version, $url, array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = static::getTemporaryPath();
+		$tempPath = MiscUtility::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		// There is a redirect from the URI in the web interface. E.g.,
@@ -355,7 +354,7 @@ EOT;
 	 */
 	static public function downloadRestTools(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = static::getTemporaryPath();
+		$tempPath = MiscUtility::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		// Try to clone from Git before falling back to downloading a snapshot
@@ -524,7 +523,7 @@ EOT;
 	 */
 	static public function downloadThirdPartyLibraries(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = static::getTemporaryPath();
+		$tempPath = MiscUtility::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		if (!CommandUtility::checkCommand('unzip')) {
@@ -732,7 +731,7 @@ EOT;
 	 */
 	static public function downloadPyYaml(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = static::getTemporaryPath();
+		$tempPath = MiscUtility::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		$url = 'http://pyyaml.org/download/pyyaml/PyYAML-3.10.tar.gz';
@@ -835,7 +834,7 @@ EOT;
 	 */
 	static public function downloadPIL(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = static::getTemporaryPath();
+		$tempPath = MiscUtility::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		$url = 'http://effbot.org/media/downloads/Imaging-1.1.7.tar.gz';
@@ -926,7 +925,7 @@ EOT;
 	 */
 	static public function downloadPygments(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = static::getTemporaryPath();
+		$tempPath = MiscUtility::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		$url = 'https://bitbucket.org/birkenfeld/pygments-main/get/1.6.tar.gz';
@@ -1055,7 +1054,7 @@ EOT;
 	 */
 	static public function downloadRst2Pdf(array &$output = NULL) {
 		$success = TRUE;
-		$tempPath = static::getTemporaryPath();
+		$tempPath = MiscUtility::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
 		$url = 'http://rst2pdf.googlecode.com/files/rst2pdf-0.93.tar.gz';
@@ -1154,18 +1153,7 @@ EOT;
 	 * @return array
 	 */
 	static public function getSphinxAvailableVersions() {
-		$sphinxUrl = 'https://github.com/sphinx-doc/sphinx/releases';
-
-		$cacheFilename = static::getTemporaryPath() . static::$extKey . '.' . md5($sphinxUrl) . '.html';
-		if (!file_exists($cacheFilename)
-			|| $GLOBALS['EXEC_TIME'] - filemtime($cacheFilename) > 86400
-			|| filesize($cacheFilename) == 0) {
-
-			$html = MiscUtility::getUrl($sphinxUrl);
-			GeneralUtility::writeFile($cacheFilename, $html);
-		} else {
-			$html = file_get_contents($cacheFilename);
-		}
+		$html = MiscUtility::getUrlWithCache('https://github.com/sphinx-doc/sphinx/releases');
 
 		$tagsHtml = substr($html, strpos($html, '<ul class="release-timeline-tags">'));
 		$tagsHtml = substr($tagsHtml, 0, strpos($tagsHtml, '<div data-pjax class="paginate-container">'));
@@ -1400,19 +1388,6 @@ EOT;
 		$sphinxPath = str_replace('/', DIRECTORY_SEPARATOR, $sphinxPath);
 
 		return $sphinxPath;
-	}
-
-	/**
-	 * Returns the path to the website's temporary directory.
-	 *
-	 * @return string Absolute path to typo3temp/
-	 */
-	static private function getTemporaryPath() {
-		$temporaryPath = GeneralUtility::getFileAbsFileName('typo3temp/');
-		// Compatibility with Windows platform
-		$temporaryPath = str_replace('/', DIRECTORY_SEPARATOR, $temporaryPath);
-
-		return $temporaryPath;
 	}
 
 }
