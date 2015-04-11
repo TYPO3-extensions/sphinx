@@ -197,6 +197,12 @@
 				<source>Convert OpenOffice manual to Sphinx</source>
 				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.2.0.</note>
 			</trans-unit>
+			<trans-unit id="interactive.errors.title">
+				<source>ERROR</source>
+			</trans-unit>
+			<trans-unit id="interactive.errors.message">
+				<source>One or more errors will prevent this manual from being rendered when you publish your extension to the TYPO3 Extension Repository (TER):</source>
+			</trans-unit>
 			<trans-unit id="toolbar.alwaysRender">
 				<source>Always render documentation</source>
 				<note from="developer">This label is deprecated (not used anymore) as of SPHINX v.2.1</note>

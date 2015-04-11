@@ -83,6 +83,15 @@
 			</div>
 
 			<div class="section" id="users-manual">
+				<f:if condition="{errors}">
+					<div class="admonition error">
+						<p class="first admonition-title"><f:translate key="interactive.errors.title" /></p>
+						<p><f:translate key="interactive.errors.message" /></p>
+						<p class="last">
+							<f:format.raw>{errors}</f:format.raw>
+						</p>
+					</div>
+				</f:if>
 				<f:format.raw>{documentation.body}</f:format.raw>
 			</div>
 

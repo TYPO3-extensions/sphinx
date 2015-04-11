@@ -133,6 +133,13 @@ class InteractiveViewerController extends AbstractActionController {
 		$warningsFilename = '';
 		if (file_exists($path . '/warnings.txt')) {
 			$warningsFilename = $this->htmlizeWarnings($path, $reference);
+			if ($this->hasErrors($path . '/warnings.txt')) {
+				$fileName = preg_replace('#^.*/typo3temp/#', 'typo3temp/', $warningsFilename);
+				$errors = file_get_contents(PATH_site . $fileName);
+				if (preg_match('#<body>(.*)</body>#s', $errors, $matches)) {
+					$this->view->assign('errors', $matches[1]);
+				}
+			}
 		}
 
 		$buttons = $this->getButtons($reference, $document, $warningsFilename);
@@ -575,6 +582,24 @@ HTML;
 		}
 
 		return $htmlFileName;
+	}
+
+	/**
+	 * Returns TRUE if warnings.txt contains references to serious errors.
+	 *
+	 * @param string $warningsFileName
+	 * @return bool
+	 */
+	protected function hasErrors($warningsFileName) {
+		$contents = file_get_contents($warningsFileName);
+		if (preg_match_all('/( ERROR: .*)|( SEVERE: .*)/', $contents, $matches)) {
+			foreach ($matches[0] as $match) {
+				if (!preg_match('/Unknown directive type "ref-targets-list"/', $match)) {
+					return TRUE;
+				}
+			}
+		}
+		return FALSE;
 	}
 
 }
