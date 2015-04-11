@@ -360,6 +360,9 @@ class InteractiveViewerController extends AbstractActionController {
 			),
 			'RestEditor'
 		);
+		if ($createAbsoluteUri) {
+			$this->uriBuilder->setCreateAbsoluteUri(FALSE);
+		}
 		return $url;
 	}
 
@@ -510,6 +513,7 @@ class InteractiveViewerController extends AbstractActionController {
 
 				if (substr($filename, -4) === '.rst') {
 					$document = substr($filename, 0, -4) . '/';
+					$self->uriBuilder->setCreateAbsoluteUri(TRUE);
 					$actionUrl = $self->uriBuilder->uriFor(
 						'edit',
 						array(
@@ -519,11 +523,11 @@ class InteractiveViewerController extends AbstractActionController {
 						),
 						'RestEditor'
 					);
+					$self->uriBuilder->setCreateAbsoluteUri(FALSE);
 
-					$baseUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 					return sprintf(
 							$linkPattern,
-							$baseUrl . $actionUrl,
+							$actionUrl,
 							htmlspecialchars($filename),
 							$line
 					);

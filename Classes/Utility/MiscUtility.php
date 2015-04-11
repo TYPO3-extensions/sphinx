@@ -718,8 +718,7 @@ HTML;
 			switch ($e->getCode()) {
 				case 1366210198:	// Sphinx is not configured
 				case 1366280021:	// Sphinx cannot be executed
-					$baseUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
-					$emLink = $baseUrl . static::getExtensionManagerLink('sphinx', 'Configuration', 'showConfigurationForm');
+					$emLink = static::getExtensionManagerLink('sphinx', 'Configuration', 'showConfigurationForm');
 					$templateContent = <<<HTML
 <!DOCTYPE html>
 <html lang="en">
@@ -1382,7 +1381,7 @@ YAML;
 			$urlParameters[$namespace . '[action]'] = $action;
 		}
 
-		$extensionManagerUri = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName, $urlParameters);
+		$extensionManagerUri = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName, $urlParameters, FALSE, TRUE);
 		return $extensionManagerUri;
 	}
 
