@@ -15,7 +15,7 @@ In order to customize the output of documentation rendered as PDF with LaTeX to 
 need to install the `Share corporate font family`_ and convert it to be compatible with LaTeX. Instructions can be
 found in the repository of the TYPO3-related commands for Sphinx, within directory :file:`LaTeX`.
 
-.. _`Share corporate font family`: http://typo3.org/the-brand/style-guide/the-typo3-font/
+.. _`Share corporate font family`: http://typo3.org/about/the-brand/style-guide/the-typo3-font/
 
 Instead of just fetching this :file:`LaTeX` directory from the official repository, we suggest to replace the whole
 :file:`RestTools` directory and use a clone of the whole Git repository:
