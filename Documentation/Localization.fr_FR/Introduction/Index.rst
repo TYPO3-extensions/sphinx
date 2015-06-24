@@ -80,7 +80,7 @@ Que puis-je faire avec un project Sphinx ?
 
 Plein de choses ! Et avant tout, si vous compilez votre documentation en JSON, vous pouvez facilement l'intégrer à votre
 site. Le meilleur moyen est d'utiliser l'extension
-TYPO3 :ter:`Sphinx/reStructuredText Documentation Viewer (restdoc) <restdoc>`.
+TYPO3 :ter:`Sphinx Documentation Viewer Plugin (restdoc) <restdoc>`.
 
 
 .. _screenshots:

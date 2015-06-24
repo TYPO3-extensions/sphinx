@@ -77,7 +77,7 @@ Extension manuals may be rendered with different "layouts":
 - **Static:** This renders and shows the HTML version;
 
 - **Interactive:** This renders and shows the JSON version and as such requires
-  extension :ter:`Sphinx/reStructuredText Documentation Viewer (restdoc) <restdoc>`. In addition, this layout features
+  extension :ter:`Sphinx Documentation Viewer Plugin (restdoc) <restdoc>`. In addition, this layout features
   an integrated :ref:`reStructuredText editor <sphinx-documentation-editor>` to let you quickly edit and recompile a
   given chapter;
 
