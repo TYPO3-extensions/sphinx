@@ -226,7 +226,7 @@ class Setup {
 				GeneralUtility::mkdir_deep($pythonLib . DIRECTORY_SEPARATOR);
 
 				$cmd = 'cd ' . escapeshellarg(PathUtility::dirname($setupFile)) . ' && ' .
-					MiscUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
+					MiscUtility::getExportCommand('PYTHONPATH', escapeshellarg($pythonLib)) . ' && ' .
 					$python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 				$out = array();
 				static::exec($cmd, $out, $ret);
@@ -1350,7 +1350,7 @@ EOT;
 		static::exec($cmd, $out, $ret);
 		if ($ret === 0) {
 			$cmd = 'cd ' . escapeshellarg(PathUtility::dirname($setupFile)) . ' && ' .
-				MiscUtility::getExportCommand('PYTHONPATH', $pythonLib) . ' && ' .
+				MiscUtility::getExportCommand('PYTHONPATH', escapeshellarg($pythonLib)) . ' && ' .
 				$python . ' setup.py' . ($extraFlags ? ' ' . $extraFlags : '') . ' install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
 			$out = array();
 			static::exec($cmd, $out, $ret);
