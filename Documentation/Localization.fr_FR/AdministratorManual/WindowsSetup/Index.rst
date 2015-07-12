@@ -143,27 +143,6 @@ opérations que dans la section précédente.
 Installation de Tar
 ^^^^^^^^^^^^^^^^^^^
 
-.. important::
-	.. index::
-		single: Message d'erreur; Cannot fork: Function not implemented
-
-	Une recherche rapide de :program:`tar` pour Windows conduit à GNU Tar sur http://gnuwin32.sourceforge.net/packages/gtar.htm.
-	Cependant ce paquet n'est d'aucune utilité parce qu'il ne prend pas en charge les fichiers ``tar.gz`` files. En fait,
-	il va planter avec :
-
-	.. code-block:: bat
-
-		C:\> Cannot fork: Function not implemented
-		C:\> Error is not recoverable: exiting now
-
-	En effet, les responsables du paquet Tar eux-mêmes recommandent d'utiliser BsdTar :
-
-		The Win32 port can only create ``tar`` archives, but cannot pipe its output to other programs such as
-		:program:`gzip` or :program:`compress`, and will not create ``tar.gz`` archives; you will have to use or simulate
-		a batch pipe. BsdTar does have the ability to direcly create and manipulate ``.tar``, ``.tar.gz``, ``tar.bz2``,
-		``.zip``, ``.gz`` and ``.bz2`` archives, understands the most-used options of GNU Tar, and is also much faster;
-		for most purposes it is to be preferred to GNU Tar.
-
 Allez sur http://gnuwin32.sourceforge.net/packages/libarchive.htm (LibArchive contient BsdTar) et téléchargez le programme
 d'installation. Ensuite lancez-le et suivez les instructions, comme vous l'avez fait pour :ref:`unzip <installing-unzip>` :
 
@@ -186,5 +165,26 @@ d'installation. Ensuite lancez-le et suivez les instructions, comme vous l'avez 
 
 		C:\Program Files (x86)\GnuWin32\bin> mklink tar.exe bsdtar.exe
 		lien symbolique créé pour tar.exe <<===>> bsdtar.exe
+
+.. note::
+	.. index::
+		single: Message d'erreur; Cannot fork: Function not implemented
+
+	Si vous vous demandez pourquoi nous utilisons BsdTar au lieu de GNU Tar, voici la raison. En effet, une recherche
+	rapide de :program:`tar` pour Windows conduit à GNU Tar. Cependant ce paquet n'est d'aucune utilité parce qu'il ne
+	prend pas en charge les fichiers ``tar.gz`` files. En fait, il va planter avec :
+
+	.. code-block:: bat
+
+		C:\> Cannot fork: Function not implemented
+		C:\> Error is not recoverable: exiting now
+
+	Par ailleurs, les responsables du paquet Tar eux-mêmes recommandent d'utiliser BsdTar :
+
+		The Win32 port can only create ``tar`` archives, but cannot pipe its output to other programs such as
+		:program:`gzip` or :program:`compress`, and will not create ``tar.gz`` archives; you will have to use or simulate
+		a batch pipe. BsdTar does have the ability to direcly create and manipulate ``.tar``, ``.tar.gz``, ``tar.bz2``,
+		``.zip``, ``.gz`` and ``.bz2`` archives, understands the most-used options of GNU Tar, and is also much faster;
+		for most purposes it is to be preferred to GNU Tar.
 
 Félicitations ! Vous devriez maintenant être en mesure de :ref:`configurer l'extension Sphinx <configure-sphinx>` !

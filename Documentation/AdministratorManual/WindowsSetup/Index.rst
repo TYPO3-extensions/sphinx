@@ -139,26 +139,6 @@ directory :file:`C:\\Program Files (x86)\\GnuWin32\\bin`. Please perform steps a
 Installing Tar
 ^^^^^^^^^^^^^^
 
-.. important::
-	.. index::
-		single: Error Message; Cannot fork: Function not implemented
-
-	A quick search for :program:`tar` for Windows leads to GNU Tar on http://gnuwin32.sourceforge.net/packages/gtar.htm.
-	However this package will be of no use since it cannot handle ``tar.gz`` files. Instead, it will crash with:
-
-	.. code-block:: bat
-
-		C:\> Cannot fork: Function not implemented
-		C:\> Error is not recoverable: exiting now
-
-	In fact, the Tar package itself recommends using BsdTar:
-
-		The Win32 port can only create ``tar`` archives, but cannot pipe its output to other programs such as
-		:program:`gzip` or :program:`compress`, and will not create ``tar.gz`` archives; you will have to use or simulate
-		a batch pipe. BsdTar does have the ability to direcly create and manipulate ``.tar``, ``.tar.gz``, ``tar.bz2``,
-		``.zip``, ``.gz`` and ``.bz2`` archives, understands the most-used options of GNU Tar, and is also much faster;
-		for most purposes it is to be preferred to GNU Tar.
-
 Please go to http://gnuwin32.sourceforge.net/packages/libarchive.htm (LibArchive contains BsdTar) and download the setup
 file. Then launch the installer and follow the instructions, as you did for :ref:`unzip <installing-unzip>`:
 
@@ -180,5 +160,26 @@ file. Then launch the installer and follow the instructions, as you did for :ref
 
 		C:\Program Files (x86)\GnuWin32\bin> mklink tar.exe bsdtar.exe
 		symbolic link created for tar.exe <<===>> bsdtar.exe
+
+.. note::
+	.. index::
+		single: Error Message; Cannot fork: Function not implemented
+
+	In case you wonder why we are using BsdTar instead of GNU Tar, here is why. In fact, a quick search for :program:`tar`
+	for Windows leads to GNU Tar. However this package will be of no use since it cannot handle ``tar.gz`` files.
+	Instead, it will crash with:
+
+	.. code-block:: bat
+
+		C:\> Cannot fork: Function not implemented
+		C:\> Error is not recoverable: exiting now
+
+	Besides, the Tar package itself recommends using BsdTar:
+
+		The Win32 port can only create ``tar`` archives, but cannot pipe its output to other programs such as
+		:program:`gzip` or :program:`compress`, and will not create ``tar.gz`` archives; you will have to use or simulate
+		a batch pipe. BsdTar does have the ability to direcly create and manipulate ``.tar``, ``.tar.gz``, ``tar.bz2``,
+		``.zip``, ``.gz`` and ``.bz2`` archives, understands the most-used options of GNU Tar, and is also much faster;
+		for most purposes it is to be preferred to GNU Tar.
 
 Congratulations! You should now be able to :ref:`configure the extension Sphinx <configure-sphinx>`!
