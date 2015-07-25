@@ -6,6 +6,8 @@
 .. include:: ../../../Includes.txt
 
 
+.. _sphinx-command-line:
+
 Utilisation de Sphinx depuis la ligne de commande
 -------------------------------------------------
 

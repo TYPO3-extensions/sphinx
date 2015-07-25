@@ -6,6 +6,8 @@
 .. include:: ../../Includes.txt
 
 
+.. _sphinx-command-line:
+
 Using Sphinx from a command line
 --------------------------------
 

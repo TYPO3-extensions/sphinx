@@ -27,22 +27,43 @@ source de logiciels usuelle pour un paquet TeX ; ou alors installez `TeX Live`_ 
 	Le composant "fonts-extra" est facultatif mais recommandé pour un rendu optimal des caractères spéciaux de certains
 	manuels.
 
-Linux Debian
-""""""""""""
+Linux Debian / Ubuntu
+"""""""""""""""""""""
 
 Vous pouvez exécuter la commande suivante pour installer les composants requis :
 
 .. code-block:: bash
 
 	$ sudo apt-get install texlive-base texlive-latex-recommended \
-	  texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra
+	  texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra \
+	  texlive-latex-base
 
 Afin de compiler en PDF, cette extension nécessite à la fois :program:`pdflatex` (qui fait partie du paquet ``texlive-latex-extra``)
-et :program:`make`:
+et :program:`make` :
 
 .. code-block:: bash
 
 	$ sudo apt-get install make
+
+Si vous voulez être en mesure de générer du PDF en dehors de votre installation TYPO3 (donc vraisemblablement
+:ref:`en utilisant sphinx-build en ligne de commande <sphinx-command-line>`, vous devez installer quelques composants
+supplémentaires, :ref:`installer la fonte Share <installing-share-font>` et rendre le paquet LaTeX ``typo3`` disponible
+globalement :
+
+.. code-block:: bash
+
+	$ sudo apt-get install python-sphinx xzdec
+
+	$ tlmgr init-usertree
+	$ sudo tlmgr update --all
+	$ sudo tlmgr install ec
+	$ sudo tlmgr install cm-super
+
+	$ cd /path/to/uploads/tx_sphinx/RestTools/LaTeX/
+	$ sudo mkdir /usr/share/texmf/tex/latex/typo3
+	$ sudo cp typo3.sty /usr/share/texmf/tex/latex/typo3/
+	$ sudo cp typo3_logo_color.png /usr/share/texmf/tex/latex/typo3/
+	$ sudo texhash
 
 
 Mac OS X
