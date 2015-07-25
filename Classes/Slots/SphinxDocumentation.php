@@ -211,7 +211,8 @@ class SphinxDocumentation {
 		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$uriBuilder->setRequest($request)->setArguments(array('M' => 'help_SphinxDocumentation'));
 
-		$link = 'typo3/' . $uriBuilder->uriFor(
+		$link = version_compare(TYPO3_version, '6.99.99', '<=') ? 'typo3/' : '';
+		$link .= $uriBuilder->uriFor(
 			'index',
 			array(
 				'reference' => $referenceType . ':' . $reference,
