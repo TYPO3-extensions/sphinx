@@ -15,13 +15,16 @@ Liens
 	https://typo3.org/extensions/repository/view/sphinx
 
 :Bug tracker:
-	http://forge.typo3.org/projects/extension-sphinx/issues
+	https://forge.typo3.org/projects/extension-sphinx/issues
+
+:Notes de version:
+	https://forge.typo3.org/projects/extension-sphinx/wiki
 
 :Dépôt Git:
 	https://git.typo3.org/TYPO3CMS/Extensions/sphinx.git
 
 :Traduction:
-	http://translation.typo3.org/projects/TYPO3.ext.sphinx/
+	https://translation.typo3.org/projects/TYPO3.ext.sphinx/
 
 :Contact:
 	`@xperseguers <https://twitter.com/xperseguers>`_
