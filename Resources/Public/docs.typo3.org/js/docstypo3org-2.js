@@ -13,7 +13,7 @@ $(document).ready(function () {
 		+	'	<div id="vchoice-trigger">'
 		+	'		Versions'
 		+	'		<div id="vchoice-choices">'
-		+	'			<img id="ajax-preloader-img" src="http://docs.typo3.org/t3extras/i/ajax-preloader.gif" alt="loading ..." /'
+		+	'			<img id="ajax-preloader-img" src="https://docs.typo3.org/t3extras/i/ajax-preloader.gif" alt="loading ..." /'
 		+	'		</div>'
 		+	'	</div>'
 		+	'</div>'
@@ -23,7 +23,7 @@ $(document).ready(function () {
 			$('#vchoice-choices')
 			.show()
 			.load(
-				'http://docs.typo3.org/php/versionchoices.php?url=' + encodeURI(document.URL),
+				'https://docs.typo3.org/php/versionchoices.php?url=' + encodeURI(document.URL),
 				false,
 				function () {
 					$('#vchoice-choices td')

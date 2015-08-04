@@ -44,7 +44,7 @@ Version  Changements
 1.1.x    - Support de documentation multilingue
          - Intégration à EXT:documentation (TYPO3 6.2)
          - Pygments avec coloration syntaxique TypoScript
-         - Convertisseur OpenOffice vers Sphinx (à l'aide de l'outil en ligne de http://docs.typo3.org)
+         - Convertisseur OpenOffice vers Sphinx (à l'aide de l'outil en ligne de https://docs.typo3.org)
          - Documentation française
 1.0.x    - Support de rst2pdf
          - Mise en page TYPO3 lors du rendu de PDF avec LaTeX

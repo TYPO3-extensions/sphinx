@@ -12,21 +12,21 @@ Rendering on docs.typo3.org
 ---------------------------
 
 When you upload your extension to the :abbr:`TER (TYPO3 Extension Repository)`, the associated
-Sphinx/reStructuredText-based documentation gets automatically rendered on http://docs.typo3.org under
-:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/`.
+Sphinx/reStructuredText-based documentation gets automatically rendered on https://docs.typo3.org under
+:file:`https://docs.typo3.org/typo3cms/extensions/{extension-key}/`.
 
-For instance, this documentation gets rendered to http://docs.typo3.org/typo3cms/extensions/sphinx/.
+For instance, this documentation gets rendered to https://docs.typo3.org/typo3cms/extensions/sphinx/.
 
 In addition, a zip archive is automatically created for each combination of version and language and contains a copy of
 the HTML output (a.k.a. "static layout" within this extension) and its PDF counterpart (if activated, see
 :ref:`below <docs-typo3-org-pdf>`). Archives are stored within
-:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/packages/` :file:`{extension-key}-{version}-{language}.zip`.
+:file:`https://docs.typo3.org/typo3cms/extensions/{extension-key}/packages/` :file:`{extension-key}-{version}-{language}.zip`.
 E.g.,
 
-- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-default.zip
-- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-fr-fr.zip
+- https://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-default.zip
+- https://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-fr-fr.zip
 
-The list of available packages can be seen on http://docs.typo3.org/typo3cms/extensions/sphinx/packages/packages.xml
+The list of available packages can be seen on https://docs.typo3.org/typo3cms/extensions/sphinx/packages/packages.xml
 (you may of course replace segment ``/sphinx/`` with any other extension key).
 
 .. caution::
@@ -51,10 +51,10 @@ Title, copyright and version
 A valid Sphinx project for an extension manual should contain a configuration file :file:`Settings.yml` next to the main
 document :file:`Index.rst`. This file is your key to override default settings from the real Sphinx configuration file
 :file:`conf.py` which is not part of your project (because it contains settings related to the build environment on
-http://docs.typo3.org). Instead, this YAML configuration file lets you define project options.
+https://docs.typo3.org). Instead, this YAML configuration file lets you define project options.
 
 This extension takes care of loading options from :file:`Settings.yml` as well, thus ensuring a smooth experience when
-working locally on your extension manuals before their automatic deployment to http://docs.typo3.org.
+working locally on your extension manuals before their automatic deployment to https://docs.typo3.org.
 
 A basic :file:`Settings.yml` file should define a few basic project information:
 
@@ -94,7 +94,7 @@ release
 		versions (when the last of the three digits changes).
 
 		As extension authors are very likely to forget to update the version prior to uploading their extension to TER,
-		the rendering engine on http://docs.typo3.org automatically overrides the *version* and *release* parameters
+		the rendering engine on https://docs.typo3.org automatically overrides the *version* and *release* parameters
 		to the actual version as seen on TER.
 
 
@@ -160,9 +160,9 @@ documentclass
 
 Lines 12 to 15 should be kept as-this. Line 15 is actually the "trigger" for PDF rendering.
 
-When activated, your PDF gets automatically rendered on http://docs.typo3.org under
-:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/_pdf/`. E.g.,
-http://docs.typo3.org/typo3cms/extensions/sphinx/_pdf/.
+When activated, your PDF gets automatically rendered on https://docs.typo3.org under
+:file:`https://docs.typo3.org/typo3cms/extensions/{extension-key}/_pdf/`. E.g.,
+https://docs.typo3.org/typo3cms/extensions/sphinx/_pdf/.
 
 Please read chapter :ref:`customizing-rendering` for further information on LaTeX configuration options.
 
@@ -175,7 +175,7 @@ Multilingual documentation
 .. index::
 	single: Multilingual manual
 
-Multilingual exension manuals are supported by both this extension and http://docs.typo3.org. If you want to translate
+Multilingual exension manuals are supported by both this extension and https://docs.typo3.org. If you want to translate
 your documentation, kickstart a new Sphinx project (incl. :file:`Settings.yml`) within directory
 :file:`Documentation/Localization.{locale}`.
 
@@ -191,12 +191,12 @@ Locales
 .. index::
 	single: Locales
 
-Unless for the few prefixes which are already "locales", http://docs.typo3.org expects a locale and not a language code
+Unless for the few prefixes which are already "locales", https://docs.typo3.org expects a locale and not a language code
 to be used; so make sure to extend the prefix accordingly. E.g., a French documentation (prefix ``fr``) should be
 extended either to ``fr_FR`` (French France) or ``fr_CA`` (French Canada). See our list of suggestions below.
 
-Your translated exension manual will get rendered to http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) and
-http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
+Your translated exension manual will get rendered to https://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) and
+https://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
 
 .. caution::
 	Files and URIs are generated lower-case and with dashes instead of underscores. This means that a documentation
@@ -251,7 +251,7 @@ When translating a documentation, you may be tempted to translate everything, in
 Although this sounds reasonable at first sight, we advise you **not** to do so.
 
 In fact, best practices show that if you keep the original directory and file names, you let readers quickly switch back
-and forth from a chapter to its translation on http://docs.typo3.org because the language switch (currently hidden in the
+and forth from a chapter to its translation on https://docs.typo3.org because the language switch (currently hidden in the
 "version" dropdown) simply searches for the same relative URI in the translated documentation. If it finds the *same*
 document, it will go to the very same chapter (but translated!) otherwise it will go to the start page.
 
@@ -286,7 +286,7 @@ Behind the scenes, this works as follows:
   config value. The mapping will then be used to resolve otherwise missing references to objects into links to the other
   documentation.
 
-The list of official manuals and corresponding prefixes may be found on http://docs.typo3.org/typo3cms/Index.html.
+The list of official manuals and corresponding prefixes may be found on https://docs.typo3.org/typo3cms/Index.html.
 
 .. note::
 	By convention the *start* (or *landing*) page of a documentation should be mapped to anchor ``start``. In short, your
@@ -300,7 +300,7 @@ The list of official manuals and corresponding prefixes may be found on http://d
 		Title of your extension
 		===================================
 
-You may link to any other documentation on http://docs.typo3.org (or elsewhere) by configuring the Intersphinx mapping
+You may link to any other documentation on https://docs.typo3.org (or elsewhere) by configuring the Intersphinx mapping
 within :file:`Settings.yml`. To do so, add configuration options (lines 6 to 9):
 
 .. code-block:: yaml
@@ -314,7 +314,7 @@ within :file:`Settings.yml`. To do so, add configuration options (lines 6 to 9):
 	  release: 2.2.1
 	  intersphinx_mapping:
 	    restdoc:
-	    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+	    - https://docs.typo3.org/typo3cms/extensions/restdoc/
 	    - null
 
 This will register prefix ``restdoc`` and let us link to any chapter of the documentation of extension
@@ -393,7 +393,7 @@ Edit manual on GitHub
 ^^^^^^^^^^^^^^^^^^^^^
 
 In case your extension is hosted on GitHub, you may configure the manual so that it gets easily editable when published
-on http://docs.typo3.org:
+on https://docs.typo3.org:
 
 .. figure:: ../../Images/edit-me-github.png
 	:alt: Link to edit the chapter on GitHub

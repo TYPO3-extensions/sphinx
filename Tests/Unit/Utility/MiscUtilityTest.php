@@ -178,7 +178,7 @@ YAML;
 		MiscUtility::addIntersphinxMapping(
 			$fixtureFilename,
 			'restdoc',
-			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
+			'https://docs.typo3.org/typo3cms/extensions/restdoc/'
 		);
 		$configuration = file_get_contents($fixtureFilename);
 		$expected = <<<YAML
@@ -189,7 +189,7 @@ conf.py:
   release: 1.2.0-dev
   intersphinx_mapping:
     restdoc:
-    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - https://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
 YAML;
 		$this->assertSame($expected, $configuration);
@@ -224,7 +224,7 @@ YAML;
 		MiscUtility::addIntersphinxMapping(
 			$fixtureFilename,
 			'restdoc',
-			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
+			'https://docs.typo3.org/typo3cms/extensions/restdoc/'
 		);
 		$configuration = file_get_contents($fixtureFilename);
 		$expected = <<<YAML
@@ -240,7 +240,7 @@ conf.py:
   release: 1.2.0-dev
   intersphinx_mapping:
     restdoc:
-    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - https://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
 ...
 
@@ -265,7 +265,7 @@ YAML;
 		MiscUtility::addIntersphinxMapping(
 			$fixtureFilename,
 			'restdoc',
-			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
+			'https://docs.typo3.org/typo3cms/extensions/restdoc/'
 		);
 		$configuration = file_get_contents($fixtureFilename);
 		$currentYear = date('Y');
@@ -282,7 +282,7 @@ conf.py:
   release: 1.0.0
   intersphinx_mapping:
     restdoc:
-    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - https://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
 ...
 
@@ -307,7 +307,7 @@ conf.py:
   release: 1.2.0-dev
   intersphinx_mapping:
     restdoc:
-    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - https://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
 YAML;
 		GeneralUtility::writeFile($fixtureFilename, $yaml);
@@ -330,7 +330,7 @@ conf.py:
     - http://typo3.org/api/typo3cms/
     - null
     restdoc:
-    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - https://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
 YAML;
 		$this->assertSame($expected, $configuration);
@@ -353,7 +353,7 @@ conf.py:
   release: 1.2.0-dev
   intersphinx_mapping:
     restdoc:
-    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - https://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
 YAML;
 		GeneralUtility::writeFile($fixtureFilename, $yaml);
@@ -362,7 +362,7 @@ YAML;
 		MiscUtility::addIntersphinxMapping(
 			$fixtureFilename,
 			'restdoc',
-			'http://docs.typo3.org/typo3cms/extensions/restdoc/'
+			'https://docs.typo3.org/typo3cms/extensions/restdoc/'
 		);
 		$configuration = file_get_contents($fixtureFilename);
 		$expected = $yaml;
@@ -425,10 +425,10 @@ YAML;
 conf.py:
   intersphinx_mapping:
     t3tsref:
-    - http://docs.typo3.org/typo3cms/TyposcriptReference/
+    - https://docs.typo3.org/typo3cms/TyposcriptReference/
     - null
     restdoc:
-    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - https://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
 YAML;
 		GeneralUtility::writeFile($fixtureFilename, $yaml);
@@ -437,8 +437,8 @@ YAML;
 		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
 		$expected = array(
 			'intersphinx_mapping = {' . LF .
-				"'t3tsref': ('http://docs.typo3.org/typo3cms/TyposcriptReference/', None)," . LF .
-				"'restdoc': ('http://docs.typo3.org/typo3cms/extensions/restdoc/', None)" . LF .
+				"'t3tsref': ('https://docs.typo3.org/typo3cms/TyposcriptReference/', None)," . LF .
+				"'restdoc': ('https://docs.typo3.org/typo3cms/extensions/restdoc/', None)" . LF .
 			'}',
 		);
 		$this->assertSame($expected, $pythonConfiguration);

@@ -30,7 +30,7 @@ class OpenOfficeConverter {
 
 	/**
 	 * Converts an OpenOffice document to Sphinx using the online
-	 * converter on http://docs.typo3.org/getthedocs/service-convert.html.
+	 * converter on https://docs.typo3.org/getthedocs/service-convert.html.
 	 *
 	 * @param string $sxwFilename Absolute path to the OpenOffice document (*.sxw)
 	 * @param string $outputDirectory Absolute path to the directory where the Sphinx project should be created
@@ -46,7 +46,7 @@ class OpenOfficeConverter {
 			throw new \RuntimeException('Couldn\'t initialize cURL. Please load PHP extension curl.', 1375438703);
 		}
 
-		$serviceUrl = 'http://docs.typo3.org/getthedocs/index.php';
+		$serviceUrl = 'https://docs.typo3.org/getthedocs/index.php';
 
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_VERBOSE, 0);
@@ -73,7 +73,7 @@ class OpenOfficeConverter {
 		curl_close($ch);
 
 		if (preg_match('/manual.sxw has been converted to reST and is available for download./', $response)
-			&& preg_match('#(http://docs.typo3.org/getthedocs/files/\d+/Documentation.zip)#', $response, $matches)) {
+			&& preg_match('#(https://docs.typo3.org/getthedocs/files/\d+/Documentation.zip)#', $response, $matches)) {
 
 			$documentationUrl = $matches[1];
 			$zipFilename = GeneralUtility::getFileAbsFileName('typo3temp/documentation.zip');

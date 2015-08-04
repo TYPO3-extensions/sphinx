@@ -52,14 +52,14 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 				$sphinxManuals[] = array(
 					'extensionKey' => $extensionKey,
 					'locale' => 'default',
-					'remote' => 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey,
+					'remote' => 'https://docs.typo3.org/typo3cms/extensions/' . $extensionKey,
 				);
 				if (isset($info['localizations'])) {
 					foreach ($info['localizations'] as $locale) {
 						$sphinxManuals[] = array(
 							'extensionKey' => $extensionKey,
 							'locale' => $locale,
-							'remote' => 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/' . str_replace('_', '-', strtolower($locale)),
+							'remote' => 'https://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/' . str_replace('_', '-', strtolower($locale)),
 						);
 					}
 				}
@@ -73,7 +73,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			$extensionKey = $extension['extension_key'];
 			$reference = 'EXT:' . $extensionKey;
 			$result[] = array(
-				'id' => 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey,
+				'id' => 'https://docs.typo3.org/typo3cms/extensions/' . $extensionKey,
 				'label' => $extension['title'] . ' (' . $extensionKey . ')',
 				'value' => $reference,
 			);
@@ -81,7 +81,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 			if (isset($manual['localizations'])) {
 				foreach ($manual['localizations'] as $locale) {
 					$result[] = array(
-						'id' => 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/' . str_replace('_', '-', strtolower($locale)),
+						'id' => 'https://docs.typo3.org/typo3cms/extensions/' . $extensionKey . '/' . str_replace('_', '-', strtolower($locale)),
 						'label' => $extension['title'] . ' (' . $extensionKey . '.' . $locale . ')',
 						'value' => $reference . '.' . $locale,
 					);
@@ -109,7 +109,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	protected function getExtensionManuals() {
-		$json = MiscUtility::getUrlWithCache('http://docs.typo3.org/typo3cms/extensions/manuals.json');
+		$json = MiscUtility::getUrlWithCache('https://docs.typo3.org/typo3cms/extensions/manuals.json');
 		$manuals = json_decode($json, TRUE);
 		return is_array($manuals) ? $manuals : array();
 	}
@@ -121,7 +121,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see \TYPO3\CMS\Documentation\Service\DocumentationService::getOfficialDocuments()
 	 */
 	public function getOfficialDocuments() {
-		$json = MiscUtility::getUrlWithCache('http://docs.typo3.org/typo3cms/documents.json');
+		$json = MiscUtility::getUrlWithCache('https://docs.typo3.org/typo3cms/documents.json');
 		$documents = json_decode($json, TRUE);
 		return is_array($documents) ? $documents : array();
 	}

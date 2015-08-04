@@ -34,6 +34,6 @@ Tips and tricks for PDF rendering
 .. index::
 	single: Image; Supported formats
 
-PDF rendering on http://docs.typo3.org is using LaTeX as described in chapter :ref:`rendering-pdf`. As such, you should
+PDF rendering on https://docs.typo3.org is using LaTeX as described in chapter :ref:`rendering-pdf`. As such, you should
 restrict yourself to using images either as JPG (image/jpeg) or PNG (image/png) and never use images as GIF (image/gif)
 which will hinder the PDF generation.

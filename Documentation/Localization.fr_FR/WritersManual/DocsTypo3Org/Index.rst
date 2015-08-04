@@ -12,22 +12,22 @@ Rendu sur docs.typo3.org
 ------------------------
 
 Lorsque vous publiez votre extension sur le :abbr:`TER (TYPO3 Extension Repository)`, la documentation
-Sphinx/reStructuredText associée est automatiquement compilée et publiée sur le site http://docs.typo3.org à l'URL
-:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/`.
+Sphinx/reStructuredText associée est automatiquement compilée et publiée sur le site https://docs.typo3.org à l'URL
+:file:`https://docs.typo3.org/typo3cms/extensions/{extension-key}/`.
 
-Par exemple, cette documentation est publiée sur http://docs.typo3.org/typo3cms/extensions/sphinx/.
+Par exemple, cette documentation est publiée sur https://docs.typo3.org/typo3cms/extensions/sphinx/.
 
 De plus, une archive zip est créée automatiquement pour chaque combinaison de version et de langue et contient une copie
 du rendu HTML (aussi connu sous le nom de "gabarit statique" dans cette extension) et son équivalent PDF (si le rendu
 PDF a été activé, voir :ref:`ci-après <docs-typo3-org-pdf>`). Les archives sont stockés sous
-:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/packages/` :file:`{extension-key}-{version}-{language}.zip`.
+:file:`https://docs.typo3.org/typo3cms/extensions/{extension-key}/packages/` :file:`{extension-key}-{version}-{language}.zip`.
 Exemples :
 
-- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-default.zip
-- http://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-fr-fr.zip
+- https://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-default.zip
+- https://docs.typo3.org/typo3cms/extensions/sphinx/packages/sphinx-1.2.0-fr-fr.zip
 
 La liste des archives disponibles peut être récupérée simplement depuis l'URL
-http://docs.typo3.org/typo3cms/extensions/sphinx/packages/packages.xml (vous pouvez bien évidemment remplacer le segment
+https://docs.typo3.org/typo3cms/extensions/sphinx/packages/packages.xml (vous pouvez bien évidemment remplacer le segment
 ``/sphinx/`` par n'importe quelle autre clé d'extension).
 
 .. caution::
@@ -53,11 +53,11 @@ Titre, mention de copyright et version
 Un projet Sphinx valide pour un manuel d'extension doit contenir un fichier de configuration :file:`Settings.yml` au même
 niveau que le document principal :file:`Index.rst`. Ce fichier est votre passe pour surcharger les paramètres par défaut
 du fichier de configuration Sphinx réel :file:`conf.py` qui ne fait pas partie de votre projet (étant donné qu'il va
-contenir des paramètres liés à l'environnement de compilation sur http://docs.typo3.org). Au lieu de ça, ce fichier de
+contenir des paramètres liés à l'environnement de compilation sur https://docs.typo3.org). Au lieu de ça, ce fichier de
 configuration YAML vous permet de définir certaines options de projet.
 
 De façon similaire, cette extension s'occupe de lire les options de :file:`Settings.yml`, ce qui assure une uniformité
-entre le travail local sur votre manuel d'extension et son déploiement automatique sur http://docs.typo3.org.
+entre le travail local sur votre manuel d'extension et son déploiement automatique sur https://docs.typo3.org.
 
 Un fichier standard :file:`Settings.yml` devrait définir certaines informations générales de projet :
 
@@ -98,7 +98,7 @@ release
 		(lorsque seul le dernier chiffre de la version change).
 
 		Puisque les auteurs d'extensions ont une grande chance d'oublier de mettre à jour la version avant la publication
-		de leur extension sur le TER, le moteur de rendu sur http://docs.typo3.org surcharge automatiquement les
+		de leur extension sur le TER, le moteur de rendu sur https://docs.typo3.org surcharge automatiquement les
 		paramètres *version* et *release* en utilisant la valeur effective telle que vue sur le TER.
 
 
@@ -166,9 +166,9 @@ documentclass
 
 Les lignes 12 à 15 devraient être recopiées telles quelles. La ligne 15 est en fait le "déclencheur" de rendu PDF.
 
-Lorsque le rendu PDF est activé, votre documentation est générée automatiquement sur http://docs.typo3.org à l'URL
-:file:`http://docs.typo3.org/typo3cms/extensions/{extension-key}/_pdf/`. Par exemple :
-http://docs.typo3.org/typo3cms/extensions/sphinx/_pdf/.
+Lorsque le rendu PDF est activé, votre documentation est générée automatiquement sur https://docs.typo3.org à l'URL
+:file:`https://docs.typo3.org/typo3cms/extensions/{extension-key}/_pdf/`. Par exemple :
+https://docs.typo3.org/typo3cms/extensions/sphinx/_pdf/.
 
 Veuillez lire le chapitre :ref:`customizing-rendering` pour de plus amples informations sur les options de configuration
 LaTeX.
@@ -182,7 +182,7 @@ Documentation multilingue
 .. index::
 	single: Manuel multilingue
 
-Les manuels d'extensions multilingues sont supportés à la fois par cette extension et par http://docs.typo3.org. Si vous
+Les manuels d'extensions multilingues sont supportés à la fois par cette extension et par https://docs.typo3.org. Si vous
 souhaitez traduire votre documentation, démarrez un nouveau projet Sphinx complet (y.c. :file:`Settings.yml`) dans le
 répertoire :file:`Documentation/Localization.{locale}`.
 
@@ -197,13 +197,13 @@ Locales
 .. index::
 	single: Locales
 
-Mis à part pour les quelques préfixes qui sont déjà des "locales", http://docs.typo3.org s'attend à avoir une locale et
+Mis à part pour les quelques préfixes qui sont déjà des "locales", https://docs.typo3.org s'attend à avoir une locale et
 pas un code de langue. Par conséquent, assurez-vous d'*étendre* le préfixe en conséquence. Par exemple, une
 documentation française (préfixe ``fr``) devrait être étendue soit en ``fr_FR`` (français de France) ou en ``fr_CA``
 (français du Canada). Regardez notre liste de suggestions ci-dessous.
 
-Votre manuel d'extension traduit sera généré sur http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) et
-http://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
+Votre manuel d'extension traduit sera généré sur https://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/ (HTML) et
+https://docs.typo3.org/typo3cms/extensions/sphinx/fr-fr/_pdf/ (PDF).
 
 .. note::
 	Par convention, la page d'*accueil* (ou d'*arrivée*) d'une documentation devrait être associée à une ancre ``start``.
@@ -272,7 +272,7 @@ de répertoires et de fichiers. Bien que cette idée semble judicieuse de prime 
 le faire.
 
 En effet, les bonnes pratiques montrent que si vous gardez les noms de répertoires et de fichiers originaux, vous
-permettez à vos lecteurs de basculer rapidement entre la version originale et une traduction sur http://docs.typo3.org
+permettez à vos lecteurs de basculer rapidement entre la version originale et une traduction sur https://docs.typo3.org
 puisque le sélecteur de langue (actuellement masqué dans la liste des versions) tente de trouver une URI relative
 identique dans les traductions disponibles. S'il trouve une correspondance vers le *même* document, il basculera sur le
 même chapitre (mais traduit !), sinon il affichera la page d'accueil.
@@ -311,9 +311,9 @@ Derrière les coulisses, voici ce qui se passe :
   références à des objets sinon manquants vers une autre documentation.
 
 La liste des manuels officiels et leurs préfixes correspondants peut être trouvée sur
-http://docs.typo3.org/typo3cms/Index.html.
+https://docs.typo3.org/typo3cms/Index.html.
 
-Vous êtes en mesure de créer des liens vers d'autres documentations de http://docs.typo3.org (ou ailleurs) en configurant
+Vous êtes en mesure de créer des liens vers d'autres documentations de https://docs.typo3.org (ou ailleurs) en configurant
 la correspondance Intersphinx dans :file:`Settings.yml`. Pour se faire, ajoutez des options de configuration
 (lignes 6 à 9) :
 
@@ -328,7 +328,7 @@ la correspondance Intersphinx dans :file:`Settings.yml`. Pour se faire, ajoutez 
 	  release: 2.2.1
 	  intersphinx_mapping:
 	    restdoc:
-	    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+	    - https://docs.typo3.org/typo3cms/extensions/restdoc/
 	    - null
 
 Cela aura pour effet d'enregistrer le préfixe ``restdoc`` et vous permettra de créer des références croisées vers
@@ -410,7 +410,7 @@ Modifier le manuel sur GitHub
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Si votre extension est hébergée sur GitHub, vous pouvez configurer le manuel de telle façon qu'il puisse être facilement
-modifiable lorsqu'il est publié sur http://docs.typo3.org:
+modifiable lorsqu'il est publié sur https://docs.typo3.org:
 
 .. figure:: ../../../Images/edit-me-github.png
 	:alt: Lien pour modifier le chapitre courant sur GitHub

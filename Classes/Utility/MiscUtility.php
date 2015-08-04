@@ -513,7 +513,7 @@ HTML;
 			$cacheFile = GeneralUtility::getFileAbsFileName(
 				'typo3temp/tx_' . static::$extKey . '/' . $extensionKey . '/_make/build/json/objects.inv'
 			);
-			$remoteUrl = 'http://docs.typo3.org/typo3cms/extensions/' . $extensionKey;
+			$remoteUrl = 'https://docs.typo3.org/typo3cms/extensions/' . $extensionKey;
 			if ($locale) {
 				$remoteUrl .= '/' . strtolower(str_replace('_', '-', $locale));
 			}

@@ -46,7 +46,7 @@ a list of custom projects may be managed:
 
 Then, depending on your environment, up to two additional tabs may be present. One that shows a list of
 locally-available extensions with an OpenOffice manual only. Action icons let you easily convert their manual to Sphinx
-using an online tool on http://docs.typo3.org:
+using an online tool on https://docs.typo3.org:
 
 .. figure:: ../../Images/convert-openoffice.png
 	:alt: Easily convert OpenOffice manuals to Sphinx projects
@@ -59,7 +59,7 @@ using an online tool on http://docs.typo3.org:
 
 	Please read corresponding :file:`README` file for instructions.
 
-	If you prefer, you may use the online converter manually: http://docs.typo3.org/getthedocs/service-convert.html.
+	If you prefer, you may use the online converter manually: https://docs.typo3.org/getthedocs/service-convert.html.
 
 Similarly, an empty Sphinx documentation project may be created for local extensions without any manual yet:
 
@@ -90,7 +90,7 @@ Extension manuals may be rendered with different "layouts":
 Internals
 ^^^^^^^^^
 
-As Sphinx-based extension manuals are meant to be rendered on http://docs.typo3.org using the TYPO3 corporate design,
+As Sphinx-based extension manuals are meant to be rendered on https://docs.typo3.org using the TYPO3 corporate design,
 they do not provide the general configuration files needed to be rendered locally.
 
 When selecting an extension's manual to be shown from the drop-down menu the following process happens:

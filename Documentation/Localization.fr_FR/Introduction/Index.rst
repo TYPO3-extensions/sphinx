@@ -72,7 +72,7 @@ Par ailleurs, cette extension fournit quelques utilitaires comme :
 - Étend TYPO3 6.2 pour générer les manuels des extensions à la demande
 - Un éditeur reStructuredText intégré
 - Un assistant pour convertir un document OpenOffice (:file:`manual.sxw`) en un projet Sphinx (à l'aide d'un utilitaire
-  en ligne disponible sur http://docs.typo3.org)
+  en ligne disponible sur https://docs.typo3.org)
 
 
 Que puis-je faire avec un project Sphinx ?

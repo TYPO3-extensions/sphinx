@@ -22,17 +22,17 @@ conf.py:
   latex_show_pagerefs: True
   intersphinx_mapping:
     restdoc:
-    - http://docs.typo3.org/typo3cms/extensions/restdoc/
+    - https://docs.typo3.org/typo3cms/extensions/restdoc/
     - null
     t3tsref:
-    - http://docs.typo3.org/typo3cms/TyposcriptReference/
+    - https://docs.typo3.org/typo3cms/TyposcriptReference/
     - null
     t3cmsapi:
-    - http://typo3.org/api/typo3cms/
+    - https://typo3.org/api/typo3cms/
     - null
   extlinks:
     ter:
-    - http://www.typo3.org/extensions/repository/view/%s
+    - https://www.typo3.org/extensions/repository/view/%s
     - 'TYPO3 extension '
   extensions:
   - sphinx.ext.intersphinx

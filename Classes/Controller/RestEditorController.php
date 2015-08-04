@@ -696,7 +696,7 @@ class RestEditorController extends AbstractActionController {
 		$ret = MiscUtility::addIntersphinxMapping(
 			$settingsFilename,
 			$prefix,
-			$remoteUrl ?: 'http://docs.typo3.org/typo3cms/extensions/' . $prefix
+			$remoteUrl ?: 'https://docs.typo3.org/typo3cms/extensions/' . $prefix
 		);
 
 		$response = array();
