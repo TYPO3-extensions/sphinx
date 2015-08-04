@@ -73,7 +73,7 @@ class OpenOfficeConverter {
 		curl_close($ch);
 
 		if (preg_match('/manual.sxw has been converted to reST and is available for download./', $response)
-			&& preg_match('#(https://docs.typo3.org/getthedocs/files/\d+/Documentation.zip)#', $response, $matches)) {
+			&& preg_match('#(https?://docs.typo3.org/getthedocs/files/\d+/Documentation.zip)#', $response, $matches)) {
 
 			$documentationUrl = $matches[1];
 			$zipFilename = GeneralUtility::getFileAbsFileName('typo3temp/documentation.zip');
