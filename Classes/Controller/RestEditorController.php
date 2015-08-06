@@ -476,28 +476,71 @@ class RestEditorController extends AbstractActionController {
 		if (is_dir($parts['basePath']) && GeneralUtility::isFirstPartOfStr(str_replace(DIRECTORY_SEPARATOR, '/', $parts['basePath']), PATH_site)) {
 			$targetDirectory = substr($parts['basePath'] . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $path), strlen(PATH_site));
 			$overwriteExistingFiles = FALSE;
-
-			$data = array();
 			$namespace = key($_FILES);
 
-			// Register every upload field from the form:
-			$this->registerUploadField($data, $namespace, 'files', $targetDirectory);
+			$targetIsExtension = GeneralUtility::isFirstPartOfStr($targetDirectory, 'typo3conf/ext/')
+				|| GeneralUtility::isFirstPartOfStr($targetDirectory, 'typo3/sysext/');
 
-			// Initializing:
-			/** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $fileProcessor */
-			$fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
-			$fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-			$fileProcessor->setActionPermissions(array('addFile' => TRUE));
-			$fileProcessor->dontCheckForUnique = $overwriteExistingFiles ? 1 : 0;
+			if ($targetIsExtension) {
+				// Upload to an extension, cannot use FAL-related methods
 
-			// Actual upload
-			$fileProcessor->start($data);
-			try {
-				$result = $fileProcessor->processData();
-				$response['statusText'] = $this->getFlashMessages();
-				$success = TRUE;
-			} catch (\Exception $e) {
-				$response['statusText'] = $e->getMessage();
+				$tmpName = $_FILES[$namespace]['tmp_name']['files'][0];
+				$targetName = $_FILES[$namespace]['name']['files'][0];
+				$extension = '';
+				if (($pos = strrpos($targetName, '.')) !== FALSE) {
+					$extension = strtolower(substr($targetName, $pos + 1));
+				}
+				if (is_uploaded_file($tmpName) && $this->isAllowedFileType($extension)) {
+					$fileName = PATH_site . $targetDirectory . $targetName;
+
+					// Max upload size (kb) for files.
+					$maxUploadFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
+					if (filesize($tmpName) <= $maxUploadFileSize) {
+						if (!file_exists($fileName) || $overwriteExistingFiles) {
+							if (move_uploaded_file($tmpName, $fileName)) {
+								$success = TRUE;
+							} else {
+								// Some error occured
+								$response['statusText'] = $this->translate('editor.action.error.unknownError');
+							}
+						} else {
+							// File already exists
+							$response['statusText'] = $this->translate('editor.action.error.destinationExists');
+						}
+					} else {
+						// File is too big
+						$response['statusText'] = $this->translate('editor.action.error.sizeExceeded');
+					}
+				} else {
+					// Extension not allowed
+					$response['statusText'] = $this->translate('editor.action.error.invalidExtension');
+				}
+			} else {
+				$data = array();
+
+				// Register every upload field from the form:
+				$this->registerUploadField($data, $namespace, 'files', $targetDirectory);
+
+				// Initializing:
+				/** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $fileProcessor */
+				$fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
+				$fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+				$fileProcessor->setActionPermissions(array('addFile' => TRUE));
+				if (version_compare(TYPO3_version, '6.99.99', '<=')) {
+					$fileProcessor->dontCheckForUnique = $overwriteExistingFiles ? 1 : 0;
+				} else {
+					$fileProcessor->setExistingFilesConflictMode($overwriteExistingFiles ? 'replace' : 'cancel');
+				}
+
+				// Actual upload
+				$fileProcessor->start($data);
+				try {
+					$result = $fileProcessor->processData();
+					$response['statusText'] = $this->getFlashMessages();
+					$success = TRUE;
+				} catch (\Exception $e) {
+					$response['statusText'] = $e->getMessage();
+				}
 			}
 		} else {
 			$response['statusText'] = $this->translate('editor.action.error.invalidUploadDirectory', array($parts['basePath']));
@@ -862,12 +905,12 @@ class RestEditorController extends AbstractActionController {
 				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371163472);
 		}
 
-		$basePath = realpath($basePath);
+		$basePath = PathUtility::getCanonicalPath($basePath);
 		$usingGit = GitUtility::isAvailable() && GitUtility::status($basePath);
 
 		return array(
 			'basePath'     => $basePath,
-			'filename'     => realpath($filename),
+			'filename'     => PathUtility::getCanonicalPath($filename),
 			'type'         => $type,
 			'identifier'   => $identifier,
 			'extensionKey' => $extensionKey,
@@ -925,8 +968,8 @@ class RestEditorController extends AbstractActionController {
 		}
 
 		// Security check
-		$path = realpath($path);
-		$filename = realpath($filename);
+		$path = PathUtility::getCanonicalPath($path);
+		$filename = PathUtility::getCanonicalPath($filename);
 		if (substr($filename, 0, strlen($path)) !== $path) {
 			throw new \RuntimeException('Security notice: attempted to access a file outside of extension "' . $extensionKey . '"', 1370011326);
 		}

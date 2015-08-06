@@ -342,6 +342,9 @@
 			<trans-unit id="editor.action.error.invalidExtension">
 				<source>Extension of file name is not allowed.</source>
 			</trans-unit>
+			<trans-unit id="editor.action.error.sizeExceeded">
+				<source>The uploaded file exceeds the size limit.</source>
+			</trans-unit>
 
 			<trans-unit id="language.default">
 				<source>Default (English)</source>
