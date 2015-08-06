@@ -339,6 +339,9 @@
 			<trans-unit id="editor.action.error.invalidUploadDirectory">
 				<source>Invalid target directory: %s</source>
 			</trans-unit>
+			<trans-unit id="editor.action.error.invalidExtension">
+				<source>Extension of file name is not allowed.</source>
+			</trans-unit>
 
 			<trans-unit id="language.default">
 				<source>Default (English)</source>

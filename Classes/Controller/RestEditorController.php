@@ -299,9 +299,15 @@ class RestEditorController extends AbstractActionController {
 
 		$parts = $this->parseReferenceDocument($reference, '');
 		$fileParts = explode('/', trim($filename, '/'));
+		$extension = '';
+		if (($pos = strrpos($newName, '.')) !== FALSE) {
+			$extension = strtolower(substr($newName, $pos + 1));
+		}
 
 		if (empty($newName) || preg_match('#[/?*:;{}\\\\]#', $newName)) {
 			$response['statusText'] = $this->translate('editor.action.error.invalidName');
+		} elseif (!$this->isAllowedFileType($extension)) {
+			$response['statusText'] = $this->translate('editor.action.error.invalidExtension');
 		} elseif (is_dir($parts['basePath'])) {
 			$sourceFile = $parts['basePath'] . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $fileParts);
 			array_pop($fileParts);
@@ -398,8 +404,15 @@ class RestEditorController extends AbstractActionController {
 		$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
 		$parts = $this->parseReferenceDocument($reference, '');
 
+		$extension = '';
+		if ($isFile && ($pos = strrpos($name, '.')) !== FALSE) {
+			$extension = strtolower(substr($name, $pos + 1));
+		}
+
 		if (empty($name) || preg_match('#[/?*:;{}\\\\]#', $name)) {
 			$response['statusText'] = $this->translate('editor.action.error.invalidName');
+		} elseif ($isFile && !$this->isAllowedFileType($extension)) {
+			$response['statusText'] = $this->translate('editor.action.error.invalidExtension');
 		} elseif (is_dir($parts['basePath'])) {
 			$target = $parts['basePath'] . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR) . $name;
 			if (!(is_file($target) || is_dir($target))) {
@@ -493,6 +506,43 @@ class RestEditorController extends AbstractActionController {
 		$response['status'] = $success ? 'success' : 'error';
 
 		$this->returnAjax($response, TRUE);
+	}
+
+	/**
+	 * Checks if a file type (file extension) is allowed to be uploaded.
+	 *
+	 * @param string $fileType The extension to check, eg. "php" or "html" etc.
+	 * @param string $type Either "webspage" or "ftpspace"
+	 * @return bool TRUE if file extension is allowed
+	 * @see \TYPO3\CMS\Core\Utility\File\BasicFileUtility::is_allowed()
+	 */
+	protected function isAllowedFileType($fileType, $type = 'webspace') {
+		$fileExtensions = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions'];
+		if (isset($fileExtensions[$type])) {
+			$fileType = strtolower($fileType);
+			if ($fileType) {
+				// If the extension is found amongst the allowed types, we return TRUE immediately
+				if ($fileExtensions[$type]['allow'] === '*' || GeneralUtility::inList($fileExtensions[$type]['allow'], $fileType)) {
+					return TRUE;
+				}
+				// If the extension is found amongst the denied types, we return FALSE immediately
+				if ($fileExtensions[$type]['deny'] === '*' || GeneralUtility::inList($fileExtensions[$type]['deny'], $fileType)) {
+					return FALSE;
+				}
+				// If no match we return TRUE
+				return TRUE;
+			} else {
+				// If no extension:
+				if ($fileExtensions[$type]['allow'] === '*') {
+					return TRUE;
+				}
+				if ($fileExtensions[$type]['deny'] === '*') {
+					return FALSE;
+				}
+				return TRUE;
+			}
+		}
+		return FALSE;
 	}
 
 	/**
