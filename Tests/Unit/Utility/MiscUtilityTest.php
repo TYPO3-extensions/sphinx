@@ -148,7 +148,7 @@ YAML;
 		// Test
 		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
 		$expected = array(
-			'copyright = u\'2014\'',
+			'copyright = 2014',
 			'project = u\'Sphinx Python Documentation Generator and Viewer\'',
 			'version = u\'1.2\'',
 			'release = u\'1.2.0-dev\'',
@@ -580,6 +580,31 @@ YAML;
 		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
 		$expected = array(
 			"extensions = ['sphinx.ext.intersphinx', 'sphinxcontrib.youtube']"
+		);
+		$this->assertSame($expected, $pythonConfiguration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
+	public function booleanInYamlIsKeptInPython() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  latex_use_parts: False
+  latex_show_pagerefs: True
+YAML;
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
+		$expected = array(
+			'latex_use_parts = False',
+			'latex_show_pagerefs = True',
 		);
 		$this->assertSame($expected, $pythonConfiguration);
 
