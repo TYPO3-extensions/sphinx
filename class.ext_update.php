@@ -204,7 +204,7 @@ CSS;
 			$isInstalled = GeneralUtility::inArray($localVersions, $version['key']);
 			$hasSources = Setup::hasSphinxSources($version['key']);
 			$hasLibraries = Setup::hasPyYaml()
-				&& Setup::hasPygments()
+				&& Setup::hasPygments($version['key'])
 				&& Setup::hasRestTools()
 				&& Setup::hasThirdPartyLibraries();
 			if ($installRst2Pdf) {
@@ -283,8 +283,8 @@ CSS;
 		if (!Setup::hasThirdPartyLibraries()) {
 			$success &= Setup::downloadThirdPartyLibraries($output);
 		}
-		if (!Setup::hasPygments()) {
-			$success &= Setup::downloadPygments($output);
+		if (!Setup::hasPygments($version)) {
+			$success &= Setup::downloadPygments($version, $output);
 		}
 
 		return $success;
@@ -320,7 +320,7 @@ CSS;
 				if (Setup::hasPyYaml()) {
 					$success &= Setup::buildPyYaml($version, $output);
 				}
-				if (Setup::hasPygments()) {
+				if (Setup::hasPygments($version)) {
 					$success &= Setup::buildPygments($version, $output);
 				}
 				if (Setup::hasRestTools()) {

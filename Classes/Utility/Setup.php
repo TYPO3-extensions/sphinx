@@ -907,39 +907,73 @@ EOT;
 	/**
 	 * Returns TRUE if the source files of Pygments are available locally.
 	 *
+	 * @param string $sphinxVersion The Sphinx version to build Pygments for
 	 * @return boolean
 	 */
-	static public function hasPygments() {
-		$sphinxSourcePath = static::getSphinxSourcesPath();
-		$setupFile = $sphinxSourcePath . 'Pygments/setup.py';
-		return is_file($setupFile);
+	static public function hasPygments($sphinxVersion) {
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$minimumPygmentsVersion = static::getMinimumLibraryVersion('Pygments', $sphinxSourcesPath . $sphinxVersion);
+
+		$present = FALSE;
+		$highestVersion = $minimumPygmentsVersion;
+
+		$localPygmentsVersions = static::getPygmentsLocalVersions();
+		foreach ($localPygmentsVersions as $version) {
+			if (version_compare($version, $highestVersion, '>=')) {
+				$present = TRUE;
+				$highestVersion = $version;
+			}
+		}
+
+		// If we are online, try to see if a newer version is available. If so,
+		// we need to use it otherwise it will be fetched automatically for us
+		// and the newer version will override our own patched version (to
+		// include TypoScript support)
+		if ($present) {
+			$availableVersions = static::getPygmentsAvailableVersions();
+			foreach ($availableVersions as $version => $info) {
+				if (version_compare($version, $highestVersion, '>')) {
+					// At least one newer version is available online
+					return FALSE;
+				}
+			}
+		}
+
+		return $present;
 	}
 
 	/**
 	 * Downloads the source files of Pygments.
 	 *
+	 * @param string $sphinxVersion The Sphinx version to build Pygments for
 	 * @param NULL|array $output Log of operations
 	 * @return boolean TRUE if operation succeeded, otherwise FALSE
 	 * @throws \Exception
 	 * @see http://pygments.org/
 	 */
-	static public function downloadPygments(array &$output = NULL) {
+	static public function downloadPygments($sphinxVersion, array &$output = NULL) {
 		$success = TRUE;
 		$tempPath = MiscUtility::getTemporaryPath();
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
 
-		$url = 'https://bitbucket.org/birkenfeld/pygments-main/get/1.6.tar.gz';
-		$archiveFilename = $tempPath . 'pygments-1.6.tar.gz';
+		$versionUrl = static::getPygmentsVersionUrl($sphinxVersion);
+		if ($versionUrl === NULL) {
+			$output[] = '[ERROR] Could not find a compatible version of Pygments';
+			return FALSE;
+		}
+
+		$url = $versionUrl['url'];
+		$archiveFilename = $tempPath . basename($url);
 		$archiveContent = MiscUtility::getUrl($url);
 		if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
-			$output[] = '[INFO] Pygments 1.6 has been downloaded.';
+			$output[] = '[INFO] Pygments ' . $versionUrl['version'] . ' has been downloaded.';
 
-			$targetPath = $sphinxSourcesPath . 'Pygments';
+			$targetPath = $sphinxSourcesPath . 'Pygments/' . $versionUrl['version'];
 
 			// Unpack Pygments archive
 			$out = array();
 			if (static::unarchive($archiveFilename, $targetPath, 'birkenfeld-pygments-main-', $out)) {
-				$output[] = '[INFO] Pygments has been unpacked.';
+				$output[] = '[INFO] Pygments ' . $versionUrl['version'] . ' has been unpacked.';
 			} else {
 				$success = FALSE;
 				$output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
@@ -977,9 +1011,19 @@ EOT;
 			return $success;
 		}
 
-		$setupFile = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . 'setup.py';
+		$minimumPygmentsVersion = static::getMinimumLibraryVersion('Pygments', $sphinxSourcesPath . $sphinxVersion);
+
+		$highestVersion = NULL;
+		$localPygmentsVersions = static::getPygmentsLocalVersions();
+		foreach ($localPygmentsVersions as $version) {
+			if (version_compare($version, $highestVersion, '>')) {
+				$highestVersion = $version;
+			}
+		}
+
+		$setupFile = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . $highestVersion . DIRECTORY_SEPARATOR . 'setup.py';
 		if (is_file($setupFile)) {
-			static::configureTyposcriptForPygments($output);
+			static::configureTyposcriptForPygments($highestVersion, $output);
 
 			$success = static::buildWithPython(
 				'Pygments',
@@ -1000,13 +1044,15 @@ EOT;
 	/**
 	 * Configures TypoScript support for Pygments.
 	 *
+	 * @param string $pygmentsVersion
 	 * @param NULL|array $output Log of operations
 	 * @return void
 	 */
-	static private function configureTyposcriptForPygments(array &$output = NULL) {
+	static private function configureTyposcriptForPygments($pygmentsVersion, array &$output = NULL) {
 		$sphinxSourcesPath = static::getSphinxSourcesPath();
-		$lexersPath = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . 'pygments' . DIRECTORY_SEPARATOR . 'lexers' . DIRECTORY_SEPARATOR;
+		$lexersPath = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . $pygmentsVersion . DIRECTORY_SEPARATOR . 'pygments' . DIRECTORY_SEPARATOR . 'lexers' . DIRECTORY_SEPARATOR;
 
+		// TODO: change this URL to something within https://git.typo3.org/Teams/Documentation.git when ready
 		$url = 'https://git.typo3.org/Documentation/RestTools.git/blob_plain/HEAD:/ExtendingPygmentsForTYPO3/_incoming/typoscript.py';
 		$libraryFilename = $lexersPath . 'typoscript.py';
 		$libraryContent = MiscUtility::getUrl($url);
@@ -1014,7 +1060,7 @@ EOT;
 		if ($libraryContent) {
 			if (!is_file($libraryFilename) || md5_file($libraryFilename) !== md5($libraryContent)) {
 				if (GeneralUtility::writeFile($libraryFilename, $libraryContent)) {
-					$output[] = '[OK] TypoScript library for Pygments successfully downloaded/updated.';
+					$output[] = '[OK] TypoScript library for Pygments ' . $pygmentsVersion . ' successfully downloaded/updated.';
 				}
 			}
 			if (is_file($libraryFilename)) {
@@ -1025,9 +1071,9 @@ EOT;
 				$out = array();
 				static::exec($cmd, $out, $ret);
 				if ($ret === 0) {
-					$output[] = '[OK] TypoScript library successfully registered with Pygments.';
+					$output[] = '[OK] TypoScript library successfully registered with Pygments ' . $pygmentsVersion . '.';
 				} else {
-					$output[] = '[WARNING] Could not install TypoScript library for Pygments.';
+					$output[] = '[WARNING] Could not install TypoScript library for Pygments ' . $pygmentsVersion . '.';
 				}
 			}
 		}
@@ -1187,6 +1233,42 @@ EOT;
 	}
 
 	/**
+	 * Returns a list of online available versions of Pygments.
+	 *
+	 * @return array
+	 */
+	static protected function getPygmentsAvailableVersions() {
+		$baseUrl = 'https://bitbucket.org';
+		$html = MiscUtility::getUrlWithCache($baseUrl . '/birkenfeld/pygments-main/downloads');
+
+		$tagsHtml = substr($html, strpos($html, ' id="tag-downloads"'));
+
+		$versions = array();
+		preg_replace_callback(
+			'#<tr class="iterable-item">.*?<td class="name">([^<]*)</td>.*?<a href="([^"]+)">gz</a>#s',
+			function($matches) use ($baseUrl, &$versions) {
+				if ($matches[1] !== 'tip') {
+					$key = $matches[1];
+					$name = $key;
+
+					// Remove RC's
+					if (strpos($name, 'rc') === FALSE) {
+						$versions[$name] = array(
+							'key' => $key,
+							'name' => $name,
+							'url' => $baseUrl . $matches[2],
+						);
+					}
+				}
+			},
+			$tagsHtml
+		);
+
+		krsort($versions);
+		return $versions;
+	}
+
+	/**
 	 * Returns the changes for a given version of Sphinx.
 	 *
 	 * @param string $sphinxVersion
@@ -1229,6 +1311,85 @@ EOT;
 			$versions = GeneralUtility::get_dirs($sphinxPath);
 		}
 		return $versions;
+	}
+
+	/**
+	 * Returns a list of locally available versions of Pygments.
+	 *
+	 * @return array
+	 */
+	static public function getPygmentsLocalVersions() {
+		$versions = array();
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+		$pygmentsPath = $sphinxSourcesPath . 'Pygments/';
+
+		if (is_file($pygmentsPath . 'setup.py')) {
+			// Version of Pygments downloaded with EXT:sphinx <= 2.2.3
+			GeneralUtility::rmdir($pygmentsPath, TRUE);
+			return $versions;
+		}
+		if (is_dir($pygmentsPath)) {
+			$versions = GeneralUtility::get_dirs($pygmentsPath);
+		}
+
+		return $versions;
+	}
+
+	/**
+	 * Returns the minimum library version required for a given version of Sphinx.
+	 *
+	 * @param string $library
+	 * @param string $sphinxSourcesPath
+	 * @return string
+	 */
+	static protected function getMinimumLibraryVersion($library, $sphinxSourcesPath) {
+		$version = '0.0';
+		$fileName = rtrim($sphinxSourcesPath, '/') . '/Sphinx.egg-info/requires.txt';
+		if (!is_file($fileName)) {
+			return $version;
+		}
+
+		$requirements = file_get_contents($fileName);
+		$lines = explode(LF, $requirements);
+		foreach ($lines as $line) {
+			list($l, $v) = GeneralUtility::trimExplode('>=', $line);
+			if ($l === $library) {
+				$version = $v;
+				break;
+			}
+		}
+
+		return $version;
+	}
+
+	/**
+	 * Returns the version and download url of a version of Pygments
+	 * compatible with a given version of Sphinx, looking for the highest
+	 * version available.
+	 *
+	 * @param string $sphinxVersion
+	 * @return NULL|array ['version' => <version>, 'url' => <downloadUrl>]
+	 */
+	static protected function getPygmentsVersionUrl($sphinxVersion) {
+		$sphinxSourcesPath = static::getSphinxSourcesPath();
+
+		$minimumVersion = static::getMinimumLibraryVersion('Pygments', $sphinxSourcesPath . $sphinxVersion);
+		if ($minimumVersion === '0.0') {
+			// Should never happen
+			$minimumVersion = '1.0';
+		}
+
+		$highestVersion = NULL;
+		$availableVersions = static::getPygmentsAvailableVersions();
+		foreach ($availableVersions as $version => $info) {
+			if (version_compare($version, $highestVersion, '>')) {
+				$highestVersion = $version;
+			}
+		}
+
+		return $highestVersion !== NULL
+			? array('version' => $highestVersion, 'url' => $availableVersions[$highestVersion]['url'])
+			: NULL;
 	}
 
 	/**
