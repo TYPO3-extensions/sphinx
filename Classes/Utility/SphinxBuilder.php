@@ -71,6 +71,21 @@ class SphinxBuilder {
 	}
 
 	/**
+	 * Returns the number of processes to be used for parallel build.
+	 *
+	 * Using 4 processes is sufficiently conservative to be fine even on
+	 * older computers while modern computers have enough core to handle it.
+	 * A higher value, with according CPU, is only marginally better.
+	 *
+	 * @return int
+	 */
+	static protected function getNumberOfProcesses() {
+		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
+		$processes = isset($configuration['processes']) ? (int)$configuration['processes'] : 4;
+		return max(1, $processes);
+	}
+
+	/**
 	 * Returns the version of Sphinx used for building documentation.
 	 *
 	 * @return string The version of sphinx
@@ -714,6 +729,14 @@ class SphinxBuilder {
 			$exports[] = MiscUtility::getExportCommand('COLORTERM', '1');
 		}
 		$cmd = implode(' && ', $exports) . ' && ' . escapeshellarg($sphinxBuilder);
+		if (version_compare($sphinxVersion, '1.2', '>=')) {
+			// Speed up the rendering by using "-j" flag:
+			// https://bitbucket.org/birkenfeld/sphinx/commits/a00063ecdb9649b7bab1f084be55c4511d1bbdce
+			$processes = static::getNumberOfProcesses();
+			if ($processes > 1) {
+				$cmd .= ' -j' . $processes;
+			}
+		}
 		return $cmd;
 	}
 
