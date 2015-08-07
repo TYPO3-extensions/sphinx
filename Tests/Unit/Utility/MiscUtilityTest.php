@@ -162,6 +162,31 @@ YAML;
 	/**
 	 * @test
 	 */
+	public function versionAndReleaseAreStringValues() {
+		// Setup
+		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
+		$yaml = <<<YAML
+conf.py:
+  version: 7
+  release: 7
+YAML;
+		GeneralUtility::writeFile($fixtureFilename, $yaml);
+
+		// Test
+		$pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
+		$expected = array(
+			'version = u\'7\'',
+			'release = u\'7\'',
+		);
+		$this->assertSame($expected, $pythonConfiguration);
+
+		// Tear down
+		@unlink($fixtureFilename);
+	}
+
+	/**
+	 * @test
+	 */
 	public function canCreateInitialIntersphinxMapping() {
 		// Setup
 		$fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
