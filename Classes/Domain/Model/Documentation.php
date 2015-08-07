@@ -30,7 +30,7 @@ use Causal\Restdoc\Utility\RestHelper;
 class Documentation {
 
 	/**
-	 * @var \Tx_Restdoc_Reader_SphinxJson
+	 * @var \Causal\Restdoc\Reader\SphinxJson
 	 */
 	protected $sphinxReader;
 
@@ -43,9 +43,9 @@ class Documentation {
 	/**
 	 * Default constructor.
 	 *
-	 * @param \Tx_Restdoc_Reader_SphinxJson $sphinxReader
+	 * @param \Causal\Restdoc\Reader\SphinxJson $sphinxReader
 	 */
-	public function __construct(\Tx_Restdoc_Reader_SphinxJson $sphinxReader) {
+	public function __construct(\Causal\Restdoc\Reader\SphinxJson $sphinxReader) {
 		$this->sphinxReader = $sphinxReader;
 	}
 

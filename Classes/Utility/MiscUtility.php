@@ -554,8 +554,8 @@ HTML;
 		}
 
 		if ($path) {
-			/** @var \Tx_Restdoc_Reader_SphinxJson $sphinxReader */
-			$sphinxReader = GeneralUtility::makeInstance('Tx_Restdoc_Reader_SphinxJson');
+			/** @var \Causal\Restdoc\Reader\SphinxJson $sphinxReader */
+			$sphinxReader = GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
 			$sphinxReader->setPath($path);
 			$references = $sphinxReader->getReferences();
 		} else {
