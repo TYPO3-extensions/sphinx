@@ -4,16 +4,16 @@
 		<header/>
 		<body>
 			<trans-unit id="settings.sphinx.version">
-				<source>Sphinx version: Please select the Sphinx version to be used:</source>
+				<source>Sphinx version: Please select the Sphinx version to be used.</source>
 			</trans-unit>
 			<trans-unit id="settings.sphinx.plugins">
 				<source>Activate plugins: 3rd-party plugins you may use in your documents.</source>
 			</trans-unit>
 			<trans-unit id="settings.build.auto_continue">
-				<source>Deactivate unknown extensions: If ticked, faulty extensions will be deactivated to let the Sphinx compilation continue anyway</source>
+				<source>Deactivate unknown extensions: If ticked, faulty extensions will be deactivated to let the Sphinx compilation continue anyway.</source>
 			</trans-unit>
 			<trans-unit id="settings.build.pdf_builder">
-				<source>PDF Builder: Please select the builder to use to render PDF</source>
+				<source>PDF Builder: Please select the builder to use to render PDF.</source>
 			</trans-unit>
 			<trans-unit id="settings.build.pdf_builder.none">
 				<source>- none -</source>
@@ -25,7 +25,7 @@
 				<source>LaTeX (better output)</source>
 			</trans-unit>
 			<trans-unit id="settings.build.rst2pdf">
-				<source>Install rst2pdf: Locally build rst2pdf, additional gcc libraries are needed</source>
+				<source>Install rst2pdf: Locally build rst2pdf, additional gcc libraries are needed.</source>
 			</trans-unit>
 		</body>
 	</file>
