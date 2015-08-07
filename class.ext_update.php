@@ -158,16 +158,22 @@ HTML;
 			}
 		}
 
-		$out[] = '<style type="text/css">';
-		$out[] = <<<CSS
+		if (version_compare(TYPO3_version, '6.99.99', '<=')) {
+			$out[] = '<style type="text/css">';
+			$out[] = <<<CSS
 form { position: relative; }
+
+#typo3-extension-configuration-forms {
+	max-width: inherit;
+	padding: 0;
+}
 
 .leftColumn {
 	width: 45em;
 	margin-bottom: .5em;
 }
 
-@media screen and (min-width: 90em) {
+@media screen and (min-width: 70em) {
 	.rightColumn {
 		position: absolute;
 		top: 0;
@@ -177,10 +183,11 @@ form { position: relative; }
 }
 CSS;
 
-		$out[] = '</style>';
+			$out[] = '</style>';
+		}
 
-		$out[] = '<form action="' . GeneralUtility::linkThisScript() . '" method="post">';
-		$out[] = '<div class="leftColumn">';
+		$out[] = '<form action="' . GeneralUtility::linkThisScript() . '" method="post" class="container-fluid">';
+		$out[] = '<div class="leftColumn col-md-6">';
 		$out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
 
 		$out[] = '<table id="sphinx-versions" class="t3-table" style="width:auto">';
@@ -223,7 +230,7 @@ CSS;
 		}
 		$out[] = '</table>';
 		$out[] = '</div>';	// .leftColumn
-		$out[] = '<div id="sphinx-changes" class="rightColumn"></div>';
+		$out[] = '<div id="sphinx-changes" class="rightColumn col-md-6"></div>';
 		$out[] = '</form>';
 
 		// JSON-encoding inspired by \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue()
