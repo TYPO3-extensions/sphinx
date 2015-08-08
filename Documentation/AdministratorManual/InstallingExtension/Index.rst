@@ -158,7 +158,7 @@ Choosing the 3rd-party plugins to install
 	pair: Plugins; YouTube
 	pair: Plugins; Slideshare
 
-The third tab "3rd-party plugins" lets you activate additional Sphinx extensions. Some of them are available on
+The third tab "plugins" lets you activate additional Sphinx extensions. Some of them are available on
 docs.typo3.org, and are as such suited for use with your extension manuals:
 
 .. figure:: ../../Images/em-plugins.png
@@ -168,3 +168,14 @@ Please read chapter :ref:`third-party-plugins` for instructions on how to use th
 
 .. important::
 	Make sure to :ref:`rebuild your Sphinx environment <configure-sphinx>` after activating new plugins.
+
+
+.. _speed-up-rendering:
+
+Speed-up rendering
+^^^^^^^^^^^^^^^^^^
+
+The fourth tab "advanced" lets you tweak advanced settings to speed-up the rendering.
+
+.. figure:: ../../Images/em-advanced.png
+	:alt: Advanced settings

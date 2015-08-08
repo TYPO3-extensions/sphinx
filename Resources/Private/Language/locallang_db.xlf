@@ -12,9 +12,6 @@
 			<trans-unit id="settings.build.auto_continue">
 				<source>Deactivate unknown extensions: If ticked, faulty extensions will be deactivated to let the Sphinx compilation continue anyway.</source>
 			</trans-unit>
-			<trans-unit id="settings.build.processes">
-				<source>Number of processes: Distribute the build over N processes in parallel, to make building on multiprocessor machines more effective. Note that not all parts and not all builders of Sphinx can be parallelized. Since this option is still considered experimental, you may deactivate parallelisation by setting the value to 1 or 0, as you prefer.</source>
-			</trans-unit>
 			<trans-unit id="settings.build.pdf_builder">
 				<source>PDF Builder: Please select the builder to use to render PDF.</source>
 			</trans-unit>
@@ -29,6 +26,12 @@
 			</trans-unit>
 			<trans-unit id="settings.build.rst2pdf">
 				<source>Install rst2pdf: Locally build rst2pdf, additional gcc libraries are needed.</source>
+			</trans-unit>
+			<trans-unit id="settings.build.rsync_files">
+				<source>Files to synchronize: If not empty, this comma-separated list of file extensions will be used to only synchronize modified files when rendering. This results into a huge speed-up of the rendering process.</source>
+			</trans-unit>
+			<trans-unit id="settings.build.processes">
+				<source>Number of processes: Distribute the build over N processes in parallel, to make building on multiprocessor machines more effective. Note that not all parts and not all builders of Sphinx can be parallelized. Since this option is still considered experimental, you may deactivate parallelisation by setting the value to 1 or 0, as you prefer.</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -642,7 +642,20 @@ HTML;
         $metadata = static::getExtensionMetaData($extensionKey);
         $basePath = PATH_site . 'typo3temp/tx_' . static::$extKey . '/' . $extensionKey;
         $documentationBasePath = $basePath;
-        GeneralUtility::rmdir($basePath, true);
+
+        $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
+        $synchronizeFileExtensions = !empty($configuration['rsync_files'])
+            ? GeneralUtility::trimExplode(',', $configuration['rsync_files'], true)
+            : array();
+
+        /** @var \Causal\Sphinx\Utility\RsyncUtility $rsyncUtility */
+        $rsyncUtility = GeneralUtility::makeInstance('Causal\\Sphinx\\Utility\\RsyncUtility');
+        $rsyncUtility->setFileExtensions($synchronizeFileExtensions);
+
+        if (empty($synchronizeFileExtensions)) {
+            // Make sure to completely recreate the project
+            GeneralUtility::rmdir($basePath, true);
+        }
         if (!empty($locale)) {
             $documentationBasePath .= '/Localization.' . $locale;
         }
@@ -662,7 +675,11 @@ HTML;
         switch (true) {
             case $documentationTypes & static::DOCUMENTATION_TYPE_SPHINX:
                 $source = static::extPath($extensionKey) . 'Documentation';
-                static::recursiveCopy($source, $basePath);
+                if (empty($synchronizeFileExtensions)) {
+                    static::recursiveCopy($source, $basePath);
+                } else {
+                    $rsyncUtility->synchronize($source, $basePath);
+                }
 
                 // Remove Localization.* directories to prevent clash with references
                 // @see https://forge.typo3.org/issues/51066
@@ -721,12 +738,15 @@ HTML;
         }
 
         try {
+            $tags = array();
+            $useCache = !empty($synchronizeFileExtensions);
+
             if ($format === 'json') {
-                SphinxBuilder::buildJson($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale);
+                SphinxBuilder::buildJson($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale, $tags, $useCache);
             } elseif ($format === 'pdf') {
-                SphinxBuilder::buildPdf($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale);
+                SphinxBuilder::buildPdf($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale, $tags, $useCache);
             } else {
-                SphinxBuilder::buildHtml($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale);
+                SphinxBuilder::buildHtml($documentationBasePath, '.', '_make/build', '_make/conf.py', $locale, $tags, $useCache);
             }
         } catch (\RuntimeException $e) {
             switch ($e->getCode()) {

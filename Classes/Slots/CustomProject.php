@@ -157,6 +157,9 @@ class CustomProject
         }
 
         try {
+            $tags = array();
+            $useCache = true;
+
             switch ($layout) {
                 case 'html':        // Static
                     $masterFile = $buildDirectory . 'html/Index.html';
@@ -169,7 +172,9 @@ class CustomProject
                             $sourceDirectory,
                             $buildDirectory,
                             $confFilename,
-                            $project->getLanguage()
+                            $project->getLanguage(),
+                            $tags,
+                            $useCache
                         );
                         $targetWarningsFilename = $absoluteBasePath . $buildDirectory . 'html/warnings.txt';
                         if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
@@ -191,7 +196,9 @@ class CustomProject
                             $sourceDirectory,
                             $buildDirectory,
                             $confFilename,
-                            $project->getLanguage()
+                            $project->getLanguage(),
+                            $tags,
+                            $useCache
                         );
                         $targetWarningsFilename = $absoluteBasePath . $buildDirectory . 'json/warnings.txt';
                         if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
@@ -229,7 +236,9 @@ class CustomProject
                             $sourceDirectory,
                             $buildDirectory,
                             $confFilename,
-                            $project->getLanguage()
+                            $project->getLanguage(),
+                            $tags,
+                            $useCache
                         );
                         if (is_file($warningsFilename) && filesize($warningsFilename) > 0) {
                             copy($warningsFilename, $targetWarningsFilename);

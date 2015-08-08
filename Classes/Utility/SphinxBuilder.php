@@ -86,7 +86,7 @@ class SphinxBuilder
     static protected function getNumberOfProcesses()
     {
         $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
-        $processes = isset($configuration['processes']) ? (int)$configuration['processes'] : 4;
+        $processes = isset($configuration['processes']) ? (int)$configuration['processes'] : 1;
         return max(1, $processes);
     }
 
@@ -123,10 +123,11 @@ class SphinxBuilder
      * @param string $conf Relative path to the configuration file conf.py
      * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
      * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
+     * @param bool $useCache
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array())
+    static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $sphinxBuilder = static::getSphinxBuilder();
 
@@ -154,7 +155,7 @@ class SphinxBuilder
             (count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') . // define tags
             ' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) . // directory with configuration file conf.py
             ' -d ' . static::safeEscapeshellarg($referencesPath) .      // references
-            ' -a -E' .                                                  // always read all files (force compilation)
+            (!$useCache ? ' -a -E' : '') .                              // read all files (force compilation)
             (is_writable($basePath) ? ' -w warnings.txt' : '') .        // store warnings and errors to disk
             (!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
             ' ' . static::safeEscapeshellarg($sourceDirectory) .        // source directory
@@ -210,10 +211,11 @@ class SphinxBuilder
      * @param string $conf Relative path to the configuration file conf.py
      * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
      * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
+     * @param bool $useCache
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static public function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array())
+    static public function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $sphinxBuilder = static::getSphinxBuilder();
 
@@ -241,7 +243,7 @@ class SphinxBuilder
             (count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') . // define tags
             ' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) . // directory with configuration file conf.py
             ' -d ' . static::safeEscapeshellarg($referencesPath) .      // references
-            ' -a -E' .                                                  // always read all files (force compilation)
+            (!$useCache ? ' -a -E' : '') .                              // read all files (force compilation)
             (is_writable($basePath) ? ' -w warnings.txt' : '') .        // store warnings and errors to disk
             (!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
             ' ' . static::safeEscapeshellarg($sourceDirectory) .        // source directory
@@ -294,10 +296,11 @@ class SphinxBuilder
      * @param string $conf Relative path to the configuration file conf.py
      * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
      * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
+     * @param bool $useCache
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static public function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array())
+    static public function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $sphinxBuilder = static::getSphinxBuilder();
 
@@ -333,7 +336,7 @@ class SphinxBuilder
             (count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') . // define tags
             ' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) . // directory with configuration file conf.py
             ' -d ' . static::safeEscapeshellarg($referencesPath) .      // references
-            ' -a -E' .                                                  // always read all files (force compilation)
+            (!$useCache ? ' -a -E' : '') .                              // read all files (force compilation)
             (is_writable($basePath) ? ' -w warnings.txt' : '') .        // store warnings and errors to disk
             (!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
             ' -D latex_paper_size=' . $paperSize .                      // paper size for LaTeX output
@@ -414,19 +417,20 @@ class SphinxBuilder
      * @param string $conf Relative path to the configuration file conf.py
      * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
      * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
+     * @param bool $useCache
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static public function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array())
+    static public function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
 
         switch ($configuration['pdf_builder']) {
             case 'pdflatex':
-                $output = static::buildPdfWithLaTeX($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags);
+                $output = static::buildPdfWithLaTeX($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags, $useCache);
                 break;
             case 'rst2pdf':
-                $output = static::buildPdfWithRst2Pdf($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags);
+                $output = static::buildPdfWithRst2Pdf($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags, $useCache);
                 break;
             default:
                 throw new \RuntimeException('No available PDF builders.', 1378718863);
@@ -444,10 +448,11 @@ class SphinxBuilder
      * @param string $conf Relative path to the configuration file conf.py
      * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
      * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
+     * @param bool $useCache
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static protected function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array())
+    static protected function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $make = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make');
         $pdflatex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex');
@@ -476,7 +481,7 @@ class SphinxBuilder
             throw new \RuntimeException('No Sphinx project found in ' . $basePath . $sourceDirectory . DIRECTORY_SEPARATOR, 1366210585);
         }
 
-        $outputLaTeX = static::buildLatex($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags);
+        $outputLaTeX = static::buildLatex($basePath, $sourceDirectory, $buildDirectory, $conf, $language, $tags, $useCache);
 
         $buildPath = $buildDirectory . DIRECTORY_SEPARATOR . 'latex';
         if (!empty($make)) {
@@ -543,10 +548,11 @@ class SphinxBuilder
      * @param string $conf Relative path to the configuration file conf.py
      * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
      * @param array $tags Optional tags for sphinx-build (to be used with "only" blocks)
+     * @param bool $useCache
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static protected function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array())
+    static protected function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $sphinxBuilder = static::getSphinxBuilder();
 
@@ -574,7 +580,7 @@ class SphinxBuilder
             (count($tags) > 0 ? ' -t ' . implode(' -t ', $tags) : '') . // define tags
             ' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) . // directory with configuration file conf.py
             ' -d ' . static::safeEscapeshellarg($referencesPath) .      // references
-            ' -a -E' .                                                  // always read all files (force compilation)
+            (!$useCache ? ' -a -E' : '') .                              // read all files (force compilation)
             (is_writable($basePath) ? ' -w warnings.txt' : '') .        // store warnings and errors to disk
             (!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
             ' ' . static::safeEscapeshellarg($sourceDirectory) .        // source directory
@@ -630,10 +636,11 @@ class SphinxBuilder
      * @param string $buildDirectory Relative path to the build directory
      * @param string $conf Relative path to the configuration file conf.py
      * @param string $language Optional language code, see list on http://sphinx-doc.org/latest/config.html#intl-options
+     * @param bool $useCache
      * @return string Output of the check process (if succeeded)
      * @throws \RuntimeException if check process failed
      */
-    static public function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '')
+    static public function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', $useCache = false)
     {
         $sphinxBuilder = static::getSphinxBuilder();
 
@@ -660,7 +667,7 @@ class SphinxBuilder
             $sphinxBuilder . ' -b linkcheck' .                          // output format
             ' -c ' . static::safeEscapeshellarg(substr($conf, 0, -7)) . // directory with configuration file conf.py
             ' -d ' . static::safeEscapeshellarg($referencesPath) .      // references
-            ' -a -E' .                                                  // always read all files (force compilation)
+            (!$useCache ? ' -a -E' : '') .                              // read all files (force compilation)
             (is_writable($basePath) ? ' -w warnings.txt' : '') .        // store warnings and errors to disk
             (!empty($language) ? ' ' . static::getLanguageOption($language) : '') .
             ' ' . static::safeEscapeshellarg($sourceDirectory) .        // source directory

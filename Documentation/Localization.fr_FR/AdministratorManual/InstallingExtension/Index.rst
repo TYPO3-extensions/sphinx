@@ -167,7 +167,7 @@ Choix des modules complémentaires à installer
 	pair: Modules; YouTube
 	pair: Modules; Slideshare
 
-Le troisième onglet "3rd-party plugins" vous permet d'activer des extensions Sphinx complémentaires. Certaines
+Le troisième onglet "plugins" vous permet d'activer des extensions Sphinx complémentaires. Certaines
 de ces extensions (ou modules) sont disponibles sur docs.typo3.org et conviennent donc à une utilisation dans vos
 manuels d'extensions :
 
@@ -179,3 +179,14 @@ Veuillez lire le chapitre :ref:`third-party-plugins` pour comprendre comment les
 .. important::
 	Assurez-vous de :ref:`régénérer votre environnement Sphinx <configure-sphinx>` après l'activation de nouveaux
 	modules.
+
+
+.. _speed-up-rendering:
+
+Accélération du rendu des manuels
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Le quatrième onglet "advanced" vous permet d'ajuster des paramètres avancés pour accélérer le rendu.
+
+.. figure:: ../../../Images/em-advanced.png
+	:alt: Paramètres avancés
