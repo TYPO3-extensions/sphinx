@@ -83,7 +83,7 @@ class CustomProject
     public function render($identifier, $layout, $force, &$documentationUrl)
     {
         $project = $this->projectRepository->findByDocumentationKey($identifier);
-        if ($project === NULL) {
+        if ($project === null) {
             return;
         }
 
@@ -216,7 +216,7 @@ class CustomProject
                     }
 
                     $availablePdfs = glob($absoluteBasePath . $masterFilePattern);
-                    if ($availablePdfs === FALSE) {
+                    if ($availablePdfs === false) {
                         // An error occured
                         $availablePdfs = array();
                     }

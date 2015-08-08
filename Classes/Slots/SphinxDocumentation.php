@@ -71,7 +71,7 @@ class SphinxDocumentation
             list($extensionKey, $locale) = explode('.', $extension->getExtensionKey());
             $packageKey = $extension->getPackageKey();
 
-            if ($locale !== NULL) {
+            if ($locale !== null) {
                 if (!GeneralUtility::isFirstPartOfStr($locale, $language)) {
                     // Translated manual but does not match current Backend language
                     continue;
@@ -90,7 +90,7 @@ class SphinxDocumentation
             }
 
             $document = $documents[$packageKey];
-            $documentTranslation = NULL;
+            $documentTranslation = null;
             foreach ($document->getTranslations() as $translation) {
                 /** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $translation */
                 if ($translation->getLanguage() === 'default') {
@@ -99,7 +99,7 @@ class SphinxDocumentation
                 }
             }
 
-            if ($documentTranslation === NULL) {
+            if ($documentTranslation === null) {
                 $documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
                     ->setLanguage($locale ?: 'default')
                     ->setTitle($extension->getTitle())
@@ -187,10 +187,10 @@ class SphinxDocumentation
                 $renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
                 break;
             case 'rst2pdf':
-                $renderPdf = TRUE;
+                $renderPdf = true;
                 break;
             default:
-                $renderPdf = FALSE;
+                $renderPdf = false;
                 break;
         }
         if ($renderPdf) {
@@ -221,7 +221,7 @@ class SphinxDocumentation
             array(
                 'reference' => $referenceType . ':' . $reference,
                 'layout' => $format,
-                'force' => FALSE,
+                'force' => false,
             ),
             'Documentation',
             'sphinx',

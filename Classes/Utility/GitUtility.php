@@ -31,7 +31,7 @@ class GitUtility
 {
 
     /**
-     * Returns TRUE if git is available, otherwise FALSE.
+     * Returns true if git is available, otherwise false.
      *
      * @return bool
      */
@@ -41,7 +41,7 @@ class GitUtility
     }
 
     /**
-     * Returns TRUE if $uri is (well, looks like) a valid Git URI.
+     * Returns true if $uri is (well, looks like) a valid Git URI.
      *
      * @param string $uri
      * @return bool
@@ -64,10 +64,10 @@ class GitUtility
      * @param string $uri
      * @param string $contextPath Base path
      * @param string $targetDirectory Optional alternate target directory
-     * @param NULL|array $output
+     * @param null|array $output
      * @return bool
      */
-    static public function cloneRepository($uri, $contextPath, $targetDirectory = '', &$output = NULL)
+    static public function cloneRepository($uri, $contextPath, $targetDirectory = '', &$output = null)
     {
         // -C flag does not work under Windows, thus we do a "cd" and then a "git clone"
         $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
@@ -83,10 +83,10 @@ class GitUtility
      * Checks status of a Git repository.
      *
      * @param string $contextPath Base path
-     * @param NULL|array $output
-     * @return bool TRUE if status succeeded, otherwise FALSE
+     * @param null|array $output
+     * @return bool true if status succeeded, otherwise false
      */
-    static public function status($contextPath, &$output = NULL)
+    static public function status($contextPath, &$output = null)
     {
         $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
             static::getGitCommand() . ' status';
@@ -99,10 +99,10 @@ class GitUtility
      *
      * @param string $contextPath Base path for relative path/filename
      * @param string $fileName Relative filename
-     * @param NULL|array $output
-     * @return bool TRUE if add succeeded, otherwise FALSE
+     * @param null|array $output
+     * @return bool true if add succeeded, otherwise false
      */
-    static public function add($contextPath, $fileName, &$output = NULL)
+    static public function add($contextPath, $fileName, &$output = null)
     {
         $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
             static::getGitCommand() . ' add ' . escapeshellarg($fileName);
@@ -116,10 +116,10 @@ class GitUtility
      * @param string $contextPath Base path for relative path/filename (NO trailing directory separator)
      * @param string $sourceFileName Relative source path/filename
      * @param string $targetFileName Relative target path/filename
-     * @param NULL|array $output
-     * @return bool TRUE if move succeeded, otherwise FALSE
+     * @param null|array $output
+     * @return bool true if move succeeded, otherwise false
      */
-    static public function move($contextPath, $sourceFileName, $targetFileName, &$output = NULL)
+    static public function move($contextPath, $sourceFileName, $targetFileName, &$output = null)
     {
         if (static::isFileTracked($contextPath, $sourceFileName)) {
             $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
@@ -137,10 +137,10 @@ class GitUtility
      *
      * @param string $contextPath Base path for relative path/filename (NO trailing directory separator)
      * @param string $fileName Relative filename
-     * @param NULL|array $output
-     * @return bool TRUE if remove succeeded, otherwise FALSE
+     * @param null|array $output
+     * @return bool true if remove succeeded, otherwise false
      */
-    static public function remove($contextPath, $fileName, &$output = NULL)
+    static public function remove($contextPath, $fileName, &$output = null)
     {
         if (static::isFileTracked($contextPath, $fileName)) {
             $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
@@ -154,14 +154,14 @@ class GitUtility
     }
 
     /**
-     * Returns TRUE if a given file is tracked in a Git repository.
+     * Returns true if a given file is tracked in a Git repository.
      *
      * @param string $contextPath Base path for relative filename
      * @param string $fileName Relative filename
-     * @param NULL|array $output
-     * @return bool TRUE if file is tracked, otherwise FALSE
+     * @param null|array $output
+     * @return bool true if file is tracked, otherwise false
      */
-    static public function isFileTracked($contextPath, $fileName, &$output = NULL)
+    static public function isFileTracked($contextPath, $fileName, &$output = null)
     {
         $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
             static::getGitCommand() . ' ls-files ' . escapeshellarg($fileName) . ' --error-unmatch';

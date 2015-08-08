@@ -81,10 +81,10 @@ HTML;
         foreach ($iterator as $item) {
             $path = $iterator->getSubPathName();
             $unifiedPath = str_replace('\\', '/', $path);
-            $skip = FALSE;
+            $skip = false;
             foreach ($excludePatterns as $excludePattern) {
                 if (preg_match($excludePattern, $unifiedPath)) {
-                    $skip = TRUE;
+                    $skip = true;
                     break;
                 }
             }
@@ -106,7 +106,7 @@ HTML;
             if ($item->isDir()) {
                 $out[] = '<td><span class="folder hasmenu">' . htmlspecialchars(PathUtility::basename($path)) . '</span></td>';
             } else {
-                if (($pos = strrpos($path, '.')) !== FALSE) {
+                if (($pos = strrpos($path, '.')) !== false) {
                     $extension = strtolower(substr($path, $pos + 1));
                 } else {
                     $extension = '';

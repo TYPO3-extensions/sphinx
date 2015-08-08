@@ -50,15 +50,15 @@ class DocumentationController extends AbstractActionController
      * @param string $reference Reference of a documentation
      * @param string $document The document (used only with $layout = 'json')
      * @param string $layout Layout to use
-     * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
+     * @param boolean $force true if rendering should be forced, otherwise false to use cache if available
      * @return void
      */
-    public function indexAction($reference = NULL, $document = '', $layout = '', $force = FALSE)
+    public function indexAction($reference = null, $document = '', $layout = '', $force = false)
     {
         $references = $this->getReferences();
         $layouts = $this->getLayouts();
 
-        if ($reference === NULL) {
+        if ($reference === null) {
             $currentReference = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference');
         } else {
             // Store preferences
@@ -124,11 +124,11 @@ class DocumentationController extends AbstractActionController
      * @param string $reference Reference of a documentation
      * @param string $document The document (used only with $layout = 'json')
      * @param string $layout Layout to use
-     * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
+     * @param boolean $force true if rendering should be forced, otherwise false to use cache if available
      * @return void
      * @throws \RuntimeException
      */
-    public function renderAction($reference = '', $document = '', $layout = 'html', $force = FALSE)
+    public function renderAction($reference = '', $document = '', $layout = 'html', $force = false)
     {
         list($type, $identifier) = explode(':', $reference, 2);
         switch ($type) {
@@ -137,7 +137,7 @@ class DocumentationController extends AbstractActionController
                 $documentationUrl = MiscUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
                 break;
             case 'USER':
-                $documentationUrl = NULL;
+                $documentationUrl = null;
                 $this->signalSlotDispatcher->dispatch(
                     __CLASS__,
                     'renderUserDocumentation',
@@ -148,7 +148,7 @@ class DocumentationController extends AbstractActionController
                         'documentationUrl' => &$documentationUrl,
                     )
                 );
-                if ($documentationUrl === NULL) {
+                if ($documentationUrl === null) {
                     throw new \RuntimeException('No slot found to render documentation with identifier "' . $identifier . '"', 1371208253);
                 }
                 break;
@@ -177,7 +177,7 @@ class DocumentationController extends AbstractActionController
             $this->forward(
                 'render',
                 'InteractiveViewer',
-                NULL,
+                null,
                 array(
                     'reference' => $reference,
                     'document' => $document,
@@ -207,7 +207,7 @@ class DocumentationController extends AbstractActionController
         $extensionPath = MiscUtility::extPath($extensionKey);
         $sxwFilename = $extensionPath . 'doc/manual.sxw';
         $documentationDirectory = $extensionPath . 'Documentation';
-        $reference = NULL;
+        $reference = null;
 
         if (is_file($sxwFilename)) {
             try {
@@ -220,14 +220,14 @@ class DocumentationController extends AbstractActionController
                         $exception->getMessage(),
                         '',
                         \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
-                        TRUE
+                        true
                     )
                 );
             }
         }
 
         // Open converted documentation
-        $this->redirect('index', NULL, NULL, array('reference' => $reference));
+        $this->redirect('index', null, null, array('reference' => $reference));
     }
 
     /**
@@ -240,7 +240,7 @@ class DocumentationController extends AbstractActionController
     {
         $extensionPath = MiscUtility::extPath($extensionKey);
         $documentationDirectory = $extensionPath . 'Documentation';
-        $reference = NULL;
+        $reference = null;
 
         try {
             GeneralUtility::mkdir_deep($documentationDirectory . DIRECTORY_SEPARATOR);
@@ -250,7 +250,7 @@ class DocumentationController extends AbstractActionController
                 $documentationDirectory,
                 $metadata['title'],
                 $metadata['author'],
-                FALSE,
+                false,
                 'TYPO3DocProject',
                 $metadata['version'],
                 $metadata['release'],
@@ -264,13 +264,13 @@ class DocumentationController extends AbstractActionController
                     $exception->getMessage(),
                     '',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
-                    TRUE
+                    true
                 )
             );
         }
 
         // Open freshly created documentation
-        $this->redirect('index', NULL, NULL, array('reference' => $reference));
+        $this->redirect('index', null, null, array('reference' => $reference));
     }
 
     /**
@@ -320,10 +320,10 @@ class DocumentationController extends AbstractActionController
                 $renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
                 break;
             case 'rst2pdf':
-                $renderPdf = TRUE;
+                $renderPdf = true;
                 break;
             default:
-                $renderPdf = FALSE;
+                $renderPdf = false;
                 break;
         }
         if ($renderPdf) {

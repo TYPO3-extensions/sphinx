@@ -34,10 +34,10 @@ class SphinxBuilder
     static protected $extKey = 'sphinx';
 
     /** @var boolean */
-    static public $htmlConsole = TRUE;
+    static public $htmlConsole = true;
 
     /**
-     * Returns TRUE if Sphinx is ready.
+     * Returns true if Sphinx is ready.
      *
      * @return boolean
      */
@@ -46,15 +46,15 @@ class SphinxBuilder
         try {
             static::getSphinxBuilder();
         } catch (\RuntimeException $e) {
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 
     /**
-     * Returns TRUE if the version of Sphinx used for building documentation is system.
+     * Returns true if the version of Sphinx used for building documentation is system.
      *
-     * @return boolean TRUE if selected version of Sphinx is system, otherwise FALSE
+     * @return boolean true if selected version of Sphinx is system, otherwise false
      */
     static public function isSystemVersion()
     {
@@ -63,7 +63,7 @@ class SphinxBuilder
     }
 
     /**
-     * Returns TRUE if sphinx-build should auto-recompile a project with faulty extension
+     * Returns true if sphinx-build should auto-recompile a project with faulty extension
      * (after deactivating it of course).
      *
      * @return boolean
@@ -97,7 +97,7 @@ class SphinxBuilder
      */
     static public function getSphinxVersion()
     {
-        $version = NULL;
+        $version = null;
         if (static::isSystemVersion()) {
             $sphinxBuilder = escapeshellarg(\TYPO3\CMS\Core\Utility\CommandUtility::getCommand('sphinx-build'));
             if ($sphinxBuilder) {
@@ -854,7 +854,7 @@ class SphinxBuilder
 
         if (isset($supportedLocales[$languageCode])) {
             $locale = $languageCode;
-        } elseif (($pos = strpos($languageCode, '_')) !== FALSE) {
+        } elseif (($pos = strpos($languageCode, '_')) !== false) {
             $languageCode = substr($languageCode, 0, $pos);
             if (isset($supportedLocales[$languageCode])) {
                 $locale = $languageCode;
@@ -869,11 +869,11 @@ class SphinxBuilder
      *
      * @param string $filename Absolute filename to conf.py
      * @param string $extension Extension to deactivate
-     * @return boolean TRUE if deactivation succeeded, otherwise FALSE
+     * @return boolean true if deactivation succeeded, otherwise false
      */
     static protected function deactivateExtension($filename, $extension)
     {
-        $extensionIsDeactivated = FALSE;
+        $extensionIsDeactivated = false;
         $contents = file_get_contents($filename);
 
         $newContents = preg_replace(
@@ -904,7 +904,7 @@ class SphinxBuilder
     }
 
     /**
-     * Returns TRUE if $path is within the TYPO3 temporary path.
+     * Returns true if $path is within the TYPO3 temporary path.
      *
      * @param string $path
      * @return boolean
@@ -926,7 +926,7 @@ class SphinxBuilder
      */
     static protected function safeEscapeshellarg($arg)
     {
-        if (!(TYPO3_OS === 'WIN' && strpos($arg, ' ') === FALSE)) {
+        if (!(TYPO3_OS === 'WIN' && strpos($arg, ' ') === false)) {
             $arg = escapeshellarg($arg);
         }
         return $arg;
@@ -936,13 +936,13 @@ class SphinxBuilder
      * Wrapper function for TYPO3 exec function.
      *
      * @param string $command Command to execute
-     * @param NULL|array $output Shell output
+     * @param null|array $output Shell output
      * @param integer $returnValue Return code of the command
      * @return void
      */
-    static protected function safeExec($command, &$output = NULL, &$returnValue = 0)
+    static protected function safeExec($command, &$output = null, &$returnValue = 0)
     {
-        if (TYPO3_OS === 'WIN' && strpos($command, ' && ') !== FALSE) {
+        if (TYPO3_OS === 'WIN' && strpos($command, ' && ') !== false) {
             // Multiple commands are not supported on Windows
             // We use an intermediate batch file instead
             $relativeBatchFilename = 'typo3temp/tx_' . static::$extKey . '/build-' . $GLOBALS['EXEC_TIME'] . '.bat';

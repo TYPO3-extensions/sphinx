@@ -93,7 +93,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface
 
         $documents = $this->getOfficialDocuments();
         foreach ($documents as $document) {
-            if (stripos($document['shortcut'] . ' ' . $document['title'], $searchTerm) !== FALSE) {
+            if (stripos($document['shortcut'] . ' ' . $document['title'], $searchTerm) !== false) {
                 $result[] = array(
                     'id' => $document['url'],
                     'label' => $document['title'],
@@ -113,7 +113,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface
     protected function getExtensionManuals()
     {
         $json = MiscUtility::getUrlWithCache('https://docs.typo3.org/typo3cms/extensions/manuals.json');
-        $manuals = json_decode($json, TRUE);
+        $manuals = json_decode($json, true);
         return is_array($manuals) ? $manuals : array();
     }
 
@@ -126,7 +126,7 @@ class DocumentationRepository implements \TYPO3\CMS\Core\SingletonInterface
     public function getOfficialDocuments()
     {
         $json = MiscUtility::getUrlWithCache('https://docs.typo3.org/typo3cms/documents.json');
-        $documents = json_decode($json, TRUE);
+        $documents = json_decode($json, true);
         return is_array($documents) ? $documents : array();
     }
 

@@ -44,7 +44,7 @@ class Setup
      */
     static public function getPythonVersion()
     {
-        $version = NULL;
+        $version = null;
         if (CommandUtility::checkCommand('python')) {
             $python = escapeshellarg(CommandUtility::getCommand('python'));
             $cmd = $python . ' -V 2>&1';
@@ -107,7 +107,7 @@ class Setup
     }
 
     /**
-     * Returns TRUE if the source files of Sphinx are available locally.
+     * Returns true if the source files of Sphinx are available locally.
      *
      * @param string $version Version name (e.g., 1.0.0)
      * @return boolean
@@ -124,14 +124,14 @@ class Setup
      *
      * @param string $version Version name (e.g., 1.0.0)
      * @param string $url Complete URL of the zip file containing the sphinx sources
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      * @see https://github.com/sphinx-doc/sphinx
      */
-    static public function downloadSphinxSources($version, $url, array &$output = NULL)
+    static public function downloadSphinxSources($version, $url, array &$output = null)
     {
-        $success = TRUE;
+        $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
         $sphinxSourcesPath = static::getSphinxSourcesPath();
 
@@ -172,11 +172,11 @@ class Setup
                     GeneralUtility::writeFile($sourceFilename, $contents);
                 }
             } else {
-                $success = FALSE;
+                $success = false;
                 $output[] = '[ERROR] Could not extract Sphinx ' . $version . ':' . LF . LF . implode($out, LF);
             }
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Cannot fetch file ' . $url . '.';
         }
 
@@ -187,13 +187,13 @@ class Setup
      * Builds and installs Sphinx locally.
      *
      * @param string $version Version name (e.g., 1.0.0)
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildSphinx($version, array &$output = NULL)
+    static public function buildSphinx($version, array &$output = null)
     {
-        $success = TRUE;
+        $success = true;
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
 
@@ -202,15 +202,15 @@ class Setup
         if (version_compare($version, '1.1.99', '>')) {
             $pythonVersion = static::getPythonVersion();
             if (version_compare($pythonVersion, '2.5', '<')) {
-                $success = FALSE;
+                $success = false;
                 $output[] = '[ERROR] Could not install Sphinx ' . $version . ': You are using Python ' . $pythonVersion .
                     ' but the required version is at least 2.5.';
                 return $success;
             }
         }
 
-        $pythonHome = NULL;
-        $pythonLib = NULL;
+        $pythonHome = null;
+        $pythonLib = null;
         $setupFile = $sphinxSourcesPath . $version . DIRECTORY_SEPARATOR . 'setup.py';
 
         if (is_file($setupFile)) {
@@ -228,7 +228,7 @@ class Setup
                 $pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
                 static::$log[] = '[INFO] Recreating directory ' . $pythonHome;
-                GeneralUtility::rmdir($pythonHome, TRUE);
+                GeneralUtility::rmdir($pythonHome, true);
                 GeneralUtility::mkdir_deep($pythonLib . DIRECTORY_SEPARATOR);
 
                 $cmd = 'cd ' . escapeshellarg(PathUtility::dirname($setupFile)) . ' && ' .
@@ -239,15 +239,15 @@ class Setup
                 if ($ret === 0) {
                     $output[] = '[OK] Sphinx ' . $version . ' has been successfully installed.';
                 } else {
-                    $success = FALSE;
+                    $success = false;
                     $output[] = '[ERROR] Could not install Sphinx ' . $version . ':' . LF . LF . implode($out, LF);
                 }
             } else {
-                $success = FALSE;
+                $success = false;
                 $output[] = '[ERROR] Could not build Sphinx ' . $version . ':' . LF . LF . implode($out, LF);
             }
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
         }
 
@@ -300,23 +300,23 @@ EOT;
      * Removes a local version of Sphinx (sources + build).
      *
      * @param string $version Version name (e.g., "1.0.0")
-     * @param NULL|array $output Log of operations
+     * @param null|array $output Log of operations
      * @return void
      */
-    static public function removeSphinx($version, array &$output = NULL)
+    static public function removeSphinx($version, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
 
         if (is_dir($sphinxSourcesPath . $version)) {
-            if (GeneralUtility::rmdir($sphinxSourcesPath . $version, TRUE)) {
+            if (GeneralUtility::rmdir($sphinxSourcesPath . $version, true)) {
                 $output[] = '[OK] Sources of Sphinx ' . $version . ' have been deleted.';
             } else {
                 $output[] = '[ERROR] Could not delete sources of Sphinx ' . $version . '.';
             }
         }
         if (is_dir($sphinxPath . $version)) {
-            if (GeneralUtility::rmdir($sphinxPath . $version, TRUE)) {
+            if (GeneralUtility::rmdir($sphinxPath . $version, true)) {
                 $output[] = '[OK] Sphinx ' . $version . ' has been deleted.';
             } else {
                 $output[] = '[ERROR] Could not delete Sphinx ' . $version . '.';
@@ -341,7 +341,7 @@ EOT;
     }
 
     /**
-     * Returns TRUE if the source files of the TYPO3 ReST tools are available locally.
+     * Returns true if the source files of the TYPO3 ReST tools are available locally.
      *
      * @return boolean
      */
@@ -355,14 +355,14 @@ EOT;
     /**
      * Downloads the source files of the TYPO3 ReST tools.
      *
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      * @see http://forge.typo3.org/projects/tools-rest
      */
-    static public function downloadRestTools(array &$output = NULL)
+    static public function downloadRestTools(array &$output = null)
     {
-        $success = TRUE;
+        $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
         $sphinxSourcesPath = static::getSphinxSourcesPath();
 
@@ -376,7 +376,7 @@ EOT;
             } else {
                 $output[] = '[WARNING] Failed to clone TYPO3 ReStructured Text Tools, will use a snapshot.';
                 if (is_dir($sphinxSourcesPath . 'RestTools')) {
-                    GeneralUtility::rmdir($sphinxSourcesPath . 'RestTools', TRUE);
+                    GeneralUtility::rmdir($sphinxSourcesPath . 'RestTools', true);
                 }
             }
         }
@@ -402,15 +402,15 @@ EOT;
                 if (static::unarchive($archiveFilename, $targetPath, 'RestTools-' . substr($commit, 0, 7), $out)) {
                     $output[] = '[INFO] TYPO3 ReStructuredText Tools have been unpacked.';
                 } else {
-                    $success = FALSE;
+                    $success = false;
                     $output[] = '[ERROR] Could not extract TYPO3 ReStructuredText Tools:' . LF . LF . implode($out, LF);
                 }
             } else {
-                $success = FALSE;
+                $success = false;
                 $output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
             }
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Could not download ' . htmlspecialchars('https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3');
         }
 
@@ -421,11 +421,11 @@ EOT;
      * Builds and installs TYPO3 ReST tools locally.
      *
      * @param string $sphinxVersion The Sphinx version to build the ReST tools for
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildRestTools($sphinxVersion, array &$output = NULL)
+    static public function buildRestTools($sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -438,7 +438,7 @@ EOT;
         $pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
         if (!is_dir($pythonLib)) {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
             return $success;
         }
@@ -459,10 +459,10 @@ EOT;
             if (is_file($globalSettingsFilename)) {
                 $globalSettings = file_get_contents($globalSettingsFilename);
                 $rst2pdfLibrary = 'rst2pdf.pdfbuilder';
-                $isPatched = strpos($globalSettings, '- ' . $rst2pdfLibrary) !== FALSE;
+                $isPatched = strpos($globalSettings, '- ' . $rst2pdfLibrary) !== false;
 
                 if (!$isPatched && is_writable($globalSettingsFilename)) {
-                    if (strpos($globalSettings, '- ' . $rst2pdfLibrary) === FALSE) {
+                    if (strpos($globalSettings, '- ' . $rst2pdfLibrary) === false) {
                         $globalSettingsLines = explode(LF, $globalSettings);
                         $buffer = array();
                         $numberOfLines = count($globalSettingsLines);
@@ -505,7 +505,7 @@ EOT;
                 $output
             );
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
         }
 
@@ -513,7 +513,7 @@ EOT;
     }
 
     /**
-     * Returns TRUE if the source files of 3rd-party libraries are available locally.
+     * Returns true if the source files of 3rd-party libraries are available locally.
      *
      * @return boolean
      */
@@ -527,19 +527,19 @@ EOT;
     /**
      * Downloads the source files of 3rd-party libraries.
      *
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      * @see https://bitbucket.org/xperseguers/sphinx-contrib/
      */
-    static public function downloadThirdPartyLibraries(array &$output = NULL)
+    static public function downloadThirdPartyLibraries(array &$output = null)
     {
-        $success = TRUE;
+        $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
         $sphinxSourcesPath = static::getSphinxSourcesPath();
 
         if (!CommandUtility::checkCommand('unzip')) {
-            $success = FALSE;
+            $success = false;
             $output[] = '[WARNING] Could not find command unzip. 3rd-party libraries were not installed.';
         } else {
             $url = 'https://bitbucket.org/xperseguers/sphinx-contrib/downloads';
@@ -563,15 +563,15 @@ EOT;
                     if (static::unarchive($archiveFilename, $targetPath, 'xperseguers-sphinx-contrib-', $out)) {
                         $output[] = '[INFO] 3rd-party libraries for Sphinx have been unpacked.';
                     } else {
-                        $success = FALSE;
+                        $success = false;
                         $output[] = '[ERROR] Could not extract 3rd-party libraries for Sphinx:' . LF . LF . implode($out, LF);
                     }
                 } else {
-                    $success = FALSE;
+                    $success = false;
                     $output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
                 }
             } else {
-                $success = FALSE;
+                $success = false;
                 $output[] = '[ERROR] Could not fetch ' . htmlspecialchars($url);
             }
         }
@@ -584,11 +584,11 @@ EOT;
      *
      * @param string $plugin The 3rd-party plugin to build
      * @param string $sphinxVersion The Sphinx version to build 3rd-party libraries for
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildThirdPartyLibraries($plugin, $sphinxVersion, array &$output = NULL)
+    static public function buildThirdPartyLibraries($plugin, $sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -601,7 +601,7 @@ EOT;
         $pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
         if (!is_dir($pythonLib)) {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
             return $success;
         }
@@ -617,7 +617,7 @@ EOT;
                 $output
             );
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
         }
 
@@ -725,7 +725,7 @@ EOT;
     }
 
     /**
-     * Returns TRUE if the source files of PyYAML are available locally.
+     * Returns true if the source files of PyYAML are available locally.
      *
      * @return boolean
      */
@@ -739,14 +739,14 @@ EOT;
     /**
      * Downloads the source files of PyYAML.
      *
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      * @see http://pyyaml.org/
      */
-    static public function downloadPyYaml(array &$output = NULL)
+    static public function downloadPyYaml(array &$output = null)
     {
-        $success = TRUE;
+        $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
         $sphinxSourcesPath = static::getSphinxSourcesPath();
 
@@ -763,11 +763,11 @@ EOT;
             if (static::unarchive($archiveFilename, $targetPath, 'PyYAML-3.10', $out)) {
                 $output[] = '[INFO] PyYAML has been unpacked.';
             } else {
-                $success = FALSE;
+                $success = false;
                 $output[] = '[ERROR] Could not extract PyYAML:' . LF . LF . implode($out, LF);
             }
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
         }
 
@@ -778,11 +778,11 @@ EOT;
      * Builds and installs PyYAML locally.
      *
      * @param string $sphinxVersion The Sphinx version to build PyYAML for
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildPyYaml($sphinxVersion, array &$output = NULL)
+    static public function buildPyYaml($sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -795,7 +795,7 @@ EOT;
         $pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
         if (!is_dir($pythonLib)) {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
             return $success;
         }
@@ -823,7 +823,7 @@ EOT;
                 );
             }
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
         }
 
@@ -831,7 +831,7 @@ EOT;
     }
 
     /**
-     * Returns TRUE if the source files of Python Imaging Library are available locally.
+     * Returns true if the source files of Python Imaging Library are available locally.
      *
      * @return boolean
      */
@@ -845,14 +845,14 @@ EOT;
     /**
      * Downloads the source files of Python Imaging Library.
      *
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      * @see https://pypi.python.org/pypi/PIL
      */
-    static public function downloadPIL(array &$output = NULL)
+    static public function downloadPIL(array &$output = null)
     {
-        $success = TRUE;
+        $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
         $sphinxSourcesPath = static::getSphinxSourcesPath();
 
@@ -869,11 +869,11 @@ EOT;
             if (static::unarchive($archiveFilename, $targetPath, 'Imaging-1.1.7', $out)) {
                 $output[] = '[INFO] Python Imaging Library has been unpacked.';
             } else {
-                $success = FALSE;
+                $success = false;
                 $output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
             }
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
         }
 
@@ -884,11 +884,11 @@ EOT;
      * Builds and installs Python Imaging Library locally.
      *
      * @param string $sphinxVersion The Sphinx version to build Python Imaging Library for
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildPIL($sphinxVersion, array &$output = NULL)
+    static public function buildPIL($sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -901,7 +901,7 @@ EOT;
         $pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
         if (!is_dir($pythonLib)) {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
             return $success;
         }
@@ -917,7 +917,7 @@ EOT;
                 $output
             );
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
         }
 
@@ -925,7 +925,7 @@ EOT;
     }
 
     /**
-     * Returns TRUE if the source files of Pygments are available locally.
+     * Returns true if the source files of Pygments are available locally.
      *
      * @param string $sphinxVersion The Sphinx version to build Pygments for
      * @return boolean
@@ -935,13 +935,13 @@ EOT;
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $minimumPygmentsVersion = static::getMinimumLibraryVersion('Pygments', $sphinxSourcesPath . $sphinxVersion);
 
-        $present = FALSE;
+        $present = false;
         $highestVersion = $minimumPygmentsVersion;
 
         $localPygmentsVersions = static::getPygmentsLocalVersions();
         foreach ($localPygmentsVersions as $version) {
             if (version_compare($version, $highestVersion, '>=')) {
-                $present = TRUE;
+                $present = true;
                 $highestVersion = $version;
             }
         }
@@ -955,7 +955,7 @@ EOT;
             foreach ($availableVersions as $version => $info) {
                 if (version_compare($version, $highestVersion, '>')) {
                     // At least one newer version is available online
-                    return FALSE;
+                    return false;
                 }
             }
         }
@@ -967,21 +967,21 @@ EOT;
      * Downloads the source files of Pygments.
      *
      * @param string $sphinxVersion The Sphinx version to build Pygments for
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      * @see http://pygments.org/
      */
-    static public function downloadPygments($sphinxVersion, array &$output = NULL)
+    static public function downloadPygments($sphinxVersion, array &$output = null)
     {
-        $success = TRUE;
+        $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
         $sphinxSourcesPath = static::getSphinxSourcesPath();
 
         $versionUrl = static::getPygmentsVersionUrl($sphinxVersion);
-        if ($versionUrl === NULL) {
+        if ($versionUrl === null) {
             $output[] = '[ERROR] Could not find a compatible version of Pygments';
-            return FALSE;
+            return false;
         }
 
         $url = $versionUrl['url'];
@@ -997,11 +997,11 @@ EOT;
             if (static::unarchive($archiveFilename, $targetPath, 'birkenfeld-pygments-main-', $out)) {
                 $output[] = '[INFO] Pygments ' . $versionUrl['version'] . ' has been unpacked.';
             } else {
-                $success = FALSE;
+                $success = false;
                 $output[] = '[ERROR] Unknown structure in archive ' . $archiveFilename;
             }
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
         }
 
@@ -1012,11 +1012,11 @@ EOT;
      * Builds and installs Pygments locally.
      *
      * @param string $sphinxVersion The Sphinx version to build Pygments for
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildPygments($sphinxVersion, array &$output = NULL)
+    static public function buildPygments($sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -1029,14 +1029,14 @@ EOT;
         $pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
         if (!is_dir($pythonLib)) {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
             return $success;
         }
 
         $minimumPygmentsVersion = static::getMinimumLibraryVersion('Pygments', $sphinxSourcesPath . $sphinxVersion);
 
-        $highestVersion = NULL;
+        $highestVersion = null;
         $localPygmentsVersions = static::getPygmentsLocalVersions();
         foreach ($localPygmentsVersions as $version) {
             if (version_compare($version, $highestVersion, '>')) {
@@ -1057,7 +1057,7 @@ EOT;
                 $output
             );
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
         }
 
@@ -1068,10 +1068,10 @@ EOT;
      * Configures TypoScript support for Pygments.
      *
      * @param string $pygmentsVersion
-     * @param NULL|array $output Log of operations
+     * @param null|array $output Log of operations
      * @return void
      */
-    static private function configureTyposcriptForPygments($pygmentsVersion, array &$output = NULL)
+    static private function configureTyposcriptForPygments($pygmentsVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $lexersPath = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . $pygmentsVersion . DIRECTORY_SEPARATOR . 'pygments' . DIRECTORY_SEPARATOR . 'lexers' . DIRECTORY_SEPARATOR;
@@ -1104,7 +1104,7 @@ EOT;
     }
 
     /**
-     * Returns TRUE if the source files of rst2pdf are available locally.
+     * Returns true if the source files of rst2pdf are available locally.
      *
      * @return boolean
      */
@@ -1118,14 +1118,14 @@ EOT;
     /**
      * Downloads the source files of rst2pdf.
      *
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      * @see http://rst2pdf.ralsina.com.ar/
      */
-    static public function downloadRst2Pdf(array &$output = NULL)
+    static public function downloadRst2Pdf(array &$output = null)
     {
-        $success = TRUE;
+        $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
         $sphinxSourcesPath = static::getSphinxSourcesPath();
 
@@ -1142,11 +1142,11 @@ EOT;
             if (static::unarchive($archiveFilename, $targetPath, 'rst2pdf-0.93', $out)) {
                 $output[] = '[INFO] rst2pdf has been unpacked.';
             } else {
-                $success = FALSE;
+                $success = false;
                 $output[] = '[ERROR] Could not extract rst2pdf:' . LF . LF . implode($out, LF);
             }
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
         }
 
@@ -1157,11 +1157,11 @@ EOT;
      * Builds and installs rst2pdf locally.
      *
      * @param string $sphinxVersion The Sphinx version to build rst2pdf for
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildRst2Pdf($sphinxVersion, array &$output = NULL)
+    static public function buildRst2Pdf($sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -1174,7 +1174,7 @@ EOT;
         $pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
 
         if (!is_dir($pythonLib)) {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
             return $success;
         }
@@ -1190,7 +1190,7 @@ EOT;
                 $output
             );
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
         }
 
@@ -1198,7 +1198,7 @@ EOT;
     }
 
     /**
-     * Returns TRUE if a given Python library is present (installed).
+     * Returns true if a given Python library is present (installed).
      *
      * @param string $library Name of the library (without version)
      * @param string $sphinxVersion The Sphinx version to check for
@@ -1213,10 +1213,10 @@ EOT;
         $directories = GeneralUtility::get_dirs($pythonLib);
         foreach ($directories as $directory) {
             if (GeneralUtility::isFirstPartOfStr($directory, $library . '-')) {
-                return TRUE;
+                return true;
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -1282,7 +1282,7 @@ EOT;
                     $name = $key;
 
                     // Remove RC's
-                    if (strpos($name, 'rc') === FALSE) {
+                    if (strpos($name, 'rc') === false) {
                         $versions[$name] = array(
                             'key' => $key,
                             'name' => $name,
@@ -1318,11 +1318,11 @@ EOT;
 
         $changesHtml = substr($html, strpos($html, '<div class="section" id="' . $releaseId));
         if (strlen($changesHtml) === strlen($html)) {
-            return NULL;
+            return null;
         }
 
         $changesHtml = trim(substr($changesHtml, strpos($changesHtml, '>') + 1));
-        if (($pos = strpos($changesHtml, '<h2>', 10)) !== FALSE) {
+        if (($pos = strpos($changesHtml, '<h2>', 10)) !== false) {
             $changesHtml = substr($changesHtml, 0, $pos);
             $changesHtml = trim(substr($changesHtml, 0, strrpos($changesHtml, '</div>')));
         }
@@ -1358,7 +1358,7 @@ EOT;
 
         if (is_file($pygmentsPath . 'setup.py')) {
             // Version of Pygments downloaded with EXT:sphinx <= 2.2.3
-            GeneralUtility::rmdir($pygmentsPath, TRUE);
+            GeneralUtility::rmdir($pygmentsPath, true);
             return $versions;
         }
         if (is_dir($pygmentsPath)) {
@@ -1402,7 +1402,7 @@ EOT;
      * version available.
      *
      * @param string $sphinxVersion
-     * @return NULL|array ['version' => <version>, 'url' => <downloadUrl>]
+     * @return null|array ['version' => <version>, 'url' => <downloadUrl>]
      */
     static protected function getPygmentsVersionUrl($sphinxVersion)
     {
@@ -1414,7 +1414,7 @@ EOT;
             $minimumVersion = '1.0';
         }
 
-        $highestVersion = NULL;
+        $highestVersion = null;
         $availableVersions = static::getPygmentsAvailableVersions();
         foreach ($availableVersions as $version => $info) {
             if (version_compare($version, $highestVersion, '>')) {
@@ -1422,20 +1422,20 @@ EOT;
             }
         }
 
-        return $highestVersion !== NULL
+        return $highestVersion !== null
             ? array('version' => $highestVersion, 'url' => $availableVersions[$highestVersion]['url'])
-            : NULL;
+            : null;
     }
 
     /**
      * Logs and executes a command.
      *
      * @param string $cmd Command to be executed
-     * @param NULL|array $output Log of operations
+     * @param null|array $output Log of operations
      * @param integer $returnValue Return code
-     * @return NULL|array Last line of the shell output
+     * @return null|array Last line of the shell output
      */
-    static protected function exec($cmd, &$output = NULL, &$returnValue = 0)
+    static protected function exec($cmd, &$output = null, &$returnValue = 0)
     {
         static::$log[] = '[CMD] ' . $cmd;
         $lastLine = CommandUtility::exec($cmd, $out, $returnValue);
@@ -1449,16 +1449,16 @@ EOT;
      *
      * @param string $archiveFilename Absolute path to the zip or tar.gz archive
      * @param string $targetDirectory Absolute path to the target directory
-     * @param string|NULL $moveContentOutsideOfDirectoryPrefix Directory prefix to remove
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param string|null $moveContentOutsideOfDirectoryPrefix Directory prefix to remove
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      */
-    static public function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = NULL, array &$output = NULL)
+    static public function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = null, array &$output = null)
     {
-        $success = FALSE;
+        $success = false;
 
         static::$log[] = '[INFO] Recreating directory ' . $targetDirectory;
-        GeneralUtility::rmdir($targetDirectory, TRUE);
+        GeneralUtility::rmdir($targetDirectory, true);
         GeneralUtility::mkdir_deep($targetDirectory . DIRECTORY_SEPARATOR);
 
         if (substr($archiveFilename, -4) === '.zip') {
@@ -1477,7 +1477,7 @@ EOT;
                     $tarFilePattern = PathUtility::dirname($archiveFilename) . DIRECTORY_SEPARATOR;
                     $tarFilePattern .= preg_replace('/(-[0-9.]+)?\.tar\.gz$/', '*.tar', PathUtility::basename($archiveFilename));
                     $files = glob($tarFilePattern);
-                    if ($files === FALSE) {
+                    if ($files === false) {
                         // An error occured
                         $files = array();
                     }
@@ -1501,19 +1501,19 @@ EOT;
             }
         }
         if ($ret === 0) {
-            $success = TRUE;
-            if ($moveContentOutsideOfDirectoryPrefix !== NULL) {
+            $success = true;
+            if ($moveContentOutsideOfDirectoryPrefix !== null) {
                 // When unpacking the sources, content is located under a directory
                 $directories = GeneralUtility::get_dirs($targetDirectory);
                 if (GeneralUtility::isFirstPartOfStr($directories[0], $moveContentOutsideOfDirectoryPrefix)) {
                     $fromDirectory = $targetDirectory . DIRECTORY_SEPARATOR . $directories[0];
                     MiscUtility::recursiveCopy($fromDirectory, $targetDirectory);
-                    GeneralUtility::rmdir($fromDirectory, TRUE);
+                    GeneralUtility::rmdir($fromDirectory, true);
 
                     // Remove tar.gz archive as we don't need it anymore
                     @unlink($archiveFilename);
                 } else {
-                    $success = FALSE;
+                    $success = false;
                 }
             }
         }
@@ -1529,10 +1529,10 @@ EOT;
      * @param string $pythonHome Absolute path to Python HOME
      * @param string $pythonLib Absolute path to Python libraries
      * @param string $extraFlags Optional extra compilation flags
-     * @param NULL|array $output Log of operations
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @param null|array $output Log of operations
+     * @return boolean true if operation succeeded, otherwise false
      */
-    static protected function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, $extraFlags = '', array &$output = NULL)
+    static protected function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, $extraFlags = '', array &$output = null)
     {
         $export = '';
         $clientInfo = GeneralUtility::clientInfo();
@@ -1554,14 +1554,14 @@ EOT;
             $out = array();
             static::exec($cmd, $out, $ret);
             if ($ret === 0) {
-                $success = TRUE;
+                $success = true;
                 $output[] = '[OK] ' . $name . ' successfully installed.';
             } else {
-                $success = FALSE;
+                $success = false;
                 $output[] = '[ERROR] Could not install ' . $name . ':' . LF . LF . implode($out, LF);
             }
         } else {
-            $success = FALSE;
+            $success = false;
             $output[] = '[WARNING] Could not build ' . $name . ':' . LF . LF . implode($out, LF);
         }
 

@@ -65,7 +65,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface
             }
         }
 
-        return NULL;
+        return null;
     }
 
     /**
@@ -98,7 +98,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface
     {
         $projects = $this->loadProjects();
         $numberOfProjects = count($projects);
-        $found = FALSE;
+        $found = false;
 
         for ($i = 0; $i < $numberOfProjects; $i++) {
             if ($projects[$i]['key'] === $project->getUid()) {
@@ -110,7 +110,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface
                     'key' => $project->getDocumentationKey(),
                     'directory' => $project->getDirectory(),
                 );
-                $found = TRUE;
+                $found = true;
                 break;
             }
         }
@@ -118,7 +118,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface
         if ($found) {
             return $this->persistProjects($projects);
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -152,12 +152,12 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface
     {
         $projects = $this->loadProjects();
         $numberOfProjects = count($projects);
-        $found = FALSE;
+        $found = false;
 
         for ($i = 0; $i < $numberOfProjects; $i++) {
             if ($projects[$i]['key'] === $documentationKey) {
                 unset($projects[$i]);
-                $found = TRUE;
+                $found = true;
                 break;
             }
         }
@@ -165,7 +165,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface
         if ($found) {
             return $this->persistProjects($projects);
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -200,7 +200,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface
         $filename = GeneralUtility::getFileAbsFileName(static::PROJECTS_FILENAME);
         if (is_file($filename)) {
             $contents = file_get_contents($filename);
-            $projects = json_decode($contents, TRUE);
+            $projects = json_decode($contents, true);
             if (!is_array($projects)) {
                 $projects = array();
             }
@@ -212,7 +212,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface
      * Persists the projects.
      *
      * @param array $projects
-     * @return bool TRUE if the list of projects was successfully persisted
+     * @return bool true if the list of projects was successfully persisted
      */
     protected function persistProjects(array $projects)
     {

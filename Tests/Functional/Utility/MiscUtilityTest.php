@@ -24,7 +24,7 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 
     public function setUp()
     {
-        \TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx', TRUE);
+        \TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx', true);
     }
 
     /**
@@ -96,7 +96,7 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
         $masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/fr_FR/html/Index.html';
         $this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
-        MiscUtility::generateDocumentation('sphinx', 'html', FALSE, 'fr_FR');
+        MiscUtility::generateDocumentation('sphinx', 'html', false, 'fr_FR');
         $this->assertTrue(is_file($masterFilename), 'Master file not found: ' . $masterFilename);
     }
 
@@ -110,7 +110,7 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
         $masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/fr_FR/json/Index.fjson';
         $this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
-        MiscUtility::generateDocumentation('sphinx', 'json', FALSE, 'fr_FR');
+        MiscUtility::generateDocumentation('sphinx', 'json', false, 'fr_FR');
         $this->assertTrue(is_file($masterFilename), 'Master file not found: ' . $masterFilename);
     }
 
@@ -128,7 +128,7 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
         $masterFilename = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.sphinx/fr_FR/pdf/sphinx.pdf';
         $this->assertTrue(!is_file($masterFilename), 'Directory is not empty: ' . dirname($masterFilename));
-        MiscUtility::generateDocumentation('sphinx', 'pdf', FALSE, 'fr_FR');
+        MiscUtility::generateDocumentation('sphinx', 'pdf', false, 'fr_FR');
         $this->assertTrue(is_file($masterFilename), 'Master file not found: ' . $masterFilename);
     }
 

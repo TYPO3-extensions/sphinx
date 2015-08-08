@@ -57,7 +57,7 @@ class InteractiveViewerController extends AbstractActionController
         if (ExtensionManagementUtility::isLoaded('restdoc')) {
             $this->sphinxReader = GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
             $this->sphinxReader
-                ->setKeepPermanentLinks(FALSE)
+                ->setKeepPermanentLinks(false)
                 ->setDefaultFile('Index')
                 ->enableDefaultDocumentFallback();
         }
@@ -148,7 +148,7 @@ class InteractiveViewerController extends AbstractActionController
         $buttons = $this->getButtons($reference, $document, $warningsFilename);
         $this->view->assign('buttons', $buttons);
 
-        $this->view->assign('editUrl', $this->getEditUrl($reference, $document, TRUE));
+        $this->view->assign('editUrl', $this->getEditUrl($reference, $document, true));
     }
 
     /**
@@ -208,13 +208,13 @@ class InteractiveViewerController extends AbstractActionController
      * @throws \RuntimeException
      * @private This method is made public to be accessible from a lambda-function scope
      */
-    public function getLink($document, $absolute = FALSE, $rootPage = 0)
+    public function getLink($document, $absolute = false, $rootPage = 0)
     {
-        static $basePath = NULL;
+        static $basePath = null;
 
         $anchor = '';
         if ($document !== '') {
-            if (($pos = strrpos($document, '#')) !== FALSE) {
+            if (($pos = strrpos($document, '#')) !== false) {
                 $anchor = substr($document, $pos + 1);
                 $document = substr($document, 0, $pos);
             }
@@ -226,7 +226,7 @@ class InteractiveViewerController extends AbstractActionController
                 'document' => $document
             )
         );
-        switch (TRUE) {
+        switch (true) {
             case $anchor !== '':
                 $link .= '#' . $anchor;
                 break;
@@ -239,7 +239,7 @@ class InteractiveViewerController extends AbstractActionController
                         $link = '../typo3conf/Documentation/typo3cms.extensions.' . $this->extension . '/' . $this->languageDirectory . '/json/' . $document;
                         break;
                     case 'USER':
-                        if ($basePath === NULL) {
+                        if ($basePath === null) {
                             $basePath = '';
                             $this->signalSlotDispatcher->dispatch(
                                 __CLASS__,
@@ -364,10 +364,10 @@ class InteractiveViewerController extends AbstractActionController
      * @param boolean $createAbsoluteUri
      * @return string
      */
-    protected function getEditUrl($reference, $document, $createAbsoluteUri = FALSE)
+    protected function getEditUrl($reference, $document, $createAbsoluteUri = false)
     {
         if ($createAbsoluteUri) {
-            $this->uriBuilder->setCreateAbsoluteUri(TRUE);
+            $this->uriBuilder->setCreateAbsoluteUri(true);
         }
         $url = $this->uriBuilder->uriFor(
             'edit',
@@ -378,7 +378,7 @@ class InteractiveViewerController extends AbstractActionController
             'RestEditor'
         );
         if ($createAbsoluteUri) {
-            $this->uriBuilder->setCreateAbsoluteUri(FALSE);
+            $this->uriBuilder->setCreateAbsoluteUri(false);
         }
         return $url;
     }
@@ -474,11 +474,11 @@ class InteractiveViewerController extends AbstractActionController
 
         $cacheDirectory = GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/');
         $cacheFiles = glob($cacheDirectory . 'warnings-' . md5($path) . '.*');
-        if ($cacheFiles === FALSE) {
+        if ($cacheFiles === false) {
             // An error occured
             $cacheFiles = array();
         }
-        $validCacheFile = NULL;
+        $validCacheFile = null;
         foreach ($cacheFiles as $cacheFile) {
             list($_, $token, $timestamp) = explode('.', PathUtility::basename($cacheFile));
             if ($timestamp != $mtime) {
@@ -532,7 +532,7 @@ class InteractiveViewerController extends AbstractActionController
 
                 if (substr($filename, -4) === '.rst') {
                     $document = substr($filename, 0, -4) . '/';
-                    $self->uriBuilder->setCreateAbsoluteUri(TRUE);
+                    $self->uriBuilder->setCreateAbsoluteUri(true);
                     $actionUrl = $self->uriBuilder->uriFor(
                         'edit',
                         array(
@@ -542,7 +542,7 @@ class InteractiveViewerController extends AbstractActionController
                         ),
                         'RestEditor'
                     );
-                    $self->uriBuilder->setCreateAbsoluteUri(FALSE);
+                    $self->uriBuilder->setCreateAbsoluteUri(false);
 
                     return sprintf(
                         $linkPattern,
@@ -583,7 +583,7 @@ HTML;
             $success = GeneralUtility::writeFile($cacheFile, $contents);
         } catch (\Exception $e) {
             // Warnings (cannot write file) turned into fatals in development context
-            $success = FALSE;
+            $success = false;
         }
 
 
@@ -597,7 +597,7 @@ HTML;
     }
 
     /**
-     * Returns TRUE if warnings.txt contains references to serious errors.
+     * Returns true if warnings.txt contains references to serious errors.
      *
      * @param string $warningsFileName
      * @return bool
@@ -608,11 +608,11 @@ HTML;
         if (preg_match_all('/( ERROR: .*)|( SEVERE: .*)/', $contents, $matches)) {
             foreach ($matches[0] as $match) {
                 if (!preg_match('/Unknown directive type "ref-targets-list"/', $match)) {
-                    return TRUE;
+                    return true;
                 }
             }
         }
-        return FALSE;
+        return false;
     }
 
 }

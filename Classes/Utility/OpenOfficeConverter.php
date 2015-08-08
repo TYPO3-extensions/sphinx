@@ -52,10 +52,10 @@ class OpenOfficeConverter
 
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_VERBOSE, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, 'TYPO3 Sphinx');
         curl_setopt($ch, CURLOPT_URL, $serviceUrl);
-        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POST, true);
 
         // PHP 5.5 introduced a CurlFile object that deprecates the old @filename syntax
         // See: https://wiki.php.net/rfc/curl-file-upload
@@ -82,7 +82,7 @@ class OpenOfficeConverter
             $zipFilename = GeneralUtility::getFileAbsFileName('typo3temp/documentation.zip');
             $zipContent = MiscUtility::getUrl($documentationUrl);
             if ($zipContent && GeneralUtility::writeFile($zipFilename, $zipContent)) {
-                GeneralUtility::rmdir($outputDirectory, TRUE);
+                GeneralUtility::rmdir($outputDirectory, true);
                 GeneralUtility::mkdir_deep($outputDirectory . DIRECTORY_SEPARATOR);
                 \Causal\Sphinx\Utility\Setup::unarchive($zipFilename, $outputDirectory, 'Documentation');
             } else {

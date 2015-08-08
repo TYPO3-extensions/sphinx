@@ -38,14 +38,14 @@ class SphinxQuickstart
      * @param string $pathRoot Absolute path to the root directory
      * @param string $projectName Name of the project
      * @param string $author Author of the project
-     * @param boolean $separateSourceBuild TRUE if sources should be in a dedicated directory, otherwise FALSE
+     * @param boolean $separateSourceBuild true if sources should be in a dedicated directory, otherwise false
      * @param string $template Template to use
      * @param string $version Version of the project
      * @param string $release Release of the project
      * @param string $project Name for LaTeX, man pages, ... output, defaults to $projectName
      * @return boolean
      */
-    static public function createProject($pathRoot, $projectName, $author, $separateSourceBuild = FALSE, $template = 'BlankProject', $version = '1.0', $release = '1.0.0', $project = '')
+    static public function createProject($pathRoot, $projectName, $author, $separateSourceBuild = false, $template = 'BlankProject', $version = '1.0', $release = '1.0.0', $project = '')
     {
         $projectName = str_replace("'", ' ', $projectName);
         $author = str_replace("'", ' ', $author);
@@ -83,7 +83,7 @@ class SphinxQuickstart
         $isTypo3Documentation = is_dir(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/Templates/Projects/' . $template . '/_make');
 
         if ($isTypo3Documentation) {
-            $separateSourceBuild = FALSE;
+            $separateSourceBuild = false;
             $masterDocument = 'Index';
             $buildDirectory = 'build';
             $directories = array(
@@ -191,7 +191,7 @@ class SphinxQuickstart
             }
         }
 
-        return TRUE;
+        return true;
     }
 
 }

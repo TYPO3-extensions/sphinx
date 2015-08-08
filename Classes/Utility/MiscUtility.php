@@ -63,7 +63,7 @@ class MiscUtility
 
         $release = $EM_CONF[$_EXTKEY]['version'];
         list($major, $minor, $_) = explode('.', $release, 3);
-        if (($pos = strpos($minor, '-')) !== FALSE) {
+        if (($pos = strpos($minor, '-')) !== false) {
             // $minor ~ '2-dev'
             $minor = substr($minor, 0, $pos);
         }
@@ -160,7 +160,7 @@ class MiscUtility
             $supportedLocales = \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales();
             $extPath = static::extPath($extensionKey);
             $directories = glob($extPath . $pattern);
-            if ($directories === FALSE) {
+            if ($directories === false) {
                 // An error occured
                 $directories = array();
             }
@@ -171,7 +171,7 @@ class MiscUtility
                     $localizationLocale = $matches[1] . '_' . $matches[2];
 
                     foreach ($supportedLocales as $locale => $_) {
-                        if (strpos($locale, '_') === FALSE && $matches[1] === $locale) {
+                        if (strpos($locale, '_') === false && $matches[1] === $locale) {
                             $localizationDirectories[$extensionKey][$locale] = array(
                                 'directory' => $directory,
                                 'locale' => $localizationLocale,
@@ -321,7 +321,7 @@ HTML;
     static public function populateCrossReferencingLabels($contents, array $references, $callbackLinks)
     {
         $callableName = '';
-        if (!is_callable($callbackLinks, FALSE, $callableName)) {
+        if (!is_callable($callbackLinks, false, $callableName)) {
             throw new \RuntimeException('Invalid callback for links: ' . $callableName, 1376471476);
         }
 
@@ -344,7 +344,7 @@ HTML;
                 // Move 1st-level references at the beginning
                 $tempReferences = array();
                 foreach ($references as $file => $anchors) {
-                    if (strpos($file, '/') === FALSE) {
+                    if (strpos($file, '/') === false) {
                         $tempReferences[$file] = $anchors;
                     }
                 }
@@ -419,7 +419,7 @@ HTML;
      * @param array &$additionalData
      * @return string
      */
-    static public function getReferenceFromIntersphinxKey($intersphinxKey, array &$additionalData = NULL)
+    static public function getReferenceFromIntersphinxKey($intersphinxKey, array &$additionalData = null)
     {
         // No dependency injection needed here
         /** @var \Causal\Sphinx\Domain\Repository\DocumentationRepository $documentationRepository */
@@ -433,7 +433,7 @@ HTML;
             'url' => 'http://typo3.org/api/typo3cms/',
         );
 
-        $reference = NULL;
+        $reference = null;
         foreach ($officialDocuments as $officialDocument) {
             if ($officialDocument['shortcut'] === $intersphinxKey) {
                 $reference = $officialDocument['key'];
@@ -518,7 +518,7 @@ HTML;
             throw new \RuntimeException('Extension restdoc is not loaded', 1370809705);
         }
 
-        if (strpos($reference, '.') === FALSE) {
+        if (strpos($reference, '.') === false) {
             // Extension key has been provided
             $extensionKey = $reference;
             $reference = 'typo3cms.extensions.' . $extensionKey;
@@ -546,10 +546,10 @@ HTML;
         }
         $path = '';
 
-        $useCache = TRUE;
+        $useCache = true;
         if ($remoteFilename && is_file($cacheFile) && $GLOBALS['EXEC_TIME'] - filemtime($cacheFile) > 86400) {
             // Cache file is more than 1 day old and we have an URL to fetch a fresh version: DO IT!
-            $useCache = FALSE;
+            $useCache = false;
         }
 
         if (is_file($localFilename)) {
@@ -582,11 +582,11 @@ HTML;
      *
      * @param string $extensionKey The TYPO3 extension key
      * @param string $format The format of the documentation ("html", "json" or "pdf")
-     * @param boolean $force TRUE if generation should be forced, otherwise FALSE to use cached version, if available
+     * @param boolean $force true if generation should be forced, otherwise false to use cached version, if available
      * @param string $locale The locale to use
      * @return string The documentation URL
      */
-    static public function generateDocumentation($extensionKey, $format = 'html', $force = FALSE, $locale = '')
+    static public function generateDocumentation($extensionKey, $format = 'html', $force = false, $locale = '')
     {
         $originalExtensionKey = $extensionKey;
 
@@ -642,7 +642,7 @@ HTML;
         $metadata = static::getExtensionMetaData($extensionKey);
         $basePath = PATH_site . 'typo3temp/tx_' . static::$extKey . '/' . $extensionKey;
         $documentationBasePath = $basePath;
-        GeneralUtility::rmdir($basePath, TRUE);
+        GeneralUtility::rmdir($basePath, true);
         if (!empty($locale)) {
             $documentationBasePath .= '/Localization.' . $locale;
         }
@@ -651,7 +651,7 @@ HTML;
             $documentationBasePath,
             $projectTitle ?: $metadata['title'],
             $metadata['author'],
-            FALSE,
+            false,
             'TYPO3DocEmptyProject',
             $metadata['version'],
             $metadata['release'],
@@ -659,7 +659,7 @@ HTML;
         );
 
         // Recursively instantiate template files
-        switch (TRUE) {
+        switch (true) {
             case $documentationTypes & static::DOCUMENTATION_TYPE_SPHINX:
                 $source = static::extPath($extensionKey) . 'Documentation';
                 static::recursiveCopy($source, $basePath);
@@ -671,7 +671,7 @@ HTML;
                     foreach ($localizationDirectories as $info) {
                         $localizationDirectory = $basePath . DIRECTORY_SEPARATOR . PathUtility::basename($info['directory']);
                         if (is_dir($localizationDirectory)) {
-                            GeneralUtility::rmdir($localizationDirectory, TRUE);
+                            GeneralUtility::rmdir($localizationDirectory, true);
                         }
                     }
                 }
@@ -685,7 +685,7 @@ HTML;
                     }
                 );
                 foreach ($templateDirectories as $directory) {
-                    GeneralUtility::rmdir($basePath . DIRECTORY_SEPARATOR . $directory, TRUE);
+                    GeneralUtility::rmdir($basePath . DIRECTORY_SEPARATOR . $directory, true);
                 }
                 break;
             case $documentationTypes & static::DOCUMENTATION_TYPE_README:
@@ -782,7 +782,7 @@ HTML;
             return '../' . $relativeFileName;
         }
 
-        GeneralUtility::rmdir($absoluteOutputDirectory, TRUE);
+        GeneralUtility::rmdir($absoluteOutputDirectory, true);
         GeneralUtility::mkdir_deep($absoluteOutputDirectory . '/');
 
         $warningsFilename = $documentationBasePath . '/warnings.txt';
@@ -843,16 +843,16 @@ HTML;
      *
      * @param string $warningsFilename
      * @param string $settingsYamlFilename
-     * @return boolean TRUE if Settings.yml was updated, otherwise FALSE
+     * @return boolean true if Settings.yml was updated, otherwise false
      */
     static public function autofixMissingIntersphinxMapping($warningsFilename, $settingsYamlFilename)
     {
         if (!ExtensionManagementUtility::isLoaded('restdoc')) {
-            return FALSE;
+            return false;
         }
         $warningsLines = explode(LF, file_get_contents($warningsFilename));
         $prefixes = array();
-        $intersphinxMappingUpdated = FALSE;
+        $intersphinxMappingUpdated = false;
 
         foreach ($warningsLines as $warningLine) {
             if (preg_match('/ WARNING: undefined label: ([^:]+):/', $warningLine, $matches)) {
@@ -863,15 +863,15 @@ HTML;
                     continue;
                 }
                 $reference = static::getReferenceFromIntersphinxKey($prefix, $additionalInformation);
-                if ($reference !== NULL) {
+                if ($reference !== null) {
                     $remoteUrl = $additionalInformation['url'];
                 } else {
                     $reference = static::intersphinxKeyToExtensionKey($prefix);
                 }
                 // $remoteUrl will be "updated" by next call if $reference is an extension key
                 $anchors = static::getIntersphinxReferences($reference, $locale, $remoteUrl);
-                if (count($anchors) > 0 && static::addIntersphinxMapping($settingsYamlFilename, $prefix, $remoteUrl) === TRUE) {
-                    $intersphinxMappingUpdated = TRUE;
+                if (count($anchors) > 0 && static::addIntersphinxMapping($settingsYamlFilename, $prefix, $remoteUrl) === true) {
+                    $intersphinxMappingUpdated = true;
                 }
                 $prefixes[] = $prefix;
             }
@@ -962,7 +962,7 @@ HTML;
      * @param string $filename Absolute filename to Settings.yml
      * @param string $identifier Unique identifier (prefix) for Intersphinx
      * @param string $target Base URI of the foreign Sphinx documentation
-     * @return boolean|NULL TRUE if operation succeeded (Settings.yml could be updated), otherwise FALSE (NULL if no change needed)
+     * @return boolean|null true if operation succeeded (Settings.yml could be updated), otherwise false (null if no change needed)
      */
     static public function addIntersphinxMapping($filename, $identifier, $target)
     {
@@ -991,17 +991,17 @@ YAML;
         // Fix line breaks if needed as we rely on Linux line breaks
         $contents = str_replace(array(CR . LF, CR), LF, $contents);
         $lines = explode(LF, $contents);
-        $isDirty = FALSE;
+        $isDirty = false;
 
         $startLine = 0;
-        $hasIntersphinxMapping = FALSE;
-        $hasDelimiter = FALSE;
+        $hasIntersphinxMapping = false;
+        $hasDelimiter = false;
         while ($startLine < count($lines)) {
             if ($lines[$startLine] === $indent . 'intersphinx_mapping:') {
-                $hasIntersphinxMapping = TRUE;
+                $hasIntersphinxMapping = true;
                 break;
             } elseif ($lines[$startLine] === '...') {
-                $hasDelimiter = TRUE;
+                $hasDelimiter = true;
                 break;
             }
             $startLine++;
@@ -1023,11 +1023,11 @@ YAML;
         }
 
         // Search if mapping is already present
-        $mappingAlreadyExists = FALSE;
+        $mappingAlreadyExists = false;
         $numberOfLines = count($lines);
         for ($i = $startLine + 1; $i < $numberOfLines; $i += 3) {
             if ($lines[$i] === $indent . $indent . $identifier . ':') {
-                $mappingAlreadyExists = TRUE;
+                $mappingAlreadyExists = true;
                 break;
             }
         }
@@ -1044,12 +1044,12 @@ YAML;
                 ),
                 $endLines
             );
-            $isDirty = TRUE;
+            $isDirty = true;
         }
 
         return $isDirty
             ? GeneralUtility::writeFile($filename, implode(LF, $lines))
-            : NULL;
+            : null;
     }
 
     /**
@@ -1078,13 +1078,13 @@ YAML;
         // Fix line breaks if needed as we rely on Linux line breaks
         $contents = str_replace(array(CR . LF, CR), LF, $contents);
         $lines = explode(LF, $contents);
-        $isDirty = FALSE;
+        $isDirty = false;
 
         $startLine = 0;
-        $hasIntersphinxMapping = FALSE;
+        $hasIntersphinxMapping = false;
         while ($startLine < count($lines)) {
             if ($lines[$startLine] === $indent . 'intersphinx_mapping:') {
-                $hasIntersphinxMapping = TRUE;
+                $hasIntersphinxMapping = true;
                 break;
             }
             $startLine++;
@@ -1108,7 +1108,7 @@ YAML;
                     }
                 }
                 $lines[$i + 2] = $indent . $indent . '- ' . $cacheFile;
-                $isDirty = TRUE;
+                $isDirty = true;
             }
         }
 
@@ -1152,13 +1152,13 @@ YAML;
                         $pythonLine = 'latex_documents = [(' . LF;
                         if (preg_match('/^(\s+)- - /', $lines[$i + 1], $matches)) {
                             $indent = $matches[1];
-                            $firstLine = TRUE;
+                            $firstLine = true;
                             while (preg_match('/^' . $indent . '(- -|  -) (.+)$/', $lines[++$i], $matches)) {
                                 if (!$firstLine) {
                                     $pythonLine .= ',' . LF;
                                 }
                                 $pythonLine .= sprintf('u\'%s\'', addcslashes($matches[2], "\\'"));
-                                $firstLine = FALSE;
+                                $firstLine = false;
                             }
                         }
                         $pythonLine .= LF . ')]';
@@ -1169,7 +1169,7 @@ YAML;
                         $pythonLine = $matches[2] . ' = {' . LF;
                         if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
                             $indent = $matches[1];
-                            $firstLine = TRUE;
+                            $firstLine = true;
                             while (preg_match('/^' . $indent . '([^:]+):\s*(.*)$/', $lines[++$i], $matches)) {
                                 if (!$firstLine) {
                                     $pythonLine .= ',' . LF;
@@ -1184,7 +1184,7 @@ YAML;
                                 } else {
                                     $pythonLine .= sprintf('\'%s\'', addcslashes($matches[2], "\\'"));
                                 }
-                                $firstLine = FALSE;
+                                $firstLine = false;
                             }
                         }
                         $pythonLine .= LF . '}';
@@ -1194,7 +1194,7 @@ YAML;
                         $pythonLine = 'extensions = [';
                         if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
                             $indent = $matches[1];
-                            $firstItem = TRUE;
+                            $firstItem = true;
                             while (preg_match('/^' . $indent . '- (.+)/', $lines[++$i], $matches)) {
                                 if (GeneralUtility::isFirstPartOfStr($matches[1], 't3sphinx.')) {
                                     // Extension t3sphinx is not compatible with JSON output
@@ -1205,7 +1205,7 @@ YAML;
                                     $pythonLine .= ', ';
                                 }
                                 $pythonLine .= sprintf('\'%s\'', addcslashes($matches[1], "\\'"));
-                                $firstItem = FALSE;
+                                $firstItem = false;
                             }
                             $i--;
                         }
@@ -1216,13 +1216,13 @@ YAML;
                         $pythonLine = $matches[2] . ' = {' . LF;
                         if (preg_match('/^(\s+)/', $lines[$i + 1], $matches)) {
                             $indent = $matches[1];
-                            $firstLine = TRUE;
+                            $firstLine = true;
                             while (preg_match('/^' . $indent . '(.+):/', $lines[++$i], $matches)) {
                                 if (!$firstLine) {
                                     $pythonLine .= ',' . LF;
                                 }
                                 $pythonLine .= sprintf('\'%s\': (', $matches[1]);
-                                $firstItem = TRUE;
+                                $firstItem = true;
                                 while (preg_match('/^' . $indent . '- (.+)/', $lines[++$i], $matches)) {
                                     if (!$firstItem) {
                                         $pythonLine .= ', ';
@@ -1232,10 +1232,10 @@ YAML;
                                     } else {
                                         $pythonLine .= sprintf('\'%s\'', trim(trim($matches[1]), '\''));
                                     }
-                                    $firstItem = FALSE;
+                                    $firstItem = false;
                                 }
                                 $pythonLine .= ')';
-                                $firstLine = FALSE;
+                                $firstLine = false;
                                 $i--;
                             }
                         }
@@ -1275,7 +1275,7 @@ YAML;
      * like $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] etc.
      *
      * @param string $url File/URL to read
-     * @return mixed The content from the resource given as input. FALSE if an error has occurred.
+     * @return mixed The content from the resource given as input. false if an error has occurred.
      */
     static public function getUrl($url)
     {
@@ -1291,7 +1291,7 @@ YAML;
         try {
             return $http->send()->getBody();
         } catch (\Exception $e) {
-            return FALSE;
+            return false;
         }
     }
 
@@ -1301,12 +1301,12 @@ YAML;
      *
      * @param string $url File/URL to read
      * @param int $cacheLifetime Lifetime of cache, in seconds
-     * @return mixed The content from the resource given as input. FALSE in an error has occured.
+     * @return mixed The content from the resource given as input. false in an error has occured.
      */
     static public function getUrlWithCache($url, $cacheLifetime = 86400)
     {
         $extension = '';
-        if (($pos = strrpos($url, '.')) !== FALSE) {
+        if (($pos = strrpos($url, '.')) !== false) {
             $extension = strtolower(substr($url, $pos + 1));
         }
         if ($extension === '' || strlen($extension) > 5) {
@@ -1341,7 +1341,7 @@ YAML;
         try {
             return count($http->send()->getHeader()) > 0;
         } catch (\Exception $e) {
-            return FALSE;
+            return false;
         }
     }
 
@@ -1349,16 +1349,16 @@ YAML;
      * Returns the path to a given extension, relative to site root.
      *
      * @param string $extensionKey
-     * @return string|NULL
+     * @return string|null
      */
     static public function extRelPath($extensionKey)
     {
-        static $availableAndInstalledExtensions = NULL;
+        static $availableAndInstalledExtensions = null;
 
         if (isset($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey])) {
             return $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['siteRelPath'];
         }
-        if ($availableAndInstalledExtensions === NULL) {
+        if ($availableAndInstalledExtensions === null) {
             try {
                 $availableAndInstalledExtensions = static::getListUtility()->getAvailableAndInstalledExtensionsWithAdditionalInformation();
             } catch (\Exception $e) {
@@ -1368,7 +1368,7 @@ YAML;
         if (isset($availableAndInstalledExtensions[$extensionKey])) {
             return rtrim($availableAndInstalledExtensions[$extensionKey]['siteRelPath'], '/') . '/';
         } else {
-            return NULL;
+            return null;
         }
     }
 
@@ -1376,15 +1376,15 @@ YAML;
      * Returns the absolute path to a given extension.
      *
      * @param string $extensionKey
-     * @return string|NULL
+     * @return string|null
      */
     static public function extPath($extensionKey)
     {
         $relPath = static::extRelPath($extensionKey);
-        if ($relPath !== NULL) {
+        if ($relPath !== null) {
             return PATH_site . $relPath;
         } else {
-            return NULL;
+            return null;
         }
     }
 
@@ -1396,7 +1396,7 @@ YAML;
      */
     static protected function getListUtility()
     {
-        if (static::$listUtility === NULL) {
+        if (static::$listUtility === null) {
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
             $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
             static::$listUtility = $objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility');
@@ -1428,7 +1428,7 @@ YAML;
             $urlParameters[$namespace . '[action]'] = $action;
         }
 
-        $extensionManagerUri = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName, $urlParameters, FALSE, TRUE);
+        $extensionManagerUri = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl($moduleName, $urlParameters, false, true);
         return $extensionManagerUri;
     }
 

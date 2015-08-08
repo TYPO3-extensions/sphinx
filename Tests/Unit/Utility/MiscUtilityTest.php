@@ -46,7 +46,7 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function extensionSphinxHasSphinxDocumentation()
     {
         $documentationTypes = MiscUtility::getDocumentationTypes('sphinx');
-        $this->assertTrue($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX ? TRUE : FALSE);
+        $this->assertTrue($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX ? true : false);
     }
 
     /**
@@ -64,7 +64,7 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     public function extensionDocumentationHasREADMEDocumentation()
     {
         $documentationTypes = MiscUtility::getDocumentationTypes('documentation');
-        $this->assertTrue($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_README ? TRUE : FALSE);
+        $this->assertTrue($documentationTypes & MiscUtility::DOCUMENTATION_TYPE_README ? true : false);
     }
 
     /**

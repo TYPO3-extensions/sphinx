@@ -51,9 +51,9 @@ class Configuration
         // ReST Tools is being used
         // @see http://forge.typo3.org/issues/48311
         if (preg_match('/^\s*import\s+t3sphinx\s*$/m', $contents)) {
-            $properties['t3sphinx'] = TRUE;
+            $properties['t3sphinx'] = true;
         } else {
-            $properties['t3sphinx'] = FALSE;
+            $properties['t3sphinx'] = false;
         }
 
         return $properties;

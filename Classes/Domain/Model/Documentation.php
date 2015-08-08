@@ -78,9 +78,9 @@ class Documentation
      */
     public function getMasterTableOfContents()
     {
-        static $masterToc = NULL;
-        if ($masterToc === NULL) {
-            $masterToc = $this->sphinxReader->getMasterTableOfContents($this->callbackLinks, TRUE);
+        static $masterToc = null;
+        if ($masterToc === null) {
+            $masterToc = $this->sphinxReader->getMasterTableOfContents($this->callbackLinks, true);
             $data = $masterToc ? RestHelper::getMenuData(RestHelper::xmlstr_to_array($masterToc)) : array();
             RestHelper::processMasterTableOfContents($data, $this->sphinxReader->getDocument(), $this->callbackLinks);
             $masterToc = $this->createMasterMenu($data);
@@ -95,15 +95,15 @@ class Documentation
      */
     public function getTableOfContents()
     {
-        static $toc = NULL;
-        if ($toc === NULL) {
+        static $toc = null;
+        if ($toc === null) {
             $toc = $this->sphinxReader->getTableOfContents($this->callbackLinks);
         }
         return $toc;
     }
 
     /**
-     * Returns TRUE if a table of contents exists.
+     * Returns true if a table of contents exists.
      *
      * @return bool
      * @throws \RuntimeException
@@ -113,9 +113,9 @@ class Documentation
         // Must have an inner <ul> after the first one
         $tableOfContents = $this->getTableOfContents();
         if (strlen($tableOfContents) > 4) {
-            return strpos($tableOfContents, '<ul>', 4) !== FALSE;
+            return strpos($tableOfContents, '<ul>', 4) !== false;
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -126,14 +126,14 @@ class Documentation
      */
     public function getBody()
     {
-        static $body = NULL;
-        if ($body === NULL) {
+        static $body = null;
+        if ($body === null) {
             if ($this->sphinxReader->getDocument() !== 'genindex/') {
                 $body = $this->sphinxReader->getBody($this->callbackLinks, $this->callbackImages);
                 $body = MiscUtility::postProcessPropertyTables($body);
 
                 // Recreate list of labels for cross-referencing
-                if (strpos($body, '<span id="labels-for-crossreferencing"></span>') !== FALSE) {
+                if (strpos($body, '<span id="labels-for-crossreferencing"></span>') !== false) {
                     $references = $this->sphinxReader->getReferences();
                     $body = MiscUtility::populateCrossReferencingLabels($body, $references, $this->callbackLinks);
                 }
@@ -174,12 +174,12 @@ class Documentation
      */
     public function getMainDocument()
     {
-        static $data = NULL;
-        if ($data === NULL) {
+        static $data = null;
+        if ($data === null) {
             // Temporarily load the master document
             $filename = $this->sphinxReader->getPath() . $this->sphinxReader->getDefaultFile() . '.fjson';
             $content = file_get_contents($filename);
-            $masterData = json_decode($content, TRUE);
+            $masterData = json_decode($content, true);
 
             $link = call_user_func($this->callbackLinks, $this->sphinxReader->getDefaultFile() . '/');
             $data = array(
@@ -193,14 +193,14 @@ class Documentation
     /**
      * Returns the title and url of the previous document.
      *
-     * @return array|NULL
+     * @return array|null
      */
     public function getPreviousDocument()
     {
-        static $data = NULL;
-        if ($data === NULL) {
+        static $data = null;
+        if ($data === null) {
             $previousDocument = $this->sphinxReader->getPreviousDocument();
-            if ($previousDocument !== NULL) {
+            if ($previousDocument !== null) {
                 $absolute = RestHelper::relativeToAbsolute($this->sphinxReader->getPath() . $this->sphinxReader->getDocument(), '../' . $previousDocument['link']);
                 $link = call_user_func($this->callbackLinks, substr($absolute, strlen($this->sphinxReader->getPath())));
 
@@ -216,14 +216,14 @@ class Documentation
     /**
      * Returns the title and url of the next document.
      *
-     * @return array|NULL
+     * @return array|null
      */
     public function getNextDocument()
     {
-        static $data = NULL;
-        if ($data === NULL) {
+        static $data = null;
+        if ($data === null) {
             $nextDocument = $this->sphinxReader->getNextDocument();
-            if ($nextDocument !== NULL) {
+            if ($nextDocument !== null) {
                 if ($this->sphinxReader->getDocument() === $this->sphinxReader->getDefaultFile() . '/' && substr($nextDocument['link'], 0, 3) !== '../') {
                     $nextDocumentPath = $this->sphinxReader->getPath();
                 } else {
@@ -244,12 +244,12 @@ class Documentation
     /**
      * Returns the title and url of the parent document.
      *
-     * @return array|NULL
+     * @return array|null
      */
     public function getParentDocument()
     {
-        static $data = NULL;
-        if ($data === NULL) {
+        static $data = null;
+        if ($data === null) {
             $parentDocuments = $this->sphinxReader->getParentDocuments();
             if (empty($parentDocuments)) {
                 if ($this->sphinxReader->getDocument() !== $this->sphinxReader->getDefaultFile() . '/') {
@@ -289,14 +289,14 @@ class Documentation
      *
      * @param string $methodName
      * @param array $arguments
-     * @return mixed|NULL
+     * @return mixed|null
      */
     public function __call($methodName, array $arguments)
     {
         if (is_callable(array($this->sphinxReader, $methodName))) {
             return call_user_func(array($this->sphinxReader, $methodName), $arguments);
         }
-        return NULL;
+        return null;
     }
 
     /**

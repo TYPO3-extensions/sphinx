@@ -114,7 +114,7 @@ class RestEditorController extends AbstractActionController
      * @param boolean $compile
      * @return void
      */
-    public function saveAction($reference, $filename, $contents, $compile = FALSE)
+    public function saveAction($reference, $filename, $contents, $compile = false)
     {
         $response = array();
         $response['statusTitle'] = $this->translate('editor.message.save.title');
@@ -142,15 +142,15 @@ class RestEditorController extends AbstractActionController
 
             if ($compile) {
                 $layout = 'json';
-                $force = TRUE;
-                $outputFilename = NULL;
+                $force = true;
+                $outputFilename = null;
 
                 switch ($parts['type']) {
                     case 'EXT':
                         $outputFilename = MiscUtility::generateDocumentation($parts['extensionKey'], $layout, $force, $parts['locale']);
                         break;
                     case 'USER':
-                        $outputFilename = NULL;
+                        $outputFilename = null;
                         $this->signalSlotDispatcher->dispatch(
                             'Causal\\Sphinx\\Controller\\DocumentationController',
                             'renderUserDocumentation',
@@ -188,7 +188,7 @@ class RestEditorController extends AbstractActionController
      */
     public function moveAction($reference, $source, $destination)
     {
-        $success = FALSE;
+        $success = false;
         $parts = $this->parseReferenceDocument($reference, '');
 
         $source = str_replace('/', DIRECTORY_SEPARATOR, ltrim($source, '/'));
@@ -227,7 +227,7 @@ class RestEditorController extends AbstractActionController
     public function removeAction($reference, $path)
     {
         $response = array();
-        $success = FALSE;
+        $success = false;
 
         $path = str_replace('/', DIRECTORY_SEPARATOR, rtrim($path, '/'));
         $parts = $this->parseReferenceDocument($reference, '');
@@ -303,12 +303,12 @@ class RestEditorController extends AbstractActionController
     public function renameAction($reference, $filename, $newName)
     {
         $response = array();
-        $success = FALSE;
+        $success = false;
 
         $parts = $this->parseReferenceDocument($reference, '');
         $fileParts = explode('/', trim($filename, '/'));
         $extension = '';
-        if (($pos = strrpos($newName, '.')) !== FALSE) {
+        if (($pos = strrpos($newName, '.')) !== false) {
             $extension = strtolower(substr($newName, $pos + 1));
         }
 
@@ -383,7 +383,7 @@ class RestEditorController extends AbstractActionController
      */
     public function createFileAction($reference, $path, $name)
     {
-        $this->createFileOrFolder($reference, $path, $name, TRUE);
+        $this->createFileOrFolder($reference, $path, $name, true);
     }
 
     /**
@@ -396,7 +396,7 @@ class RestEditorController extends AbstractActionController
      */
     public function createFolderAction($reference, $path, $name)
     {
-        $this->createFileOrFolder($reference, $path, $name, FALSE);
+        $this->createFileOrFolder($reference, $path, $name, false);
     }
 
     /**
@@ -411,13 +411,13 @@ class RestEditorController extends AbstractActionController
     protected function createFileOrFolder($reference, $path, $name, $isFile)
     {
         $response = array();
-        $success = FALSE;
+        $success = false;
 
         $path = str_replace('/', DIRECTORY_SEPARATOR, $path);
         $parts = $this->parseReferenceDocument($reference, '');
 
         $extension = '';
-        if ($isFile && ($pos = strrpos($name, '.')) !== FALSE) {
+        if ($isFile && ($pos = strrpos($name, '.')) !== false) {
             $extension = strtolower(substr($name, $pos + 1));
         }
 
@@ -482,14 +482,14 @@ class RestEditorController extends AbstractActionController
     public function uploadAction($reference, $path)
     {
         $response = array();
-        $success = FALSE;
+        $success = false;
 
         $path = str_replace('/', DIRECTORY_SEPARATOR, $path);
         $parts = $this->parseReferenceDocument($reference, '');
 
         if (is_dir($parts['basePath']) && GeneralUtility::isFirstPartOfStr(str_replace(DIRECTORY_SEPARATOR, '/', $parts['basePath']), PATH_site)) {
             $targetDirectory = substr($parts['basePath'] . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $path), strlen(PATH_site));
-            $overwriteExistingFiles = FALSE;
+            $overwriteExistingFiles = false;
             $namespace = key($_FILES);
 
             $targetIsExtension = GeneralUtility::isFirstPartOfStr($targetDirectory, 'typo3conf/ext/')
@@ -501,7 +501,7 @@ class RestEditorController extends AbstractActionController
                 $tmpName = $_FILES[$namespace]['tmp_name']['files'][0];
                 $targetName = $_FILES[$namespace]['name']['files'][0];
                 $extension = '';
-                if (($pos = strrpos($targetName, '.')) !== FALSE) {
+                if (($pos = strrpos($targetName, '.')) !== false) {
                     $extension = strtolower(substr($targetName, $pos + 1));
                 }
                 if (is_uploaded_file($tmpName) && $this->isAllowedFileType($extension)) {
@@ -512,7 +512,7 @@ class RestEditorController extends AbstractActionController
                     if (filesize($tmpName) <= $maxUploadFileSize) {
                         if (!file_exists($fileName) || $overwriteExistingFiles) {
                             if (move_uploaded_file($tmpName, $fileName)) {
-                                $success = TRUE;
+                                $success = true;
                             } else {
                                 // Some error occured
                                 $response['statusText'] = $this->translate('editor.action.error.unknownError');
@@ -539,7 +539,7 @@ class RestEditorController extends AbstractActionController
                 /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $fileProcessor */
                 $fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
                 $fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
-                $fileProcessor->setActionPermissions(array('addFile' => TRUE));
+                $fileProcessor->setActionPermissions(array('addFile' => true));
                 if (version_compare(TYPO3_version, '6.99.99', '<=')) {
                     $fileProcessor->dontCheckForUnique = $overwriteExistingFiles ? 1 : 0;
                 } else {
@@ -551,7 +551,7 @@ class RestEditorController extends AbstractActionController
                 try {
                     $result = $fileProcessor->processData();
                     $response['statusText'] = $this->getFlashMessages();
-                    $success = TRUE;
+                    $success = true;
                 } catch (\Exception $e) {
                     $response['statusText'] = $e->getMessage();
                 }
@@ -562,7 +562,7 @@ class RestEditorController extends AbstractActionController
 
         $response['status'] = $success ? 'success' : 'error';
 
-        $this->returnAjax($response, TRUE);
+        $this->returnAjax($response, true);
     }
 
     /**
@@ -570,7 +570,7 @@ class RestEditorController extends AbstractActionController
      *
      * @param string $fileType The extension to check, eg. "php" or "html" etc.
      * @param string $type Either "webspage" or "ftpspace"
-     * @return bool TRUE if file extension is allowed
+     * @return bool true if file extension is allowed
      * @see \TYPO3\CMS\Core\Utility\File\BasicFileUtility::is_allowed()
      */
     protected function isAllowedFileType($fileType, $type = 'webspace')
@@ -579,28 +579,28 @@ class RestEditorController extends AbstractActionController
         if (isset($fileExtensions[$type])) {
             $fileType = strtolower($fileType);
             if ($fileType) {
-                // If the extension is found amongst the allowed types, we return TRUE immediately
+                // If the extension is found amongst the allowed types, we return true immediately
                 if ($fileExtensions[$type]['allow'] === '*' || GeneralUtility::inList($fileExtensions[$type]['allow'], $fileType)) {
-                    return TRUE;
+                    return true;
                 }
-                // If the extension is found amongst the denied types, we return FALSE immediately
+                // If the extension is found amongst the denied types, we return false immediately
                 if ($fileExtensions[$type]['deny'] === '*' || GeneralUtility::inList($fileExtensions[$type]['deny'], $fileType)) {
-                    return FALSE;
+                    return false;
                 }
-                // If no match we return TRUE
-                return TRUE;
+                // If no match we return true
+                return true;
             } else {
                 // If no extension:
                 if ($fileExtensions[$type]['allow'] === '*') {
-                    return TRUE;
+                    return true;
                 }
                 if ($fileExtensions[$type]['deny'] === '*') {
-                    return FALSE;
+                    return false;
                 }
-                return TRUE;
+                return true;
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**
@@ -691,7 +691,7 @@ class RestEditorController extends AbstractActionController
      * @param boolean $json
      * @return void|string
      */
-    public function accordionReferencesAction($reference, $remoteUrl = '', $usePrefix = TRUE, $json = TRUE)
+    public function accordionReferencesAction($reference, $remoteUrl = '', $usePrefix = true, $json = true)
     {
         list($type, $identifier) = explode(':', $reference, 2);
         $objectsInvFilename = '';
@@ -817,10 +817,10 @@ class RestEditorController extends AbstractActionController
         $response = array();
         $response['statusTitle'] = $this->translate('editor.message.intersphinx.title');
 
-        if ($ret === NULL) {
+        if ($ret === null) {
             $response['status'] = 'success';
             $response['statusText'] = '';
-        } elseif ($ret === TRUE) {
+        } elseif ($ret === true) {
             $response['status'] = 'success';
             $response['statusText'] = $this->translate('editor.message.intersphinx.success');
         } else {
@@ -839,7 +839,7 @@ class RestEditorController extends AbstractActionController
     // -----------------------------------------------
 
     /**
-     * Returns TRUE if the given filename is allowed to be edited.
+     * Returns true if the given filename is allowed to be edited.
      *
      * @param string $filename
      * @return boolean
@@ -847,7 +847,7 @@ class RestEditorController extends AbstractActionController
     protected function isEditableFiletype($filename)
     {
         $filename = PathUtility::basename($filename);
-        if (($pos = strrpos($filename, '.')) !== FALSE) {
+        if (($pos = strrpos($filename, '.')) !== false) {
             $extension = strtolower(substr($filename, $pos + 1));
         } else {
             $extension = '';
@@ -872,8 +872,8 @@ class RestEditorController extends AbstractActionController
      */
     public function parseReferenceDocument($reference, $document, $filename = '')
     {
-        $extensionKey = NULL;
-        $locale = NULL;
+        $extensionKey = null;
+        $locale = null;
 
         list($type, $identifier) = explode(':', $reference, 2);
         switch ($type) {
@@ -891,7 +891,7 @@ class RestEditorController extends AbstractActionController
                 } else {
                     $documentationTypes = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
                 }
-                switch (TRUE) {
+                switch (true) {
                     case $documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX:
                         $basePath = MiscUtility::extPath($extensionKey) . 'Documentation';
                         break;
@@ -904,8 +904,8 @@ class RestEditorController extends AbstractActionController
                 $filename = $this->getFilename($originalExtensionKey, $document, $filename, $locale);
                 break;
             case 'USER':
-                $basePath = NULL;
-                $slotFilename = NULL;
+                $basePath = null;
+                $slotFilename = null;
                 $this->signalSlotDispatcher->dispatch(
                     __CLASS__,
                     'retrieveRestFilename',
@@ -916,7 +916,7 @@ class RestEditorController extends AbstractActionController
                         'filename' => &$slotFilename,
                     )
                 );
-                if ($slotFilename === NULL) {
+                if ($slotFilename === null) {
                     throw new \RuntimeException('No slot found to retrieve filename with identifier "' . $identifier . '"', 1371418203);
                 }
                 if (empty($filename)) {
@@ -966,7 +966,7 @@ class RestEditorController extends AbstractActionController
         } else {
             $documentationTypes = MiscUtility::getLocalizedDocumentationType($extensionKey, $locale);
         }
-        switch (TRUE) {
+        switch (true) {
             case $documentationTypes & MiscUtility::DOCUMENTATION_TYPE_SPHINX:
                 $path = MiscUtility::extPath($extensionKey);
                 if (empty($locale)) {

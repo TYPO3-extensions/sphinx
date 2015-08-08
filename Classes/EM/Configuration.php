@@ -44,7 +44,7 @@ class Configuration
     public function getVersions(array $params, \TYPO3\CMS\Extensionmanager\ViewHelpers\Form\TypoScriptConstantsViewHelper $pObj)
     {
         $out = array();
-        $globalVersion = NULL;
+        $globalVersion = null;
 
         $sphinxPath = GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc');
         $versions = array();
@@ -191,7 +191,7 @@ JS;
         $out[] = '</div>';
         $out[] = '</div>';
 
-        $selectedPlugins = GeneralUtility::trimExplode(',', $params['fieldValue'], TRUE);
+        $selectedPlugins = GeneralUtility::trimExplode(',', $params['fieldValue'], true);
 
         // First show plugins available on docs.typo3.org, then the others
         $sortedPlugins = array('start' => array(), 'end' => array());

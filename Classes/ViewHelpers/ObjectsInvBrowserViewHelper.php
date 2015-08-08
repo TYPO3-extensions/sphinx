@@ -39,7 +39,7 @@ class ObjectsInvBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
     {
         $out = array();
         $out[] = '<div id="' . $id . '" class="basic">';    // Start of accordion
-        $out[] = $controller->accordionReferencesAction($reference, '', FALSE, FALSE);
+        $out[] = $controller->accordionReferencesAction($reference, '', false, false);
         $out[] = '</div>';    // End of accordion
 
         $uriBuilder = $this->controllerContext->getUriBuilder();

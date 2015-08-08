@@ -42,7 +42,7 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         parent::initializeArguments();
         $this->registerTagAttribute('multiple', 'string', 'Specifies that the input element should allow multiple files');
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
-        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', FALSE, 'f3-form-error');
+        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error');
         $this->registerUniversalTagAttributes();
     }
 
@@ -55,7 +55,7 @@ class UploadViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
     public function render()
     {
         $name = $this->getName();
-        $hasMultiple = $this->tag->getAttribute('multiple') !== NULL;
+        $hasMultiple = $this->tag->getAttribute('multiple') !== null;
         $allowedFields = array('name', 'type', 'tmp_name', 'error', 'size');
         foreach ($allowedFields as $fieldName) {
             $this->registerFieldNameForFormTokenGeneration($name . '[' . $fieldName . ']' . ($hasMultiple ? '[]' : ''));

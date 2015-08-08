@@ -36,7 +36,7 @@ class IncludeMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
     public function render($keyPrefix, $jsDictionnary)
     {
         $llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sphinx') . 'Resources/Private/Language/locallang.xlf';
-        $labels = $GLOBALS['LANG']->includeLLFile($llFile, FALSE);
+        $labels = $GLOBALS['LANG']->includeLLFile($llFile, false);
         $keys = array_filter(array_keys($labels['default']), function ($item) use ($keyPrefix) {
             return substr($item, 0, strlen($keyPrefix)) === $keyPrefix;
         });

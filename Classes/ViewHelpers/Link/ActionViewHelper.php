@@ -42,8 +42,8 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
      *
      * @param string $action Target action
      * @param array $arguments Arguments
-     * @param string $controller Target controller. If NULL current controllerName is used
-     * @param string $extensionName Target Extension Name (without "tx_" prefix and no underscores). If NULL the current extension name is used
+     * @param string $controller Target controller. If null current controllerName is used
+     * @param string $extensionName Target Extension Name (without "tx_" prefix and no underscores). If null the current extension name is used
      * @param string $pluginName Target plugin. If empty, the current plugin name is used
      * @param integer $pageUid target page. See TypoLink destination
      * @param integer $pageType type of the target page. See typolink.parameter
@@ -55,16 +55,16 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
      * @param array $additionalParams additional query parameters that won't be prefixed like $arguments (overrule $arguments)
      * @param boolean $absolute If set, the URI of the rendered link is absolute
      * @param boolean $addQueryString If set, the current query parameters will be kept in the URI
-     * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = TRUE
+     * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = true
      * @param array $checks
      * @param string $icon
      * @return string Rendered link
      */
-    public function render($action = NULL, array $arguments = array(), $controller = NULL, $extensionName = NULL,
-                           $pluginName = NULL, $pageUid = NULL, $pageType = 0, $noCache = FALSE, $noCacheHash = FALSE,
-                           $section = '', $format = '', $linkAccessRestrictedPages = FALSE, array $additionalParams = array(),
-                           $absolute = FALSE, $addQueryString = FALSE, array $argumentsToBeExcludedFromQueryString = array(),
-                           array $checks = array(), $icon = NULL)
+    public function render($action = null, array $arguments = array(), $controller = null, $extensionName = null,
+                           $pluginName = null, $pageUid = null, $pageType = 0, $noCache = false, $noCacheHash = false,
+                           $section = '', $format = '', $linkAccessRestrictedPages = false, array $additionalParams = array(),
+                           $absolute = false, $addQueryString = false, array $argumentsToBeExcludedFromQueryString = array(),
+                           array $checks = array(), $icon = null)
     {
 
         $this->tag->addAttribute('href', '#');
@@ -116,7 +116,7 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
         }
 
         $this->tag->setContent($content);
-        $this->tag->forceClosingTag(TRUE);
+        $this->tag->forceClosingTag(true);
         return $this->tag->render();
     }
 

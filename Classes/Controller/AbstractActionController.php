@@ -58,7 +58,7 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
      * @param bool $wrapForIframe see http://cmlenz.github.io/jquery-iframe-transport/#section-13
      * return void
      */
-    protected function returnAjax(array $response, $wrapForIframe = FALSE)
+    protected function returnAjax(array $response, $wrapForIframe = false)
     {
         $payload = json_encode($response);
         if (!$wrapForIframe) {
@@ -78,7 +78,7 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
      * @param array $arguments the arguments of the extension, being passed over to vsprintf
      * @return string Localized label
      */
-    protected function translate($key, $arguments = NULL)
+    protected function translate($key, $arguments = null)
     {
         return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->request->getControllerExtensionKey(), $arguments);
     }

@@ -70,7 +70,7 @@ PYTHON;
     public function doesNotDetectPackageT3sphinx()
     {
         $configuration = Configuration::load($this->fixtureFilename);
-        $this->assertSame(FALSE, $configuration['t3sphinx']);
+        $this->assertSame(false, $configuration['t3sphinx']);
     }
 
     /**
@@ -97,7 +97,7 @@ PYTHON;
         GeneralUtility::writeFile($this->fixtureFilename, $confpy);
 
         $configuration = Configuration::load($this->fixtureFilename);
-        $this->assertSame(TRUE, $configuration['t3sphinx']);
+        $this->assertSame(true, $configuration['t3sphinx']);
     }
 
 }

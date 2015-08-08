@@ -69,7 +69,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                         }
                     }
                     // TODO: use $this->persistenceManager->isNewObject() once it is implemented
-                } elseif ($this->persistenceManager->getIdentifierByObject($value) !== NULL) {
+                } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {
                     $key = $this->persistenceManager->getIdentifierByObject($value);
                 } elseif (method_exists($value, '__toString')) {
                     $key = (string)$value;
@@ -88,7 +88,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                 } elseif (method_exists($value, '__toString')) {
                     $value = (string)$value;
                     // TODO: use $this->persistenceManager->isNewObject() once it is implemented
-                } elseif ($this->persistenceManager->getIdentifierByObject($value) !== NULL) {
+                } elseif ($this->persistenceManager->getIdentifierByObject($value) !== null) {
                     $value = $this->persistenceManager->getIdentifierByObject($value);
                 }
             }
@@ -114,7 +114,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
             $label = $this->arguments['prependOptionLabel'];
             $icon = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($this->extKey) .
                 'Resources/Public/Images/dashboard.png';
-            $output .= $this->renderOptionTag($value, $label, $icon, FALSE) . LF;
+            $output .= $this->renderOptionTag($value, $label, $icon, false) . LF;
         }
         if ($this->arguments['groupOptions']) {
             foreach ($options as $group => $valueLabel) {

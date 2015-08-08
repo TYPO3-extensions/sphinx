@@ -119,9 +119,9 @@ JS;
     public function createCustomProjectAction($group, $name, $lang, $description, $documentationKey, $directory, $template = '', $git = '')
     {
         $response = array();
-        $success = FALSE;
+        $success = false;
         $isGitAvailable = GitUtility::isAvailable();
-        $mayCloneFromGit = FALSE;
+        $mayCloneFromGit = false;
 
         // Sanitize directory and documentation key
         $directory = str_replace('\\', '/', $directory);
@@ -136,7 +136,7 @@ JS;
 
         $existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
 
-        if ($existingProject === NULL && $isGitAvailable && !empty($git)) {
+        if ($existingProject === null && $isGitAvailable && !empty($git)) {
             $mayCloneFromGit = GitUtility::isValidRepository($git);
             if (!$mayCloneFromGit) {
                 $response['status'] = 'error';
@@ -168,7 +168,7 @@ JS;
                     $directory .= 'Documentation/';
                 }
             }
-        } elseif ($existingProject === NULL && !empty($template)) {
+        } elseif ($existingProject === null && !empty($template)) {
             $absoluteDirectory = GeneralUtility::getFileAbsFileName($directory);
             GeneralUtility::mkdir_deep($absoluteDirectory);
 
@@ -176,7 +176,7 @@ JS;
                 $absoluteDirectory,
                 $name,
                 $GLOBALS['BE_USER']->user['realName'],
-                strpos($template, 'Separate') !== FALSE,
+                strpos($template, 'Separate') !== false,
                 $template
             );
 
@@ -185,8 +185,8 @@ JS;
         }
 
         if ($projectStructure !== MiscUtility::PROJECT_STRUCTURE_UNKNOWN) {
-            // $existingProject must be NULL otherwise it means we try to reuse an existing project's key
-            if ($existingProject === NULL) {
+            // $existingProject must be null otherwise it means we try to reuse an existing project's key
+            if ($existingProject === null) {
                 /** @var \Causal\Sphinx\Domain\Model\Project $project */
                 $project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project', $documentationKey);
                 $project->setName($name);
@@ -231,7 +231,7 @@ JS;
 
         $project = $this->projectRepository->findByDocumentationKey($documentationKey);
 
-        if ($project !== NULL) {
+        if ($project !== null) {
             $this->view->assignMultiple(array(
                 'project' => $project,
                 'locales' => $locales,
@@ -262,7 +262,7 @@ JS;
                                               $originalDocumentationKey, $directory, $updateGroup)
     {
         $response = array();
-        $success = FALSE;
+        $success = false;
 
         // Sanitize directory and documentation key
         $directory = str_replace('\\', '/', $directory);
@@ -275,11 +275,11 @@ JS;
             if ($originalDocumentationKey !== $documentationKey) {
                 $existingProject = $this->projectRepository->findByDocumentationKey($documentationKey);
             } else {
-                $existingProject = NULL;
+                $existingProject = null;
             }
 
-            // $existingProject must be NULL otherwise it means we try to reuse an existing project's key
-            if ($this->isValidDocumentationKey($documentationKey) && $project !== NULL && $existingProject === NULL) {
+            // $existingProject must be null otherwise it means we try to reuse an existing project's key
+            if ($this->isValidDocumentationKey($documentationKey) && $project !== null && $existingProject === null) {
                 $previousGroup = $project->getGroup();
 
                 $project->setGroup($group);

@@ -186,9 +186,9 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface
         // TER and as such cannot be cross-linked to easily
         $systemExtensions = $this->getSystemExtensionsWithSphinxDocumentation();
         foreach ($systemExtensions as $extension) {
-            if (stripos($extension['extensionKey'], $searchTerm) !== FALSE
-                || stripos($extension['title'], $searchTerm) !== FALSE
-                || stripos($extension['description'], $searchTerm) !== FALSE
+            if (stripos($extension['extensionKey'], $searchTerm) !== false
+                || stripos($extension['title'], $searchTerm) !== false
+                || stripos($extension['description'], $searchTerm) !== false
             ) {
 
                 $extensions[$extension['extensionKey']] = array(

@@ -53,7 +53,7 @@ class ext_update extends \TYPO3\CMS\Backend\Module\BaseScriptClass
      */
     public function access()
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -103,7 +103,7 @@ HTML;
 
             $message .= '</ul>';
 
-            $out[] = $this->formatWarning($message, FALSE);
+            $out[] = $this->formatWarning($message, false);
         }
 
         // Handle form operation, if needed
@@ -132,7 +132,7 @@ HTML;
                 }
 
                 foreach ($messages as $message) {
-                    switch (TRUE) {
+                    switch (true) {
                         case GeneralUtility::isFirstPartOfStr($message, '[OK] '):
                             $out[] = $this->formatOk(substr($message, 5));
                             break;
@@ -261,11 +261,11 @@ CSS;
      *
      * @param array $data
      * @param array &$output
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @return boolean true if operation succeeded, otherwise false
      */
     protected function downloadSphinx(array $data, array &$output)
     {
-        $success = TRUE;
+        $success = true;
         $installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
         $version = $data['key'];
         $url = 'https://github.com' . $data['url'];
@@ -300,11 +300,11 @@ CSS;
      *
      * @param array $data
      * @param array &$output
-     * @return boolean TRUE if operation succeeded, otherwise FALSE
+     * @return boolean true if operation succeeded, otherwise false
      */
     protected function buildSphinx(array $data, array &$output)
     {
-        $success = FALSE;
+        $success = false;
         $version = $data['key'];
         $installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
 
@@ -318,7 +318,7 @@ CSS;
                     $success &= Setup::buildRst2Pdf($version, $output);
                 }
                 if (Setup::hasThirdPartyLibraries()) {
-                    $selectedPlugins = GeneralUtility::trimExplode(',', $this->configuration['plugins'], TRUE);
+                    $selectedPlugins = GeneralUtility::trimExplode(',', $this->configuration['plugins'], true);
                     foreach ($selectedPlugins as $selectedPlugin) {
                         $success &= Setup::buildThirdPartyLibraries($selectedPlugin, $version, $output);
                     }
@@ -374,7 +374,7 @@ CSS;
      * @param boolean $hsc
      * @return string
      */
-    protected function formatWarning($message, $hsc = TRUE)
+    protected function formatWarning($message, $hsc = true)
     {
         $output = '<div class="typo3-message message-warning">';
         //$output .= '<div class="message-header">Message head</div>';
@@ -394,7 +394,7 @@ CSS;
      * @param boolean $hsc
      * @return string
      */
-    protected function formatInformation($message, $hsc = TRUE)
+    protected function formatInformation($message, $hsc = true)
     {
         $output = '<div class="typo3-message message-information">';
         //$output .= '<div class="message-header">Message head</div>';
@@ -414,7 +414,7 @@ CSS;
      * @param boolean $hsc
      * @return string
      */
-    protected function formatOk($message, $hsc = TRUE)
+    protected function formatOk($message, $hsc = true)
     {
         $output = '<div class="typo3-message message-ok">';
         //$output .= '<div class="message-header">Message head</div>';
