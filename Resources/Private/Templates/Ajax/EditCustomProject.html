@@ -1,28 +1,50 @@
 <div title="{f:translate(key:'dashboard.action.editCustomProject')}">
-	<div class="ui-state-error"></div>
-	<f:form action="updateCustomProject" id="tx-sphinx-formdialog">
-		<fieldset>
-			<label for="group"><f:translate key="project.group" /></label>
-			<f:form.textfield name="group" id="group" value="{project.group}" placeholder="1. Projects" class="text ui-widget-content ui-corner-all half-width" />
+    <div class="ui-state-error"></div>
+    <f:form action="updateCustomProject" id="tx-sphinx-formdialog">
+        <fieldset>
+            <label for="group">
+                <f:translate key="project.group"/>
+            </label>
+            <f:form.textfield name="group" id="group" value="{project.group}" placeholder="1. Projects"
+                              class="text ui-widget-content ui-corner-all half-width"/>
 
-			<f:form.checkbox name="updateGroup" id="updateGroup" value="1" class="checkbox" />
-			<label for="updateGroup" title="{f:translate(key:'dashboard.form.edit.updateProjectGroup.description')}" class="has-tooltip"><f:translate key="dashboard.form.edit.updateProjectGroup" /></label>
+            <f:form.checkbox name="updateGroup" id="updateGroup" value="1" class="checkbox"/>
+            <label for="updateGroup" title="{f:translate(key:'dashboard.form.edit.updateProjectGroup.description')}"
+                   class="has-tooltip">
+                <f:translate key="dashboard.form.edit.updateProjectGroup"/>
+            </label>
 
-			<label for="name"><f:translate key="project.name" /></label>
-			<f:form.textfield name="name" id="name" value="{project.name}" class="text ui-widget-content ui-corner-all" />
+            <label for="name">
+                <f:translate key="project.name"/>
+            </label>
+            <f:form.textfield name="name" id="name" value="{project.name}"
+                              class="text ui-widget-content ui-corner-all"/>
 
-			<label for="lang"><f:translate key="project.language" /></label>
-			<f:form.select name="lang" id="lang" options="{locales}" value="{project.language}" class="ui-widget-content ui-corner-all" />
+            <label for="lang">
+                <f:translate key="project.language"/>
+            </label>
+            <f:form.select name="lang" id="lang" options="{locales}" value="{project.language}"
+                           class="ui-widget-content ui-corner-all"/>
 
-			<label for="description"><f:translate key="project.description" /></label>
-			<f:form.textarea name="description" id="description" value="{project.description}" class="text ui-widget-content ui-corner-all" />
+            <label for="description">
+                <f:translate key="project.description"/>
+            </label>
+            <f:form.textarea name="description" id="description" value="{project.description}"
+                             class="text ui-widget-content ui-corner-all"/>
 
-			<label for="documentationKey"><f:translate key="project.documentationKey" /></label>
-			<f:form.textfield name="documentationKey" id="documentationKey" value="{project.documentationKey}" placeholder="user.myproject" class="text ui-widget-content ui-corner-all" />
-			<f:form.hidden name="originalDocumentationKey" id="originalDocumentationKey" value="{project.documentationKey}" />
+            <label for="documentationKey">
+                <f:translate key="project.documentationKey"/>
+            </label>
+            <f:form.textfield name="documentationKey" id="documentationKey" value="{project.documentationKey}"
+                              placeholder="user.myproject" class="text ui-widget-content ui-corner-all"/>
+            <f:form.hidden name="originalDocumentationKey" id="originalDocumentationKey"
+                           value="{project.documentationKey}"/>
 
-			<label for="directory" title="{f:translate(key:'project.directory.description')}"><f:translate key="project.directory" /></label>
-			<f:form.textfield name="directory" id="directory" value="{project.directory}" placeholder="fileadmin/sphinx/myproject/" class="text ui-widget-content ui-corner-all" />
-		</fieldset>
-	</f:form>
+            <label for="directory" title="{f:translate(key:'project.directory.description')}">
+                <f:translate key="project.directory"/>
+            </label>
+            <f:form.textfield name="directory" id="directory" value="{project.directory}"
+                              placeholder="fileadmin/sphinx/myproject/" class="text ui-widget-content ui-corner-all"/>
+        </fieldset>
+    </f:form>
 </div>

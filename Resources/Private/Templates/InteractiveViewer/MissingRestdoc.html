@@ -1,24 +1,25 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}"/>
 </head>
 <body>
 
 <div class="center">
-	<f:image src="EXT:sphinx/Resources/Public/Images/warning.png" alt="" />
+    <f:image src="EXT:sphinx/Resources/Public/Images/warning.png" alt=""/>
 
-	<h1>Oops, extension reST Documentation Viewer (restdoc) is not loaded!</h1>
+    <h1>Oops, extension reST Documentation Viewer (restdoc) is not loaded!</h1>
 
-	<h2>Please install/load it from <a href="#" onclick="jumpToExtensionManager();return false" target="_top">Extension Manager</a></h2>
+    <h2>Please install/load it from <a href="#" onclick="jumpToExtensionManager();return false" target="_top">Extension
+        Manager</a></h2>
 </div>
 
 <script type="text/javascript">
-	var extensionManagerUri = '<f:format.raw>{extensionManagerUri}</f:format.raw>';
-	function jumpToExtensionManager() {
-		top.TYPO3.Backend.ContentContainer.setUrl(top.TS.PATH_typo3 + extensionManagerUri);
-	}
+    var extensionManagerUri = '<f:format.raw>{extensionManagerUri}</f:format.raw>';
+    function jumpToExtensionManager() {
+        top.TYPO3.Backend.ContentContainer.setUrl(top.TS.PATH_typo3 + extensionManagerUri);
+    }
 </script>
 
 </body>

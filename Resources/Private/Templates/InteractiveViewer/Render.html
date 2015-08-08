@@ -2,158 +2,171 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>{documentation.title}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>{documentation.title}</title>
 
-	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/share.css')}" media="all"/>
-	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/reset.css')}" media="all"/>
-	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/grid.css')}" media="all"/>
-	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/main.css')}" media="all"/>
+    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/share.css')}" media="all"/>
+    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/reset.css')}" media="all"/>
+    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/grid.css')}" media="all"/>
+    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/main.css')}" media="all"/>
 
-	<!--[if IE]>
-	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/ie.css')}" media="all"/><![endif]-->
-	<!--[if IE 7]>
-	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/ie7.css')}" media="all"/><![endif]-->
-	<!--[if IE 8]>
-	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/ie8.css')}" media="all"/><![endif]-->
+    <!--[if IE]>
+    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/ie.css')}" media="all"/><![endif]-->
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/ie7.css')}" media="all"/><![endif]-->
+    <!--[if IE 8]>
+    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/ie8.css')}" media="all"/><![endif]-->
 
-	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/css/t3_org_doc_main.css')}" type="text/css"/>
-	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/css/t3_to_be_integrated.css')}" type="text/css"/>
-	<link rel="stylesheet" href="{f:uri.resource(path:'Css/pygments.css')}" type="text/css"/>
-	<link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/css/t3_org_doc_main_alt_1.css')}" type="text/css"/>
+    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/css/t3_org_doc_main.css')}" type="text/css"/>
+    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/css/t3_to_be_integrated.css')}" type="text/css"/>
+    <link rel="stylesheet" href="{f:uri.resource(path:'Css/pygments.css')}" type="text/css"/>
+    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/css/t3_org_doc_main_alt_1.css')}"
+          type="text/css"/>
 
-	<sphinx:includeJs.jQuery version="1.8"/>
-	<script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/jquery.easing.js')}"></script>
-	<script src="{f:uri.resource(path:'JavaScript/jquery.tools.min.js')}"></script>
-	<script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/cufon.js')}"></script>
-	<script src="{f:uri.resource(path:'docs.typo3.org/t3extras/fonts/share.js')}"></script>
-	<script src="{f:uri.resource(path:'docs.typo3.org/js/docstypo3org-1.js')}"></script>
-	<script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/jcookies.js')}"></script>
-	<script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/main.js')}"></script>
-	<script src="{f:uri.resource(path:'docs.typo3.org/js/docstypo3org-2.js')}"></script>
+    <sphinx:includeJs.jQuery version="1.8"/>
+    <script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/jquery.easing.js')}"></script>
+    <script src="{f:uri.resource(path:'JavaScript/jquery.tools.min.js')}"></script>
+    <script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/cufon.js')}"></script>
+    <script src="{f:uri.resource(path:'docs.typo3.org/t3extras/fonts/share.js')}"></script>
+    <script src="{f:uri.resource(path:'docs.typo3.org/js/docstypo3org-1.js')}"></script>
+    <script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/jcookies.js')}"></script>
+    <script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/main.js')}"></script>
+    <script src="{f:uri.resource(path:'docs.typo3.org/js/docstypo3org-2.js')}"></script>
 
 </head>
 
 <body class="js-off">
 
-<f:render partial="Documentation/HeaderToolbar" arguments="{buttons: buttons}" />
+<f:render partial="Documentation/HeaderToolbar" arguments="{buttons: buttons}"/>
 
 <div class="p doc" id="page">
-	<div class="c cl" id="content">
-		<div id="aside" class="a">
-			<f:if condition="{documentation.hasTableOfContents}">
-				<div class="flyOutToc container" id="flyOutToc">
-					<p>within this page:</p>
-					<f:format.raw>{documentation.tableOfContents}</f:format.raw>
-				</div>
-			</f:if>
-			<f:format.raw>{documentation.masterTableOfContents}</f:format.raw>
-		</div>
+    <div class="c cl" id="content">
+        <div id="aside" class="a">
+            <f:if condition="{documentation.hasTableOfContents}">
+                <div class="flyOutToc container" id="flyOutToc">
+                    <p>within this page:</p>
+                    <f:format.raw>{documentation.tableOfContents}</f:format.raw>
+                </div>
+            </f:if>
+            <f:format.raw>{documentation.masterTableOfContents}</f:format.raw>
+        </div>
 
-		<div class="s d">
-			<div class="hnav-related-container">
-				<div class="hnav-related">
-					<ul>
-						<li>
-							<a href="{documentation.mainDocument.url}" title="{documentation.mainDocument.title}">Docstart</a>
-						</li>
-						<li>
-							<a href="{documentation.generalIndex.url}" title="{documentation.generalIndex.title}" accesskey="I">Index</a>
-						</li>
-						<f:if condition="{documentation.previousDocument}">
-							<li>
-								<a href="{documentation.previousDocument.url}" title="{documentation.previousDocument.title}" accesskey="P">Previous</a>
-							</li>
-						</f:if>
-						<f:if condition="{documentation.parentDocument}">
-							<li>
-								<a href="{documentation.parentDocument.url}" title="{documentation.parentDocument.title}" accesskey="U">Up</a>
-							</li>
-						</f:if>
-						<f:if condition="{documentation.nextDocument}">
-							<li>
-								<a href="{documentation.nextDocument.url}" title="{documentation.nextDocument.title}" accesskey="N">Next</a>
-							</li>
-						</f:if>
-					</ul>
-				</div>
-			</div>
+        <div class="s d">
+            <div class="hnav-related-container">
+                <div class="hnav-related">
+                    <ul>
+                        <li>
+                            <a href="{documentation.mainDocument.url}" title="{documentation.mainDocument.title}">Docstart</a>
+                        </li>
+                        <li>
+                            <a href="{documentation.generalIndex.url}" title="{documentation.generalIndex.title}"
+                               accesskey="I">Index</a>
+                        </li>
+                        <f:if condition="{documentation.previousDocument}">
+                            <li>
+                                <a href="{documentation.previousDocument.url}"
+                                   title="{documentation.previousDocument.title}" accesskey="P">Previous</a>
+                            </li>
+                        </f:if>
+                        <f:if condition="{documentation.parentDocument}">
+                            <li>
+                                <a href="{documentation.parentDocument.url}"
+                                   title="{documentation.parentDocument.title}" accesskey="U">Up</a>
+                            </li>
+                        </f:if>
+                        <f:if condition="{documentation.nextDocument}">
+                            <li>
+                                <a href="{documentation.nextDocument.url}" title="{documentation.nextDocument.title}"
+                                   accesskey="N">Next</a>
+                            </li>
+                        </f:if>
+                    </ul>
+                </div>
+            </div>
 
-			<div class="section" id="users-manual">
-				<f:if condition="{errors}">
-					<div class="admonition error">
-						<p class="first admonition-title"><f:translate key="interactive.errors.title" /></p>
-						<p><f:translate key="interactive.errors.message" /></p>
-						<p class="last">
-							<f:format.raw>{errors}</f:format.raw>
-						</p>
-					</div>
-				</f:if>
-				<f:format.raw>{documentation.body}</f:format.raw>
-			</div>
+            <div class="section" id="users-manual">
+                <f:if condition="{errors}">
+                    <div class="admonition error">
+                        <p class="first admonition-title">
+                            <f:translate key="interactive.errors.title"/>
+                        </p>
+                        <p>
+                            <f:translate key="interactive.errors.message"/>
+                        </p>
+                        <p class="last">
+                            <f:format.raw>{errors}</f:format.raw>
+                        </p>
+                    </div>
+                </f:if>
+                <f:format.raw>{documentation.body}</f:format.raw>
+            </div>
 
-			<div class="hnav-related-container">
-				<div class="hnav-related">
-					<ul>
-						<li>
-							<a href="{documentation.mainDocument.url}" title="{documentation.mainDocument.title}">Docstart</a>
-						</li>
-						<li>
-							<a href="{documentation.generalIndex.url}" title="{documentation.generalIndex.title}">Index</a>
-						</li>
-						<f:if condition="{documentation.previousDocument}">
-							<li>
-								<a href="{documentation.previousDocument.url}" title="{documentation.previousDocument.title}">Previous</a>
-							</li>
-						</f:if>
-						<f:if condition="{documentation.parentDocument}">
-							<li>
-								<a href="{documentation.parentDocument.url}" title="{documentation.parentDocument.title}">Up</a>
-							</li>
-						</f:if>
-						<f:if condition="{documentation.nextDocument}">
-							<li>
-								<a href="{documentation.nextDocument.url}" title="{documentation.nextDocument.title}">Next</a>
-							</li>
-						</f:if>
-					</ul>
-				</div>
-			</div>
+            <div class="hnav-related-container">
+                <div class="hnav-related">
+                    <ul>
+                        <li>
+                            <a href="{documentation.mainDocument.url}" title="{documentation.mainDocument.title}">Docstart</a>
+                        </li>
+                        <li>
+                            <a href="{documentation.generalIndex.url}"
+                               title="{documentation.generalIndex.title}">Index</a>
+                        </li>
+                        <f:if condition="{documentation.previousDocument}">
+                            <li>
+                                <a href="{documentation.previousDocument.url}"
+                                   title="{documentation.previousDocument.title}">Previous</a>
+                            </li>
+                        </f:if>
+                        <f:if condition="{documentation.parentDocument}">
+                            <li>
+                                <a href="{documentation.parentDocument.url}"
+                                   title="{documentation.parentDocument.title}">Up</a>
+                            </li>
+                        </f:if>
+                        <f:if condition="{documentation.nextDocument}">
+                            <li>
+                                <a href="{documentation.nextDocument.url}" title="{documentation.nextDocument.title}">Next</a>
+                            </li>
+                        </f:if>
+                    </ul>
+                </div>
+            </div>
 
-		</div>
-		<!-- /#content -->
-	</div>
-	<!-- /.d -->
-	<div id="header" class="h">
-		<a id="logo" href="#"><img width="118" height="34" alt="TYPO3 Logo" src="{f:uri.resource(path:'docs.typo3.org/t3extras/i/typo3-logo.png')}"></a>
-		<ul class="nav" id="ul-nav">
-			<!-- #ul-nav gets replaced by js -->
-			<li>&nbsp;</li>
-		</ul>
-		<div class="header-bg"></div>
-	</div>
+        </div>
+        <!-- /#content -->
+    </div>
+    <!-- /.d -->
+    <div id="header" class="h">
+        <a id="logo" href="#"><img width="118" height="34" alt="TYPO3 Logo"
+                                   src="{f:uri.resource(path:'docs.typo3.org/t3extras/i/typo3-logo.png')}"></a>
+        <ul class="nav" id="ul-nav">
+            <!-- #ul-nav gets replaced by js -->
+            <li>&nbsp;</li>
+        </ul>
+        <div class="header-bg"></div>
+    </div>
 </div>
 <!-- /#page -->
 <f:if condition="{documentation.hasTableOfContents}">
-	<div id="naviwest">
-		<div id="naviwestpayload"></div>
-	</div>
+    <div id="naviwest">
+        <div id="naviwestpayload"></div>
+    </div>
 </f:if>
 
 <script type="text/javascript">
-var editUrl = '<f:format.raw>{editUrl}</f:format.raw>';
-$(document).ready(function () {
-	// Key binding on Ctrl+E / Cmd+E to edit document
-	var editDocument = function (event) {
-		if (event.ctrlKey || event.metaKey) {
-			if (String.fromCharCode(event.which).toLowerCase() == 'e') {
-				document.location = editUrl;
-			}
-		}
-	};
-	$(document).bind('keydown', editDocument);
-	$(parent.document).bind('keydown', editDocument);
-});
+    var editUrl = '<f:format.raw>{editUrl}</f:format.raw>';
+    $(document).ready(function () {
+        // Key binding on Ctrl+E / Cmd+E to edit document
+        var editDocument = function (event) {
+            if (event.ctrlKey || event.metaKey) {
+                if (String.fromCharCode(event.which).toLowerCase() == 'e') {
+                    document.location = editUrl;
+                }
+            }
+        };
+        $(document).bind('keydown', editDocument);
+        $(parent.document).bind('keydown', editDocument);
+    });
 </script>
 
 </body>

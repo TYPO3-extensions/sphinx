@@ -28,67 +28,67 @@ if (typeof CausalSphinx == 'undefined') CausalSphinx = {};
  */
 CausalSphinx.Flashmessage = function () {
 
-	var messageContainer;
-	var severities = ['notice', 'information', 'ok', 'warning', 'error', 'raw'];
+    var messageContainer;
+    var severities = ['notice', 'information', 'ok', 'warning', 'error', 'raw'];
 
-	function createBox(severity, title, message, isTYPO3v7) {
-		if (severity == 'raw') return message;
-		if (isTYPO3v7) {
-			if (severity == 'notice' || severity == 'information') {
-				severity = 'info';
-			} else if (severity == 'ok') {
-				severity = 'success';
-			} else if (severity == 'error') {
-				severity = 'danger';
-			}
-			return ['<div class="alert alert-', severity, '">',
-				'<h4>', title, '</h4>',
-				'<div class="alert-body">', message, '</div>'].join('');
-		} else {
-			return ['<div class="typo3-message message-', severity, '">',
-				'<div class="t3-icon t3-icon-actions t3-icon-actions-message t3-icon-actions-message-close t3-icon-message-' + severity + '-close"></div>',
-				'<div class="header-container">',
-				'<div class="message-header">', title, '</div>',
-				'</div>',
-				'<div class="message-body">', message, '</div>',
-				'</div>'].join('');
-		}
-	}
+    function createBox(severity, title, message, isTYPO3v7) {
+        if (severity == 'raw') return message;
+        if (isTYPO3v7) {
+            if (severity == 'notice' || severity == 'information') {
+                severity = 'info';
+            } else if (severity == 'ok') {
+                severity = 'success';
+            } else if (severity == 'error') {
+                severity = 'danger';
+            }
+            return ['<div class="alert alert-', severity, '">',
+                '<h4>', title, '</h4>',
+                '<div class="alert-body">', message, '</div>'].join('');
+        } else {
+            return ['<div class="typo3-message message-', severity, '">',
+                '<div class="t3-icon t3-icon-actions t3-icon-actions-message t3-icon-actions-message-close t3-icon-message-' + severity + '-close"></div>',
+                '<div class="header-container">',
+                '<div class="message-header">', title, '</div>',
+                '</div>',
+                '<div class="message-body">', message, '</div>',
+                '</div>'].join('');
+        }
+    }
 
-	return {
+    return {
 
-		isTYPO3v7: false,
+        isTYPO3v7: false,
 
-		/**
-		 * Shows popup
-		 * @member CausalSphinx.Flashmessage
-		 * @param int severity (0=notice, 1=information, 2=ok, 3=warning, 4=error, 5=raw)
-		 * @param string title
-		 * @param string message
-		 * @param float duration in sec (default 5)
-		 */
-		display : function (severity, title, message, duration) {
-			duration = duration || 5;
-			if (!messageContainer) {
-				messageContainer = $('#msg-div');
+        /**
+         * Shows popup
+         * @member CausalSphinx.Flashmessage
+         * @param int severity (0=notice, 1=information, 2=ok, 3=warning, 4=error, 5=raw)
+         * @param string title
+         * @param string message
+         * @param float duration in sec (default 5)
+         */
+        display: function (severity, title, message, duration) {
+            duration = duration || 5;
+            if (!messageContainer) {
+                messageContainer = $('#msg-div');
 
-				// When message is clicked, hide it (only works if auto-hide is disabled)
-				messageContainer.click(function () {
-					$(this).animate({top: -$(this).outerHeight()}, 500);
-				});
-			}
+                // When message is clicked, hide it (only works if auto-hide is disabled)
+                messageContainer.click(function () {
+                    $(this).animate({top: -$(this).outerHeight()}, 500);
+                });
+            }
 
-			var box = createBox(severities[severity], title, message, CausalSphinx.Flashmessage.isTYPO3v7);
-			messageContainer.html(box);
-			messageContainer.css('top', -messageContainer.outerHeight());
+            var box = createBox(severities[severity], title, message, CausalSphinx.Flashmessage.isTYPO3v7);
+            messageContainer.html(box);
+            messageContainer.css('top', -messageContainer.outerHeight());
 
-			// Slide down
-			messageContainer.animate({top:"0"}, 500);
+            // Slide down
+            messageContainer.animate({top: "0"}, 500);
 
-			if (duration > 0) {
-				// Auto-hide (slide up) after <duration> seconds
-				messageContainer.delay(duration * 1000).animate({top: -messageContainer.outerHeight()}, 500);
-			}
-		}
-	};
+            if (duration > 0) {
+                // Auto-hide (slide up) after <duration> seconds
+                messageContainer.delay(duration * 1000).animate({top: -messageContainer.outerHeight()}, 500);
+            }
+        }
+    };
 }();

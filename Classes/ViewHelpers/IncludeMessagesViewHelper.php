@@ -23,35 +23,37 @@ namespace Causal\Sphinx\ViewHelpers;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class IncludeMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class IncludeMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+{
 
-	/**
-	 * Renders the JS snippet.
-	 *
-	 * @param string $keyPrefix
-	 * @param string $jsDictionnary
-	 * @return string
-	 */
-	public function render($keyPrefix, $jsDictionnary) {
-		$llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sphinx') . 'Resources/Private/Language/locallang.xlf';
-		$labels = $GLOBALS['LANG']->includeLLFile($llFile, FALSE);
-		$keys = array_filter(array_keys($labels['default']), function($item) use ($keyPrefix) {
-			return substr($item, 0, strlen($keyPrefix)) === $keyPrefix;
-		});
+    /**
+     * Renders the JS snippet.
+     *
+     * @param string $keyPrefix
+     * @param string $jsDictionnary
+     * @return string
+     */
+    public function render($keyPrefix, $jsDictionnary)
+    {
+        $llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sphinx') . 'Resources/Private/Language/locallang.xlf';
+        $labels = $GLOBALS['LANG']->includeLLFile($llFile, FALSE);
+        $keys = array_filter(array_keys($labels['default']), function ($item) use ($keyPrefix) {
+            return substr($item, 0, strlen($keyPrefix)) === $keyPrefix;
+        });
 
-		$messages = array();
-		foreach ($keys as $key) {
-			$messages[$key] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'sphinx');
-		}
+        $messages = array();
+        foreach ($keys as $key) {
+            $messages[$key] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'sphinx');
+        }
 
-		$json = json_encode($messages);
-		$out = <<<JS
+        $json = json_encode($messages);
+        $out = <<<JS
 $(document).ready(function () {
-	$jsDictionnary = $json;
+    $jsDictionnary = $json;
 });
 JS;
 
-		return $out;
-	}
+        return $out;
+    }
 
 }

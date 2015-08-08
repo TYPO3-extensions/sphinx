@@ -1,15 +1,24 @@
-<p><f:translate key="dashboard.tabs.kickstart.title" /></p>
+<p>
+    <f:translate key="dashboard.tabs.kickstart.title"/>
+</p>
 <table id="tx-sphinx-kickstart-list" class="tx-sphinx-extension-list">
-	<thead>
-	<tr>
-		<th><f:translate key="tx_sphinx_domain_model_extension.title" /></th>
-		<th><f:translate key="tx_sphinx_domain_model_extension.description" /></th>
-		<th><f:translate key="dashboard.action" /></th>
-	</tr>
-	</thead>
-	<tbody>
-		<f:for each="{extensionsEmpty}" as="extension">
-			<f:render partial="Documentation/Table/ExtensionRow" arguments="{extension: extension, action: 'createExtensionProject', icon: 'actions-page-new'}"/>
-		</f:for>
-	</tbody>
+    <thead>
+    <tr>
+        <th>
+            <f:translate key="tx_sphinx_domain_model_extension.title"/>
+        </th>
+        <th>
+            <f:translate key="tx_sphinx_domain_model_extension.description"/>
+        </th>
+        <th>
+            <f:translate key="dashboard.action"/>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <f:for each="{extensionsEmpty}" as="extension">
+        <f:render partial="Documentation/Table/ExtensionRow"
+                  arguments="{extension: extension, action: 'createExtensionProject', icon: 'actions-page-new'}"/>
+    </f:for>
+    </tbody>
 </table>

@@ -10,45 +10,45 @@ $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TY
 
 // Hook into EXT:documentation
 $signalSlotDispatcher->connect(
-	'TYPO3\\CMS\\Documentation\\Controller\\DocumentController',
-	'afterInitializeDocuments',
-	'Causal\\Sphinx\\Slots\\SphinxDocumentation',
-	'postProcessDocuments'
+    'TYPO3\\CMS\\Documentation\\Controller\\DocumentController',
+    'afterInitializeDocuments',
+    'Causal\\Sphinx\\Slots\\SphinxDocumentation',
+    'postProcessDocuments'
 );
 
 // Hook into ourselves to post-process LaTeX generated files
 $signalSlotDispatcher->connect(
-	'Causal\\Sphinx\\Utility\\SphinxBuilder',
-	'afterBuildLatex',
-	'Causal\\Sphinx\\Slots\\LatexPostProcessor',
-	'postprocess'
+    'Causal\\Sphinx\\Utility\\SphinxBuilder',
+    'afterBuildLatex',
+    'Causal\\Sphinx\\Slots\\LatexPostProcessor',
+    'postprocess'
 );
 
 // Hook into ourselves to handle custom projects
 $signalSlotDispatcher->connect(
-	'Causal\\Sphinx\\Controller\\DocumentationController',
-	'afterInitializeReferences',
-	'Causal\\Sphinx\\Slots\\CustomProject',
-	'postprocessReferences'
+    'Causal\\Sphinx\\Controller\\DocumentationController',
+    'afterInitializeReferences',
+    'Causal\\Sphinx\\Slots\\CustomProject',
+    'postprocessReferences'
 );
 
 $signalSlotDispatcher->connect(
-	'Causal\\Sphinx\\Controller\\DocumentationController',
-	'renderUserDocumentation',
-	'Causal\\Sphinx\\Slots\\CustomProject',
-	'render'
+    'Causal\\Sphinx\\Controller\\DocumentationController',
+    'renderUserDocumentation',
+    'Causal\\Sphinx\\Slots\\CustomProject',
+    'render'
 );
 
 $signalSlotDispatcher->connect(
-	'Causal\\Sphinx\\Controller\\InteractiveViewerController',
-	'retrieveBasePath',
-	'Causal\\Sphinx\\Slots\\CustomProject',
-	'retrieveBasePath'
+    'Causal\\Sphinx\\Controller\\InteractiveViewerController',
+    'retrieveBasePath',
+    'Causal\\Sphinx\\Slots\\CustomProject',
+    'retrieveBasePath'
 );
 
 $signalSlotDispatcher->connect(
-	'Causal\\Sphinx\\Controller\\RestEditorController',
-	'retrieveRestFilename',
-	'Causal\\Sphinx\\Slots\\CustomProject',
-	'retrieveRestFilename'
+    'Causal\\Sphinx\\Controller\\RestEditorController',
+    'retrieveRestFilename',
+    'Causal\\Sphinx\\Slots\\CustomProject',
+    'retrieveRestFilename'
 );

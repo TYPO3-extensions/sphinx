@@ -1,12 +1,15 @@
 <div title="{f:translate(key:'editor.message.rename')}">
-	<div class="ui-state-error"></div>
-	<f:form action="rename" id="tx-sphinx-formdialog">
-		<fieldset>
-			<f:form.hidden name="reference" value="{reference}" />
-			<f:form.hidden name="filename" value="{filename}" />
+    <div class="ui-state-error"></div>
+    <f:form action="rename" id="tx-sphinx-formdialog">
+        <fieldset>
+            <f:form.hidden name="reference" value="{reference}"/>
+            <f:form.hidden name="filename" value="{filename}"/>
 
-			<label for="newName"><f:translate key="editor.label.newName" /></label>
-			<f:form.textfield name="newName" id="newName" value="{newName}" class="text ui-widget-content ui-corner-all" />
-		</fieldset>
-	</f:form>
+            <label for="newName">
+                <f:translate key="editor.label.newName"/>
+            </label>
+            <f:form.textfield name="newName" id="newName" value="{newName}"
+                              class="text ui-widget-content ui-corner-all"/>
+        </fieldset>
+    </f:form>
 </div>

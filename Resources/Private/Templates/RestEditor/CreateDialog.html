@@ -1,14 +1,19 @@
 <div title="{f:translate(key:'editor.message.{type}')}">
-	<div class="ui-state-error"></div>
-	<f:form action="{type}" id="tx-sphinx-formdialog">
-		<fieldset>
-			<f:form.hidden name="reference" value="{reference}" />
-			<f:form.hidden name="path" value="{path}" />
+    <div class="ui-state-error"></div>
+    <f:form action="{type}" id="tx-sphinx-formdialog">
+        <fieldset>
+            <f:form.hidden name="reference" value="{reference}"/>
+            <f:form.hidden name="path" value="{path}"/>
 
-			<p><f:translate key="editor.label.path" /> {path}</p>
+            <p>
+                <f:translate key="editor.label.path"/>
+                {path}
+            </p>
 
-			<label for="newName"><f:translate key="editor.label.{type}" /></label>
-			<f:form.textfield name="name" id="name" class="text ui-widget-content ui-corner-all" />
-		</fieldset>
-	</f:form>
+            <label for="newName">
+                <f:translate key="editor.label.{type}"/>
+            </label>
+            <f:form.textfield name="name" id="name" class="text ui-widget-content ui-corner-all"/>
+        </fieldset>
+    </f:form>
 </div>

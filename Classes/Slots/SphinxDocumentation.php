@@ -26,205 +26,209 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class SphinxDocumentation {
+class SphinxDocumentation
+{
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 * @inject
-	 */
-	protected $objectManager;
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @inject
+     */
+    protected $objectManager;
 
-	/**
-	 * @var \Causal\Sphinx\Domain\Repository\ExtensionRepository
-	 * @inject
-	 */
-	protected $extensionRepository;
+    /**
+     * @var \Causal\Sphinx\Domain\Repository\ExtensionRepository
+     * @inject
+     */
+    protected $extensionRepository;
 
-	/**
-	 * @var \Causal\Sphinx\Domain\Repository\ProjectRepository
-	 * @inject
-	 */
-	protected $projectRepository;
+    /**
+     * @var \Causal\Sphinx\Domain\Repository\ProjectRepository
+     * @inject
+     */
+    protected $projectRepository;
 
-	/**
-	 * Post-processes the list of available documents.
-	 *
-	 * @param string $language
-	 * @param array $documents
-	 * @return void
-	 */
-	public function postProcessDocuments($language, array &$documents) {
-		$formats = $this->getSupportedFormats();
-		$unsetDocuments = array();
+    /**
+     * Post-processes the list of available documents.
+     *
+     * @param string $language
+     * @param array $documents
+     * @return void
+     */
+    public function postProcessDocuments($language, array &$documents)
+    {
+        $formats = $this->getSupportedFormats();
+        $unsetDocuments = array();
 
-		if (count($formats) === 0) {
-			return;
-		}
+        if (count($formats) === 0) {
+            return;
+        }
 
-		$extensionsWithSphinxDocumentation = $this->extensionRepository->findByHasSphinxDocumentation();
-		foreach ($extensionsWithSphinxDocumentation as $extension) {
-			/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
-			/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
+        $extensionsWithSphinxDocumentation = $this->extensionRepository->findByHasSphinxDocumentation();
+        foreach ($extensionsWithSphinxDocumentation as $extension) {
+            /** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
+            /** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
 
-			list($extensionKey, $locale) = explode('.', $extension->getExtensionKey());
-			$packageKey = $extension->getPackageKey();
+            list($extensionKey, $locale) = explode('.', $extension->getExtensionKey());
+            $packageKey = $extension->getPackageKey();
 
-			if ($locale !== NULL) {
-				if (!GeneralUtility::isFirstPartOfStr($locale, $language)) {
-					// Translated manual but does not match current Backend language
-					continue;
-				}
+            if ($locale !== NULL) {
+                if (!GeneralUtility::isFirstPartOfStr($locale, $language)) {
+                    // Translated manual but does not match current Backend language
+                    continue;
+                }
 
-				// Manual in English should thus be hidden
-				$unsetDocuments[] = 'typo3cms.extensions.' . $extensionKey;
-			}
+                // Manual in English should thus be hidden
+                $unsetDocuments[] = 'typo3cms.extensions.' . $extensionKey;
+            }
 
-			if (!isset($documents[$packageKey])) {
-				$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
-					->setPackageKey($packageKey)
-					->setExtensionKey($extensionKey)
-					->setIcon($extension->getIcon());
-				$documents[$packageKey] = $document;
-			}
+            if (!isset($documents[$packageKey])) {
+                $document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
+                    ->setPackageKey($packageKey)
+                    ->setExtensionKey($extensionKey)
+                    ->setIcon($extension->getIcon());
+                $documents[$packageKey] = $document;
+            }
 
-			$document = $documents[$packageKey];
-			$documentTranslation = NULL;
-			foreach ($document->getTranslations() as $translation) {
-				/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $translation */
-				if ($translation->getLanguage() === 'default') {
-					$documentTranslation = $translation;
-					break;
-				}
-			}
+            $document = $documents[$packageKey];
+            $documentTranslation = NULL;
+            foreach ($document->getTranslations() as $translation) {
+                /** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $translation */
+                if ($translation->getLanguage() === 'default') {
+                    $documentTranslation = $translation;
+                    break;
+                }
+            }
 
-			if ($documentTranslation === NULL) {
-				$documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
-					->setLanguage($locale ?: 'default')
-					->setTitle($extension->getTitle())
-					->setDescription($extension->getDescription());
+            if ($documentTranslation === NULL) {
+                $documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
+                    ->setLanguage($locale ?: 'default')
+                    ->setTitle($extension->getTitle())
+                    ->setDescription($extension->getDescription());
 
-				$document->addTranslation($documentTranslation);
-			}
+                $document->addTranslation($documentTranslation);
+            }
 
-			$existingFormats = array();
-			foreach ($documentTranslation->getFormats() as $documentFormat) {
-				/** @var $documentFormat \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat */
-				if ($documentFormat->getFormat() === 'sxw') {
-					// Remove OpenOffice from the list when HTML/PDF is available
-					$documentTranslation->removeFormat($documentFormat);
-					continue;
-				}
-				$existingFormats[$documentFormat->getFormat()] = $documentFormat;
-			}
+            $existingFormats = array();
+            foreach ($documentTranslation->getFormats() as $documentFormat) {
+                /** @var $documentFormat \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat */
+                if ($documentFormat->getFormat() === 'sxw') {
+                    // Remove OpenOffice from the list when HTML/PDF is available
+                    $documentTranslation->removeFormat($documentFormat);
+                    continue;
+                }
+                $existingFormats[$documentFormat->getFormat()] = $documentFormat;
+            }
 
-			foreach ($formats as $format) {
-				if (!isset($existingFormats[$format])) {
-					/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
-					$documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
-						->setFormat($format)
-						->setPath($this->getRenderLink($extension->getExtensionKey(), $format));
+            foreach ($formats as $format) {
+                if (!isset($existingFormats[$format])) {
+                    /** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
+                    $documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
+                        ->setFormat($format)
+                        ->setPath($this->getRenderLink($extension->getExtensionKey(), $format));
 
-					$documentTranslation->addFormat($documentFormat);
-				} else {
-					// Override path of the document to point to EXT:sphinx's renderer
-					$existingFormats[$format]->setPath($this->getRenderLink($extension->getExtensionKey(), $format));
-				}
-			}
-		}
+                    $documentTranslation->addFormat($documentFormat);
+                } else {
+                    // Override path of the document to point to EXT:sphinx's renderer
+                    $existingFormats[$format]->setPath($this->getRenderLink($extension->getExtensionKey(), $format));
+                }
+            }
+        }
 
-		$documents = array_diff_key($documents, array_flip($unsetDocuments));
+        $documents = array_diff_key($documents, array_flip($unsetDocuments));
 
-		$defaultIcon = '../' . substr(
-			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('documentation') . 'ext_icon.gif',
-			strlen(PATH_site)
-		);
-		$projects = $this->projectRepository->findAll();
-		foreach ($projects as $project) {
-			$packageKey = $project->getDocumentationKey();
+        $defaultIcon = '../' . substr(
+                \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('documentation') . 'ext_icon.gif',
+                strlen(PATH_site)
+            );
+        $projects = $this->projectRepository->findAll();
+        foreach ($projects as $project) {
+            $packageKey = $project->getDocumentationKey();
 
-			/** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
-			$document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
-				->setPackageKey($packageKey)
-				->setIcon($defaultIcon);
+            /** @var \TYPO3\CMS\Documentation\Domain\Model\Document $document */
+            $document = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\Document')
+                ->setPackageKey($packageKey)
+                ->setIcon($defaultIcon);
 
-			/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
-			$documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
-				->setLanguage('default')
-				->setTitle($project->getName())
-				->setDescription($project->getDescription());
+            /** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentTranslation $documentTranslation */
+            $documentTranslation = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentTranslation')
+                ->setLanguage('default')
+                ->setTitle($project->getName())
+                ->setDescription($project->getDescription());
 
-			foreach ($formats as $format) {
-				/** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
-				$documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
-					->setFormat($format)
-					->setPath($this->getRenderLink($project->getDocumentationKey(), $format, 'USER'));
+            foreach ($formats as $format) {
+                /** @var \TYPO3\CMS\Documentation\Domain\Model\DocumentFormat $documentFormat */
+                $documentFormat = $this->objectManager->get('TYPO3\\CMS\\Documentation\\Domain\\Model\\DocumentFormat')
+                    ->setFormat($format)
+                    ->setPath($this->getRenderLink($project->getDocumentationKey(), $format, 'USER'));
 
-				$documentTranslation->addFormat($documentFormat);
-			}
+                $documentTranslation->addFormat($documentFormat);
+            }
 
-			$document->addTranslation($documentTranslation);
-			$documents[$packageKey] = $document;
-		}
-	}
+            $document->addTranslation($documentTranslation);
+            $documents[$packageKey] = $document;
+        }
+    }
 
-	/**
-	 * Returns the supported documentation rendering formats.
-	 *
-	 * @return array
-	 */
-	protected function getSupportedFormats() {
-		if (!\Causal\Sphinx\Utility\SphinxBuilder::isReady()) {
-			return array();
-		}
-		$formats = array('html', 'json');
+    /**
+     * Returns the supported documentation rendering formats.
+     *
+     * @return array
+     */
+    protected function getSupportedFormats()
+    {
+        if (!\Causal\Sphinx\Utility\SphinxBuilder::isReady()) {
+            return array();
+        }
+        $formats = array('html', 'json');
 
-		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sphinx']);
-		switch ($configuration['pdf_builder']) {
-			case 'pdflatex':
-				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
-			break;
-			case 'rst2pdf':
-				$renderPdf = TRUE;
-			break;
-			default:
-				$renderPdf = FALSE;
-			break;
-		}
-		if ($renderPdf) {
-			$formats[] = 'pdf';
-		}
+        $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sphinx']);
+        switch ($configuration['pdf_builder']) {
+            case 'pdflatex':
+                $renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
+                break;
+            case 'rst2pdf':
+                $renderPdf = TRUE;
+                break;
+            default:
+                $renderPdf = FALSE;
+                break;
+        }
+        if ($renderPdf) {
+            $formats[] = 'pdf';
+        }
 
-		return $formats;
-	}
+        return $formats;
+    }
 
-	/**
-	 * Returns a rendering link.
-	 *
-	 * @param string $reference
-	 * @param string $format The format of the documentation ("html", "json" or "pdf")
-	 * @param string $referenceType
-	 * @return string
-	 */
-	protected function getRenderLink($reference, $format, $referenceType = 'EXT') {
-		/** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
-		$uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
-		$request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
-		$uriBuilder->setRequest($request)->setArguments(array('M' => 'help_SphinxDocumentation'));
+    /**
+     * Returns a rendering link.
+     *
+     * @param string $reference
+     * @param string $format The format of the documentation ("html", "json" or "pdf")
+     * @param string $referenceType
+     * @return string
+     */
+    protected function getRenderLink($reference, $format, $referenceType = 'EXT')
+    {
+        /** @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
+        $request = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
+        $uriBuilder->setRequest($request)->setArguments(array('M' => 'help_SphinxDocumentation'));
 
-		$link = version_compare(TYPO3_version, '6.99.99', '<=') ? 'typo3/' : '';
-		$link .= $uriBuilder->uriFor(
-			'index',
-			array(
-				'reference' => $referenceType . ':' . $reference,
-				'layout' => $format,
-				'force' => FALSE,
-			),
-			'Documentation',
-			'sphinx',
-			'help_sphinxdocumentation'
-		);
+        $link = version_compare(TYPO3_version, '6.99.99', '<=') ? 'typo3/' : '';
+        $link .= $uriBuilder->uriFor(
+            'index',
+            array(
+                'reference' => $referenceType . ':' . $reference,
+                'layout' => $format,
+                'force' => FALSE,
+            ),
+            'Documentation',
+            'sphinx',
+            'help_sphinxdocumentation'
+        );
 
-		return $link;
-	}
+        return $link;
+    }
 
 }

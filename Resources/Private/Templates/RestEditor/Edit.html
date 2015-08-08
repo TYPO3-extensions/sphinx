@@ -2,120 +2,127 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>{document}</title>
+    <title>{document}</title>
 
-	<f:if condition="{typo3_7x}">
-		<f:then>
-			<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/visual/t3skin.css" />
-		</f:then>
-		<f:else>
-			<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/structure/element_message.css" />
-			<link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/visual/element_message.css" />
-		</f:else>
-	</f:if>
-	<link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css" />
-	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/jquery-ui.smoothness/jquery-ui-1.11.4.custom.min.css')}" />
-	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}" />
-	<link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/codemirror.css')}" />
+    <f:if condition="{typo3_7x}">
+        <f:then>
+            <link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/visual/t3skin.css"/>
+        </f:then>
+        <f:else>
+            <link rel="stylesheet" type="text/css"
+                  href="sysext/t3skin/Resources/Public/Css/structure/element_message.css"/>
+            <link rel="stylesheet" type="text/css"
+                  href="sysext/t3skin/Resources/Public/Css/visual/element_message.css"/>
+        </f:else>
+    </f:if>
+    <link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="{f:uri.resource(path:'Css/jquery-ui.smoothness/jquery-ui-1.11.4.custom.min.css')}"/>
+    <link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}"/>
+    <link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/codemirror.css')}"/>
 
-	<sphinx:includeJs.jQuery version="1.11"/>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-migrate-1.2.1.min.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.11.4.custom.min.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.treetable-3.1.0.min.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.ui-contextmenu.min.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.iframe-transport.min.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/editor.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/flashmessages.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/codemirror.js')}"></script>
-	<script type="text/javascript" src="{f:uri.resource(path:'JavaScript/spin.min.js')}"></script>
-	<script type="text/javascript">
-		// Initialize the editor
-		CausalSphinxEditor.reference = "{reference}";
-		CausalSphinxEditor.currentReference = "EXT:{extensionKey}";
-		CausalSphinxEditor.filename = "{filename}";
-		CausalSphinxEditor.startLine = {startLine};
-		CausalSphinxEditor.isReadOnly = '{readOnly}';
+    <sphinx:includeJs.jQuery version="1.11"/>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-migrate-1.2.1.min.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.11.4.custom.min.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.treetable-3.1.0.min.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.ui-contextmenu.min.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.iframe-transport.min.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/editor.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/flashmessages.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/codemirror.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/spin.min.js')}"></script>
+    <script type="text/javascript">
+        // Initialize the editor
+        CausalSphinxEditor.reference = "{reference}";
+        CausalSphinxEditor.currentReference = "EXT:{extensionKey}";
+        CausalSphinxEditor.filename = "{filename}";
+        CausalSphinxEditor.startLine = {startLine};
+        CausalSphinxEditor.isReadOnly = '{readOnly}';
 
-		// Initialize flash messages
-		CausalSphinx.Flashmessage.isTYPO3v7 = {f:if(condition:typo3_7x,then:'true',else:'false')};
+        // Initialize flash messages
+        CausalSphinx.Flashmessage.isTYPO3v7 = {f:if(condition: typo3_7x, then: 'true', else: 'false')};
 
-		// Initialize the editor's actions
-		CausalSphinxEditor.actions.projectTree = "{f:uri.action(action:'projectTree', arguments:{path:projectPath, filename:'FILENAME'})}";
-		CausalSphinxEditor.actions.autocomplete = "{f:uri.action(action:'autocomplete')}";
-		CausalSphinxEditor.actions.open = "{f:uri.action(action:'open')}";
-		CausalSphinxEditor.actions.save = "{f:uri.action(action:'save')}";
-		CausalSphinxEditor.actions.move = "{f:uri.action(action:'move')}";
-		CausalSphinxEditor.actions.remove = "{f:uri.action(action:'remove', arguments:{reference:reference, path:'PATH'})}";
-		CausalSphinxEditor.actions.rename = "{f:uri.action(action:'renameDialog', arguments:{reference:reference, filename:'FILENAME'})}";
-		CausalSphinxEditor.actions.create = "{f:uri.action(action:'createDialog', arguments:{reference:reference, type: 'TYPE', path:'PATH'})}";
-		CausalSphinxEditor.actions.upload = "{f:uri.action(action:'uploadDialog', arguments:{reference:reference, path:'PATH'})}";
-		CausalSphinxEditor.actions.redirect = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{reference:reference, document:document})}"
-		CausalSphinxEditor.actions.references = "{f:uri.action(action:'accordionReferences', arguments:{reference:'REFERENCE', remoteUrl:'URL', usePrefix:'USE_PREFIX'})}";
-	</script>
-	<script type="text/javascript"><![CDATA[
-		var myLayout; // a var is required because this page utilizes: myLayout.allowOverflow() method
+        // Initialize the editor's actions
+        CausalSphinxEditor.actions.projectTree = "{f:uri.action(action:'projectTree', arguments:{path:projectPath, filename:'FILENAME'})}";
+        CausalSphinxEditor.actions.autocomplete = "{f:uri.action(action:'autocomplete')}";
+        CausalSphinxEditor.actions.open = "{f:uri.action(action:'open')}";
+        CausalSphinxEditor.actions.save = "{f:uri.action(action:'save')}";
+        CausalSphinxEditor.actions.move = "{f:uri.action(action:'move')}";
+        CausalSphinxEditor.actions.remove = "{f:uri.action(action:'remove', arguments:{reference:reference, path:'PATH'})}";
+        CausalSphinxEditor.actions.rename = "{f:uri.action(action:'renameDialog', arguments:{reference:reference, filename:'FILENAME'})}";
+        CausalSphinxEditor.actions.create = "{f:uri.action(action:'createDialog', arguments:{reference:reference, type: 'TYPE', path:'PATH'})}";
+        CausalSphinxEditor.actions.upload = "{f:uri.action(action:'uploadDialog', arguments:{reference:reference, path:'PATH'})}";
+        CausalSphinxEditor.actions.redirect = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{reference:reference, document:document})}"
+        CausalSphinxEditor.actions.references = "{f:uri.action(action:'accordionReferences', arguments:{reference:'REFERENCE', remoteUrl:'URL', usePrefix:'USE_PREFIX'})}";
+    </script>
+    <script type="text/javascript"><![CDATA[
+    var myLayout; // a var is required because this page utilizes: myLayout.allowOverflow() method
 
-		$(document).ready(function () {
-			myLayout = $('body').layout({
-					enableCursorHotkey:			false
-				,	west__size:					250
-				,	west__minSize:				200
-				,	west__maxSize:				.3 // 30% of layout width
-				,	west__paneSelector:			".outer-west"
-				,	east__size:					300
-				,	east__minSize:				300
-				,	east__maxSize:				.4 // 40% of layout width
-				,	east__initClosed:			false
-				,	east__initHidden:			false
-				,	east__slidable:				true
-				,	east__resizable:			true
+    $(document).ready(function () {
+        myLayout = $('body').layout({
+              enableCursorHotkey: false
+            , west__size: 250
+            , west__minSize: 200
+            , west__maxSize: .3 // 30% of layout width
+            , west__paneSelector: ".outer-west"
+            , east__size: 300
+            , east__minSize: 300
+            , east__maxSize: .4 // 40% of layout width
+            , east__initClosed: false
+            , east__initHidden: false
+            , east__slidable: true
+            , east__resizable: true
 
-				// WEST-LAYOUT (child of outer-west-pane)
-				,	west__childOptions: {
-						north__size:			65
-					,	north__spacing_open:	0
-				}
+            // WEST-LAYOUT (child of outer-west-pane)
+            , west__childOptions: {
+                  north__size: 65
+                , north__spacing_open: 0
+            }
 
-				//	Enable state management
-				,	stateManagement__enabled:	true // automatic cookie load & save enabled by default
-			});
-		});
-	]]></script>
+            //	Enable state management
+            , stateManagement__enabled: true // automatic cookie load & save enabled by default
+        });
+    });
+    ]]></script>
 </head>
 <body>
 
-<f:render partial="Documentation/HeaderToolbar" arguments="{buttons: buttons}" />
+<f:render partial="Documentation/HeaderToolbar" arguments="{buttons: buttons}"/>
 
 <div class="ui-layout-center layout-content-container">
-	<textarea id="editor">{contents}</textarea>
+    <textarea id="editor">{contents}</textarea>
 </div>
 
 <div class="ui-layout-east layout-content-container">
-	<div class="ui-widget-header no-scrollbar add-padding">
-		<f:translate key="editor.header.references"/>
-		<span id="tx-sphinx-accordion-header">EXT:{extensionKey}</span>
-	</div>
-	<div class="ui-widget">
-		<label for="extension-key" title="{f:translate(key:'editor.tooltip.input')}"><f:translate key="editor.label.loadReference"/></label>
-		<input id="extension-key" style="width:180px" />
-	</div>
-	<sphinx:objectsInvBrowser id="accordion-objectsinv" reference="{reference}" cmEditor="CausalSphinxEditor.editor" controller="{controller}" />
+    <div class="ui-widget-header no-scrollbar add-padding">
+        <f:translate key="editor.header.references"/>
+        <span id="tx-sphinx-accordion-header">EXT:{extensionKey}</span>
+    </div>
+    <div class="ui-widget">
+        <label for="extension-key" title="{f:translate(key:'editor.tooltip.input')}">
+            <f:translate key="editor.label.loadReference"/>
+        </label>
+        <input id="extension-key" style="width:180px"/>
+    </div>
+    <sphinx:objectsInvBrowser id="accordion-objectsinv" reference="{reference}" cmEditor="CausalSphinxEditor.editor"
+                              controller="{controller}"/>
 </div>
 
 <div class="outer-west layout-child-container">
-	<div class="ui-layout-north force-wrap">
-		<f:translate key="editor.label.filename"/>
-		<span id="filename">{filename}</span>
-		<span id="editor-readonly" class="file-locked t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-locked">&nbsp;</span>
-	</div>
-	<div class="ui-layout-center layout-content-container layout-scroll" id="projectTree">
-		<sphinx:projectTree projectPath="{projectPath}" reveal="{filename}" />
-	</div>
+    <div class="ui-layout-north force-wrap">
+        <f:translate key="editor.label.filename"/>
+        <span id="filename">{filename}</span>
+        <span id="editor-readonly"
+              class="file-locked t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-locked">&nbsp;</span>
+    </div>
+    <div class="ui-layout-center layout-content-container layout-scroll" id="projectTree">
+        <sphinx:projectTree projectPath="{projectPath}" reveal="{filename}"/>
+    </div>
 </div>
 
 <script type="text/javascript">
-	<sphinx:includeMessages keyPrefix="editor.message." jsDictionnary="CausalSphinxEditor.messages" />
+    <sphinx:includeMessages keyPrefix="editor.message." jsDictionnary="CausalSphinxEditor.messages"/>
 </script>
 
 </body>

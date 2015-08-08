@@ -24,140 +24,152 @@ namespace Causal\Sphinx\Domain\Model;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Extension {
+class Extension
+{
 
-	/**
-	 * @var string
-	 */
-	protected $extensionKey;
+    /**
+     * @var string
+     */
+    protected $extensionKey;
 
-	/**
-	 * @var string
-	 */
-	protected $title;
+    /**
+     * @var string
+     */
+    protected $title;
 
-	/**
-	 * @var string
-	 */
-	protected $icon;
+    /**
+     * @var string
+     */
+    protected $icon;
 
-	/**
-	 * @var string
-	 */
-	protected $installType;
+    /**
+     * @var string
+     */
+    protected $installType;
 
-	/**
-	 * @var string
-	 */
-	protected $description;
+    /**
+     * @var string
+     */
+    protected $description;
 
-	/**
-	 * Returns the extension key.
-	 *
-	 * @return string
-	 */
-	public function getExtensionKey() {
-		return $this->extensionKey;
-	}
+    /**
+     * Returns the extension key.
+     *
+     * @return string
+     */
+    public function getExtensionKey()
+    {
+        return $this->extensionKey;
+    }
 
-	/**
-	 * Sets the extension key.
-	 *
-	 * @param string $extensionKey
-	 * @return \Causal\Sphinx\Domain\Model\Extension This instance for method chaining
-	 */
-	public function setExtensionKey($extensionKey) {
-		$this->extensionKey = $extensionKey;
-		return $this;
-	}
+    /**
+     * Sets the extension key.
+     *
+     * @param string $extensionKey
+     * @return \Causal\Sphinx\Domain\Model\Extension This instance for method chaining
+     */
+    public function setExtensionKey($extensionKey)
+    {
+        $this->extensionKey = $extensionKey;
+        return $this;
+    }
 
-	/**
-	 * Returns the title.
-	 *
-	 * @return string
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * Returns the title.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * Sets the title.
-	 *
-	 * @param string $title
-	 * @return \Causal\Sphinx\Domain\Model\Extension This instance for method chaining
-	 */
-	public function setTitle($title) {
-		$this->title = $title;
-		return $this;
-	}
+    /**
+     * Sets the title.
+     *
+     * @param string $title
+     * @return \Causal\Sphinx\Domain\Model\Extension This instance for method chaining
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
 
-	/**
-	 * Returns the icon.
-	 *
-	 * @return string
-	 */
-	public function getIcon() {
-		return $this->icon;
-	}
+    /**
+     * Returns the icon.
+     *
+     * @return string
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
 
-	/**
-	 * Sets the icon.
-	 *
-	 * @param string $icon
-	 * @return \Causal\Sphinx\Domain\Model\Extension This instance for method chaining
-	 */
-	public function setIcon($icon) {
-		$this->icon = $icon;
-		return $this;
-	}
+    /**
+     * Sets the icon.
+     *
+     * @param string $icon
+     * @return \Causal\Sphinx\Domain\Model\Extension This instance for method chaining
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+        return $this;
+    }
 
-	/**
-	 * Returns the install type.
-	 *
-	 * @return string
-	 */
-	public function getInstallType() {
-		return $this->installType;
-	}
+    /**
+     * Returns the install type.
+     *
+     * @return string
+     */
+    public function getInstallType()
+    {
+        return $this->installType;
+    }
 
-	/**
-	 * Sets the install type.
-	 *
-	 * @param string $installType
-	 * @return \Causal\Sphinx\Domain\Model\Extension This instance for method chaining
-	 */
-	public function setInstallType($installType) {
-		$this->installType = $installType;
-		return $this;
-	}
+    /**
+     * Sets the install type.
+     *
+     * @param string $installType
+     * @return \Causal\Sphinx\Domain\Model\Extension This instance for method chaining
+     */
+    public function setInstallType($installType)
+    {
+        $this->installType = $installType;
+        return $this;
+    }
 
-	/**
-	 * Returns the description.
-	 *
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
+    /**
+     * Returns the description.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	/**
-	 * Sets the description.
-	 *
-	 * @param string $description
-	 * @return \Causal\Sphinx\Domain\Model\Extension This instance for method chaining
-	 */
-	public function setDescription($description) {
-		$this->description = $description;
-		return $this;
-	}
+    /**
+     * Sets the description.
+     *
+     * @param string $description
+     * @return \Causal\Sphinx\Domain\Model\Extension This instance for method chaining
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
 
-	/**
-	 * Returns the documentation package key.
-	 *
-	 * @return string
-	 */
-	public function getPackageKey() {
-		return 'typo3cms.extensions.' . $this->extensionKey;
-	}
+    /**
+     * Returns the documentation package key.
+     *
+     * @return string
+     */
+    public function getPackageKey()
+    {
+        return 'typo3cms.extensions.' . $this->extensionKey;
+    }
 
 }

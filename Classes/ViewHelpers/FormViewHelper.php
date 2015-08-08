@@ -23,16 +23,18 @@ namespace Causal\Sphinx\ViewHelpers;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper {
+class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper
+{
 
-	/**
-	 * Initialize arguments.
-	 *
-	 * @return void
-	 */
-	public function initializeArguments() {
-		$this->registerTagAttribute('target', 'string', 'Target of form');
-		parent::initializeArguments();
-	}
+    /**
+     * Initialize arguments.
+     *
+     * @return void
+     */
+    public function initializeArguments()
+    {
+        $this->registerTagAttribute('target', 'string', 'Target of form');
+        parent::initializeArguments();
+    }
 
 }

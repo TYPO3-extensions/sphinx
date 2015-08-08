@@ -3,7 +3,13 @@
   "description": "Installs a full-fledged Sphinx environment within your TYPO3 website. Builds and renders Sphinx/reStructuredText-based projects such as extension manuals, official reference guides or your own in-house documents as HTML/JSON/PDF either from TYPO3 Backend or from command-line, as you prefer. Features a reStructuredText editor with cross-reference browser and syntax highlighting.",
   "version": "2.3.0-dev",
   "type": "typo3-cms-extension",
-  "keywords": ["TYPO3 CMS", "reStructuredText", "sphinx-doc", "LaTeX", "documentation"],
+  "keywords": [
+    "TYPO3 CMS",
+    "reStructuredText",
+    "sphinx-doc",
+    "LaTeX",
+    "documentation"
+  ],
   "homepage": "https://forge.typo3.org/projects/extension-sphinx",
   "license": "GPL-2.0+",
   "authors": [
@@ -25,6 +31,6 @@
     "typo3-ter/restdoc": "Allows interactive rendering and enhanced use of built-in reStructuredText editor"
   },
   "support": {
-	"issues": "https://forge.typo3.org/projects/extension-sphinx/issues"
+    "issues": "https://forge.typo3.org/projects/extension-sphinx/issues"
   }
 }

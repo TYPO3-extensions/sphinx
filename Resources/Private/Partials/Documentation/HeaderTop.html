@@ -1,25 +1,28 @@
 {namespace sphinx=Causal\Sphinx\ViewHelpers}
 
 <sphinx:form action="index" id="tx-sphinx-form-render">
-	<label for="reference">
-		<f:translate key="showDocumentation">Show documentation:</f:translate>
-	</label>
-	<sphinx:form.select id="reference" name="reference" groupOptions="1" prependOptionLabel="{f:translate(key:'openDashboard')}" options="{references}" value="{currentReference}" onchange="this.form.submit();" />
+    <label for="reference">
+        <f:translate key="showDocumentation">Show documentation:</f:translate>
+    </label>
+    <sphinx:form.select id="reference" name="reference" groupOptions="1"
+                        prependOptionLabel="{f:translate(key:'openDashboard')}" options="{references}"
+                        value="{currentReference}" onchange="this.form.submit();"/>
 
-	<label for="layout">
-		<f:translate key="documentationFormat">Layout:</f:translate>
-	</label>
-	<sphinx:form.select id="layout" name="layout" options="{layouts}" value="{currentLayout}" onchange="this.form.submit();" />
-	<f:form.submit value="{f:translate(key:'loadDocumentation')}" />
+    <label for="layout">
+        <f:translate key="documentationFormat">Layout:</f:translate>
+    </label>
+    <sphinx:form.select id="layout" name="layout" options="{layouts}" value="{currentLayout}"
+                        onchange="this.form.submit();"/>
+    <f:form.submit value="{f:translate(key:'loadDocumentation')}"/>
 
-	<div class="right">
-		<f:form.submit name="force" value="{f:translate(key:'toolbar.renderAgain')}" />
-	</div>
+    <div class="right">
+        <f:form.submit name="force" value="{f:translate(key:'toolbar.renderAgain')}"/>
+    </div>
 </sphinx:form>
 
 <script type="text/javascript"><![CDATA[
-	$(document).ready(function () {
-		$('#reference').selectBoxIt();
-		$('#layout').selectBoxIt();
-	});
+$(document).ready(function () {
+    $('#reference').selectBoxIt();
+    $('#layout').selectBoxIt();
+});
 ]]></script>

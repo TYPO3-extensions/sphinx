@@ -24,193 +24,209 @@ namespace Causal\Sphinx\Domain\Model;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Project {
+class Project
+{
 
-	/**
-	 * @var string
-	 */
-	protected $uid;
+    /**
+     * @var string
+     */
+    protected $uid;
 
-	/**
-	 * @var string
-	 * @notEmpty
-	 */
-	protected $documentationKey;
+    /**
+     * @var string
+     * @notEmpty
+     */
+    protected $documentationKey;
 
-	/**
-	 * @var string
-	 * @notEmpty
-	 */
-	protected $name;
+    /**
+     * @var string
+     * @notEmpty
+     */
+    protected $name;
 
-	/**
-	 * @var string
-	 */
-	protected $language;
+    /**
+     * @var string
+     */
+    protected $language;
 
-	/**
-	 * @var string
-	 */
-	protected $description;
+    /**
+     * @var string
+     */
+    protected $description;
 
-	/**
-	 * @var string
-	 * @notEmpty
-	 */
-	protected $group;
+    /**
+     * @var string
+     * @notEmpty
+     */
+    protected $group;
 
-	/**
-	 * @var string
-	 * @notEmpty
-	 */
-	protected $directory;
+    /**
+     * @var string
+     * @notEmpty
+     */
+    protected $directory;
 
-	/**
-	 * Default constructor.
-	 *
-	 * @param string $documentationKey
-	 */
-	public function __construct($documentationKey) {
-		$this->uid = $documentationKey;
-		$this->documentationKey = $documentationKey;
-	}
+    /**
+     * Default constructor.
+     *
+     * @param string $documentationKey
+     */
+    public function __construct($documentationKey)
+    {
+        $this->uid = $documentationKey;
+        $this->documentationKey = $documentationKey;
+    }
 
-	/**
-	 * Returns the (original) documentation key.
-	 *
-	 * @return string
-	 */
-	public function getUid() {
-		return $this->uid;
-	}
+    /**
+     * Returns the (original) documentation key.
+     *
+     * @return string
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
 
-	/**
-	 * Returns the documentation key.
-	 *
-	 * @return string
-	 */
-	public function getDocumentationKey() {
-		return $this->documentationKey;
-	}
+    /**
+     * Returns the documentation key.
+     *
+     * @return string
+     */
+    public function getDocumentationKey()
+    {
+        return $this->documentationKey;
+    }
 
-	/**
-	 * Sets the documentation key.
-	 *
-	 * @param string $documentationKey
-	 * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
-	 */
-	public function setDocumentationKey($documentationKey) {
-		$this->documentationKey = $documentationKey;
-		return $this;
-	}
+    /**
+     * Sets the documentation key.
+     *
+     * @param string $documentationKey
+     * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
+     */
+    public function setDocumentationKey($documentationKey)
+    {
+        $this->documentationKey = $documentationKey;
+        return $this;
+    }
 
-	/**
-	 * Returns the reference.
-	 *
-	 * @return string
-	 */
-	public function getReference() {
-		return 'USER:' . $this->documentationKey;
-	}
+    /**
+     * Returns the reference.
+     *
+     * @return string
+     */
+    public function getReference()
+    {
+        return 'USER:' . $this->documentationKey;
+    }
 
-	/**
-	 * Returns the name.
-	 *
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
+    /**
+     * Returns the name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * Sets the name.
-	 *
-	 * @param string $name
-	 * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
-	 */
-	public function setName($name) {
-		$this->name = $name;
-		return $this;
-	}
+    /**
+     * Sets the name.
+     *
+     * @param string $name
+     * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
 
-	/**
-	 * Returns the language.
-	 *
-	 * @return string
-	 */
-	public function getLanguage() {
-		return $this->language;
-	}
+    /**
+     * Returns the language.
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
 
-	/**
-	 * Sets the language.
-	 *
-	 * @param string $language
-	 * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
-	 */
-	public function setLanguage($language) {
-		$this->language = $language;
-		return $this;
-	}
+    /**
+     * Sets the language.
+     *
+     * @param string $language
+     * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+        return $this;
+    }
 
-	/**
-	 * Returns the description.
-	 *
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
+    /**
+     * Returns the description.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	/**
-	 * Sets the description.
-	 *
-	 * @param string $description
-	 * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
-	 */
-	public function setDescription($description) {
-		$this->description = $description;
-		return $this;
-	}
+    /**
+     * Sets the description.
+     *
+     * @param string $description
+     * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
 
-	/**
-	 * Returns the group.
-	 *
-	 * @return string
-	 */
-	public function getGroup() {
-		return $this->group;
-	}
+    /**
+     * Returns the group.
+     *
+     * @return string
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
 
-	/**
-	 * Sets the group
-	 *
-	 * @param string $group
-	 * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
-	 */
-	public function setGroup($group = '') {
-		$this->group = $group;
-		return $this;
-	}
+    /**
+     * Sets the group
+     *
+     * @param string $group
+     * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
+     */
+    public function setGroup($group = '')
+    {
+        $this->group = $group;
+        return $this;
+    }
 
-	/**
-	 * Returns the directory.
-	 *
-	 * @return string
-	 */
-	public function getDirectory() {
-		return $this->directory;
-	}
+    /**
+     * Returns the directory.
+     *
+     * @return string
+     */
+    public function getDirectory()
+    {
+        return $this->directory;
+    }
 
-	/**
-	 * Sets the directory.
-	 *
-	 * @param string $directory
-	 * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
-	 */
-	public function setDirectory($directory) {
-		$this->directory = $directory;
-		return $this;
-	}
+    /**
+     * Sets the directory.
+     *
+     * @param string $directory
+     * @return \Causal\Sphinx\Domain\Model\Project This instance for method chaining
+     */
+    public function setDirectory($directory)
+    {
+        $this->directory = $directory;
+        return $this;
+    }
 
 }

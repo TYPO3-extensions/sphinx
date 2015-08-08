@@ -1,43 +1,66 @@
 {namespace sphinx=Causal\Sphinx\ViewHelpers}
 
 <div title="{f:translate(key:'dashboard.action.addCustomProject')}">
-	<div class="ui-state-error"></div>
-	<f:form action="createCustomProject" id="tx-sphinx-formdialog">
-		<fieldset>
-			<label for="group"><f:translate key="project.group" /></label>
-			<f:form.textfield name="group" id="group" placeholder="1. Projects" class="text ui-widget-content ui-corner-all" />
+    <div class="ui-state-error"></div>
+    <f:form action="createCustomProject" id="tx-sphinx-formdialog">
+        <fieldset>
+            <label for="group">
+                <f:translate key="project.group"/>
+            </label>
+            <f:form.textfield name="group" id="group" placeholder="1. Projects"
+                              class="text ui-widget-content ui-corner-all"/>
 
-			<label for="name"><f:translate key="project.name" /></label>
-			<f:form.textfield name="name" id="name" class="text ui-widget-content ui-corner-all" />
+            <label for="name">
+                <f:translate key="project.name"/>
+            </label>
+            <f:form.textfield name="name" id="name" class="text ui-widget-content ui-corner-all"/>
 
-			<label for="lang"><f:translate key="project.language" /></label>
-			<f:form.select name="lang" id="lang" options="{locales}" class="ui-widget-content ui-corner-all" />
+            <label for="lang">
+                <f:translate key="project.language"/>
+            </label>
+            <f:form.select name="lang" id="lang" options="{locales}" class="ui-widget-content ui-corner-all"/>
 
-			<label for="description"><f:translate key="project.description" /></label>
-			<f:form.textarea name="description" id="description" class="text ui-widget-content ui-corner-all" />
+            <label for="description">
+                <f:translate key="project.description"/>
+            </label>
+            <f:form.textarea name="description" id="description" class="text ui-widget-content ui-corner-all"/>
 
-			<label for="documentationKey"><f:translate key="project.documentationKey" /></label>
-			<f:form.textfield name="documentationKey" id="documentationKey" placeholder="user.myproject" class="text ui-widget-content ui-corner-all" />
+            <label for="documentationKey">
+                <f:translate key="project.documentationKey"/>
+            </label>
+            <f:form.textfield name="documentationKey" id="documentationKey" placeholder="user.myproject"
+                              class="text ui-widget-content ui-corner-all"/>
 
-			<label for="directory" title="{f:translate(key:'project.directory.description')}"><f:translate key="project.directory" /></label>
-			<f:form.textfield name="directory" id="directory" placeholder="fileadmin/sphinx/myproject/" class="text ui-widget-content ui-corner-all" />
+            <label for="directory" title="{f:translate(key:'project.directory.description')}">
+                <f:translate key="project.directory"/>
+            </label>
+            <f:form.textfield name="directory" id="directory" placeholder="fileadmin/sphinx/myproject/"
+                              class="text ui-widget-content ui-corner-all"/>
 
-			<hr />
-			<h2><f:translate key="dashboard.action.label.newProject" /></h2>
-			<p><f:translate key="dashboard.action.label.newProjectDescription" /></p>
+            <hr/>
+            <h2>
+                <f:translate key="dashboard.action.label.newProject"/>
+            </h2>
+            <p>
+                <f:translate key="dashboard.action.label.newProjectDescription"/>
+            </p>
 
-			<label for="template"><f:translate key="project.template" /></label>
-			<sphinx:form.select
-					name="template" id="template"
-					options="{templates}" groupOptions="1"
-					prependOptionLabel=""
-					onchange="CausalSphinxDashboard.fillFromOfficialDocument(this.value);"
-					class="ui-widget-content ui-corner-all" />
+            <label for="template">
+                <f:translate key="project.template"/>
+            </label>
+            <sphinx:form.select
+                    name="template" id="template"
+                    options="{templates}" groupOptions="1"
+                    prependOptionLabel=""
+                    onchange="CausalSphinxDashboard.fillFromOfficialDocument(this.value);"
+                    class="ui-widget-content ui-corner-all"/>
 
-			<f:if condition="{hasGit}">
-				<label for="git" title="{f:translate(key:'project.gitRepository.description')}"><f:translate key="project.gitRepository" /></label>
-				<f:form.textfield name="git" id="git" class="text ui-widget-content ui-corner-all" />
-			</f:if>
-		</fieldset>
-	</f:form>
+            <f:if condition="{hasGit}">
+                <label for="git" title="{f:translate(key:'project.gitRepository.description')}">
+                    <f:translate key="project.gitRepository"/>
+                </label>
+                <f:form.textfield name="git" id="git" class="text ui-widget-content ui-corner-all"/>
+            </f:if>
+        </fieldset>
+    </f:form>
 </div>

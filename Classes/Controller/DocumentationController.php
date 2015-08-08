@@ -27,302 +27,310 @@ use Causal\Sphinx\Utility\MiscUtility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class DocumentationController extends AbstractActionController {
+class DocumentationController extends AbstractActionController
+{
 
-	/**
-	 * Extension repository
-	 *
-	 * @var \Causal\Sphinx\Domain\Repository\ExtensionRepository
-	 * @inject
-	 */
-	protected $extensionRepository;
+    /**
+     * Extension repository
+     *
+     * @var \Causal\Sphinx\Domain\Repository\ExtensionRepository
+     * @inject
+     */
+    protected $extensionRepository;
 
-	/**
-	 * @var \Causal\Sphinx\Domain\Repository\ProjectRepository
-	 * @inject
-	 */
-	protected $projectRepository;
+    /**
+     * @var \Causal\Sphinx\Domain\Repository\ProjectRepository
+     * @inject
+     */
+    protected $projectRepository;
 
-	/**
-	 * Main action.
-	 *
-	 * @param string $reference Reference of a documentation
-	 * @param string $document The document (used only with $layout = 'json')
-	 * @param string $layout Layout to use
-	 * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
-	 * @return void
-	 */
-	public function indexAction($reference = NULL, $document = '', $layout = '', $force = FALSE) {
-		$references = $this->getReferences();
-		$layouts = $this->getLayouts();
+    /**
+     * Main action.
+     *
+     * @param string $reference Reference of a documentation
+     * @param string $document The document (used only with $layout = 'json')
+     * @param string $layout Layout to use
+     * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
+     * @return void
+     */
+    public function indexAction($reference = NULL, $document = '', $layout = '', $force = FALSE)
+    {
+        $references = $this->getReferences();
+        $layouts = $this->getLayouts();
 
-		if ($reference === NULL) {
-			$currentReference = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference');
-		} else {
-			// Store preferences
-			$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', $reference);
-			$currentReference = $reference;
-		}
-		if (empty($layout)) {
-			$currentLayout = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/layout');
-		} else {
-			// Store preferences
-			$this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/layout', $layout);
-			$currentLayout = $layout;
-		}
+        if ($reference === NULL) {
+            $currentReference = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference');
+        } else {
+            // Store preferences
+            $this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference', $reference);
+            $currentReference = $reference;
+        }
+        if (empty($layout)) {
+            $currentLayout = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/layout');
+        } else {
+            // Store preferences
+            $this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/layout', $layout);
+            $currentLayout = $layout;
+        }
 
-		if (empty($currentReference)) {
-			$contentActionUrl = $this->uriBuilder->uriFor('dashboard');
-		} else {
-			$contentActionUrl = $this->uriBuilder->uriFor(
-				'render',
-				array(
-					'reference' => $currentReference,
-					'document' => $document,
-					'layout' => $currentLayout,
-					'force' => $force,
-				)
-			);
-		}
+        if (empty($currentReference)) {
+            $contentActionUrl = $this->uriBuilder->uriFor('dashboard');
+        } else {
+            $contentActionUrl = $this->uriBuilder->uriFor(
+                'render',
+                array(
+                    'reference' => $currentReference,
+                    'document' => $document,
+                    'layout' => $currentLayout,
+                    'force' => $force,
+                )
+            );
+        }
 
-		$this->view->assignMultiple(array(
-			'references' => $references,
-			'layouts' => $layouts,
-			'force' => $force,
-			'currentReference' => $currentReference,
-			'currentLayout' => $currentLayout,
-			'contentActionUrl' => $contentActionUrl,
-			'typo3_7x' => version_compare(TYPO3_branch, '7', '>='),
-		));
-	}
+        $this->view->assignMultiple(array(
+            'references' => $references,
+            'layouts' => $layouts,
+            'force' => $force,
+            'currentReference' => $currentReference,
+            'currentLayout' => $currentLayout,
+            'contentActionUrl' => $contentActionUrl,
+            'typo3_7x' => version_compare(TYPO3_branch, '7', '>='),
+        ));
+    }
 
-	/**
-	 * Dashboard action.
-	 *
-	 * @return void
-	 */
-	public function dashboardAction() {
-		$extensionsWithoutDocumentation = $this->extensionRepository->findByHasNoDocumentation('G,L');
-		$extensionWithOpenOfficeDocumentation = $this->extensionRepository->findByHasOpenOffice('G,L');
-		$customProjects = $this->projectRepository->findAll();
+    /**
+     * Dashboard action.
+     *
+     * @return void
+     */
+    public function dashboardAction()
+    {
+        $extensionsWithoutDocumentation = $this->extensionRepository->findByHasNoDocumentation('G,L');
+        $extensionWithOpenOfficeDocumentation = $this->extensionRepository->findByHasOpenOffice('G,L');
+        $customProjects = $this->projectRepository->findAll();
 
-		$this->view->assignMultiple(array(
-			'extensionsEmpty' => $extensionsWithoutDocumentation,
-			'extensionsOpenOffice' => $extensionWithOpenOfficeDocumentation,
-			'customProjects' => $customProjects,
-			'layout' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc') ? 'json' : 'html',
-			'typo3_7x' => version_compare(TYPO3_branch, '7', '>='),
-		));
-	}
+        $this->view->assignMultiple(array(
+            'extensionsEmpty' => $extensionsWithoutDocumentation,
+            'extensionsOpenOffice' => $extensionWithOpenOfficeDocumentation,
+            'customProjects' => $customProjects,
+            'layout' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc') ? 'json' : 'html',
+            'typo3_7x' => version_compare(TYPO3_branch, '7', '>='),
+        ));
+    }
 
-	/**
-	 * Render action.
-	 *
-	 * @param string $reference Reference of a documentation
-	 * @param string $document The document (used only with $layout = 'json')
-	 * @param string $layout Layout to use
-	 * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
-	 * @return void
-	 * @throws \RuntimeException
-	 */
-	public function renderAction($reference = '', $document = '', $layout = 'html', $force = FALSE) {
-		list($type, $identifier) = explode(':', $reference, 2);
-		switch ($type) {
-			case 'EXT':
-				list($extensionKey, $locale) = explode('.', $identifier, 2);
-				$documentationUrl = MiscUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
-			break;
-			case 'USER':
-				$documentationUrl = NULL;
-				$this->signalSlotDispatcher->dispatch(
-					__CLASS__,
-					'renderUserDocumentation',
-					array(
-						'identifier' => $identifier,
-						'layout' => $layout,
-						'force' => $force,
-						'documentationUrl' => &$documentationUrl,
-					)
-				);
-				if ($documentationUrl === NULL) {
-					throw new \RuntimeException('No slot found to render documentation with identifier "' . $identifier . '"', 1371208253);
-				}
-			break;
-			default:
-				throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371162948);
-		}
+    /**
+     * Render action.
+     *
+     * @param string $reference Reference of a documentation
+     * @param string $document The document (used only with $layout = 'json')
+     * @param string $layout Layout to use
+     * @param boolean $force TRUE if rendering should be forced, otherwise FALSE to use cache if available
+     * @return void
+     * @throws \RuntimeException
+     */
+    public function renderAction($reference = '', $document = '', $layout = 'html', $force = FALSE)
+    {
+        list($type, $identifier) = explode(':', $reference, 2);
+        switch ($type) {
+            case 'EXT':
+                list($extensionKey, $locale) = explode('.', $identifier, 2);
+                $documentationUrl = MiscUtility::generateDocumentation($extensionKey, $layout, $force, $locale);
+                break;
+            case 'USER':
+                $documentationUrl = NULL;
+                $this->signalSlotDispatcher->dispatch(
+                    __CLASS__,
+                    'renderUserDocumentation',
+                    array(
+                        'identifier' => $identifier,
+                        'layout' => $layout,
+                        'force' => $force,
+                        'documentationUrl' => &$documentationUrl,
+                    )
+                );
+                if ($documentationUrl === NULL) {
+                    throw new \RuntimeException('No slot found to render documentation with identifier "' . $identifier . '"', 1371208253);
+                }
+                break;
+            default:
+                throw new \RuntimeException('Unknown reference "' . $reference . '"', 1371162948);
+        }
 
-		if (GeneralUtility::inList('.pdf,.html,.log', substr($documentationUrl, strrpos($documentationUrl, '.')))) {
-			// Prevent browser-cache issue
-			$documentationUrl .= '?t=' . $GLOBALS['EXEC_TIME'];
-		}
+        if (GeneralUtility::inList('.pdf,.html,.log', substr($documentationUrl, strrpos($documentationUrl, '.')))) {
+            // Prevent browser-cache issue
+            $documentationUrl .= '?t=' . $GLOBALS['EXEC_TIME'];
+        }
 
-		if ($layout === 'json' && substr($documentationUrl, -6) === '.fjson') {
-			if (substr($documentationUrl, 0, 3) === '../') {
-				$documentationFilename = GeneralUtility::getFileAbsFileName(substr($documentationUrl, 3));
-			} elseif ($documentationUrl{0} === '/') {
-				$documentationFilename = GeneralUtility::getFileAbsFileName(substr($documentationUrl, 1));
-			} else {
-				$documentationFilename = '';
-			}
+        if ($layout === 'json' && substr($documentationUrl, -6) === '.fjson') {
+            if (substr($documentationUrl, 0, 3) === '../') {
+                $documentationFilename = GeneralUtility::getFileAbsFileName(substr($documentationUrl, 3));
+            } elseif ($documentationUrl{0} === '/') {
+                $documentationFilename = GeneralUtility::getFileAbsFileName(substr($documentationUrl, 1));
+            } else {
+                $documentationFilename = '';
+            }
 
-			if (empty($document)) {
-				$document = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference-' . $reference);
-			}
+            if (empty($document)) {
+                $document = $this->getBackendUser()->getModuleData('help_documentation/DocumentationController/reference-' . $reference);
+            }
 
-			$this->forward(
-				'render',
-				'InteractiveViewer',
-				NULL,
-				array(
-					'reference' => $reference,
-					'document' => $document,
-					'documentationFilename' => $documentationFilename
-				)
-			);
-		}
+            $this->forward(
+                'render',
+                'InteractiveViewer',
+                NULL,
+                array(
+                    'reference' => $reference,
+                    'document' => $document,
+                    'documentationFilename' => $documentationFilename
+                )
+            );
+        }
 
-		if (substr(preg_replace('/\?t=\d+$/', '', $documentationUrl), -4) === '.pdf') {
-			$referer = GeneralUtility::getIndpEnv('HTTP_REFERER');
-			if (substr($referer, strpos($referer, '?M=') + 3) === 'help_SphinxDocumentation') {
-				$this->view->assign('documentationUrl', $documentationUrl);
-				return;
-			}
-		}
-		$this->redirectToUri($documentationUrl);
-	}
+        if (substr(preg_replace('/\?t=\d+$/', '', $documentationUrl), -4) === '.pdf') {
+            $referer = GeneralUtility::getIndpEnv('HTTP_REFERER');
+            if (substr($referer, strpos($referer, '?M=') + 3) === 'help_SphinxDocumentation') {
+                $this->view->assign('documentationUrl', $documentationUrl);
+                return;
+            }
+        }
+        $this->redirectToUri($documentationUrl);
+    }
 
-	/**
-	 * Converts an OpenOffice manual into a Sphinx project.
-	 *
-	 * @param string $extensionKey The TYPO3 extension key
-	 * @return void
-	 */
-	public function convertAction($extensionKey) {
-		$extensionPath = MiscUtility::extPath($extensionKey);
-		$sxwFilename = $extensionPath . 'doc/manual.sxw';
-		$documentationDirectory = $extensionPath . 'Documentation';
-		$reference = NULL;
+    /**
+     * Converts an OpenOffice manual into a Sphinx project.
+     *
+     * @param string $extensionKey The TYPO3 extension key
+     * @return void
+     */
+    public function convertAction($extensionKey)
+    {
+        $extensionPath = MiscUtility::extPath($extensionKey);
+        $sxwFilename = $extensionPath . 'doc/manual.sxw';
+        $documentationDirectory = $extensionPath . 'Documentation';
+        $reference = NULL;
 
-		if (is_file($sxwFilename)) {
-			try {
-				\Causal\Sphinx\Utility\OpenOfficeConverter::convert($sxwFilename, $documentationDirectory);
-				$reference = 'EXT:' . $extensionKey;
-			} catch (\RuntimeException $exception) {
-				$this->controllerContext->getFlashMessageQueue()->enqueue(
-					GeneralUtility::makeInstance(
-						'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-						$exception->getMessage(),
-						'',
-						\TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
-						TRUE
-					)
-				);
-			}
-		}
+        if (is_file($sxwFilename)) {
+            try {
+                \Causal\Sphinx\Utility\OpenOfficeConverter::convert($sxwFilename, $documentationDirectory);
+                $reference = 'EXT:' . $extensionKey;
+            } catch (\RuntimeException $exception) {
+                $this->controllerContext->getFlashMessageQueue()->enqueue(
+                    GeneralUtility::makeInstance(
+                        'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                        $exception->getMessage(),
+                        '',
+                        \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
+                        TRUE
+                    )
+                );
+            }
+        }
 
-		// Open converted documentation
-		$this->redirect('index', NULL, NULL, array('reference' => $reference));
-	}
+        // Open converted documentation
+        $this->redirect('index', NULL, NULL, array('reference' => $reference));
+    }
 
-	/**
-	 * Creates a Sphinx documentation project for a given extension.
-	 *
-	 * @param string $extensionKey The TYPO3 extension key
-	 * @return void
-	 */
-	public function createExtensionProjectAction($extensionKey) {
-		$extensionPath = MiscUtility::extPath($extensionKey);
-		$documentationDirectory = $extensionPath . 'Documentation';
-		$reference = NULL;
+    /**
+     * Creates a Sphinx documentation project for a given extension.
+     *
+     * @param string $extensionKey The TYPO3 extension key
+     * @return void
+     */
+    public function createExtensionProjectAction($extensionKey)
+    {
+        $extensionPath = MiscUtility::extPath($extensionKey);
+        $documentationDirectory = $extensionPath . 'Documentation';
+        $reference = NULL;
 
-		try {
-			GeneralUtility::mkdir_deep($documentationDirectory . DIRECTORY_SEPARATOR);
+        try {
+            GeneralUtility::mkdir_deep($documentationDirectory . DIRECTORY_SEPARATOR);
 
-			$metadata = MiscUtility::getExtensionMetaData($extensionKey);
-			\Causal\Sphinx\Utility\SphinxQuickstart::createProject(
-				$documentationDirectory,
-				$metadata['title'],
-				$metadata['author'],
-				FALSE,
-				'TYPO3DocProject',
-				$metadata['version'],
-				$metadata['release'],
-				$extensionKey
-			);
-			$reference = 'EXT:' . $extensionKey;
-		} catch (\RuntimeException $exception) {
-			$this->controllerContext->getFlashMessageQueue()->enqueue(
-				GeneralUtility::makeInstance(
-					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-					$exception->getMessage(),
-					'',
-					\TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
-					TRUE
-				)
-			);
-		}
+            $metadata = MiscUtility::getExtensionMetaData($extensionKey);
+            \Causal\Sphinx\Utility\SphinxQuickstart::createProject(
+                $documentationDirectory,
+                $metadata['title'],
+                $metadata['author'],
+                FALSE,
+                'TYPO3DocProject',
+                $metadata['version'],
+                $metadata['release'],
+                $extensionKey
+            );
+            $reference = 'EXT:' . $extensionKey;
+        } catch (\RuntimeException $exception) {
+            $this->controllerContext->getFlashMessageQueue()->enqueue(
+                GeneralUtility::makeInstance(
+                    'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                    $exception->getMessage(),
+                    '',
+                    \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
+                    TRUE
+                )
+            );
+        }
 
-		// Open freshly created documentation
-		$this->redirect('index', NULL, NULL, array('reference' => $reference));
-	}
+        // Open freshly created documentation
+        $this->redirect('index', NULL, NULL, array('reference' => $reference));
+    }
 
-	/**
-	 * Returns the available references.
-	 *
-	 * @return array
-	 */
-	protected function getReferences() {
-		$extensions = $this->extensionRepository->findByHasSphinxDocumentation();
-		$references = array();
-		foreach ($extensions as $extension) {
-			$typeLabel = $this->translate('extensionType_' . $extension->getInstallType());
-			$references[$typeLabel]['EXT:' . $extension->getExtensionKey()] = sprintf('[%2$s] %1$s', $extension->getTitle(), $extension->getExtensionKey());
-		}
+    /**
+     * Returns the available references.
+     *
+     * @return array
+     */
+    protected function getReferences()
+    {
+        $extensions = $this->extensionRepository->findByHasSphinxDocumentation();
+        $references = array();
+        foreach ($extensions as $extension) {
+            $typeLabel = $this->translate('extensionType_' . $extension->getInstallType());
+            $references[$typeLabel]['EXT:' . $extension->getExtensionKey()] = sprintf('[%2$s] %1$s', $extension->getTitle(), $extension->getExtensionKey());
+        }
 
-		$this->signalSlotDispatcher->dispatch(
-			__CLASS__,
-			'afterInitializeReferences',
-			array(
-				'references' => &$references,
-			)
-		);
+        $this->signalSlotDispatcher->dispatch(
+            __CLASS__,
+            'afterInitializeReferences',
+            array(
+                'references' => &$references,
+            )
+        );
 
-		foreach (array_keys($references) as $key) {
-			asort($references[$key]);
-		}
+        foreach (array_keys($references) as $key) {
+            asort($references[$key]);
+        }
 
-		return $references;
-	}
+        return $references;
+    }
 
-	/**
-	 * Returns the available layouts.
-	 *
-	 * @return array
-	 */
-	public function getLayouts() {
-		$layouts = array(
-			'html' => $this->translate('documentationLayout_static'),
-			'json' => $this->translate('documentationLayout_interactive'),
-		);
+    /**
+     * Returns the available layouts.
+     *
+     * @return array
+     */
+    public function getLayouts()
+    {
+        $layouts = array(
+            'html' => $this->translate('documentationLayout_static'),
+            'json' => $this->translate('documentationLayout_interactive'),
+        );
 
-		$configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sphinx']);
-		switch ($configuration['pdf_builder']) {
-			case 'pdflatex':
-				$renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
-			break;
-			case 'rst2pdf':
-				$renderPdf = TRUE;
-			break;
-			default:
-				$renderPdf = FALSE;
-			break;
-		}
-		if ($renderPdf) {
-			$layouts['pdf'] = $this->translate('documentationLayout_pdf');
-		}
+        $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sphinx']);
+        switch ($configuration['pdf_builder']) {
+            case 'pdflatex':
+                $renderPdf = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex') !== '';
+                break;
+            case 'rst2pdf':
+                $renderPdf = TRUE;
+                break;
+            default:
+                $renderPdf = FALSE;
+                break;
+        }
+        if ($renderPdf) {
+            $layouts['pdf'] = $this->translate('documentationLayout_pdf');
+        }
 
-		return $layouts;
-	}
+        return $layouts;
+    }
 
 }

@@ -1,13 +1,14 @@
 {namespace sphinx=Causal\Sphinx\ViewHelpers}
-<tr id="{extension.extensionKey}" >
-	<td class="title">
-		<img src="../{extension.icon}" title="{extension.title}" alt="{extension.title}" />
-		{extension.title}
-	</td>
-	<td>{extension.description}</td>
-	<td class="actions">
-		<sphinx:link.action action="{action}" arguments="{extensionKey: extension.extensionKey}" icon="{icon}" checks="{isWritable: 'EXT:{extension.extensionKey}'}">
-			<f:translate key="dashboard.action.{action}" />
-		</sphinx:link.action>
-	</td>
+<tr id="{extension.extensionKey}">
+    <td class="title">
+        <img src="../{extension.icon}" title="{extension.title}" alt="{extension.title}"/>
+        {extension.title}
+    </td>
+    <td>{extension.description}</td>
+    <td class="actions">
+        <sphinx:link.action action="{action}" arguments="{extensionKey: extension.extensionKey}" icon="{icon}"
+                            checks="{isWritable: 'EXT:{extension.extensionKey}'}">
+            <f:translate key="dashboard.action.{action}"/>
+        </sphinx:link.action>
+    </td>
 </tr>

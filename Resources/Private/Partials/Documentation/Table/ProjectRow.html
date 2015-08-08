@@ -1,19 +1,21 @@
 {namespace sphinx=Causal\Sphinx\ViewHelpers}
-<tr id="{project.documentationKey}" >
-	<td>{project.group}</td>
-	<td class="title">
-		<f:image src="EXT:sphinx/Resources/Public/Images/default_icon.png" alt="{project.name}" />
-		<f:link.action action="index" arguments="{reference: project.reference, layout: layout}" target="_parent">
-			{project.name}
-		</f:link.action>
-	</td>
-	<td>{project.description}</td>
-	<td class="actions">
-		<sphinx:link.action action="javascript:CausalSphinxDashboard.editCustomProject('{project.documentationKey}')" icon="actions-document-open">
-			<f:translate key="dashboard.action.editCustomProject" />
-		</sphinx:link.action>
-		<sphinx:link.action action="javascript:CausalSphinxDashboard.removeCustomProject('{project.documentationKey}')" icon="actions-edit-delete">
-			<f:translate key="dashboard.action.removeCustomProject" />
-		</sphinx:link.action>
-	</td>
+<tr id="{project.documentationKey}">
+    <td>{project.group}</td>
+    <td class="title">
+        <f:image src="EXT:sphinx/Resources/Public/Images/default_icon.png" alt="{project.name}"/>
+        <f:link.action action="index" arguments="{reference: project.reference, layout: layout}" target="_parent">
+            {project.name}
+        </f:link.action>
+    </td>
+    <td>{project.description}</td>
+    <td class="actions">
+        <sphinx:link.action action="javascript:CausalSphinxDashboard.editCustomProject('{project.documentationKey}')"
+                            icon="actions-document-open">
+            <f:translate key="dashboard.action.editCustomProject"/>
+        </sphinx:link.action>
+        <sphinx:link.action action="javascript:CausalSphinxDashboard.removeCustomProject('{project.documentationKey}')"
+                            icon="actions-edit-delete">
+            <f:translate key="dashboard.action.removeCustomProject"/>
+        </sphinx:link.action>
+    </td>
 </tr>

@@ -24,37 +24,39 @@ namespace Causal\Sphinx\Utility;
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
-class Configuration {
+class Configuration
+{
 
-	/**
-	 * Loads a conf.py configuration file and returns an array with
-	 * available properties.
-	 *
-	 * @param string $configurationFilename Absolute filename to the configuration file conf.py
-	 * @return array
-	 */
-	static public function load($configurationFilename) {
-		$contents = file_get_contents($configurationFilename);
-		$properties = array();
+    /**
+     * Loads a conf.py configuration file and returns an array with
+     * available properties.
+     *
+     * @param string $configurationFilename Absolute filename to the configuration file conf.py
+     * @return array
+     */
+    static public function load($configurationFilename)
+    {
+        $contents = file_get_contents($configurationFilename);
+        $properties = array();
 
-		preg_replace_callback(
-			'/^\s*([^#].*?)\s*=\s*u?\'(.*)\'/m',
-			function ($matches) use (&$properties) {
-				$properties[$matches[1]] = stripcslashes($matches[2]);
-			},
-			$contents
-		);
+        preg_replace_callback(
+            '/^\s*([^#].*?)\s*=\s*u?\'(.*)\'/m',
+            function ($matches) use (&$properties) {
+                $properties[$matches[1]] = stripcslashes($matches[2]);
+            },
+            $contents
+        );
 
-		// Detect if theme t3sphinx from project TYPO3 Documentation Team's project
-		// ReST Tools is being used
-		// @see http://forge.typo3.org/issues/48311
-		if (preg_match('/^\s*import\s+t3sphinx\s*$/m', $contents)) {
-			$properties['t3sphinx'] = TRUE;
-		} else {
-			$properties['t3sphinx'] = FALSE;
-		}
+        // Detect if theme t3sphinx from project TYPO3 Documentation Team's project
+        // ReST Tools is being used
+        // @see http://forge.typo3.org/issues/48311
+        if (preg_match('/^\s*import\s+t3sphinx\s*$/m', $contents)) {
+            $properties['t3sphinx'] = TRUE;
+        } else {
+            $properties['t3sphinx'] = FALSE;
+        }
 
-		return $properties;
-	}
+        return $properties;
+    }
 
 }
