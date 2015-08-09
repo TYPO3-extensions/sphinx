@@ -206,13 +206,23 @@ class DocumentationController extends AbstractActionController
     {
         $extensionPath = MiscUtility::extPath($extensionKey);
         $sxwFilename = $extensionPath . 'doc/manual.sxw';
-        $documentationDirectory = $extensionPath . 'Documentation';
+        $documentationDirectory = $extensionPath . 'Documentation/';
         $reference = null;
 
         if (is_file($sxwFilename)) {
             try {
-                \Causal\Sphinx\Utility\OpenOfficeConverter::convert($sxwFilename, $documentationDirectory);
+                /** @var \Causal\Sphinx\Utility\OpenOfficeConverter $openOfficeConverter */
+                $openOfficeConverter = GeneralUtility::makeInstance('Causal\\Sphinx\\Utility\\OpenOfficeConverter');
+                $openOfficeConverter->convert($sxwFilename, $documentationDirectory, $extensionKey);
                 $reference = 'EXT:' . $extensionKey;
+
+                // Prevent any cache issue when rsyinc'ing files to be rendered (this happens
+                // when converting the same manual again and again). The path is the same as in
+                // \Causal\Sphinx\Utility\MiscUtility::generateDocumentation()
+                $temporaryPath = PATH_site . 'typo3temp/tx_sphinx/' . $extensionKey;
+                $renderPath = PATH_site . 'typo3conf/Documentation/typo3cms.extensions.' . $extensionKey;
+                GeneralUtility::rmdir($temporaryPath, true);
+                GeneralUtility::rmdir($renderPath, true);
             } catch (\RuntimeException $exception) {
                 $this->controllerContext->getFlashMessageQueue()->enqueue(
                     GeneralUtility::makeInstance(
