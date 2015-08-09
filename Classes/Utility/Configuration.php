@@ -34,7 +34,7 @@ class Configuration
      * @param string $configurationFilename Absolute filename to the configuration file conf.py
      * @return array
      */
-    static public function load($configurationFilename)
+    public static function load($configurationFilename)
     {
         $contents = file_get_contents($configurationFilename);
         $properties = array();

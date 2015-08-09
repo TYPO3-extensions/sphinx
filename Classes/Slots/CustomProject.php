@@ -32,7 +32,7 @@ class CustomProject
 {
 
     /** @var string */
-    static protected $extKey = 'sphinx';
+    protected static $extKey = 'sphinx';
 
     /**
      * @var \Causal\Sphinx\Domain\Repository\ProjectRepository

@@ -38,7 +38,7 @@ class OpenOfficeConverter
      * @return void
      * @throws \RuntimeException
      */
-    static public function convert($sxwFilename, $outputDirectory)
+    public static function convert($sxwFilename, $outputDirectory)
     {
         if (!\TYPO3\CMS\Core\Utility\CommandUtility::checkCommand('unzip')) {
             throw new \RuntimeException('Unzip cannot be executed. Hint: You probably should double-check ' .

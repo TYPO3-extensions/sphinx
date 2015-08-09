@@ -30,7 +30,7 @@ class SphinxQuickstart
 {
 
     /** @var string */
-    static protected $extKey = 'sphinx';
+    protected static $extKey = 'sphinx';
 
     /**
      * Creates an empty Sphinx project.
@@ -45,7 +45,7 @@ class SphinxQuickstart
      * @param string $project Name for LaTeX, man pages, ... output, defaults to $projectName
      * @return boolean
      */
-    static public function createProject($pathRoot, $projectName, $author, $separateSourceBuild = false, $template = 'BlankProject', $version = '1.0', $release = '1.0.0', $project = '')
+    public static function createProject($pathRoot, $projectName, $author, $separateSourceBuild = false, $template = 'BlankProject', $version = '1.0', $release = '1.0.0', $project = '')
     {
         $projectName = str_replace("'", ' ', $projectName);
         $author = str_replace("'", ' ', $author);
@@ -153,7 +153,7 @@ class SphinxQuickstart
      * @return boolean
      * @throws \RuntimeException
      */
-    static protected function createFromTemplate(array $config)
+    protected static function createFromTemplate(array $config)
     {
         /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
         $contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');

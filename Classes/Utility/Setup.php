@@ -32,17 +32,17 @@ class Setup
 {
 
     /** @var string */
-    static protected $extKey = 'sphinx';
+    protected static $extKey = 'sphinx';
 
     /** @var array */
-    static protected $log = array();
+    protected static $log = array();
 
     /**
      * Returns the version of python.
      *
      * @return string The version of python
      */
-    static public function getPythonVersion()
+    public static function getPythonVersion()
     {
         $version = null;
         if (CommandUtility::checkCommand('python')) {
@@ -65,7 +65,7 @@ class Setup
      *
      * @return array Error messages, if any
      */
-    static public function createLibraryDirectories()
+    public static function createLibraryDirectories()
     {
         $errors = array();
 
@@ -112,7 +112,7 @@ class Setup
      * @param string $version Version name (e.g., 1.0.0)
      * @return boolean
      */
-    static public function hasSphinxSources($version)
+    public static function hasSphinxSources($version)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $setupFile = $sphinxSourcesPath . $version . '/setup.py';
@@ -129,7 +129,7 @@ class Setup
      * @throws \Exception
      * @see https://github.com/sphinx-doc/sphinx
      */
-    static public function downloadSphinxSources($version, $url, array &$output = null)
+    public static function downloadSphinxSources($version, $url, array &$output = null)
     {
         $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
@@ -191,7 +191,7 @@ class Setup
      * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildSphinx($version, array &$output = null)
+    public static function buildSphinx($version, array &$output = null)
     {
         $success = true;
         $sphinxSourcesPath = static::getSphinxSourcesPath();
@@ -303,7 +303,7 @@ EOT;
      * @param null|array $output Log of operations
      * @return void
      */
-    static public function removeSphinx($version, array &$output = null)
+    public static function removeSphinx($version, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -345,7 +345,7 @@ EOT;
      *
      * @return boolean
      */
-    static public function hasRestTools()
+    public static function hasRestTools()
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
@@ -360,7 +360,7 @@ EOT;
      * @throws \Exception
      * @see http://forge.typo3.org/projects/tools-rest
      */
-    static public function downloadRestTools(array &$output = null)
+    public static function downloadRestTools(array &$output = null)
     {
         $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
@@ -425,7 +425,7 @@ EOT;
      * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildRestTools($sphinxVersion, array &$output = null)
+    public static function buildRestTools($sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -517,7 +517,7 @@ EOT;
      *
      * @return boolean
      */
-    static public function hasThirdPartyLibraries()
+    public static function hasThirdPartyLibraries()
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $setupFile = $sphinxSourcesPath . 'sphinx-contrib/make-ext.py';
@@ -532,7 +532,7 @@ EOT;
      * @throws \Exception
      * @see https://bitbucket.org/xperseguers/sphinx-contrib/
      */
-    static public function downloadThirdPartyLibraries(array &$output = null)
+    public static function downloadThirdPartyLibraries(array &$output = null)
     {
         $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
@@ -588,7 +588,7 @@ EOT;
      * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildThirdPartyLibraries($plugin, $sphinxVersion, array &$output = null)
+    public static function buildThirdPartyLibraries($plugin, $sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -629,7 +629,7 @@ EOT;
      *
      * @return array
      */
-    static public function getAvailableThirdPartyPlugins()
+    public static function getAvailableThirdPartyPlugins()
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $pluginsPath = $sphinxSourcesPath . 'sphinx-contrib/';
@@ -729,7 +729,7 @@ EOT;
      *
      * @return boolean
      */
-    static public function hasPyYaml()
+    public static function hasPyYaml()
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $setupFile = $sphinxSourcesPath . 'PyYAML/setup.py';
@@ -744,7 +744,7 @@ EOT;
      * @throws \Exception
      * @see http://pyyaml.org/
      */
-    static public function downloadPyYaml(array &$output = null)
+    public static function downloadPyYaml(array &$output = null)
     {
         $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
@@ -782,7 +782,7 @@ EOT;
      * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildPyYaml($sphinxVersion, array &$output = null)
+    public static function buildPyYaml($sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -835,7 +835,7 @@ EOT;
      *
      * @return boolean
      */
-    static public function hasPIL()
+    public static function hasPIL()
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $setupFile = $sphinxSourcesPath . 'Imaging/setup.py';
@@ -850,7 +850,7 @@ EOT;
      * @throws \Exception
      * @see https://pypi.python.org/pypi/PIL
      */
-    static public function downloadPIL(array &$output = null)
+    public static function downloadPIL(array &$output = null)
     {
         $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
@@ -888,7 +888,7 @@ EOT;
      * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildPIL($sphinxVersion, array &$output = null)
+    public static function buildPIL($sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -930,7 +930,7 @@ EOT;
      * @param string $sphinxVersion The Sphinx version to build Pygments for
      * @return boolean
      */
-    static public function hasPygments($sphinxVersion)
+    public static function hasPygments($sphinxVersion)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $minimumPygmentsVersion = static::getMinimumLibraryVersion('Pygments', $sphinxSourcesPath . $sphinxVersion);
@@ -972,7 +972,7 @@ EOT;
      * @throws \Exception
      * @see http://pygments.org/
      */
-    static public function downloadPygments($sphinxVersion, array &$output = null)
+    public static function downloadPygments($sphinxVersion, array &$output = null)
     {
         $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
@@ -1016,7 +1016,7 @@ EOT;
      * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildPygments($sphinxVersion, array &$output = null)
+    public static function buildPygments($sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -1108,7 +1108,7 @@ EOT;
      *
      * @return boolean
      */
-    static public function hasRst2Pdf()
+    public static function hasRst2Pdf()
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $setupFile = $sphinxSourcesPath . 'rst2pdf/setup.py';
@@ -1123,7 +1123,7 @@ EOT;
      * @throws \Exception
      * @see http://rst2pdf.ralsina.com.ar/
      */
-    static public function downloadRst2Pdf(array &$output = null)
+    public static function downloadRst2Pdf(array &$output = null)
     {
         $success = true;
         $tempPath = MiscUtility::getTemporaryPath();
@@ -1161,7 +1161,7 @@ EOT;
      * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    static public function buildRst2Pdf($sphinxVersion, array &$output = null)
+    public static function buildRst2Pdf($sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -1204,7 +1204,7 @@ EOT;
      * @param string $sphinxVersion The Sphinx version to check for
      * @return boolean
      */
-    static public function hasLibrary($library, $sphinxVersion)
+    public static function hasLibrary($library, $sphinxVersion)
     {
         $sphinxPath = static::getSphinxPath();
         $pythonHome = $sphinxPath . $sphinxVersion;
@@ -1226,7 +1226,7 @@ EOT;
      *
      * @return array
      */
-    static public function getSphinxAvailableVersions()
+    public static function getSphinxAvailableVersions()
     {
         $html = MiscUtility::getUrlWithCache('https://github.com/sphinx-doc/sphinx/releases');
 
@@ -1266,7 +1266,7 @@ EOT;
      *
      * @return array
      */
-    static protected function getPygmentsAvailableVersions()
+    protected static function getPygmentsAvailableVersions()
     {
         $baseUrl = 'https://bitbucket.org';
         $html = MiscUtility::getUrlWithCache($baseUrl . '/birkenfeld/pygments-main/downloads');
@@ -1304,7 +1304,7 @@ EOT;
      * @param string $sphinxVersion
      * @return string
      */
-    static public function getChanges($sphinxVersion)
+    public static function getChanges($sphinxVersion)
     {
         $html = MiscUtility::getUrlWithCache('http://sphinx-doc.org/latest/changes.html');
 
@@ -1335,7 +1335,7 @@ EOT;
      *
      * @return array
      */
-    static public function getSphinxLocalVersions()
+    public static function getSphinxLocalVersions()
     {
         $sphinxPath = static::getSphinxPath();
         $versions = array();
@@ -1350,7 +1350,7 @@ EOT;
      *
      * @return array
      */
-    static public function getPygmentsLocalVersions()
+    public static function getPygmentsLocalVersions()
     {
         $versions = array();
         $sphinxSourcesPath = static::getSphinxSourcesPath();
@@ -1375,7 +1375,7 @@ EOT;
      * @param string $sphinxSourcesPath
      * @return string
      */
-    static protected function getMinimumLibraryVersion($library, $sphinxSourcesPath)
+    protected static function getMinimumLibraryVersion($library, $sphinxSourcesPath)
     {
         $version = '0.0';
         $fileName = rtrim($sphinxSourcesPath, '/') . '/Sphinx.egg-info/requires.txt';
@@ -1404,7 +1404,7 @@ EOT;
      * @param string $sphinxVersion
      * @return null|array ['version' => <version>, 'url' => <downloadUrl>]
      */
-    static protected function getPygmentsVersionUrl($sphinxVersion)
+    protected static function getPygmentsVersionUrl($sphinxVersion)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
 
@@ -1435,7 +1435,7 @@ EOT;
      * @param integer $returnValue Return code
      * @return null|array Last line of the shell output
      */
-    static protected function exec($cmd, &$output = null, &$returnValue = 0)
+    protected static function exec($cmd, &$output = null, &$returnValue = 0)
     {
         static::$log[] = '[CMD] ' . $cmd;
         $lastLine = CommandUtility::exec($cmd, $out, $returnValue);
@@ -1453,7 +1453,7 @@ EOT;
      * @param null|array $output Log of operations
      * @return boolean true if operation succeeded, otherwise false
      */
-    static public function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = null, array &$output = null)
+    public static function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = null, array &$output = null)
     {
         $success = false;
 
@@ -1532,7 +1532,7 @@ EOT;
      * @param null|array $output Log of operations
      * @return boolean true if operation succeeded, otherwise false
      */
-    static protected function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, $extraFlags = '', array &$output = null)
+    protected static function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, $extraFlags = '', array &$output = null)
     {
         $export = '';
         $clientInfo = GeneralUtility::clientInfo();
@@ -1573,7 +1573,7 @@ EOT;
      *
      * @return void
      */
-    static public function clearLog()
+    public static function clearLog()
     {
         static::$log = array();
     }
@@ -1584,7 +1584,7 @@ EOT;
      * @param string $filename If empty, will return the complete log of operations instead of writing it to a file
      * @return void|string
      */
-    static public function dumpLog($filename = '')
+    public static function dumpLog($filename = '')
     {
         $content = implode(LF, static::$log);
         if ($filename) {

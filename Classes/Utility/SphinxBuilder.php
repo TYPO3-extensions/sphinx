@@ -31,17 +31,17 @@ class SphinxBuilder
 {
 
     /** @var string */
-    static protected $extKey = 'sphinx';
+    protected static $extKey = 'sphinx';
 
     /** @var boolean */
-    static public $htmlConsole = true;
+    public static $htmlConsole = true;
 
     /**
      * Returns true if Sphinx is ready.
      *
      * @return boolean
      */
-    static public function isReady()
+    public static function isReady()
     {
         try {
             static::getSphinxBuilder();
@@ -56,7 +56,7 @@ class SphinxBuilder
      *
      * @return boolean true if selected version of Sphinx is system, otherwise false
      */
-    static public function isSystemVersion()
+    public static function isSystemVersion()
     {
         $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
         return $configuration['version'] === 'SYSTEM';
@@ -68,7 +68,7 @@ class SphinxBuilder
      *
      * @return boolean
      */
-    static protected function autoRecompileWithFaultyExtension()
+    protected static function autoRecompileWithFaultyExtension()
     {
         $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
         return $configuration['auto_continue'] !== '0';
@@ -83,7 +83,7 @@ class SphinxBuilder
      *
      * @return int
      */
-    static protected function getNumberOfProcesses()
+    protected static function getNumberOfProcesses()
     {
         $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
         $processes = isset($configuration['processes']) ? (int)$configuration['processes'] : 1;
@@ -95,7 +95,7 @@ class SphinxBuilder
      *
      * @return string The version of sphinx
      */
-    static public function getSphinxVersion()
+    public static function getSphinxVersion()
     {
         $version = null;
         if (static::isSystemVersion()) {
@@ -127,7 +127,7 @@ class SphinxBuilder
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static public function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
+    public static function buildHtml($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $sphinxBuilder = static::getSphinxBuilder();
 
@@ -215,7 +215,7 @@ class SphinxBuilder
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static public function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
+    public static function buildJson($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $sphinxBuilder = static::getSphinxBuilder();
 
@@ -300,7 +300,7 @@ class SphinxBuilder
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static public function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
+    public static function buildLatex($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $sphinxBuilder = static::getSphinxBuilder();
 
@@ -421,7 +421,7 @@ class SphinxBuilder
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static public function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
+    public static function buildPdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
 
@@ -452,7 +452,7 @@ class SphinxBuilder
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static protected function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
+    protected static function buildPdfWithLaTeX($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $make = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('make');
         $pdflatex = \TYPO3\CMS\Core\Utility\CommandUtility::getCommand('pdflatex');
@@ -552,7 +552,7 @@ class SphinxBuilder
      * @return string Output of the build process (if succeeded)
      * @throws \RuntimeException if build process failed
      */
-    static protected function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
+    protected static function buildPdfWithRst2Pdf($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', array $tags = array(), $useCache = false)
     {
         $sphinxBuilder = static::getSphinxBuilder();
 
@@ -640,7 +640,7 @@ class SphinxBuilder
      * @return string Output of the check process (if succeeded)
      * @throws \RuntimeException if check process failed
      */
-    static public function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', $useCache = false)
+    public static function checkLinks($basePath, $sourceDirectory = '.', $buildDirectory = '_build', $conf = '', $language = '', $useCache = false)
     {
         $sphinxBuilder = static::getSphinxBuilder();
 
@@ -702,7 +702,7 @@ class SphinxBuilder
      * @return string Command(s) to run sphinx-build
      * @throws \RuntimeException
      */
-    static protected function getSphinxBuilder()
+    protected static function getSphinxBuilder()
     {
         $sphinxVersion = static::getSphinxVersion();
         if (static::isSystemVersion()) {
@@ -767,7 +767,7 @@ class SphinxBuilder
      * @param string $output Shell output
      * @return string Colorized shell output
      */
-    static protected function colorize($output)
+    protected static function colorize($output)
     {
         // Shell colors
         $ESC_SEQ = '/[\x00-\x1F\x7F]\[';
@@ -806,7 +806,7 @@ class SphinxBuilder
      * @return array Array of locale names, indexed by language code/locale
      * @see http://sphinx-doc.org/latest/config.html#intl-options
      */
-    static public function getSupportedLocales()
+    public static function getSupportedLocales()
     {
         return array(
             'bn' => 'Bengali',
@@ -854,7 +854,7 @@ class SphinxBuilder
      * @return string Command option to use the language code with sphinx-build
      * @see \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales()
      */
-    static protected function getLanguageOption($languageCode)
+    protected static function getLanguageOption($languageCode)
     {
         $locale = '';
         $supportedLocales = static::getSupportedLocales();
@@ -878,7 +878,7 @@ class SphinxBuilder
      * @param string $extension Extension to deactivate
      * @return boolean true if deactivation succeeded, otherwise false
      */
-    static protected function deactivateExtension($filename, $extension)
+    protected static function deactivateExtension($filename, $extension)
     {
         $extensionIsDeactivated = false;
         $contents = file_get_contents($filename);
@@ -916,7 +916,7 @@ class SphinxBuilder
      * @param string $path
      * @return boolean
      */
-    static protected function isTemporaryPath($path)
+    protected static function isTemporaryPath($path)
     {
         $temporaryPath = GeneralUtility::getFileAbsFileName('typo3temp/');
         // Compatibility with Windows platform
@@ -931,7 +931,7 @@ class SphinxBuilder
      * @param string $arg String to be escaped
      * @return string Escaped string
      */
-    static protected function safeEscapeshellarg($arg)
+    protected static function safeEscapeshellarg($arg)
     {
         if (!(TYPO3_OS === 'WIN' && strpos($arg, ' ') === false)) {
             $arg = escapeshellarg($arg);
@@ -947,7 +947,7 @@ class SphinxBuilder
      * @param integer $returnValue Return code of the command
      * @return void
      */
-    static protected function safeExec($command, &$output = null, &$returnValue = 0)
+    protected static function safeExec($command, &$output = null, &$returnValue = 0)
     {
         if (TYPO3_OS === 'WIN' && strpos($command, ' && ') !== false) {
             // Multiple commands are not supported on Windows

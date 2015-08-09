@@ -43,10 +43,10 @@ class MiscUtility
     const DOCUMENTATION_TYPE_OPENOFFICE = 4;
 
     /** @var string */
-    static protected $extKey = 'sphinx';
+    protected static $extKey = 'sphinx';
 
     /** @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility */
-    static protected $listUtility;
+    protected static $listUtility;
 
     /**
      * Returns meta-data for a given extension.
@@ -54,7 +54,7 @@ class MiscUtility
      * @param string $extensionKey The TYPO3 extension key
      * @return array
      */
-    static public function getExtensionMetaData($extensionKey)
+    public static function getExtensionMetaData($extensionKey)
     {
         $_EXTKEY = $extensionKey;
         $EM_CONF = array();
@@ -93,7 +93,7 @@ class MiscUtility
      * @param string $path Relative or absolute path
      * @return integer One of the PROJECT_STRUCTURE_* constants
      */
-    static public function getProjectStructure($path)
+    public static function getProjectStructure($path)
     {
         $type = static::PROJECT_STRUCTURE_UNKNOWN;
 
@@ -122,7 +122,7 @@ class MiscUtility
      * @param string $extensionKey The TYPO3 extension key
      * @return integer Binary combination of the DOCUMENTATION_TYPE_* constants
      */
-    static public function getDocumentationTypes($extensionKey)
+    public static function getDocumentationTypes($extensionKey)
     {
         $supportedDocuments = array(
             'Documentation/Index.rst' => static::DOCUMENTATION_TYPE_SPHINX,
@@ -149,7 +149,7 @@ class MiscUtility
      * @return array Array of localization directories (relative to the extension's directory)
      * @see \Causal\Sphinx\Utility\SphinxBuilder::getSupportedLocales()
      */
-    static public function getLocalizationDirectories($extensionKey)
+    public static function getLocalizationDirectories($extensionKey)
     {
         static $localizationDirectories = array();
 
@@ -205,7 +205,7 @@ class MiscUtility
      * @param string $locale The locale to use
      * @return integer One of the DOCUMENTATION_TYPE_* constants
      */
-    static public function getLocalizedDocumentationType($extensionKey, $locale)
+    public static function getLocalizedDocumentationType($extensionKey, $locale)
     {
         $localizationDirectories = static::getLocalizationDirectories($extensionKey);
 
@@ -226,7 +226,7 @@ class MiscUtility
      * @param string $locale The locale to use
      * @return string The project title
      */
-    static public function getDocumentationProjectTitle($extensionKey, $locale = '')
+    public static function getDocumentationProjectTitle($extensionKey, $locale = '')
     {
         $projectTitle = '';
 
@@ -258,7 +258,7 @@ class MiscUtility
      * @return string Contents with processed property tables
      * @see https://forge.typo3.org/issues/48771
      */
-    static public function postProcessPropertyTables($contents)
+    public static function postProcessPropertyTables($contents)
     {
         $contents = preg_replace_callback('#<div class="table-row container">.<dl class="docutils">(.*?)</dl>.</div>#s', function ($tableRow) {
             $cellCounter = 0;
@@ -318,7 +318,7 @@ HTML;
      * @see MiscUtility::getIntersphinxReferences()
      * @see http://forge.typo3.org/issues/48313
      */
-    static public function populateCrossReferencingLabels($contents, array $references, $callbackLinks)
+    public static function populateCrossReferencingLabels($contents, array $references, $callbackLinks)
     {
         $callableName = '';
         if (!is_callable($callbackLinks, false, $callableName)) {
@@ -419,7 +419,7 @@ HTML;
      * @param array &$additionalData
      * @return string
      */
-    static public function getReferenceFromIntersphinxKey($intersphinxKey, array &$additionalData = null)
+    public static function getReferenceFromIntersphinxKey($intersphinxKey, array &$additionalData = null)
     {
         // No dependency injection needed here
         /** @var \Causal\Sphinx\Domain\Repository\DocumentationRepository $documentationRepository */
@@ -460,7 +460,7 @@ HTML;
      * @param string $intersphinxKey
      * @return string
      */
-    static public function intersphinxKeyToExtensionKey($intersphinxKey)
+    public static function intersphinxKeyToExtensionKey($intersphinxKey)
     {
         /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $databaseConnection */
         $databaseConnection = $GLOBALS['TYPO3_DB'];
@@ -512,7 +512,7 @@ HTML;
      * @return array Intersphinx references extracted from objects.inv
      * @throws \RuntimeException
      */
-    static public function getIntersphinxReferences($reference, $locale = '', &$remoteUrl = '', $localFilename = '')
+    public static function getIntersphinxReferences($reference, $locale = '', &$remoteUrl = '', $localFilename = '')
     {
         if (!ExtensionManagementUtility::isLoaded('restdoc')) {
             throw new \RuntimeException('Extension restdoc is not loaded', 1370809705);
@@ -586,7 +586,7 @@ HTML;
      * @param string $locale The locale to use
      * @return string The documentation URL
      */
-    static public function generateDocumentation($extensionKey, $format = 'html', $force = false, $locale = '')
+    public static function generateDocumentation($extensionKey, $format = 'html', $force = false, $locale = '')
     {
         $originalExtensionKey = $extensionKey;
 
@@ -865,7 +865,7 @@ HTML;
      * @param string $settingsYamlFilename
      * @return boolean true if Settings.yml was updated, otherwise false
      */
-    static public function autofixMissingIntersphinxMapping($warningsFilename, $settingsYamlFilename)
+    public static function autofixMissingIntersphinxMapping($warningsFilename, $settingsYamlFilename)
     {
         if (!ExtensionManagementUtility::isLoaded('restdoc')) {
             return false;
@@ -909,7 +909,7 @@ HTML;
      * @see \Causal\Sphinx\Controller\ConsoleController::overrideThemeT3Sphinx()
      * @see http://forge.typo3.org/issues/48311
      */
-    static public function overrideThemeT3Sphinx($basePath)
+    public static function overrideThemeT3Sphinx($basePath)
     {
         $basePath = rtrim($basePath, '/');
         $configuration = file_get_contents($basePath . '/_make/conf.py');
@@ -935,7 +935,7 @@ HTML;
      * @param string $target Absolute path to the target directory
      * @return void
      */
-    static public function recursiveCopy($source, $target)
+    public static function recursiveCopy($source, $target)
     {
         $target = rtrim($target, '/');
         /** @var \RecursiveDirectoryIterator $iterator */
@@ -965,7 +965,7 @@ HTML;
      * @param string $value The value of the environment variable
      * @return string
      */
-    static public function getExportCommand($variable, $value)
+    public static function getExportCommand($variable, $value)
     {
         if (TYPO3_OS === 'WIN') {
             $pattern = 'SET %s=%s';
@@ -984,7 +984,7 @@ HTML;
      * @param string $target Base URI of the foreign Sphinx documentation
      * @return boolean|null true if operation succeeded (Settings.yml could be updated), otherwise false (null if no change needed)
      */
-    static public function addIntersphinxMapping($filename, $identifier, $target)
+    public static function addIntersphinxMapping($filename, $identifier, $target)
     {
         $indent = '  ';
 
@@ -1079,7 +1079,7 @@ YAML;
      * @return void
      * @see http://forge.typo3.org/issues/51275
      */
-    static public function cacheIntersphinxMapping($filename)
+    public static function cacheIntersphinxMapping($filename)
     {
         $cacheDirectory = GeneralUtility::getFileAbsFileName(
             'typo3temp/tx_' . static::$extKey . '/intersphinx/'
@@ -1150,7 +1150,7 @@ YAML;
      * @param string $filename Absolute filename to Settings.yml
      * @return string Python instruction set
      */
-    static public function yamlToPython($filename)
+    public static function yamlToPython($filename)
     {
         $contents = file_get_contents($filename);
         $lines = explode(LF, $contents);
@@ -1297,7 +1297,7 @@ YAML;
      * @param string $url File/URL to read
      * @return mixed The content from the resource given as input. false if an error has occurred.
      */
-    static public function getUrl($url)
+    public static function getUrl($url)
     {
         // Known problems when using GeneralUtility::getUrl() with https:// resources
         // E.g., https://bitbucket.org/xperseguers/sphinx-contrib/downloads
@@ -1323,7 +1323,7 @@ YAML;
      * @param int $cacheLifetime Lifetime of cache, in seconds
      * @return mixed The content from the resource given as input. false in an error has occured.
      */
-    static public function getUrlWithCache($url, $cacheLifetime = 86400)
+    public static function getUrlWithCache($url, $cacheLifetime = 86400)
     {
         $extension = '';
         if (($pos = strrpos($url, '.')) !== false) {
@@ -1354,7 +1354,7 @@ YAML;
      * @param string $url URL to check
      * @return bool
      */
-    static public function checkUrl($url)
+    public static function checkUrl($url)
     {
         /** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
         $http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url, \TYPO3\CMS\Core\Http\HttpRequest::METHOD_HEAD);
@@ -1371,7 +1371,7 @@ YAML;
      * @param string $extensionKey
      * @return string|null
      */
-    static public function extRelPath($extensionKey)
+    public static function extRelPath($extensionKey)
     {
         static $availableAndInstalledExtensions = null;
 
@@ -1398,7 +1398,7 @@ YAML;
      * @param string $extensionKey
      * @return string|null
      */
-    static public function extPath($extensionKey)
+    public static function extPath($extensionKey)
     {
         $relPath = static::extRelPath($extensionKey);
         if ($relPath !== null) {
@@ -1414,7 +1414,7 @@ YAML;
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
      */
-    static protected function getListUtility()
+    protected static function getListUtility()
     {
         if (static::$listUtility === null) {
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
@@ -1433,7 +1433,7 @@ YAML;
      * @param array $additionalUrlParameters
      * @return string
      */
-    static public function getExtensionManagerLink($extensionKey = '', $controller = '', $action = '', array $additionalUrlParameters = array())
+    public static function getExtensionManagerLink($extensionKey = '', $controller = '', $action = '', array $additionalUrlParameters = array())
     {
         $namespace = 'tx_extensionmanager_tools_extensionmanagerextensionmanager';
         $moduleName = 'tools_ExtensionmanagerExtensionmanager';
@@ -1457,7 +1457,7 @@ YAML;
      *
      * @return string Absolute path to typo3temp/
      */
-    static public function getTemporaryPath()
+    public static function getTemporaryPath()
     {
         $temporaryPath = GeneralUtility::getFileAbsFileName('typo3temp/');
         // Compatibility with Windows platform

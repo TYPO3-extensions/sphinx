@@ -35,7 +35,7 @@ class GitUtility
      *
      * @return bool
      */
-    static public function isAvailable()
+    public static function isAvailable()
     {
         return CommandUtility::getCommand('git') !== '';
     }
@@ -47,7 +47,7 @@ class GitUtility
      * @return bool
      * @throws \InvalidArgumentException
      */
-    static public function isValidRepository($uri)
+    public static function isValidRepository($uri)
     {
         if (substr($uri, 0, 6) === 'git://') {
             $isValid = MiscUtility::checkUrl(str_replace('git://', 'https://', $uri))
@@ -67,7 +67,7 @@ class GitUtility
      * @param null|array $output
      * @return bool
      */
-    static public function cloneRepository($uri, $contextPath, $targetDirectory = '', &$output = null)
+    public static function cloneRepository($uri, $contextPath, $targetDirectory = '', &$output = null)
     {
         // -C flag does not work under Windows, thus we do a "cd" and then a "git clone"
         $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
@@ -86,7 +86,7 @@ class GitUtility
      * @param null|array $output
      * @return bool true if status succeeded, otherwise false
      */
-    static public function status($contextPath, &$output = null)
+    public static function status($contextPath, &$output = null)
     {
         $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
             static::getGitCommand() . ' status';
@@ -102,7 +102,7 @@ class GitUtility
      * @param null|array $output
      * @return bool true if add succeeded, otherwise false
      */
-    static public function add($contextPath, $fileName, &$output = null)
+    public static function add($contextPath, $fileName, &$output = null)
     {
         $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
             static::getGitCommand() . ' add ' . escapeshellarg($fileName);
@@ -119,7 +119,7 @@ class GitUtility
      * @param null|array $output
      * @return bool true if move succeeded, otherwise false
      */
-    static public function move($contextPath, $sourceFileName, $targetFileName, &$output = null)
+    public static function move($contextPath, $sourceFileName, $targetFileName, &$output = null)
     {
         if (static::isFileTracked($contextPath, $sourceFileName)) {
             $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
@@ -140,7 +140,7 @@ class GitUtility
      * @param null|array $output
      * @return bool true if remove succeeded, otherwise false
      */
-    static public function remove($contextPath, $fileName, &$output = null)
+    public static function remove($contextPath, $fileName, &$output = null)
     {
         if (static::isFileTracked($contextPath, $fileName)) {
             $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
@@ -161,7 +161,7 @@ class GitUtility
      * @param null|array $output
      * @return bool true if file is tracked, otherwise false
      */
-    static public function isFileTracked($contextPath, $fileName, &$output = null)
+    public static function isFileTracked($contextPath, $fileName, &$output = null)
     {
         $cmd = 'cd ' . escapeshellarg($contextPath) . ' && ' .
             static::getGitCommand() . ' ls-files ' . escapeshellarg($fileName) . ' --error-unmatch';
@@ -174,7 +174,7 @@ class GitUtility
      *
      * @return string
      */
-    static protected function getGitCommand()
+    protected static function getGitCommand()
     {
         $cmd = CommandUtility::getCommand('git');
         return escapeshellarg($cmd);
