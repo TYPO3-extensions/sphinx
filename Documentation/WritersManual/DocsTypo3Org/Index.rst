@@ -389,17 +389,19 @@ Anchor             Target
 
 .. _docs-typo3-org-edit-github:
 
-Edit manual on GitHub
-^^^^^^^^^^^^^^^^^^^^^
+Let visitors edit manual on GitHub
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In case your extension is hosted on GitHub, you may configure the manual so that it gets easily editable when published
-on https://docs.typo3.org:
+In case your extension is hosted on GitHub, you may want to let visitors of https://docs.typo3.org
+edit the documentation of your extension by pressing a button "Edit me on GitHub":
 
-.. figure:: ../../Images/edit-me-github.png
+.. image:: ../../Images/edit-me-github.png
 	:alt: Link to edit the chapter on GitHub
 
-To make this link visible, you should add the relative URI of your GitHub project repository and the branch you are
-using (typically "master") to the configuration file :file:`Documentation/Settings.yml`:
+This button is not shown by default. To make the button visible, you need to
+specify the relative URI of your GitHub project repository and the branch you want
+to use for documentation changes (typically "master") in the configuration file :file:`Documentation/Settings.yml`
+in your repository:
 
 .. code-block:: yaml
 	:linenos:
@@ -415,6 +417,8 @@ using (typically "master") to the configuration file :file:`Documentation/Settin
 	    github_branch: master
 
 where ``xperseguers/t3ext-sphinx`` is the relative URI in ``http://github.com/xperseguers/t3ext-sphinx``.
+
+The button will be visible the next time you publish your extension to TER.
 
 .. note::
 	Every official TYPO3 manual, guide and reference is using this option, making it a breeze to contribute if you

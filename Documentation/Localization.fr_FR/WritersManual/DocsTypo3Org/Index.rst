@@ -406,17 +406,18 @@ Ancre              Cible
 
 .. _docs-typo3-org-edit-github:
 
-Modifier le manuel sur GitHub
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Permettre aux visiteurs de modifier le manuel sur GitHub
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Si votre extension est hébergée sur GitHub, vous pouvez configurer le manuel de telle façon qu'il puisse être facilement
-modifiable lorsqu'il est publié sur https://docs.typo3.org:
+Si votre extension est hébergée sur GitHub, vous voulez peut-être laisser les visiteurs de https://docs.typo3.org
+modifier la documentation de votre extension en cliquant sur un bouton "Edit me on GitHub" :
 
-.. figure:: ../../../Images/edit-me-github.png
+.. image:: ../../../Images/edit-me-github.png
 	:alt: Lien pour modifier le chapitre courant sur GitHub
 
-Afin de rendre ce lien visible, vous devez ajouter l'URI GitHub relative du dépôt de votre projet et la branche utilisée
-(typiquement "master") au fichier de configuration :file:`Documentation/Settings.yml`:
+Ce bouton n'est pas visible par défaut. Afin de rendre ce bouton visible, vous devez spécifier l'URI GitHub relative
+du dépôt de votre projet et la branche à utiliser pour les modifications de la documentation. Cela se fait à l'aide du
+fichier de configuration :file:`Documentation/Settings.yml` :
 
 .. code-block:: yaml
 	:linenos:
@@ -432,6 +433,8 @@ Afin de rendre ce lien visible, vous devez ajouter l'URI GitHub relative du dép
 	    github_branch: master
 
 où ``xperseguers/t3ext-sphinx`` correspond à l'URI relative de ``http://github.com/xperseguers/t3ext-sphinx``.
+
+Le bouton sera visible après la prochaine publication de votre extension sur le TER.
 
 .. note::
 	Tous les manuels, guides et références TYPO3 officiels utilisent cette option. Cela vous permet de contribuer de
