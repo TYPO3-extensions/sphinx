@@ -204,7 +204,7 @@ class RsyncUtility
             $file = $info['file'];
             $path = PathUtility::dirname($targetPath . $file);
             if (!is_dir($path)) {
-                GeneralUtility::mkdir($path, true);
+                GeneralUtility::mkdir_deep($path);
             }
             copy($sourcePath . $file, $targetPath . $file);
         }
