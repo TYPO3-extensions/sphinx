@@ -160,7 +160,7 @@ YAML;
         // Test
         $pythonConfiguration = MiscUtility::yamlToPython($fixtureFilename);
         $expected = array(
-            'copyright = 2014',
+            'copyright = u\'2014\'',
             'project = u\'Sphinx Python Documentation Generator and Viewer\'',
             'version = u\'1.2\'',
             'release = u\'1.2.0-dev\'',
@@ -174,7 +174,7 @@ YAML;
     /**
      * @test
      */
-    public function versionAndReleaseAreStringValues()
+    public function versionReleaseAndCopyrightAreStringValues()
     {
         // Setup
         $fixtureFilename = tempnam(PATH_site . 'typo3temp', 'sphinx');
@@ -182,6 +182,7 @@ YAML;
 conf.py:
   version: 7
   release: 7
+  copyright: 2015
 YAML;
         GeneralUtility::writeFile($fixtureFilename, $yaml);
 
@@ -190,6 +191,7 @@ YAML;
         $expected = array(
             'version = u\'7\'',
             'release = u\'7\'',
+            'copyright = u\'2015\'',
         );
         $this->assertSame($expected, $pythonConfiguration);
 

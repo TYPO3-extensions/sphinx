@@ -1262,6 +1262,7 @@ YAML;
                         $pythonLine .= LF . '}';
                         $i--;
                         break;
+                    case 'copyright':
                     case 'version':
                     case 'release':
                         $pythonLine = sprintf('%s = u\'%s\'', $matches[2], addcslashes($matches[3], "\\'"));
