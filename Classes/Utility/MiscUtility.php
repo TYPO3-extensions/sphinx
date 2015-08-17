@@ -641,7 +641,12 @@ HTML;
 
         $metadata = static::getExtensionMetaData($extensionKey);
         $basePath = PATH_site . 'typo3temp/tx_' . static::$extKey . '/' . $extensionKey;
-        $documentationBasePath = $basePath;
+        if (empty($locale)) {
+            $documentationBasePath = $basePath;
+        } else {
+            $basePath .= '.' . $locale;
+            $documentationBasePath = $basePath . '/Localization.' . $locale;
+        }
 
         $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
         $synchronizeFileExtensions = !empty($configuration['rsync_files'])
@@ -655,9 +660,6 @@ HTML;
         if (empty($synchronizeFileExtensions)) {
             // Make sure to completely recreate the project
             GeneralUtility::rmdir($basePath, true);
-        }
-        if (!empty($locale)) {
-            $documentationBasePath .= '/Localization.' . $locale;
         }
 
         SphinxQuickstart::createProject(

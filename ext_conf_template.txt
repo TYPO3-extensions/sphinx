@@ -14,7 +14,7 @@ install_rst2pdf = 0
 plugins =
 
 # cat=advanced//10; type=string; label=LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.rsync_files
-rsync_files = rst, txt, yml, gif, jpg, jpeg, png
+rsync_files = rst, txt, yml, gif, jpg, jpeg, png, js, css, sh
 
 # cat=advanced//20; type=int; label=LLL:EXT:sphinx/Resources/Private/Language/locallang_db.xlf:settings.build.processes
 processes = 1

@@ -94,7 +94,7 @@ class RsyncUtility
             if (is_file($item)) {
                 $fileName = $iterator->getSubPathname();
                 $extension = '';
-                if (($pos = strpos($fileName, '.')) !== false) {
+                if (($pos = strrpos($fileName, '.')) !== false) {
                     $extension = strtolower(substr($fileName, $pos + 1));
                 }
                 if (empty($this->fileExtensions) || in_array($extension, $this->fileExtensions)) {
