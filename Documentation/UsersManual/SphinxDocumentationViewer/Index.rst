@@ -34,7 +34,7 @@ show it **locally**:
 Dashboard
 ^^^^^^^^^
 
-If no documentation has been selected in the drop-down menu; that is, "Dashboard" is selected:
+If no documentation have been selected in the drop-down menu; that is, "Dashboard" is selected:
 
 .. figure:: ../../Images/dashboard.png
 	:alt: No documentation selected
@@ -46,20 +46,10 @@ a list of custom projects may be managed:
 
 Then, depending on your environment, up to two additional tabs may be present. One that shows a list of
 locally-available extensions with an OpenOffice manual only. Action icons let you easily convert their manual to Sphinx
-using an online tool on https://docs.typo3.org:
+using a standalone OpenOffice to Sphinx converter built-in this extension:
 
 .. figure:: ../../Images/convert-openoffice.png
 	:alt: Easily convert OpenOffice manuals to Sphinx projects
-
-.. note::
-	If you are unable to use the automatic converter, the RestTools repository
-	(http://git.typo3.org/Documentation/RestTools.git) provides a script in
-	directory :file:`T3PythonDocBuilderPackage/src/T3PythonDocBuilder` to convert your OpenOffice manual to
-	Sphinx/reStructuredText.
-
-	Please read corresponding :file:`README` file for instructions.
-
-	If you prefer, you may use the online converter manually: https://docs.typo3.org/getthedocs/service-convert.html.
 
 Similarly, an empty Sphinx documentation project may be created for local extensions without any manual yet:
 

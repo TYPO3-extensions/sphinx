@@ -47,21 +47,10 @@ une liste de projets personnalisés peut être gérée :
 
 Ensuite, en fonction de votre environnement, jusqu'à deux onglets supplémentaires peuvent être montrés. L'un vous montre
 une liste d'extensions utilisées ne contenant qu'un manuel OpenOffice. Des icônes d'action vous permettent de facilement
-convertir leur manuel en Sphinx à l'aide d'un outil en ligne disponible sur https://docs.typo3.org :
+convertir leur manuel en Sphinx à l'aide d'un convertisseur OpenOffice vers Sphinx intégré à cette extension :
 
 .. figure:: ../../../Images/convert-openoffice.png
 	:alt: Conversion facile des manuels OpenOffice en projets Sphinx
-
-.. note::
-	Si vous ne pouvez pas utiliser l'assistant de conversion, le dépot RestTools
-	(http://git.typo3.org/Documentation/RestTools.git) fournit un script dans le
-	répertoire :file:`T3PythonDocBuilderPackage/src/T3PythonDocBuilder` pour convertir votre manuel OpenOffice en
-	Sphinx/reStructuredText.
-
-	Veuillez lire le fichier :file:`README` correspondant pour plus d'informations.
-
-	Si vous préférez, vous pouvez utiliser le convertisseur en ligne
-	manuellement : https://docs.typo3.org/getthedocs/service-convert.html.
 
 De façon similaire, un projet de documention Sphinx vide peut être créé pour les extensions qui n'ont pas encore de
 manuel :
