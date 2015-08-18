@@ -23,4 +23,3 @@ Manuel des rédacteurs
 	SphinxRest/Index
 	SphinxDocumentationEditor/Index
 	DocsTypo3Org/Index
-	Targets

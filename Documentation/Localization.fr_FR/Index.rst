@@ -63,27 +63,14 @@ Générateur et visionneuse de documentation Sphinx Python
 
 	**Sommaire**
 
-	.. toctree::
-		:maxdepth: 5
-		:titlesonly:
+.. toctree::
+	:maxdepth: 5
+	:titlesonly:
 
-		Introduction/Index
-		UsersManual/Index
-		WritersManual/Index
-		AdvancedUsersManual/Index
-		DeveloperManual/Index
-		AdministratorManual/Index
-		Links
-
-.. only:: latex
-
-	.. toctree::
-		:maxdepth: 5
-		:titlesonly:
-
-		Introduction/Index
-		UsersManual/Index
-		WritersManual/Index
-		AdvancedUsersManual/Index
-		DeveloperManual/Index
-		AdministratorManual/Index
+	Introduction/Index
+	UsersManual/Index
+	WritersManual/Index
+	AdvancedUsersManual/Index
+	DeveloperManual/Index
+	AdministratorManual/Index
+	Links
