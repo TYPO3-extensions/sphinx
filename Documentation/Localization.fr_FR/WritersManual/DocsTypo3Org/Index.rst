@@ -67,8 +67,8 @@ Un fichier standard :file:`Settings.yml` devrait définir certaines informations
 	conf.py:
 	  copyright: 2013-2015
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 2.2
-	  release: 2.2.1
+	  version: 2.3
+	  release: 2.3.0
 
 project
 	Le nom du projet de documentation.
@@ -123,8 +123,8 @@ au besoin) et doit être explicitement activée pour votre extension. Pour se fa
 	conf.py:
 	  copyright: 2013-2015
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 2.2
-	  release: 2.2.1
+	  version: 2.3
+	  release: 2.3.0
 	  latex_documents:
 	  - - Index
 	    - sphinx.tex
@@ -336,8 +336,8 @@ la correspondance Intersphinx dans :file:`Settings.yml`. Pour se faire, ajoutez 
 	conf.py:
 	  copyright: 2013-2015
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 2.2
-	  release: 2.2.1
+	  version: 2.3
+	  release: 2.3.0
 	  intersphinx_mapping:
 	    restdoc:
 	    - https://docs.typo3.org/typo3cms/extensions/restdoc/
@@ -375,8 +375,8 @@ Intersphinx ``t3cmsapi`` :
 	conf.py:
 	  copyright: 2013-2015
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 2.2
-	  release: 2.2.1
+	  version: 2.3
+	  release: 2.3.0
 	  intersphinx_mapping:
 	    t3cmsapi:
 	    - http://typo3.org/api/typo3cms/
@@ -430,6 +430,9 @@ Permettre aux visiteurs de modifier le manuel sur GitHub
 	single: Settings.yml; Options pour GitHub
 	single: GitHub; github_repository
 	single: GitHub; github_branch
+	single: GitHub; github_sphinx_locale
+	single: GitHub; Multilingual manual
+	single: Traduction; GitHub
 
 Si votre extension est hébergée sur GitHub, vous voulez peut-être laisser les visiteurs de https://docs.typo3.org
 modifier la documentation de votre extension en cliquant sur un bouton "Edit me on GitHub" :
@@ -448,8 +451,8 @@ fichier de configuration :file:`Documentation/Settings.yml` :
 	conf.py:
 	  copyright: 2013-2015
 	  project: Générateur et visionneuse de documentation Sphinx Python
-	  version: 2.2
-	  release: 2.2.1
+	  version: 2.3
+	  release: 2.3.0
 	  html_theme_options:
 	    github_repository: xperseguers/t3ext-sphinx
 	    github_branch: master
@@ -462,3 +465,26 @@ Le bouton sera visible après la prochaine publication de votre extension sur le
 	Tous les manuels, guides et références TYPO3 officiels utilisent cette option. Cela vous permet de contribuer de
 	façon extrêmement simple si vous découvrez une faute de frappe, ou que vous souhaitez reformuler ou améliorer un
 	chapitre ou une section.
+
+
+**Manuel multilingue**
+
+Si vous fournissez une documentation multilingue :ref:`comme décrit précédemment <docs-typo3-org-multilingual>`, la ou
+les traductions peuvent bien évidemment être facilement modifiée sur GitHub.
+
+Afin d'activer cette fonctionnalité, le fichier de configuration :file:`Documentation/Localization.{locale}/Settings.yml`
+doit être modifié avec une option supplémentaire ``github_sphinx_locale`` :
+
+.. code-block:: yaml
+	:linenos:
+	:emphasize-lines: 9
+
+	conf.py:
+	  copyright: 2013-2015
+	  project: Générateur et visionneuse de documentation Sphinx Python
+	  version: 2.3
+	  release: 2.3.0
+	  html_theme_options:
+	    github_repository: xperseguers/t3ext-sphinx
+	    github_branch: master
+	    github_sphinx_locale: fr_FR
