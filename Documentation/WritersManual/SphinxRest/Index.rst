@@ -13,6 +13,9 @@ Starting with Sphinx and reStructuredText
 
 .. index::
 	pair: reStructuredText; Syntax
+	pair: reStructuredText; Introduction
+	single: Sphinx; Syntax
+	single: Sphinx; Learning
 
 .. note::
 	Don't know how to start with reStructuredText and Sphinx? You may want to check

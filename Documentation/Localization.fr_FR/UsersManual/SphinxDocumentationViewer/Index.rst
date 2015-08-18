@@ -34,6 +34,14 @@ vous permet de rapidement l'afficher **localement** :
 Tableau de bord
 ^^^^^^^^^^^^^^^
 
+.. index::
+	single: Tableau de bord; Créer un projet personnalisé
+	single: Tableau de bord: Nouveau manuel pour une extension
+	single: Tableau de bord; Convertir depuis OpenOffice
+	single: Projet personnalisé
+	single: Manuel; Nouveau manuel pour une extension
+	single: OpenOffice; Convertir vers Sphinx
+
 Si aucune documentation n'est sélectionnée dans la liste déroulante, c.-à-d. que "Tableau de bord" (*Dashboard*) est
 sélectionné :
 

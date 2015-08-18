@@ -34,6 +34,14 @@ show it **locally**:
 Dashboard
 ^^^^^^^^^
 
+.. index::
+	single: Dashboard; Create custom project
+	single: Dashboard; New manual for an extension
+	single: Dashboard; Convert from OpenOffice
+	single: Custom project
+	single: Manual; New manual for an extension
+	single: OpenOffice; Convert to Sphinx
+
 If no documentation have been selected in the drop-down menu; that is, "Dashboard" is selected:
 
 .. figure:: ../../Images/dashboard.png

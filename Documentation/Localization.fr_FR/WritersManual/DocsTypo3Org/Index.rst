@@ -48,7 +48,7 @@ Titre, mention de copyright et version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
-	single: Settings.yml (format)
+	single: Settings.yml; Format
 
 Un projet Sphinx valide pour un manuel d'extension doit contenir un fichier de configuration :file:`Settings.yml` au même
 niveau que le document principal :file:`Index.rst`. Ce fichier est votre passe pour surcharger les paramètres par défaut
@@ -106,6 +106,10 @@ release
 
 Rendu PDF
 ^^^^^^^^^
+
+.. index::
+	single: Settings.yml; Options LaTeX
+	single: Settings.yml; Configuration PDF
 
 La version PDF de votre documentation est générée en utilisant le générateur LaTeX de Sphinx (cf. :ref:`rendering-pdf`
 au besoin) et doit être explicitement activée pour votre extension. Pour se faire, ouvrez le fichier :file:`Settings.yml`
@@ -180,7 +184,9 @@ Documentation multilingue
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
-	single: Manuel multilingue
+	single: Manuel; Multilingue
+	single: Manuel; Traduction
+	single: Traduction
 
 Les manuels d'extensions multilingues sont supportés à la fois par cette extension et par https://docs.typo3.org. Si vous
 souhaitez traduire votre documentation, démarrez un nouveau projet Sphinx complet (y.c. :file:`Settings.yml`) dans le
@@ -195,6 +201,7 @@ Locales
 """""""
 
 .. index::
+	single: Traduction; Locales disponibles
 	single: Locales
 
 Mis à part pour les quelques préfixes qui sont déjà des "locales", https://docs.typo3.org s'attend à avoir une locale et
@@ -292,6 +299,11 @@ chapitres traduits :
 Références croisées vers une autre documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	single: Référence croisée
+	single: Lien; Vers un manuel/guide TYPO3 officiel
+	single: Link; Vers le manuel d'une autre extension
+
 Sphinx vous permet de créer facilement des références croisées vers d'autres documentations telles que les manuels et
 guides officiels ou les manuels des extensions (pour autant qu'ils aient été écrits avec Sphinx et pas avec OpenOffice)
 en préfixant la cible du lien de façon appropriée.
@@ -344,6 +356,9 @@ manuels :
 
 Références croisées vers le code source de TYPO3
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	single: Lien; Vers l'API (code) TYPO3
 
 L'astuce décrite dans le chapitre :ref:`advanced-cross-links` a été implémentée pour l'API du code source TYPO3, ce qui
 permet de façon très facile de faire des références croisées vers le code source de TYPO3, soit pour une classe donnée,
@@ -408,6 +423,13 @@ Ancre              Cible
 
 Permettre aux visiteurs de modifier le manuel sur GitHub
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	single: Collaboration; GitHub
+	single: GitHub; Bouton "Edit me GitHub"
+	single: Settings.yml; Options pour GitHub
+	single: GitHub; github_repository
+	single: GitHub; github_branch
 
 Si votre extension est hébergée sur GitHub, vous voulez peut-être laisser les visiteurs de https://docs.typo3.org
 modifier la documentation de votre extension en cliquant sur un bouton "Edit me on GitHub" :

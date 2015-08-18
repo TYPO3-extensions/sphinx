@@ -46,7 +46,7 @@ Title, copyright and version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
-	single: Settings.yml (format)
+	single: Settings.yml; Format
 
 A valid Sphinx project for an extension manual should contain a configuration file :file:`Settings.yml` next to the main
 document :file:`Index.rst`. This file is your key to override default settings from the real Sphinx configuration file
@@ -102,6 +102,10 @@ release
 
 PDF rendering
 ^^^^^^^^^^^^^
+
+.. index::
+	single: Settings.yml; LaTeX options
+	single: Settings.yml; PDF configuration
 
 The PDF of your documentation is rendered using the LaTeX builder from Sphinx (see :ref:`rendering-pdf` if needed)
 and should be explicitly activated for your extension. To do so, open file :file:`Settings.yml` (at the root of your
@@ -173,7 +177,9 @@ Multilingual documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
-	single: Multilingual manual
+	single: Manual; Multilingual
+	single: Manual; Translation
+	single: Translation
 
 Multilingual exension manuals are supported by both this extension and https://docs.typo3.org. If you want to translate
 your documentation, kickstart a new Sphinx project (incl. :file:`Settings.yml`) within directory
@@ -189,6 +195,7 @@ Locales
 """""""
 
 .. index::
+	single: Translation; Available locales
 	single: Locales
 
 Unless for the few prefixes which are already "locales", https://docs.typo3.org expects a locale and not a language code
@@ -269,6 +276,11 @@ translated as well, making it impossible to match chapters with their translated
 Cross-link to other documentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. index::
+	single: Cross-link
+	single: Link; To official TYPO3 manual/guide
+	single: Link; To other extension's manual
+
 Sphinx lets you easily cross-link to other documentation such as official manuals and guides or extensions' manuals
 (granted that they have been written with Sphinx and not in OpenOffice) by prefixing the link target appropriately.
 
@@ -329,6 +341,9 @@ underscore "``_``") as prefix for other manuals:
 
 Cross-link to TYPO3 source code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	single: Link; To TYPO3 API (code)
 
 The trick described in chapter :ref:`advanced-cross-links` has been implemented for the TYPO3 source code API, making it
 possible and very easy to cross-link to the TYPO3 source code, either for a given class or even a given method.
@@ -391,6 +406,13 @@ Anchor             Target
 
 Let visitors edit manual on GitHub
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+	single: Collaboration; GitHub
+	single: GitHub; Button "Edit me GitHub"
+	single: Settings.yml; GitHub options
+	single: GitHub; github_repository
+	single: GitHub; github_branch
 
 In case your extension is hosted on GitHub, you may want to let visitors of https://docs.typo3.org
 edit the documentation of your extension by pressing a button "Edit me on GitHub":

@@ -10,7 +10,8 @@ Requirements
 ------------
 
 .. index::
-	pair: Directory; Structure
+	single: Directory; Project structure
+	single: Project; Directory structure
 
 This extension requires the Python interpreter to be available on your web server and -- of course -- you need a
 documentation written in reStructuredText and as a Sphinx project.

@@ -10,7 +10,8 @@ Prérequis
 ---------
 
 .. index::
-	pair: Répertoire; Structure
+	single: Répertoire; Structure de project
+	single: Projet; Structure de répertoires
 
 Cette extension a besoin d'un interpréteur Python disponible sur votre serveur web et -- bien entendu -- d'une
 documentation écrite en reStructuredText sous forme d'un projet Sphinx.
