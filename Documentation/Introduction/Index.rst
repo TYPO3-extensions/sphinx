@@ -46,7 +46,7 @@ Sphinx was originally created for the Python documentation and a few features ar
 - **Extensions:** the tool lets you extend it with your own modules
 
 .. Links:
-.. _`5 min tutorial video`: http://www.youtube.com/watch?v=YeGqHMDT7R8
+.. _`5 min tutorial video`: https://www.youtube.com/watch?v=YeGqHMDT7R8
 
 .. _Sphinx: http://sphinx-doc.org/
 

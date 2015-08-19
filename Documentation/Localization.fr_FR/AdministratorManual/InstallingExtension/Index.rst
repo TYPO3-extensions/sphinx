@@ -68,7 +68,7 @@ général d'importation de Sphinx est le suivant :
 #. *[Pas sous MS Windows, autres systèmes : si activé]* Installation de la bibliothèque graphique Python
    (https://pypi.python.org/pypi/PIL), nécessaire pour supporter les formats d'images courants avec :program:`rst2pdf`
 
-#. *[Pas sous MS Windows, autres systèmes : si activé]* Installation de :program:`rst2pdf` (http://rst2pdf.ralsina.com.ar/),
+#. *[Pas sous MS Windows, autres systèmes : si activé]* Installation de :program:`rst2pdf` (http://rst2pdf.ralsina.me/),
    comme méthode simple pour générer des PDF
 
 #. Récupération des extensions facultatives pour Sphinx: https://bitbucket.org/birkenfeld/sphinx-contrib/

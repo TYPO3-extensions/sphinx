@@ -455,7 +455,7 @@ $(document).ready(function(){
 	}
 
     //td-classes for documentation tables
-    //see ticket: http://forge.typo3.org/issues/35664
+    //see ticket: https://forge.typo3.org/issues/35664
     //and second bugfix: https://forge.typo3.org/issues/37392
     $(".d .informaltable table td").each(function(){
         if($(this).parent("tr").children("td").length > 1)
@@ -463,7 +463,7 @@ $(document).ready(function(){
     });
 
     //Beautify code blocks within the documentation
-    //see ticket http://forge.typo3.org/issues/35278
+    //see ticket https://forge.typo3.org/issues/35278
     $('p + pre, div + pre').each(function(index,item){
         $(item).nextUntil('p', 'pre').each(function(i,sub){
             $(item).append("\n" + $(sub).html()); $(sub).remove();

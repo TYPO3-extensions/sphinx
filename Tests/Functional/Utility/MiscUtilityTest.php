@@ -37,7 +37,7 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         }
         $references = MiscUtility::getIntersphinxReferences('sphinx');
         $this->assertTrue(is_array($references));
-        $this->assertTrue(isset($references['Index.htm']['start']));
+        $this->assertTrue(isset($references['Index']['start']));
     }
 
     /**

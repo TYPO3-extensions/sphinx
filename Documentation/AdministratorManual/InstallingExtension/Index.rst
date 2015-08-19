@@ -65,7 +65,7 @@ is stored as :file:`typo3temp/tx_sphinx/IMPORT-{date}.log`. The general process 
 #. *[Not on MS Windows, other OS : if activated]* Install Python Imaging Library (https://pypi.python.org/pypi/PIL),
    needed for supporting common image types with :program:`rst2pdf`
 
-#. *[Not on MS Windows, other OS : if activated]* Install :program:`rst2pdf` (http://rst2pdf.ralsina.com.ar/), as a
+#. *[Not on MS Windows, other OS : if activated]* Install :program:`rst2pdf` (http://rst2pdf.ralsina.me/), as a
    simple way of building PDF
 
 #. Fetch 3rd-party plugins for Sphinx: https://bitbucket.org/birkenfeld/sphinx-contrib/

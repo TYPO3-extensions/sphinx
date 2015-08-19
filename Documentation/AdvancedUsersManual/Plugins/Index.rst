@@ -72,7 +72,7 @@ sphinxcontrib.googlechart
 """""""""""""""""""""""""
 
 This is a Sphinx extension which render charts and graphs by using
-`Google Chart <http://code.google.com/intl/ja/apis/chart/>`_ .
+`Google Chart <https://code.google.com/p/google-chartwrapper/>`__.
 
 **Example:**
 
@@ -105,7 +105,7 @@ This is a Sphinx extension which render charts and graphs by using
 sphinxcontrib.googlemaps
 """"""""""""""""""""""""
 
-This is a Sphinx extension which embeds maps using `Google Maps <http://maps.google.com/>`_.
+This is a Sphinx extension which embeds maps using `Google Maps <http://maps.google.com/>`__.
 
 **Example:**
 

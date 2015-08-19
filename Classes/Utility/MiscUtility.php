@@ -316,7 +316,7 @@ HTML;
      * @return string Processed contents
      * @throws \RuntimeException
      * @see MiscUtility::getIntersphinxReferences()
-     * @see http://forge.typo3.org/issues/48313
+     * @see https://forge.typo3.org/issues/48313
      */
     public static function populateCrossReferencingLabels($contents, array $references, $callbackLinks)
     {
@@ -696,7 +696,7 @@ HTML;
                 }
 
                 // Remove *.tmpl directories
-                // @see http://forge.typo3.org/issues/59356
+                // @see https://forge.typo3.org/issues/59356
                 $templateDirectories = array_filter(
                     GeneralUtility::get_dirs($source),
                     function ($directory) {
@@ -909,7 +909,7 @@ HTML;
      * @param string $basePath Absolute path to the root directory of the Sphinx project
      * @return void
      * @see \Causal\Sphinx\Controller\ConsoleController::overrideThemeT3Sphinx()
-     * @see http://forge.typo3.org/issues/48311
+     * @see https://forge.typo3.org/issues/48311
      */
     public static function overrideThemeT3Sphinx($basePath)
     {
@@ -1079,7 +1079,7 @@ YAML;
      *
      * @param string $filename Absolute filename to Settings.yml
      * @return void
-     * @see http://forge.typo3.org/issues/51275
+     * @see https://forge.typo3.org/issues/51275
      */
     public static function cacheIntersphinxMapping($filename)
     {

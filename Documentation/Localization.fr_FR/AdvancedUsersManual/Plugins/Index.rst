@@ -73,7 +73,7 @@ sphinxcontrib.googlechart
 """""""""""""""""""""""""
 
 Extension Sphinx qui génère des graphiques et des graphes à l'aide de
-`Google Chart <http://code.google.com/intl/ja/apis/chart/>`_ .
+`Google Chart <https://code.google.com/p/google-chartwrapper/>`__.
 
 **Exemple :**
 
@@ -106,7 +106,7 @@ Extension Sphinx qui génère des graphiques et des graphes à l'aide de
 sphinxcontrib.googlemaps
 """"""""""""""""""""""""
 
-Extension Sphinx qui intègre des cartes `Google Maps <http://maps.google.com/>`_.
+Extension Sphinx qui intègre des cartes `Google Maps <http://maps.google.com/>`__.
 
 **Exemple :**
 

@@ -68,10 +68,10 @@ Here are a few really interesting interviews from Donald E. Knuth:
 - `Research into the history of typography <http://www.webofstories.com/play/donald.knuth/54>`_
 
 
-.. _TeX: http://en.wikipedia.org/wiki/TeX
+.. _TeX: https://en.wikipedia.org/wiki/TeX
 
-.. _`Donald E. Knuth`: http://en.wikipedia.org/wiki/Donald_Knuth
+.. _`Donald E. Knuth`: https://en.wikipedia.org/wiki/Donald_Knuth
 
-.. _`Leslie Lamport`: http://en.wikipedia.org/wiki/Leslie_Lamport
+.. _`Leslie Lamport`: https://en.wikipedia.org/wiki/Leslie_Lamport
 
 .. _`LaTeX3 Project`: http://latex-project.org/latex3.html

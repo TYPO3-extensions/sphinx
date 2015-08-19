@@ -833,7 +833,7 @@ hnav-related a:hover {
 .doc li p {
 	overflow: visible;
 }
-/* 2014-03-12 [BUGFIX] http://forge.typo3.org/issues/53137 */
+/* 2014-03-12 [BUGFIX] https://forge.typo3.org/issues/53137 */
 .doc .hnav-related-container {
 	clear: both;
 }

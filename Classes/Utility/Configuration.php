@@ -49,7 +49,7 @@ class Configuration
 
         // Detect if theme t3sphinx from project TYPO3 Documentation Team's project
         // ReST Tools is being used
-        // @see http://forge.typo3.org/issues/48311
+        // @see https://forge.typo3.org/issues/48311
         if (preg_match('/^\s*import\s+t3sphinx\s*$/m', $contents)) {
             $properties['t3sphinx'] = true;
         } else {

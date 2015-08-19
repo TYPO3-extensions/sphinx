@@ -129,13 +129,13 @@ blockquote {
 
 .b-tabs { zoom:1; }
 
-	/* bugfix http://forge.typo3.org/issues/26414 */
+	/* bugfix https://forge.typo3.org/issues/26414 */
 .b-news-list2 .g-5 {
 	clear: none;
 }
 
 /**
- *	fix button width 
+ *	fix button width
  */
 #fancybox-content .bu, #page .bu {
 	display: inline;

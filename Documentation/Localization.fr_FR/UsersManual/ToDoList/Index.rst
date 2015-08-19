@@ -33,7 +33,7 @@ Traduction
 Une autre façon toute simple de contribuer au succès de cette extension est de la traduire sur le
 `serveur de traduction TYPO3`_ ; les autres utilisateurs vous en seront très reconnaissants.
 
-.. _`serveur de traduction TYPO3`: http://translation.typo3.org/projects/TYPO3.TYPO3.ext.sphinx/
+.. _`serveur de traduction TYPO3`: https://translation.typo3.org/projects/TYPO3.ext.sphinx/
 
 
 Continuez de partager

@@ -15,7 +15,7 @@ The following is a very high level overview of the changes in this extension. Fo
 
 .. tip::
 	Release notes and possible quick fixes for published versions are available in the project's wiki:
-	http://forge.typo3.org/projects/extension-sphinx/wiki.
+	https://forge.typo3.org/projects/extension-sphinx/wiki.
 
 
 .. tabularcolumns:: |r|p{13.7cm}|

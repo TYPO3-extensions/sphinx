@@ -43,8 +43,10 @@ est lié à l'utilisation de :command:`sudo` ; c'est donc votre propre mot de pa
 
 .. note::
 
-	**Utilisateurs MS Windows :** Comme nous ne fournissons pas de script automatique pour vous, si vous utilisez MiKTeX,
-	vous pouvez suivre les instructions sur http://www.radamir.com/tex/ttf-tex.htm.
+	**Utilisateurs MS Windows :** Veuillez utiliser le programme
+	`Unicode Truetype font installer for LaTeX <http://william.famille-blum.org/software/latexttf/index.html>`__.
+	Comme nous ne fournissons pas de script automatique pour vous, si vous utilisez MiKTeX, vous pouvez suivre les
+	instructions du lien précédent ou celles disponibles sur http://www.radamir.com/tex/ttf-tex.htm.
 
 	**Astuce:** Vous pouvez utiliser le script :program:`convert-share.sh` depuis une machine Linux et définir ``INSTALL=0``
 	vers le début du script. Au lieu d'installer les fontes converties sur votre système, le script va uniquement les

@@ -17,7 +17,7 @@ Ce qui suit est une vue d'ensemble très haut niveau des changements de cette ex
 .. tip::
 	Les informations concernant chaque publication sur le TER et les éventuels correctifs sont pour les
 	différentes versions de cette extension sont disponible dans le wiki du projet :
-	http://forge.typo3.org/projects/extension-sphinx/wiki.
+	https://forge.typo3.org/projects/extension-sphinx/wiki.
 
 
 .. tabularcolumns:: |r|p{13.7cm}|

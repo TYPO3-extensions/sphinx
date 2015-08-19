@@ -53,7 +53,7 @@ mises en évidence :
 - **Extensions :** l'outil vous permet de l'étendre avec vos propres modules
 
 .. Liens :
-.. _`tutoriel vidéo de 5 min`: http://www.youtube.com/watch?v=YeGqHMDT7R8
+.. _`tutoriel vidéo de 5 min`: https://www.youtube.com/watch?v=YeGqHMDT7R8
 
 .. _Sphinx: http://sphinx-doc.org/
 

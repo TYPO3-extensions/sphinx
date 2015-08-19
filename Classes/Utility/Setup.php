@@ -198,7 +198,7 @@ class Setup
         $sphinxPath = static::getSphinxPath();
 
         // Sphinx 1.2 requires Python 2.5
-        // http://forge.typo3.org/issues/53246
+        // https://forge.typo3.org/issues/53246
         if (version_compare($version, '1.1.99', '>')) {
             $pythonVersion = static::getPythonVersion();
             if (version_compare($pythonVersion, '2.5', '<')) {
@@ -358,7 +358,7 @@ EOT;
      * @param null|array $output Log of operations
      * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
-     * @see http://forge.typo3.org/projects/tools-rest
+     * @see https://forge.typo3.org/projects/tools-rest
      */
     public static function downloadRestTools(array &$output = null)
     {
@@ -445,7 +445,7 @@ EOT;
 
         // Patch RestTools to support rst2pdf. We do it here and not after downloading
         // to let user build RestTools with Git repository as well
-        // @see http://forge.typo3.org/issues/49341
+        // @see https://forge.typo3.org/issues/49341
         $globalSettingsFilename = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/src/t3sphinx/settings/GlobalSettings.yml';
 
         // Compatibility with Windows platform
@@ -1121,7 +1121,7 @@ EOT;
      * @param null|array $output Log of operations
      * @return boolean true if operation succeeded, otherwise false
      * @throws \Exception
-     * @see http://rst2pdf.ralsina.com.ar/
+     * @see http://rst2pdf.ralsina.me/
      */
     public static function downloadRst2Pdf(array &$output = null)
     {
@@ -1537,7 +1537,7 @@ EOT;
         $export = '';
         $clientInfo = GeneralUtility::clientInfo();
         if ($clientInfo['SYSTEM'] === 'mac') {
-            // See http://forge.typo3.org/issues/58424
+            // See https://forge.typo3.org/issues/58424
             $export = 'ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future ';
         }
 

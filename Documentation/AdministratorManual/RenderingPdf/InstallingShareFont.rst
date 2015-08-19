@@ -41,10 +41,9 @@ Then go to directory :file:`RestTools/LaTeX` and convert the Share font (the pas
 
 .. note::
 
-	**MS Windows Users:** Please use `MiKTeX TTF Font Installer <http://mirror.transact.net.au/sourceforge/m/project/mt/mtfi/mtfi/0.6.0/>`_
-	(search for "mtfi-0.6.0-setup_2.exe" if previous link is broken and hope you still find a copy somewhere).
-	As there is currently no automatic script available for you, when using MikTeX, please follow the instructions
-	from http://www.radamir.com/tex/ttf-tex.htm.
+	**MS Windows Users:** Please use `Unicode Truetype font installer for LaTeX <http://william.famille-blum.org/software/latexttf/index.html>`__.
+	As there is currently no automatic script available for you, when using MikTeX, please follow the instructions on the
+	linked page or from http://www.radamir.com/tex/ttf-tex.htm.
 
 	**Tip:** You may want to use script :program:`convert-share.sh` from a Linux machine and set ``INSTALL=0`` near the
 	beginning of the script. Instead of installing the converted fonts on your system, it will only convert them and

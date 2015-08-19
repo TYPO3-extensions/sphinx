@@ -32,7 +32,7 @@ conf.py:
     - null
   extlinks:
     ter:
-    - https://www.typo3.org/extensions/repository/view/%s
+    - https://typo3.org/extensions/repository/view/%s
     - 'TYPO3 extension '
   extensions:
   - sphinx.ext.intersphinx
