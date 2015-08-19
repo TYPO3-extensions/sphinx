@@ -26,6 +26,7 @@ Ce qui suit est une vue d'ensemble très haut niveau des changements de cette ex
 Version  Changements
 =======  ===========================================================================
 2.3.x    - Rendu parallélisé pour accélérer le processus
+         - Convertisseur OpenOffice vers Sphinx autonome et réécrit de zéro
 2.2.x    - Compatibilité TYPO3 6.2 - 7.x
 2.1.x    - Téléchargement/mise en ligne de fichiers depuis l'éditeur reStructuredText
 2.0.x    - Nouveau tableau de bord avec gestion des projets personnalisés

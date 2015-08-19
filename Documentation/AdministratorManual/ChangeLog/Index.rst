@@ -24,6 +24,7 @@ The following is a very high level overview of the changes in this extension. Fo
 Version  Changes
 =======  ===========================================================================
 2.3.x    - Parallel building to speed-up rendering
+         - Standalone and reworked from scratch OpenOffice to Sphinx converter
 2.2.x    - Compatibility with TYPO3 6.2 - 7.x
 2.1.x    - Upload of files in reStructuredText editor
 2.0.x    - New dashboard with management of custom projects
