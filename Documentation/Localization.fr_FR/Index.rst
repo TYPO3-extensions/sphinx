@@ -42,8 +42,8 @@ Générateur et visionneuse de documentation Sphinx Python
 		xavier@causal.ch
 
 	:Licence:
-		Ce document est publié sous la licence de contenu libre
-		disponible sur http://www.opencontent.org/opl.shtml
+		Ce document est publié sous la licence de publication libre
+		disponible sur http://www.opencontent.org/openpub/
 
 	:Généré:
 		|today|
