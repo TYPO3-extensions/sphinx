@@ -226,13 +226,16 @@ class Setup
 
                 // Compatibility with Windows platform
                 $pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
+                $safePythonLib = strpos($pythonLib, ' ') !== false
+                    ? escapeshellarg($pythonLib)
+                    : $pythonLib;
 
                 static::$log[] = '[INFO] Recreating directory ' . $pythonHome;
                 GeneralUtility::rmdir($pythonHome, true);
                 GeneralUtility::mkdir_deep($pythonLib . DIRECTORY_SEPARATOR);
 
                 $cmd = 'cd ' . escapeshellarg(PathUtility::dirname($setupFile)) . ' && ' .
-                    MiscUtility::getExportCommand('PYTHONPATH', escapeshellarg($pythonLib)) . ' && ' .
+                    MiscUtility::getExportCommand('PYTHONPATH', $safePythonLib) . ' && ' .
                     $python . ' setup.py install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
                 $out = array();
                 static::exec($cmd, $out, $ret);
@@ -1548,8 +1551,11 @@ EOT;
         $out = array();
         static::exec($cmd, $out, $ret);
         if ($ret === 0) {
+            $safePythonLib = strpos($pythonLib, ' ') !== false
+                ? escapeshellarg($pythonLib)
+                : $pythonLib;
             $cmd = 'cd ' . escapeshellarg(PathUtility::dirname($setupFile)) . ' && ' .
-                MiscUtility::getExportCommand('PYTHONPATH', escapeshellarg($pythonLib)) . ' && ' .
+                MiscUtility::getExportCommand('PYTHONPATH', $safePythonLib) . ' && ' .
                 $python . ' setup.py' . ($extraFlags ? ' ' . $extraFlags : '') . ' install --home=' . escapeshellarg($pythonHome) . ' 2>&1';
             $out = array();
             static::exec($cmd, $out, $ret);
