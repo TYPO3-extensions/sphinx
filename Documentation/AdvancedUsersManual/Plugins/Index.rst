@@ -92,7 +92,7 @@ This is a Sphinx extension which render charts and graphs by using
 	.. image:: ../../Images/sphinxcontrib-googlechart.png
 		:alt: sphinxcontrib.googlechart
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_googlechart
 
 	.. piechart::
 		:size: 400x200
@@ -122,7 +122,7 @@ This is a Sphinx extension which embeds maps using `Google Maps <http://maps.goo
 	.. image:: ../../Images/sphinxcontrib-googlemaps.png
 		:alt: sphinxcontrib.googlemaps
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_googlemaps
 
 	.. googlemaps::
 		:latitude: 46.804994
@@ -147,7 +147,7 @@ This is a Sphinx extension for embedding your presentation slides.
 	.. image:: ../../Images/sphinxcontrib-slide.png
 		:alt: sphinxcontrib.slide
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_slide
 
 	.. slide:: http://www.slideshare.net/xperseguers/typo3-meets-xliff-rest
 
@@ -170,6 +170,6 @@ This is a Sphinx extension for embedding a YouTube video using its video ID.
 	.. image:: ../../Images/sphinxcontrib-youtube.png
 		:alt: sphinxcontrib.youtube
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_youtube
 
 	.. youtube:: YeGqHMDT7R8

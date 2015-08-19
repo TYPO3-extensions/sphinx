@@ -93,7 +93,7 @@ Extension Sphinx qui génère des graphiques et des graphes à l'aide de
 	.. image:: ../../../Images/sphinxcontrib-googlechart.png
 		:alt: sphinxcontrib.googlechart
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_googlechart
 
 	.. piechart::
 		:size: 400x200
@@ -124,7 +124,7 @@ Extension Sphinx qui intègre des cartes `Google Maps <http://maps.google.com/>`
 		:alt: sphinxcontrib.googlemaps
 
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_googlemaps
 
 	.. googlemaps::
 		:latitude: 46.804994
@@ -150,7 +150,7 @@ Extension Sphinx qui intègre des diapositives de présentation.
 		:alt: sphinxcontrib.slide
 
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_slide
 
 	.. slide:: http://www.slideshare.net/xperseguers/typo3-meets-xliff-rest
 
@@ -174,6 +174,6 @@ Extension Sphinx qui intègre une vidéo YouTube en utilisant son ID.
 		:alt: sphinxcontrib.youtube
 
 
-.. only:: html
+.. only:: html and not missing_sphinxcontrib_youtube
 
 	.. youtube:: YeGqHMDT7R8
