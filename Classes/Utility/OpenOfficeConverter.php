@@ -678,6 +678,7 @@ class OpenOfficeConverter
 
         // Remove useless instructions
         $text = str_replace(array('<text:soft-page-break/>', '<text:tab-stop/>', '<text:s/>'), '', $text);
+        $text = str_replace(array('<text:line-break/>'), ' ', $text);
 
         // Decode HTML entities
         $text = str_replace('&apos;', '\'', htmlspecialchars_decode($text));
@@ -713,6 +714,9 @@ class OpenOfficeConverter
             $text = str_replace(array('*', '`'), array('\\*', '\\`'), $text);
         }
 
+        // Remove bookmark definitions
+        $text = preg_replace('#<text:bookmark-(start|end) text:name="[^"]+"/>#', '', $text);
+
         // Replace links
         $text = preg_replace_callback(
             '#<text:a xlink:type="simple" xlink:href="([^"]+)".*?>(.*?)</text:a>#',
@@ -734,7 +738,7 @@ class OpenOfficeConverter
                     //
                     // where "changelog" anchor would be defined twice when not using
                     // double underscore
-                    return sprintf('`%s <%s>`__', $matches[2], $matches[1]);
+                    return sprintf('`%s <%s>`__ ', $matches[2], $matches[1]);
                 }
             },
             $text
@@ -787,9 +791,10 @@ class OpenOfficeConverter
                             // Paragraph is just an image, include it as-this
                             $replacement = '.. image:: ' . $imageDirectory . $image;
                         } else {
-                            // inline image
-                            $instructions[] = '.. |' . $image . '| image:: ' . $imageDirectory . $image;
-                            $replacement = '|' . $image . '| ';
+                            // Inline image
+                            $imageMarker = substr($image, 0, strrpos($image, '.'));
+                            $instructions[] = '.. |' . $imageMarker . '| image:: ' . $imageDirectory . $image;
+                            $replacement = '|' . $imageMarker . '| ';
                         }
                     }
                 }
