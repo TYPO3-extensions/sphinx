@@ -467,6 +467,7 @@ CausalSphinxEditor = {
         window.setTimeout(function () {
             self.editor.setCursor(self.startLine - 1, 0);
             self.editor.scrollIntoView({line: self.startLine - 1, ch: 0});
+            self.editor.refresh();
         }, 100);
         self.editor.focus();
     },
@@ -513,7 +514,3 @@ CausalSphinxEditor = {
     }
 
 };
-
-$(document).ready(function () {
-    CausalSphinxEditor.initialize();
-});
