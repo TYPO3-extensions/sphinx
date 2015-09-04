@@ -27,6 +27,11 @@
   "replace": {
     "sphinx": "*"
   },
+  "autoload": {
+    "psr-4": {
+      "Causal\\Sphinx\\": "Classes/"
+    }
+  },
   "suggest": {
     "typo3-ter/restdoc": "Allows interactive rendering and enhanced use of built-in reStructuredText editor"
   },
