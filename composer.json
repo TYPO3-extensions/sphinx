@@ -1,8 +1,7 @@
 {
   "name": "causal/sphinx",
-  "description": "Installs a full-fledged Sphinx environment within your TYPO3 website. Builds and renders Sphinx/reStructuredText-based projects such as extension manuals, official reference guides or your own in-house documents as HTML/JSON/PDF either from TYPO3 Backend or from command-line, as you prefer. Features a reStructuredText editor with cross-reference browser and syntax highlighting.",
-  "version": "2.3.1-dev",
   "type": "typo3-cms-extension",
+  "description": "Installs a full-fledged Sphinx environment within your TYPO3 website. Builds and renders Sphinx/reStructuredText-based projects such as extension manuals, official reference guides or your own in-house documents as HTML/JSON/PDF either from TYPO3 Backend or from command-line, as you prefer. Features a reStructuredText editor with cross-reference browser and syntax highlighting.",
   "keywords": [
     "TYPO3 CMS",
     "reStructuredText",
@@ -11,7 +10,9 @@
     "documentation"
   ],
   "homepage": "https://forge.typo3.org/projects/extension-sphinx",
-  "license": "GPL-2.0+",
+  "support": {
+    "issues": "https://forge.typo3.org/projects/extension-sphinx/issues"
+  },
   "authors": [
     {
       "name": "Xavier Perseguers",
@@ -20,22 +21,40 @@
       "role": "Developer"
     }
   ],
+  "license": "GPL-2.0+",
   "require": {
     "php": ">= 5.3.3, <= 5.6.99",
     "typo3/cms-core": ">= 6.2.0, <= 7.99.99"
-  },
-  "replace": {
-    "sphinx": "*"
   },
   "autoload": {
     "psr-4": {
       "Causal\\Sphinx\\": "Classes/"
     }
   },
+  "replace": {
+    "sphinx": "self.version",
+    "typo3-ter/sphinx": "self.version"
+  },
   "suggest": {
     "typo3-ter/restdoc": "Allows interactive rendering and enhanced use of built-in reStructuredText editor"
   },
-  "support": {
-    "issues": "https://forge.typo3.org/projects/extension-sphinx/issues"
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "mkdir -p .Build/Web/typo3conf/ext/",
+      "[ -L .Build/Web/typo3conf/ext/sphinx ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/sphinx"
+    ]
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.3.x-dev"
+    },
+    "typo3/cms": {
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/Web"
+    }
   }
 }
