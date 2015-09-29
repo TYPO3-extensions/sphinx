@@ -182,7 +182,16 @@ class InteractiveViewerController extends AbstractActionController
         if (!ExtensionManagementUtility::isLoaded('restdoc')) {
             $this->forward('missingRestdoc');
         }
-        $restdocVersion = ExtensionManagementUtility::getExtensionVersion('restdoc');
+        try {
+            $restdocVersion = ExtensionManagementUtility::getExtensionVersion('restdoc');
+        } catch (\TYPO3\CMS\Core\Package\Exception $exception) {
+            // Possible problem as described on https://forge.typo3.org/issues/70175
+            $EM_CONF = array();
+            $_EXTKEY = 'restdoc';
+            include(ExtensionManagementUtility::extPath($_EXTKEY) . 'ext_emconf.php');
+            $restdocVersion = $EM_CONF[$_EXTKEY]['version'];
+        }
+
         // Removes -dev -alpha -beta -RC states from a version number
         // and replaces them by .0
         if (stripos($restdocVersion, '-dev') || stripos($restdocVersion, '-alpha') || stripos($restdocVersion, '-beta') || stripos($restdocVersion, '-RC')) {
