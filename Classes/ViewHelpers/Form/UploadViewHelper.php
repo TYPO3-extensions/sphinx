@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\ViewHelpers\Form;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Sphinx\ViewHelpers\Form;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Sphinx\ViewHelpers\Form;
 
 /**
  * Extends the EXT:fluid's upload VH to support multiple files.

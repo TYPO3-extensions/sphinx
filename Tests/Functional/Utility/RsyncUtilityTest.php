@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\Tests\Functional\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Sphinx\Tests\Functional\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Sphinx\Tests\Functional\Utility;
 
 use Causal\Sphinx\Utility\RsyncUtility;
 use Causal\Sphinx\Utility\MiscUtility;

@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\Controller;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Sphinx\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Sphinx\Controller;
 
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

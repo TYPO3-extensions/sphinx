@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\Utility;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Sphinx\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Sphinx\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;

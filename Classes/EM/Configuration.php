@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\EM;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Sphinx\EM;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Sphinx\EM;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\CommandUtility;

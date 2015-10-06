@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\Domain\Repository;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Sphinx\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Sphinx\Domain\Repository;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

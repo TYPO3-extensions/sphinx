@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\ViewHelpers\Link;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Sphinx\ViewHelpers\Link;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Sphinx\ViewHelpers\Link;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;

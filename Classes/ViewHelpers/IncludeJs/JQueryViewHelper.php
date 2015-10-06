@@ -1,6 +1,4 @@
 <?php
-namespace Causal\Sphinx\ViewHelpers\IncludeJs;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -13,6 +11,8 @@ namespace Causal\Sphinx\ViewHelpers\IncludeJs;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+namespace Causal\Sphinx\ViewHelpers\IncludeJs;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
