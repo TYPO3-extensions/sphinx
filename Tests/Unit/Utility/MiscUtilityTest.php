@@ -360,7 +360,7 @@ YAML;
         MiscUtility::addIntersphinxMapping(
             $fixtureFilename,
             't3cmsapi',
-            'http://typo3.org/api/typo3cms'
+            'https://typo3.org/api/typo3cms'
         );
         $configuration = file_get_contents($fixtureFilename);
         $expected = <<<YAML
@@ -371,7 +371,7 @@ conf.py:
   release: 1.2.0-dev
   intersphinx_mapping:
     t3cmsapi:
-    - http://typo3.org/api/typo3cms/
+    - https://typo3.org/api/typo3cms/
     - null
     restdoc:
     - https://docs.typo3.org/typo3cms/extensions/restdoc/

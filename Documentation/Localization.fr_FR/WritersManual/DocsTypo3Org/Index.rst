@@ -379,7 +379,7 @@ Intersphinx ``t3cmsapi`` :
 	  release: 2.3.0
 	  intersphinx_mapping:
 	    t3cmsapi:
-	    - http://typo3.org/api/typo3cms/
+	    - https://typo3.org/api/typo3cms/
 	    - null
 
 Dans votre documentation, vous pouvez ensuite référencer une classe ou une méthode :

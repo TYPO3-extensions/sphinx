@@ -362,7 +362,7 @@ file :file:`Settings.yml` and add an Intersphinx mapping ``t3cmsapi``:
 	  release: 2.3.0
 	  intersphinx_mapping:
 	    t3cmsapi:
-	    - http://typo3.org/api/typo3cms/
+	    - https://typo3.org/api/typo3cms/
 	    - null
 
 In your documentation, you may then either link to a given class or a method:

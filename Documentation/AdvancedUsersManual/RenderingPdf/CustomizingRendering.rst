@@ -15,7 +15,7 @@ In order to customize the output of documentation rendered as PDF with LaTeX to 
 need to install the `Share corporate font family`_ and convert it to be compatible with LaTeX. Please refer to chapter
 :ref:`installing-share-font` for instructions.
 
-.. _`Share corporate font family`: http://typo3.org/about/the-brand/style-guide/the-typo3-font/
+.. _`Share corporate font family`: https://typo3.org/about/the-brand/style-guide/the-typo3-font/
 
 
 LaTeX template

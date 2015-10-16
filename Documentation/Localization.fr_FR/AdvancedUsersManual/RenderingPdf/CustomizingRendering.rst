@@ -16,7 +16,7 @@ devons d'abord installer la `famille de fontes corporate Share`_ et la convertir
 consulter le chapitre :ref:`installing-share-font` pour plus d'informations.
 
 .. Liens :
-.. _`famille de fontes corporate Share`: http://typo3.org/about/the-brand/style-guide/the-typo3-font/
+.. _`famille de fontes corporate Share`: https://typo3.org/about/the-brand/style-guide/the-typo3-font/
 
 
 Modèle LaTeX

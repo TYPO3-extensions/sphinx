@@ -430,7 +430,7 @@ HTML;
         $officialDocuments[] = array(
             'key' => 'typo3cms.api.t3cmsapi',
             'shortcut' => 't3cmsapi',
-            'url' => 'http://typo3.org/api/typo3cms/',
+            'url' => 'https://typo3.org/api/typo3cms/',
         );
 
         $reference = null;
