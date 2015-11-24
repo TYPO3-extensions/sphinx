@@ -41,7 +41,7 @@ $(document).ready(function () {
 		+ '				<h4><a href="https://docs.typo3.org/typo3cms/CheatSheets.html"> Cheat Sheets </a></h4>'
 		+ '			</div>'
 		+ '		</div>'
-		+ '	</li>'s
+		+ '	</li>'
 	;
 	// Insert the main navigation
 	$('#ul-nav').replaceWith(ulnav);
