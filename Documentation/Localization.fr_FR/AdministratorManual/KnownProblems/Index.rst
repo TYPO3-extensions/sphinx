@@ -16,7 +16,6 @@ Problèmes connus
 	single: Message d'erreur; Unzip cannot be executed
 	single: Message d'erreur; ImportError: No module named setuptools
 	single: Message d'erreur; Builder name pdf not registered
-	single: Message d'erreur; LaTeX Error: File 'typo3.sty' not found
 
 - Si malgré vos tentatives de corrections TYPO3 n'arrête pas de vous dire p. ex. "Python interpreter was not found" ou
   "Unzip cannot be executed", vous devriez vérifier votre configuration locale pour :php:`$TYPO3_CONF_VARS['SYS']['binPath']`
@@ -60,41 +59,6 @@ Problèmes connus
 
 - L'installation de Sphinx peut rapporter s'être effectuée avec succès alors qu'elle a en fait échoué lorsqu'une version
   ancienne de Python (< 2.4) est utilisée.
-
-- La génération d'un PDF peut échouer avec "Builder name pdf not registered" lorsque vous utilisez ``rst2pdf``. Cela
-  est provoqué par l'impossibilité de modifier le fichier de configuration global
-  ``uploads/tx_sphinx/RestTools/`` ``ExtendingSphinxForTYPO3/src/t3sphinx/settings/GlobalSettings.yml``
-  par le serveur web. Ce fichier est modifié pour autoriser ``rst2pdf`` à être utilisé lors de mise en place de
-  l'environnement Sphinx depuis le gestionnaire d'extensions. Si ce fichier ne peut pas être modifié par l'utilisateur
-  utilisé par serveur web, vous pouvez le patcher manuellement en ajoutant une référence à l'extension
-  ``rst2pdf.pdfbuilder`` (ligne 9) :
-
-  .. code-block:: yaml
-      :linenos:
-      :emphasize-lines: 9
-
-      extensions:
-        - sphinx.ext.extlinks
-        - sphinx.ext.ifconfig
-        - sphinx.ext.intersphinx
-        - sphinx.ext.todo
-        - t3sphinx.ext.t3extras
-        - t3sphinx.ext.t3tablerows
-        - t3sphinx.ext.targets
-        - rst2pdf.pdfbuilder
-
-- Lorsque vous utilisez LaTeX pour générer un PDF, le rendu peut échouer avec :
-
-  .. code-block:: bash
-
-       LaTeX Error: File `typo3.sty' not found.
-
-  Cela arrive si vous tentez de produire un PDF avec la mise en page TYPO3 mais sans avoir suivi les instructions du
-  chapitre :ref:`installing-share-font`. Ce qui est en fait réellement requis est le clone du dépôt Git RestTools, et
-  pas la fonte Share.
-
-  Ce problème peut aussi survenir si vous tentez de générer votre manual en PDF depuis la ligne de commande sans avoir
-  installé ``typo3.sty`` comme paquet global à LaTeX.
 
 - Avec FAL (TYPO3 6.x) seul le stockage local (*LocalStorage*) a été implémenté et testé, ce qui signifie que le code
   devra être adapté pour pouvoir supporter d'autres types de stockages distants.

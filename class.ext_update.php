@@ -209,6 +209,12 @@ CSS;
             $out[] = '</style>';
         }
 
+        $restToolsPath = GeneralUtility::getFileAbsFileName('uploads/tx_sphinx/RestTools');
+        if (is_dir($restToolsPath)) {
+            $relativePath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($restToolsPath);
+            $out[] = $this->formatWarning('Please remove following directory: "<webroot>/' . $relativePath . '/" since it is not used anymore.', true);
+        }
+
         $out[] = '<form action="' . htmlspecialchars(GeneralUtility::linkThisScript()) . '" method="post" class="container-fluid">';
         $out[] = '<div class="leftColumn col-md-6">';
         $out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
@@ -233,8 +239,12 @@ CSS;
             $hasSources = Setup::hasSphinxSources($version['key']);
             $hasLibraries = Setup::hasPyYaml()
                 && Setup::hasPygments($version['key'])
-                && Setup::hasRestTools()
-                && Setup::hasThirdPartyLibraries();
+                && Setup::hasT3SphinxThemeRtd()
+                && Setup::hasT3FieldListTable()
+                && Setup::hasT3TableRows()
+                && Setup::hasT3Targets()
+                && Setup::hasThirdPartyLibraries()
+                && Setup::hasLaTeXPackage();
             if ($installRst2Pdf) {
                 $hasLibraries &= Setup::hasPIL();
                 $hasLibraries &= Setup::hasRst2Pdf();
@@ -340,14 +350,26 @@ CSS;
         if (!Setup::hasPyYaml()) {
             $success &= Setup::downloadPyYaml($output);
         }
-        if (!Setup::hasRestTools()) {
-            $success &= Setup::downloadRestTools($output);
+        if (!Setup::hasT3SphinxThemeRtd()) {
+            $success &= Setup::downloadT3SphinxThemeRtd($output);
+        }
+        if (!Setup::hasT3FieldListTable()) {
+            $success &= Setup::downloadT3FieldListTable($output);
+        }
+        if (!Setup::hasT3TableRows()) {
+            $success &= Setup::downloadT3TableRows($output);
+        }
+        if (!Setup::hasT3Targets()) {
+            $success &= Setup::downloadT3Targets($output);
         }
         if (!Setup::hasThirdPartyLibraries()) {
             $success &= Setup::downloadThirdPartyLibraries($output);
         }
         if (!Setup::hasPygments($version)) {
             $success &= Setup::downloadPygments($version, $output);
+        }
+        if (!Setup::hasLaTeXPackage()) {
+            $success &= Setup::downloadLaTeXPackage($output);
         }
 
         return $success;
@@ -378,7 +400,7 @@ CSS;
                 if (Setup::hasThirdPartyLibraries()) {
                     $selectedPlugins = GeneralUtility::trimExplode(',', $this->configuration['plugins'], true);
                     foreach ($selectedPlugins as $selectedPlugin) {
-                        $success &= Setup::buildThirdPartyLibraries($selectedPlugin, $version, $output);
+                        $success &= Setup::buildThirdPartyLibraries('sphinx-contrib' . DIRECTORY_SEPARATOR . $selectedPlugin, $version, $output);
                     }
                 }
                 if (Setup::hasPyYaml()) {
@@ -387,8 +409,17 @@ CSS;
                 if (Setup::hasPygments($version)) {
                     $success &= Setup::buildPygments($version, $output);
                 }
-                if (Setup::hasRestTools()) {
-                    $success &= Setup::buildRestTools($version, $output);
+                if (Setup::hasT3SphinxThemeRtd()) {
+                    $success &= Setup::buildT3SphinxThemeRtd($version, $output);
+                }
+                if (Setup::hasT3FieldListTable()) {
+                    $success &= Setup::buildT3FieldListTable($version, $output);
+                }
+                if (Setup::hasT3TableRows()) {
+                    $success &= Setup::buildT3TableRows($version, $output);
+                }
+                if (Setup::hasT3Targets()) {
+                    $success &= Setup::buildT3Targets($version, $output);
                 }
             }
         }

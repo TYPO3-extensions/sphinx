@@ -25,6 +25,7 @@ Ce qui suit est une vue d'ensemble très haut niveau des changements de cette ex
 =======  ===========================================================================
 Version  Changements
 =======  ===========================================================================
+2.4.x    - Nouveau thème sphinx-doc selon docs.typo3.org
 2.3.x    - Rendu parallélisé pour accélérer le processus
          - Convertisseur OpenOffice vers Sphinx autonome et réécrit de zéro
 2.2.x    - Compatibilité TYPO3 6.2 - 7.x

@@ -35,10 +35,14 @@ class Documentation
      */
     protected $sphinxReader;
 
-    /** @var callback */
+    /**
+     * @var callback
+     */
     protected $callbackLinks;
 
-    /** @var callback */
+    /**
+     * @var callback
+     */
     protected $callbackImages;
 
     /**
@@ -52,6 +56,8 @@ class Documentation
     }
 
     /**
+     * Sets the callback for processing the links.
+     *
      * @param callback $callbackLinks Callback to generate Links in current context
      * @return \Causal\Sphinx\Domain\Model\Documentation
      */
@@ -62,6 +68,8 @@ class Documentation
     }
 
     /**
+     * Sets the callback for processing images.
+     *
      * @param callback $callbackImages function to process images in current context
      * @return \Causal\Sphinx\Domain\Model\Documentation
      */
@@ -80,9 +88,9 @@ class Documentation
     {
         static $masterToc = null;
         if ($masterToc === null) {
-            $masterToc = $this->sphinxReader->getMasterTableOfContents($this->callbackLinks, true);
+            $masterToc = $this->sphinxReader->getMasterTableOfContents(false);
             $data = $masterToc ? RestHelper::getMenuData(RestHelper::xmlstr_to_array($masterToc)) : array();
-            RestHelper::processMasterTableOfContents($data, $this->sphinxReader->getDocument(), $this->callbackLinks);
+            RestHelper::processMasterTableOfContents($data, null, $this->callbackLinks);
             $masterToc = $this->createMasterMenu($data);
         }
         return $masterToc;
@@ -168,7 +176,7 @@ class Documentation
     }
 
     /**
-     * Returns the title and url of the main document.
+     * Returns the title, url and other global informations of the main document.
      *
      * @return array
      */
@@ -176,6 +184,10 @@ class Documentation
     {
         static $data = null;
         if ($data === null) {
+            $filename = $this->sphinxReader->getPath() . 'globalcontext.json';
+            $content = file_get_contents($filename);
+            $globalContext = json_decode($content, true);
+
             // Temporarily load the master document
             $filename = $this->sphinxReader->getPath() . $this->sphinxReader->getDefaultFile() . '.fjson';
             $content = file_get_contents($filename);
@@ -184,7 +196,11 @@ class Documentation
             $link = call_user_func($this->callbackLinks, $this->sphinxReader->getDefaultFile() . '/');
             $data = array(
                 'title' => $masterData['title'],
+                'version' => $globalContext['version'],
+                'release' => $globalContext['release'],
+                'copyright' => $globalContext['copyright'],
                 'url' => $link,
+                'sphinx_version' => $globalContext['sphinx_version'],
             );
         }
         return $data;
@@ -310,27 +326,26 @@ class Documentation
     {
         $menu = array();
         if ($level == 1) {
-            $menu[] = '<ul id="nav-aside" class="current cur">';
+            $menu[] = '<ul class="current">';
             $wrapTitle = '%s';
         } else {
-            $menu[] = '<ul class="nav-aside-lvl' . $level . '">';
-            $wrapTitle = '<span>%s</span>';
+            $menu[] = '<ul>';
+            $wrapTitle = '%s';
         }
 
         foreach ($data as $menuEntry) {
-            if (isset($menuEntry['ITEM_STATE']) && $menuEntry['ITEM_STATE'] === 'CUR') {
-                $currentClass = ' current cur';
+            if (isset($menuEntry['ITEM_STATE']) && in_array($menuEntry['ITEM_STATE'], array('ACT', 'CUR'))) {
+                $currentClass = ' current';
             } else {
                 $currentClass = '';
             }
 
-            $menu[] = '<li class="toctree-l' . $level . $currentClass . ' nav-aside-lvl' . $level . '">';
+            $menu[] = '<li class="toctree-l' . $level . $currentClass . '">';
             $menu[] = '<a href="' . str_replace('&', '&amp;', $menuEntry['_OVERRIDE_HREF']) . '" class="nav-aside-lvl' . $level . $currentClass . '">' .
                 sprintf($wrapTitle, htmlspecialchars($menuEntry['title'])) .
                 '</a>';
 
             $generateSubMenu = $level == 1;
-            $generateSubMenu |= isset($menuEntry['ITEM_STATE']) && ($menuEntry['ITEM_STATE'] === 'CUR' || $menuEntry['ITEM_STATE'] === 'ACT');
             $generateSubMenu &= isset($menuEntry['_SUB_MENU']);
 
             if ($generateSubMenu) {

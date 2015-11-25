@@ -37,7 +37,7 @@ $EM_CONF[$_EXTKEY] = array(
         ),
         'conflicts' => array(),
         'suggests' => array(
-            'restdoc' => '1.4.0-0.0.0',
+            'restdoc' => '1.6.0-0.0.0',
         ),
     ),
     '_md5_values_when_last_written' => '',

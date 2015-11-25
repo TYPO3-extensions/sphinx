@@ -312,7 +312,7 @@ class SphinxBuilder
         $buildDirectory = rtrim($buildDirectory, '/');
         $paperSize = 'a4';
         $sphinxSourcesPath = GeneralUtility::getFileAbsFileName('uploads/tx_sphinx/');
-        $templatePath = $sphinxSourcesPath . 'RestTools/LaTeX/';
+        $templatePath = $sphinxSourcesPath . 'latex.typo3/';
         $templateFiles = array(
             'typo3.sty',
             'typo3_logo_color.png',

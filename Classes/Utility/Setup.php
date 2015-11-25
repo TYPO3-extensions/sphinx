@@ -110,7 +110,7 @@ class Setup
      * Returns true if the source files of Sphinx are available locally.
      *
      * @param string $version Version name (e.g., 1.0.0)
-     * @return boolean
+     * @return bool
      */
     public static function hasSphinxSources($version)
     {
@@ -125,7 +125,7 @@ class Setup
      * @param string $version Version name (e.g., 1.0.0)
      * @param string $url Complete URL of the zip file containing the sphinx sources
      * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      * @see https://github.com/sphinx-doc/sphinx
      */
@@ -188,7 +188,7 @@ class Setup
      *
      * @param string $version Version name (e.g., 1.0.0)
      * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      */
     public static function buildSphinx($version, array &$output = null)
@@ -344,181 +344,165 @@ EOT;
     }
 
     /**
-     * Returns true if the source files of the TYPO3 ReST tools are available locally.
+     * Returns true if the source files of the t3SphinxThemeRtd package are available locally.
      *
-     * @return boolean
+     * @return bool
      */
-    public static function hasRestTools()
+    public static function hasT3SphinxThemeRtd()
     {
-        $sphinxSourcesPath = static::getSphinxSourcesPath();
-        $setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
+        $sphinxSourcePath = static::getSphinxSourcesPath();
+        $setupFile = $sphinxSourcePath . 't3SphinxThemeRtd/setup.py';
         return is_file($setupFile);
     }
 
     /**
-     * Downloads the source files of the TYPO3 ReST tools.
+     * Downloads the source files of the t3SphinxThemeRtd package.
      *
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
-     * @see https://forge.typo3.org/projects/tools-rest
      */
-    public static function downloadRestTools(array &$output = null)
+    public static function downloadT3SphinxThemeRtd(array &$output = null)
     {
-        $success = true;
-        $tempPath = MiscUtility::getTemporaryPath();
-        $sphinxSourcesPath = static::getSphinxSourcesPath();
-
-        // Try to clone from Git before falling back to downloading a snapshot
-        if (GitUtility::isAvailable()) {
-            $url = 'git://git.typo3.org/Documentation/RestTools.git';
-            static::$log[] = '[INFO] Cloning ' . $url;
-            if (GitUtility::cloneRepository($url, $sphinxSourcesPath)) {
-                $output[] = '[INFO] TYPO3 ReStructuredText Tools have been cloned.';
-                return $success;
-            } else {
-                $output[] = '[WARNING] Failed to clone TYPO3 ReStructured Text Tools, will use a snapshot.';
-                if (is_dir($sphinxSourcesPath . 'RestTools')) {
-                    GeneralUtility::rmdir($sphinxSourcesPath . 'RestTools', true);
-                }
-            }
-        }
-
-        $url = 'https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3';
-        static::$log[] = '[INFO] Fetching ' . $url;
-        $body = MiscUtility::getUrl($url);
-        if (preg_match('#<a .*?href="/Documentation/RestTools\.git/snapshot/([0-9a-f]+)\.tar\.gz">tar\.gz</a>#', $body, $matches)) {
-            $commit = $matches[1];
-            $url = 'https://git.typo3.org/Documentation/RestTools.git/snapshot/' . $commit . '.tar.gz';
-            $archiveFilename = $tempPath . 'RestTools.tar.gz';
-            static::$log[] = '[INFO] Fetching ' . $url;
-            $archiveContent = MiscUtility::getUrl($url);
-            if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
-                $output[] = '[INFO] TYPO3 ReStructuredText Tools (' . $commit . ') have been downloaded.';
-
-                // Target path is compatible with directory structure of complete git project
-                // allowing people to use the official git repository instead, if wanted
-                $targetPath = $sphinxSourcesPath . 'RestTools' . DIRECTORY_SEPARATOR . 'ExtendingSphinxForTYPO3';
-
-                // Unpack TYPO3 ReST Tools archive
-                $out = array();
-                if (static::unarchive($archiveFilename, $targetPath, 'RestTools-' . substr($commit, 0, 7), $out)) {
-                    $output[] = '[INFO] TYPO3 ReStructuredText Tools have been unpacked.';
-                } else {
-                    $success = false;
-                    $output[] = '[ERROR] Could not extract TYPO3 ReStructuredText Tools:' . LF . LF . implode($out, LF);
-                }
-            } else {
-                $success = false;
-                $output[] = '[ERROR] Could not download ' . htmlspecialchars($url);
-            }
-        } else {
-            $success = false;
-            $output[] = '[ERROR] Could not download ' . htmlspecialchars('https://git.typo3.org/Documentation/RestTools.git/tree/HEAD:/ExtendingSphinxForTYPO3');
-        }
-
+        $success = static::cloneGitHubProject('https://github.com/TYPO3-Documentation/t3SphinxThemeRtd.git', $output, 't3SphinxThemeRtd');
         return $success;
     }
 
     /**
-     * Builds and installs TYPO3 ReST tools locally.
+     * Builds the source files of the t3SphinxThemeRtd package.
      *
-     * @param string $sphinxVersion The Sphinx version to build the ReST tools for
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param string $sphinxVersion
+     * @param array|null $output
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    public static function buildRestTools($sphinxVersion, array &$output = null)
+    public static function buildT3SphinxThemeRtd($sphinxVersion, array &$output = null)
     {
-        $sphinxSourcesPath = static::getSphinxSourcesPath();
-        $sphinxPath = static::getSphinxPath();
+        $success = static::buildThirdPartyLibraries('t3SphinxThemeRtd', $sphinxVersion, $output);
+        return $success;
+    }
 
-        $pythonHome = $sphinxPath . $sphinxVersion;
-        $pythonLib = $pythonHome . '/lib/python';
+    /**
+     * Returns true if the source files of the sphinxcontrib.t3fieldlisttable package are available locally.
+     *
+     * @return bool
+     */
+    public static function hasT3FieldListTable()
+    {
+        $sphinxSourcePath = static::getSphinxSourcesPath();
+        $setupFile = $sphinxSourcePath . 'sphinxcontrib.t3fieldlisttable/setup.py';
+        return is_file($setupFile);
+    }
 
-        // Compatibility with Windows platform
-        $pythonHome = str_replace('/', DIRECTORY_SEPARATOR, $pythonHome);
-        $pythonLib = str_replace('/', DIRECTORY_SEPARATOR, $pythonLib);
+    /**
+     * Downloads the source files of the sphinxcontrib.t3fieldlisttable package.
+     *
+     * @param array|null $output
+     * @return bool true if operation succeeded, otherwise false
+     * @throws \Exception
+     */
+    public static function downloadT3FieldListTable(array &$output = null)
+    {
+        $success = static::cloneGitHubProject('https://github.com/TYPO3-Documentation/sphinxcontrib.t3fieldlisttable.git', $output, 'sphinxcontrib.t3fieldlisttable');
+        return $success;
+    }
 
-        if (!is_dir($pythonLib)) {
-            $success = false;
-            $output[] = '[ERROR] Invalid Python library: ' . $pythonLib;
-            return $success;
-        }
+    /**
+     * Builds the source files of the sphinxcontrib.t3fieldlisttable package.
+     *
+     * @param string $sphinxVersion
+     * @param array|null $output
+     * @return bool true if operation succeeded, otherwise false
+     * @throws \Exception
+     */
+    public static function buildT3FieldListTable($sphinxVersion, array &$output = null)
+    {
+        $success = static::buildThirdPartyLibraries('sphinxcontrib.t3fieldlisttable', $sphinxVersion, $output);
+        return $success;
+    }
 
-        // Patch RestTools to support rst2pdf. We do it here and not after downloading
-        // to let user build RestTools with Git repository as well
-        // @see https://forge.typo3.org/issues/49341
-        $globalSettingsFilename = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/src/t3sphinx/settings/GlobalSettings.yml';
+    /**
+     * Returns true if the source files of the sphinxcontrib.t3tablerows package are available locally.
+     *
+     * @return bool
+     */
+    public static function hasT3TableRows()
+    {
+        $sphinxSourcePath = static::getSphinxSourcesPath();
+        $setupFile = $sphinxSourcePath . 'sphinxcontrib.t3tablerows/setup.py';
+        return is_file($setupFile);
+    }
 
-        // Compatibility with Windows platform
-        $globalSettingsFilename = str_replace('/', DIRECTORY_SEPARATOR, $globalSettingsFilename);
+    /**
+     * Downloads the source files of the sphinxcontrib.t3tablerows package.
+     *
+     * @param array|null $output
+     * @return bool true if operation succeeded, otherwise false
+     * @throws \Exception
+     */
+    public static function downloadT3TableRows(array &$output = null)
+    {
+        $success = static::cloneGitHubProject('https://github.com/TYPO3-Documentation/sphinxcontrib.t3tablerows.git', $output, 'sphinxcontrib.t3tablerows');
+        return $success;
+    }
 
-        $configuration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][static::$extKey]);
-        $installRst2Pdf = TYPO3_OS !== 'WIN' && $configuration['install_rst2pdf'] === '1';
-        $isPatched = !$installRst2Pdf;
+    /**
+     * Builds the source files of the sphinxcontrib.t3tablerows package.
+     *
+     * @param string $sphinxVersion
+     * @param array|null $output
+     * @return bool true if operation succeeded, otherwise false
+     * @throws \Exception
+     */
+    public static function buildT3TableRows($sphinxVersion, array &$output = null)
+    {
+        $success = static::buildThirdPartyLibraries('sphinxcontrib.t3tablerows', $sphinxVersion, $output);
+        return $success;
+    }
 
-        if ($installRst2Pdf && static::hasLibrary('rst2pdf', $sphinxVersion)) {
-            if (is_file($globalSettingsFilename)) {
-                $globalSettings = file_get_contents($globalSettingsFilename);
-                $rst2pdfLibrary = 'rst2pdf.pdfbuilder';
-                $isPatched = strpos($globalSettings, '- ' . $rst2pdfLibrary) !== false;
+    /**
+     * Returns true if the source files of the sphinxcontrib.t3targets package are available locally.
+     *
+     * @return bool
+     */
+    public static function hasT3Targets()
+    {
+        $sphinxSourcePath = static::getSphinxSourcesPath();
+        $setupFile = $sphinxSourcePath . 'sphinxcontrib.t3targets/setup.py';
+        return is_file($setupFile);
+    }
 
-                if (!$isPatched && is_writable($globalSettingsFilename)) {
-                    if (strpos($globalSettings, '- ' . $rst2pdfLibrary) === false) {
-                        $globalSettingsLines = explode(LF, $globalSettings);
-                        $buffer = array();
-                        $numberOfLines = count($globalSettingsLines);
-                        for ($i = 0; $i < $numberOfLines; $i++) {
-                            if (trim($globalSettingsLines[$i]) === 'extensions:') {
-                                while (!empty($globalSettingsLines[$i])) {
-                                    $buffer[] = $globalSettingsLines[$i];
-                                    $i++;
-                                };
-                                $buffer[] = '  - ' . $rst2pdfLibrary;
-                            }
-                            $buffer[] = $globalSettingsLines[$i];
-                        }
-                        $isPatched = GeneralUtility::writeFile($globalSettingsFilename, implode(LF, $buffer));
-                    }
-                }
-            } else {
-                // Should not happen
-                $output[] = '[ERROR] Could not find file "' . $globalSettingsFilename . '".';
-            }
-        }
+    /**
+     * Downloads the source files of the sphinxcontrib.t3targets package.
+     *
+     * @param array|null $output
+     * @return bool true if operation succeeded, otherwise false
+     * @throws \Exception
+     */
+    public static function downloadT3Targets(array &$output = null)
+    {
+        $success = static::cloneGitHubProject('https://github.com/TYPO3-Documentation/sphinxcontrib.t3targets.git', $output, 'sphinxcontrib.t3targets');
+        return $success;
+    }
 
-        if (!$isPatched) {
-            $output[] = '[WARNING] Could not patch file "' . $globalSettingsFilename .
-                '". Please check file permissions. rst2pdf may fail to run properly with error message "Builder name pdf not registered".';
-        }
-
-        $setupFile = $sphinxSourcesPath . 'RestTools/ExtendingSphinxForTYPO3/setup.py';
-
-        // Compatibility with Windows platform
-        $setupFile = str_replace('/', DIRECTORY_SEPARATOR, $setupFile);
-
-        if (is_file($setupFile)) {
-            $success = static::buildWithPython(
-                'TYPO3 RestructuredText Tools',
-                $setupFile,
-                $pythonHome,
-                $pythonLib,
-                '',
-                $output
-            );
-        } else {
-            $success = false;
-            $output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
-        }
-
+    /**
+     * Builds the source files of the sphinxcontrib.t3targets package.
+     *
+     * @param string $sphinxVersion
+     * @param array|null $output
+     * @return bool true if operation succeeded, otherwise false
+     * @throws \Exception
+     */
+    public static function buildT3Targets($sphinxVersion, array &$output = null)
+    {
+        $success = static::buildThirdPartyLibraries('sphinxcontrib.t3targets', $sphinxVersion, $output);
         return $success;
     }
 
     /**
      * Returns true if the source files of 3rd-party libraries are available locally.
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasThirdPartyLibraries()
     {
@@ -530,8 +514,8 @@ EOT;
     /**
      * Downloads the source files of 3rd-party libraries.
      *
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      * @see https://bitbucket.org/xperseguers/sphinx-contrib/
      */
@@ -585,13 +569,13 @@ EOT;
     /**
      * Builds and installs 3rd-party libraries locally.
      *
-     * @param string $plugin The 3rd-party plugin to build
+     * @param string $package The python package to build
      * @param string $sphinxVersion The Sphinx version to build 3rd-party libraries for
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      */
-    public static function buildThirdPartyLibraries($plugin, $sphinxVersion, array &$output = null)
+    public static function buildThirdPartyLibraries($package, $sphinxVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $sphinxPath = static::getSphinxPath();
@@ -609,10 +593,10 @@ EOT;
             return $success;
         }
 
-        $setupFile = $sphinxSourcesPath . 'sphinx-contrib' . DIRECTORY_SEPARATOR . $plugin . DIRECTORY_SEPARATOR . 'setup.py';
+        $setupFile = $sphinxSourcesPath . $package . DIRECTORY_SEPARATOR . 'setup.py';
         if (is_file($setupFile)) {
             $success = static::buildWithPython(
-                '3rd-party extension "sphinxcontrib.' . $plugin . '"',
+                'Package "' . $package . '"',
                 $setupFile,
                 $pythonHome,
                 $pythonLib,
@@ -730,7 +714,7 @@ EOT;
     /**
      * Returns true if the source files of PyYAML are available locally.
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasPyYaml()
     {
@@ -742,8 +726,8 @@ EOT;
     /**
      * Downloads the source files of PyYAML.
      *
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      * @see http://pyyaml.org/
      */
@@ -781,8 +765,8 @@ EOT;
      * Builds and installs PyYAML locally.
      *
      * @param string $sphinxVersion The Sphinx version to build PyYAML for
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      */
     public static function buildPyYaml($sphinxVersion, array &$output = null)
@@ -836,7 +820,7 @@ EOT;
     /**
      * Returns true if the source files of Python Imaging Library are available locally.
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasPIL()
     {
@@ -848,8 +832,8 @@ EOT;
     /**
      * Downloads the source files of Python Imaging Library.
      *
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      * @see https://pypi.python.org/pypi/PIL
      */
@@ -887,8 +871,8 @@ EOT;
      * Builds and installs Python Imaging Library locally.
      *
      * @param string $sphinxVersion The Sphinx version to build Python Imaging Library for
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      */
     public static function buildPIL($sphinxVersion, array &$output = null)
@@ -931,7 +915,7 @@ EOT;
      * Returns true if the source files of Pygments are available locally.
      *
      * @param string $sphinxVersion The Sphinx version to build Pygments for
-     * @return boolean
+     * @return bool
      */
     public static function hasPygments($sphinxVersion)
     {
@@ -970,8 +954,8 @@ EOT;
      * Downloads the source files of Pygments.
      *
      * @param string $sphinxVersion The Sphinx version to build Pygments for
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      * @see http://pygments.org/
      */
@@ -1015,8 +999,8 @@ EOT;
      * Builds and installs Pygments locally.
      *
      * @param string $sphinxVersion The Sphinx version to build Pygments for
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      */
     public static function buildPygments($sphinxVersion, array &$output = null)
@@ -1071,10 +1055,10 @@ EOT;
      * Configures TypoScript support for Pygments.
      *
      * @param string $pygmentsVersion
-     * @param null|array $output Log of operations
+     * @param array|null $output Log of operations
      * @return void
      */
-    static private function configureTyposcriptForPygments($pygmentsVersion, array &$output = null)
+    private static function configureTyposcriptForPygments($pygmentsVersion, array &$output = null)
     {
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $lexersPath = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . $pygmentsVersion . DIRECTORY_SEPARATOR . 'pygments' . DIRECTORY_SEPARATOR . 'lexers' . DIRECTORY_SEPARATOR;
@@ -1106,9 +1090,34 @@ EOT;
     }
 
     /**
+     * Returns true if the source files of the latex.typo3 package are available locally.
+     *
+     * @return bool
+     */
+    public static function hasLaTeXPackage()
+    {
+        $sphinxSourcePath = static::getSphinxSourcesPath();
+        $packageFile = $sphinxSourcePath . 'latex.typo3/typo3.sty';
+        return is_file($packageFile);
+    }
+
+    /**
+     * Downloads the source files of the latex.typo3 package.
+     *
+     * @param array|null $output
+     * @return bool true if operation succeeded, otherwise false
+     * @throws \Exception
+     */
+    public static function downloadLaTeXPackage(array &$output = null)
+    {
+        $success = static::cloneGitHubProject('https://github.com/TYPO3-Documentation/latex.typo3.git', $output, 'latex.typo3');
+        return $success;
+    }
+
+    /**
      * Returns true if the source files of rst2pdf are available locally.
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasRst2Pdf()
     {
@@ -1120,8 +1129,8 @@ EOT;
     /**
      * Downloads the source files of rst2pdf.
      *
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      * @see http://rst2pdf.ralsina.me/
      */
@@ -1159,8 +1168,8 @@ EOT;
      * Builds and installs rst2pdf locally.
      *
      * @param string $sphinxVersion The Sphinx version to build rst2pdf for
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      * @throws \Exception
      */
     public static function buildRst2Pdf($sphinxVersion, array &$output = null)
@@ -1204,7 +1213,7 @@ EOT;
      *
      * @param string $library Name of the library (without version)
      * @param string $sphinxVersion The Sphinx version to check for
-     * @return boolean
+     * @return bool
      */
     public static function hasLibrary($library, $sphinxVersion)
     {
@@ -1404,7 +1413,7 @@ EOT;
      * version available.
      *
      * @param string $sphinxVersion
-     * @return null|array ['version' => <version>, 'url' => <downloadUrl>]
+     * @return array|null ['version' => <version>, 'url' => <downloadUrl>]
      */
     protected static function getPygmentsVersionUrl($sphinxVersion)
     {
@@ -1433,9 +1442,9 @@ EOT;
      * Logs and executes a command.
      *
      * @param string $cmd Command to be executed
-     * @param null|array $output Log of operations
+     * @param array|null $output Log of operations
      * @param integer $returnValue Return code
-     * @return null|array Last line of the shell output
+     * @return array|null Last line of the shell output
      */
     protected static function exec($cmd, &$output = null, &$returnValue = 0)
     {
@@ -1452,8 +1461,8 @@ EOT;
      * @param string $archiveFilename Absolute path to the zip or tar.gz archive
      * @param string $targetDirectory Absolute path to the target directory
      * @param string|null $moveContentOutsideOfDirectoryPrefix Directory prefix to remove
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      */
     public static function unarchive($archiveFilename, $targetDirectory, $moveContentOutsideOfDirectoryPrefix = null, array &$output = null)
     {
@@ -1531,8 +1540,8 @@ EOT;
      * @param string $pythonHome Absolute path to Python HOME
      * @param string $pythonLib Absolute path to Python libraries
      * @param string $extraFlags Optional extra compilation flags
-     * @param null|array $output Log of operations
-     * @return boolean true if operation succeeded, otherwise false
+     * @param array|null $output Log of operations
+     * @return bool true if operation succeeded, otherwise false
      */
     protected static function buildWithPython($name, $setupFile, $pythonHome, $pythonLib, $extraFlags = '', array &$output = null)
     {
@@ -1574,6 +1583,66 @@ EOT;
     }
 
     /**
+     * Clones from Git and falls back to downloading a snapshot if it fails.
+     *
+     * @param string $url
+     * @param array|null $output
+     * @param string $projectName
+     * @return bool true if operation succeeded, otherwise false
+     * @throws \Exception
+     */
+    protected static function cloneGitHubProject($url, array &$output = null, $projectName)
+    {
+        $success = true;
+        $tempPath = MiscUtility::getTemporaryPath();
+        $sphinxSourcesPath = static::getSphinxSourcesPath();
+        if (preg_match('#^https://github.com/([^/]+)/([^/]+)\.git$#', $url, $matches)) {
+            $package = $matches[2];
+        } else {
+            $success = false;
+            $output[] = '[ERROR] Invalid GitHub URL "' . $url . '"';
+            return $success;
+        }
+
+        // Try to clone from Git before falling back to downloading a snapshot
+        if (GitUtility::isAvailable()) {
+            static::$log[] = '[INFO] Cloning ' . $url;
+            if (GitUtility::cloneRepository($url, $sphinxSourcesPath)) {
+                $output[] = '[INFO] Package ' . $projectName . ' has been cloned.';
+                return $success;
+            } else {
+                $output[] = '[WARNING] Failed to clone ' . $projectName . ', will use a snapshot.';
+                if (is_dir($sphinxSourcesPath . $package)) {
+                    GeneralUtility::rmdir($sphinxSourcesPath . $package, true);
+                }
+            }
+        }
+
+        $zipFilename = $tempPath . $package . '.zip';
+        $url = preg_replace('#https://github.com/(.*)\.git$#', 'https://codeload.github.com/\1/zip/master', $url);
+        static::$log[] = '[INFO] Fetching ' . $url;
+        $zipContent = MiscUtility::getUrl($url);
+        if ($zipContent && GeneralUtility::writeFile($zipFilename, $zipContent)) {
+            $output[] = '[INFO] ' . $package . ' has been downloaded.';
+            $targetPath = $sphinxSourcesPath . $package;
+
+            // Unzip the archive
+            $out = array();
+            if (static::unarchive($zipFilename, $targetPath, $package . '-master')) {
+                $output[] = '[INFO] ' . $package . ' has been unpacked.';
+            } else {
+                $success = false;
+                $output[] = '[ERROR] Could not extract ' . $package . ':' . LF . LF . implode($out, LF);
+            }
+        } else {
+            $success = false;
+            $output[] = '[ERROR] Cannot fetch file ' . $url . '.';
+        }
+
+        return $success;
+    }
+
+    /**
      * Clears the log of operations.
      *
      * @return void
@@ -1606,7 +1675,7 @@ EOT;
      *
      * @return string Absolute path to the Sphinx sources
      */
-    static private function getSphinxSourcesPath()
+    private static function getSphinxSourcesPath()
     {
         $sphinxSourcesPath = GeneralUtility::getFileAbsFileName('uploads/tx_sphinx/');
         // Compatibility with Windows platform
@@ -1620,7 +1689,7 @@ EOT;
      *
      * @return string Absolute path to the Sphinx binaries
      */
-    static private function getSphinxPath()
+    private static function getSphinxPath()
     {
         $sphinxPath = GeneralUtility::getFileAbsFileName('typo3temp/tx_sphinx/sphinx-doc/');
         // Compatibility with Windows platform

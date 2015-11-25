@@ -18,21 +18,12 @@ Les instructions sont disponibles dans le dépôt des commandes liées à TYPO3 
 .. Liens :
 .. _`famille de fontes corporate Share`: https://typo3.org/about/the-brand/style-guide/the-typo3-font/
 
-Au lieu de simplement récupérer ce répertoire :file:`LaTeX` depuis le dépôt officiel, nous vous suggérons de remplacement
-complètement le répertoire :file:`RestTools` et d'utiliser un clone du dépôt Git complet :
-
-.. code-block:: bash
-
-	$ cd /path/to/uploads/tx_sphinx/
-	$ sudo rm -rf RestTools
-	$ git clone git://git.typo3.org/Documentation/RestTools.git
-
-Déplacez vous ensuite dans le répertoire :file:`RestTools/LaTeX` et convertissez la fonte Share (le mot de passe demandé
+Déplacez vous dans le répertoire :file:`latex.typo3` et convertissez la fonte Share (le mot de passe demandé
 est lié à l'utilisation de :command:`sudo` ; c'est donc votre propre mot de passe) :
 
 .. code-block:: bash
 
-	$ cd /path/to/uploads/tx_sphinx/RestTools/LaTeX/
+	$ cd /path/to/uploads/tx_sphinx/latex.typo3/
 	$ cd font/
 	$ ./convert-share.sh
 
@@ -50,7 +41,7 @@ est lié à l'utilisation de :command:`sudo` ; c'est donc votre propre mot de pa
 
 	**Astuce:** Vous pouvez utiliser le script :program:`convert-share.sh` depuis une machine Linux et définir ``INSTALL=0``
 	vers le début du script. Au lieu d'installer les fontes converties sur votre système, le script va uniquement les
-	convertir et préparer les fichiers de correspondance (*mapping*) dans le répertoire :file:`RestTools/LaTeX/fonts/texmf/`.
+	convertir et préparer les fichiers de correspondance (*mapping*) dans le répertoire :file:`latex.typo3/fonts/texmf/`.
 
 Une fois convertie, la fonte est disponible comme ``typo3share`` dans vos documents LaTeX. Pour vérifier que la fonte est
 correctement installée, vous pouvez créer un document LaTeX exemple, (:file:`test-font.tex`):

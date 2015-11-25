@@ -59,7 +59,7 @@ globalement :
 	$ sudo tlmgr install ec
 	$ sudo tlmgr install cm-super
 
-	$ cd /path/to/uploads/tx_sphinx/RestTools/LaTeX/
+	$ cd /path/to/uploads/tx_sphinx/latex.typo3/
 	$ sudo mkdir /usr/share/texmf/tex/latex/typo3
 	$ sudo cp typo3.sty /usr/share/texmf/tex/latex/typo3/
 	$ sudo cp typo3_logo_color.png /usr/share/texmf/tex/latex/typo3/

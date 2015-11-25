@@ -13,25 +13,16 @@ Installing the Share font
 
 In order to customize the output of documentation rendered as PDF with LaTeX to match the TYPO3 branding, we first
 need to install the `Share corporate font family`_ and convert it to be compatible with LaTeX. Instructions can be
-found in the repository of the TYPO3-related commands for Sphinx, within directory :file:`LaTeX`.
+found in the repository of the TYPO3-related commands for Sphinx, within directory :file:`latex.typo3`.
 
 .. _`Share corporate font family`: https://typo3.org/about/the-brand/style-guide/the-typo3-font/
 
-Instead of just fetching this :file:`LaTeX` directory from the official repository, we suggest to replace the whole
-:file:`RestTools` directory and use a clone of the whole Git repository:
-
-.. code-block:: bash
-
-	$ cd /path/to/uploads/tx_sphinx/
-	$ sudo rm -rf RestTools
-	$ git clone git://git.typo3.org/Documentation/RestTools.git
-
-Then go to directory :file:`RestTools/LaTeX` and convert the Share font (the password that is being asked is related to
+Go to directory :file:`latex.typo3` and convert the Share font (the password that is being asked is related to
 :command:`sudo`; as such it is your own password):
 
 .. code-block:: bash
 
-	$ cd /path/to/uploads/tx_sphinx/RestTools/LaTeX/
+	$ cd /path/to/uploads/tx_sphinx/latex.typo3/
 	$ cd font/
 	$ ./convert-share.sh
 
@@ -47,7 +38,7 @@ Then go to directory :file:`RestTools/LaTeX` and convert the Share font (the pas
 
 	**Tip:** You may want to use script :program:`convert-share.sh` from a Linux machine and set ``INSTALL=0`` near the
 	beginning of the script. Instead of installing the converted fonts on your system, it will only convert them and
-	prepare mapping files within directory :file:`RestTools/LaTeX/fonts/texmf/`.
+	prepare mapping files within directory :file:`latex.typo3/fonts/texmf/`.
 
 Once converted, the font is available as ``typo3share`` within LaTeX documents. To test that it has been properly
 installed, you may create a sample LaTeX document, (:file:`test-font.tex`):

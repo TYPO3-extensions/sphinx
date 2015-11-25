@@ -23,6 +23,7 @@ The following is a very high level overview of the changes in this extension. Fo
 =======  ===========================================================================
 Version  Changes
 =======  ===========================================================================
+2.4.x    - New sphinx-doc theme from docs.typo3.org
 2.3.x    - Parallel building to speed-up rendering
          - Standalone and reworked from scratch OpenOffice to Sphinx converter
 2.2.x    - Compatibility with TYPO3 6.2 - 7.x

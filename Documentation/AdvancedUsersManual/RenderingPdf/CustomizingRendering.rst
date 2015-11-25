@@ -140,6 +140,6 @@ settings of package ``sphinx``. To include it automatically, we simply use the `
 	    'preamble': '\\usepackage{typo3}'
 	}
 
-The package ``typo3`` is available from repository RestTools, within directory :file:`RestTools/LaTeX/` and is
+The package ``typo3`` is available from a dedicated repository, within directory :file:`latex.typo3/` and is
 automatically copied to the build directory when using this extension. Alternatively, you may want to register it
 globally within ``TEXMF`` if you plan to generate PDF from the command line solely.

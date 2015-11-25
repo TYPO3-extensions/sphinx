@@ -143,6 +143,6 @@ l'option ``preamble`` de :file:`conf.py` :
 	    'preamble': '\\usepackage{typo3}'
 	}
 
-Le paquet ``typo3`` est disponible dans le dépôt RestTools, dans le répertoire :file:`RestTools/LaTeX/` et est
+Le paquet ``typo3`` est disponible dans un dépôt dédié, dans le répertoire :file:`latex.typo3/` et est
 automatiquement copié dans le répertoire de rendu lorsque vous utilisez cette extension. Sinon, vous pouvez choisir de le
 référencer dans ``TEXMF`` si vous envisagez de générer des PDF depuis la ligne de commande uniquement.

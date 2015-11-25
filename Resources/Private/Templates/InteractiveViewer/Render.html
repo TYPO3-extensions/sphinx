@@ -1,161 +1,185 @@
 {namespace sphinx=Causal\Sphinx\ViewHelpers}
-<!DOCTYPE HTML>
-<html lang="en">
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>{documentation.title}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/share.css')}" media="all"/>
-    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/reset.css')}" media="all"/>
-    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/grid.css')}" media="all"/>
-    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/main.css')}" media="all"/>
+    <title>
+        <f:if condition="{documentation.mainDocument.title}=={documentation.title}">
+            <f:then>{documentation.title}</f:then>
+            <f:else>{documentation.mainDocument.title} - {documentation.title}</f:else>
+        </f:if>
+    </title>
 
-    <!--[if IE]>
-    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/ie.css')}" media="all"/><![endif]-->
-    <!--[if IE 7]>
-    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/ie7.css')}" media="all"/><![endif]-->
-    <!--[if IE 8]>
-    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/t3extras/css/ie8.css')}" media="all"/><![endif]-->
+    <link rel="stylesheet"
+          href="{sphinx:uri.sphinxResource(path:'t3SphinxThemeRtd/build/lib/t3SphinxThemeRtd/static/css/theme.css')}"/>
+    <link rel="stylesheet"
+          href="{sphinx:uri.sphinxResource(path:'t3SphinxThemeRtd/build/lib/t3SphinxThemeRtd/static/jquery-ui/jquery-ui.min.css')}"/>
+    <link rel="stylesheet"
+          href="{sphinx:uri.sphinxResource(path:'t3SphinxThemeRtd/build/lib/t3SphinxThemeRtd/static/css/t3more.css')}"/>
 
-    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/css/t3_org_doc_main.css')}" type="text/css"/>
-    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/css/t3_to_be_integrated.css')}" type="text/css"/>
-    <link rel="stylesheet" href="{f:uri.resource(path:'Css/pygments.css')}" type="text/css"/>
-    <link rel="stylesheet" href="{f:uri.resource(path:'docs.typo3.org/css/t3_org_doc_main_alt_1.css')}"
-          type="text/css"/>
+    <f:if condition="{documentation.previousDocument}">
+        <link rel="previous" title="{documentation.previousDocument.title}"
+              href="{documentation.previousDocument.url}"/>
+    </f:if>
+    <f:if condition="{documentation.parentDocument}">
+        <link rel="top" title="{documentation.parentDocument.title}" href="{documentation.parentDocument.url}"/>
+    </f:if>
+    <f:if condition="{documentation.nextDocument}">
+        <link rel="next" title="{documentation.nextDocument.title}" href="{documentation.nextDocument.url}"/>
+    </f:if>
 
-    <sphinx:includeJs.jQuery version="1.8"/>
-    <script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/jquery.easing.js')}"></script>
-    <script src="{f:uri.resource(path:'JavaScript/jquery.tools.min.js')}"></script>
-    <script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/cufon.js')}"></script>
-    <script src="{f:uri.resource(path:'docs.typo3.org/t3extras/fonts/share.js')}"></script>
-    <script src="{f:uri.resource(path:'docs.typo3.org/js/docstypo3org-1.js')}"></script>
-    <script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/jcookies.js')}"></script>
-    <script src="{f:uri.resource(path:'docs.typo3.org/t3extras/js/main.js')}"></script>
-    <script src="{f:uri.resource(path:'docs.typo3.org/js/docstypo3org-2.js')}"></script>
+    <script src="{sphinx:uri.sphinxResource(path:'t3SphinxThemeRtd/build/lib/t3SphinxThemeRtd/static/js/modernizr.min.js')}"></script>
 
 </head>
 
-<body class="js-off">
+<body class="wy-body-for-nav" role="document">
 
-<f:render partial="Documentation/HeaderToolbar" arguments="{buttons: buttons}"/>
+<!-- flash messages -->
+<div id="msg-div"></div>
 
-<div class="p doc" id="page">
-    <div class="c cl" id="content">
-        <div id="aside" class="a">
-            <f:if condition="{documentation.hasTableOfContents}">
-                <div class="flyOutToc container" id="flyOutToc">
-                    <p>within this page:</p>
-                    <f:format.raw>{documentation.tableOfContents}</f:format.raw>
-                </div>
-            </f:if>
+<div class="wy-grid-for-nav">
+
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+        <div class="wy-side-nav-search">
+            <ul class="sidebartop">
+                <li class="docsite">
+                    <a href="https://docs.typo3.org"><img
+                            src="{sphinx:uri.sphinxResource(path:'t3SphinxThemeRtd/build/lib/t3SphinxThemeRtd/static/img/typo3-documentation.png')}"
+                            class="logo"/></a>
+                </li>
+                <li class="project">
+                    <a href="{documentation.mainDocument.url}">{documentation.mainDocument.title}</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
             <f:format.raw>{documentation.masterTableOfContents}</f:format.raw>
         </div>
+        &nbsp;
+    </nav>
 
-        <div class="s d">
-            <div class="hnav-related-container">
-                <div class="hnav-related">
-                    <ul>
-                        <li>
-                            <a href="{documentation.mainDocument.url}" title="{documentation.mainDocument.title}">Docstart</a>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+        <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+            <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+            <a href="#">{documentation.mainDocument.title}</a>
+        </nav>
+
+        <div class="wy-nav-content">
+            <div class="rst-content">
+                <div role="navigation" aria-label="breadcrumbs navigation">
+                    <ul class="wy-breadcrumbs">
+                        <f:if condition="{documentation.mainDocument.title}=={documentation.title}">
+                            <f:else>
+                                <li><a href="{documentation.mainDocument.url}">{documentation.mainDocument.title}</a>&raquo;</li>
+                            </f:else>
+                        </f:if>
+                        <li>{documentation.title}</li>
+                        <li class="wy-breadcrumbs-aside">
+                            <a id="EditMeOnGitHub" href="{editUrl}" class="fa fa-pencil"> Edit me</a>
                         </li>
-                        <li>
-                            <a href="{documentation.generalIndex.url}" title="{documentation.generalIndex.title}"
-                               accesskey="I">Index</a>
-                        </li>
-                        <f:if condition="{documentation.previousDocument}">
-                            <li>
-                                <a href="{documentation.previousDocument.url}"
-                                   title="{documentation.previousDocument.title}" accesskey="P">Previous</a>
-                            </li>
-                        </f:if>
-                        <f:if condition="{documentation.parentDocument}">
-                            <li>
-                                <a href="{documentation.parentDocument.url}"
-                                   title="{documentation.parentDocument.title}" accesskey="U">Up</a>
-                            </li>
-                        </f:if>
-                        <f:if condition="{documentation.nextDocument}">
-                            <li>
-                                <a href="{documentation.nextDocument.url}" title="{documentation.nextDocument.title}"
-                                   accesskey="N">Next</a>
-                            </li>
-                        </f:if>
                     </ul>
+                    <hr/>
                 </div>
-            </div>
+                <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+                    <div itemprop="articleBody" class="toBeIndexed">
+                        <div class="section">
+                            <f:format.raw>{documentation.body}</f:format.raw>
+                        </div>
+                    </div><!-- /.toBeIndexed -->
+                </div>
+                <footer>
 
-            <div class="section" id="users-manual">
-                <f:if condition="{errors}">
-                    <div class="admonition error">
-                        <p class="first admonition-title">
-                            <f:translate key="interactive.errors.title"/>
+                    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+                        <f:if condition="{documentation.nextDocument}">
+                            <a href="{documentation.nextDocument.url}" class="btn btn-neutral float-right"
+                               title="{documentation.nextDocument.title}" accesskey="n">Next <span
+                                    class="fa fa-arrow-circle-right"></span></a>
+                        </f:if>
+                        <f:if condition="{documentation.previousDocument}">
+                            <a href="{documentation.previousDocument.url}" class="btn btn-neutral"
+                               title="{documentation.previousDocument.title}" accesskey="p"><span
+                                    class="fa fa-arrow-circle-left"> Previous</span></a>
+                        </f:if>
+                    </div>
+
+                    <hr/>
+
+                    <div role="contentinfo" class="contentinfo">
+                        <p class="show_copyright">
+                            © Copyright {documentation.mainDocument.copyright}
                         </p>
-                        <p>
-                            <f:translate key="interactive.errors.message"/>
-                        </p>
-                        <p class="last">
-                            <f:format.raw>{errors}</f:format.raw>
+                        <p class="last_updated">
+                            Last rendered on
+                            <f:format.date format="d.m.Y H:i:s">{documentation.data.last_modification}</f:format.date>
                         </p>
                     </div>
-                </f:if>
-                <f:format.raw>{documentation.body}</f:format.raw>
-            </div>
 
-            <div class="hnav-related-container">
-                <div class="hnav-related">
-                    <ul>
-                        <li>
-                            <a href="{documentation.mainDocument.url}" title="{documentation.mainDocument.title}">Docstart</a>
-                        </li>
-                        <li>
-                            <a href="{documentation.generalIndex.url}"
-                               title="{documentation.generalIndex.title}">Index</a>
-                        </li>
-                        <f:if condition="{documentation.previousDocument}">
-                            <li>
-                                <a href="{documentation.previousDocument.url}"
-                                   title="{documentation.previousDocument.title}">Previous</a>
-                            </li>
-                        </f:if>
-                        <f:if condition="{documentation.parentDocument}">
-                            <li>
-                                <a href="{documentation.parentDocument.url}"
-                                   title="{documentation.parentDocument.title}">Up</a>
-                            </li>
-                        </f:if>
-                        <f:if condition="{documentation.nextDocument}">
-                            <li>
-                                <a href="{documentation.nextDocument.url}" title="{documentation.nextDocument.title}">Next</a>
-                            </li>
-                        </f:if>
-                    </ul>
-                </div>
+                </footer>
             </div>
-
         </div>
-        <!-- /#content -->
-    </div>
-    <!-- /.d -->
-    <div id="header" class="h">
-        <a id="logo" href="#"><img width="118" height="34" alt="TYPO3 Logo"
-                                   src="{f:uri.resource(path:'docs.typo3.org/t3extras/i/typo3-logo.png')}"></a>
-        <ul class="nav" id="ul-nav">
-            <!-- #ul-nav gets replaced by js -->
-            <li>&nbsp;</li>
-        </ul>
-        <div class="header-bg"></div>
-    </div>
+
+    </section>
+
 </div>
-<!-- /#page -->
-<f:if condition="{documentation.hasTableOfContents}">
-    <div id="naviwest">
-        <div id="naviwestpayload"></div>
+
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Project</dt>
+
+            <dd>
+                <a href="https://forge.typo3.org/projects/typo3cms-doc-typoscript" target="_blank">Home</a>
+            </dd>
+
+            <dd>
+                <a href="mailto:documentation@typo3.org" target="_blank">Contact</a>
+            </dd>
+
+            <dd>
+                <a href="http://lists.typo3.org/cgi-bin/mailman/listinfo/typo3-project-documentation" target="_blank">Discussions</a>
+            </dd>
+
+            <dd>
+                <a href="https://github.com/TYPO3-Documentation/TYPO3CMS-Reference-Typoscript/issues" target="_blank">Issues</a>
+            </dd>
+
+            <dd>
+                <a href="https://github.com/TYPO3-Documentation/TYPO3CMS-Reference-Typoscript.git" target="_blank">Repository</a>
+            </dd>
+        </dl>
+
     </div>
-</f:if>
+
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book" id="relatedLinksFaSpan">&#32;</span>
+      <span id="relatedLinksText">Related Links</span>
+          v: {documentation.mainDocument.release}
+      <span class="fa fa-caret-down"></span>
+    </span>
+</div><!-- /.rst-versions -->
+
+<script src="{sphinx:uri.sphinxResource(path:'t3SphinxThemeRtd/build/lib/t3SphinxThemeRtd/static/jquery.min.js')}"></script>
+<script src="{sphinx:uri.sphinxResource(path:'t3SphinxThemeRtd/build/lib/t3SphinxThemeRtd/static/jquery-ui/jquery-ui.min.js')}"></script>
+<script src="{sphinx:uri.sphinxResource(path:'t3SphinxThemeRtd/build/lib/t3SphinxThemeRtd/static/js/theme.js')}"></script>
 
 <script type="text/javascript">
+    jQuery(function () {
+        SphinxRtdTheme.StickyNav.enable();
+    });
+
     var editUrl = '<f:format.raw>{editUrl}</f:format.raw>';
+    var buttons = '<f:format.raw>{buttons}</f:format.raw>';
+
     $(document).ready(function () {
+        $(parent.document.getElementById('tx-sphinx-toolbar')).html(buttons);
+
         // Key binding on Ctrl+E / Cmd+E to edit document
         var editDocument = function (event) {
             if (event.ctrlKey || event.metaKey) {

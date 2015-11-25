@@ -74,12 +74,11 @@ is stored as :file:`typo3temp/tx_sphinx/IMPORT-{date}.log`. The general process 
 
 #. Install Pygments library (http://pygments.org/), and configure TypoScript highlighting
 
-#. Install TYPO3-related commands provided by the TYPO3 Documentation Team (TYPO3 ReST tools)
+#. Install TYPO3-related commands provided by the TYPO3 Documentation Team
 
 The manual process buttons let you locally change files and rebuild your environment. This is particularly useful if
-you want to use the `Git repository of the TYPO3 ReST tools`_ instead of a snapshot.
-
-.. _`git repository of the TYPO3 ReST tools`: https://git.typo3.org/Documentation/RestTools.git/
+you want to use the Git repositories of the TYPO3-related commands instead of a snapshot. Please note however that the
+repositories will be automatically used if your system supports the :program:`git` command.
 
 The "download" button fetches the corresponding sources of Sphinx, the TYPO3-related commands, the PyYAML library, the
 Pygments library, ... if they are not available locally.
@@ -100,8 +99,12 @@ Pygments library, ... if they are not available locally.
 	.. code-block:: bash
 
 		$ cd /path/to/uploads/tx_sphinx/
-		$ sudo rm -rf RestTools
-		$ git clone git://git.typo3.org/Documentation/RestTools.git
+		$ rm -rf t3SphinxThemeRtd sphinxcontrib.t3fieldlisttable \
+		    sphinxcontrib.t3tablerows sphinxcontrib.t3targets
+		$ git clone https://github.com/TYPO3-Documentation/t3SphinxThemeRtd.git
+		$ git clone https://github.com/TYPO3-Documentation/sphinxcontrib.t3fieldlisttable.git
+		$ git clone https://github.com/TYPO3-Documentation/sphinxcontrib.t3tablerows.git
+		$ git clone https://github.com/TYPO3-Documentation/sphinxcontrib.t3targets.git
 
 The "build" button builds or rebuilds the corresponding version of the Sphinx environment with the TYPO3-related commands,
 PyYAML, Pygments, Python Imaging Library and :program:`rst2pdf`. **Good to know:** TypoScript support for Pygments is

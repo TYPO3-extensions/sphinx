@@ -81,8 +81,9 @@ général d'importation de Sphinx est le suivant :
 #. Installation des commandes liées à TYPO3 fournies par l'équipe de documentation (utilitaires ReST TYPO3)
 
 Les boutons d'installation manuelle vous permettent de modifier les fichiers et de recompiler votre environnement. C'est
-particulièrement pratique si vous souhaitez utiliser le `dépôt git des utilitaires ReST TYPO3`_ au lieu d'un instantané
-(*snapshot*).
+particulièrement pratique si vous souhaitez utiliser les dépôts git des utilitaires TYPO3 au lieu d'un instantané
+(*snapshot*). Veuillez remarquer cependant que les dépôts seront automatiquement utilisés si votre système support la
+commande :program:`git`.
 
 Le bouton "download" récupère les sources correspondantes de Sphinx, les commandes liées à TYPO3 la bibliothèque PyYAML,
 la bibliothèque Pygments, ... si elles ne sont pas disponibles localement.
@@ -104,8 +105,12 @@ la bibliothèque Pygments, ... si elles ne sont pas disponibles localement.
 	.. code-block:: bash
 
 		$ cd /path/to/uploads/tx_sphinx/
-		$ sudo rm -rf RestTools
-		$ git clone git://git.typo3.org/Documentation/RestTools.git
+		$ rm -rf t3SphinxThemeRtd sphinxcontrib.t3fieldlisttable \
+		    sphinxcontrib.t3tablerows sphinxcontrib.t3targets
+		$ git clone https://github.com/TYPO3-Documentation/t3SphinxThemeRtd.git
+		$ git clone https://github.com/TYPO3-Documentation/sphinxcontrib.t3fieldlisttable.git
+		$ git clone https://github.com/TYPO3-Documentation/sphinxcontrib.t3tablerows.git
+		$ git clone https://github.com/TYPO3-Documentation/sphinxcontrib.t3targets.git
 
 Le bouton "build" (re)compile la version correspondante de l'environnement Sphinx avec les commandes liées à TYPO3,
 PyYAML, Pygments, la bibliothèque graphique Python et :program:`rst2pdf`. **Bon à savoir :** Le support TypoScript pour
@@ -116,9 +121,6 @@ Pour terminer, le bouton "remove" supprime à la fois les sources et la version 
 .. important::
 	Ce bouton *NE VA PAS* supprimer les sources des commandes liées à TYPO3, de la bibliothèque PyYAML, de Pygments, de
 	la bibliothèque graphique Python ou de :program:`rst2pdf`.
-
-.. Liens :
-.. _`dépôt Git des utilitaires ReST TYPO3`: https://git.typo3.org/Documentation/RestTools.git/
 
 
 Choix de la version de Sphinx à utiliser
