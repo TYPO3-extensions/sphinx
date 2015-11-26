@@ -1079,8 +1079,7 @@ EOT;
         $sphinxSourcesPath = static::getSphinxSourcesPath();
         $lexersPath = $sphinxSourcesPath . 'Pygments' . DIRECTORY_SEPARATOR . $pygmentsVersion . DIRECTORY_SEPARATOR . 'pygments' . DIRECTORY_SEPARATOR . 'lexers' . DIRECTORY_SEPARATOR;
 
-        // TODO: change this URL to something within https://git.typo3.org/Teams/Documentation.git when ready
-        $url = 'https://git.typo3.org/Documentation/RestTools.git/blob_plain/HEAD:/ExtendingPygmentsForTYPO3/_incoming/typoscript.py';
+        $url = 'https://raw.githubusercontent.com/Tuurlijk/Pygments-TypoScript-Lexer/master/typoscript.py';
         $libraryFilename = $lexersPath . 'typoscript.py';
         $libraryContent = MiscUtility::getUrl($url);
 
