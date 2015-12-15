@@ -151,14 +151,31 @@ HTML;
                     }
                 }
 
-                $relativeLogFilename = 'typo3temp/tx_sphinx/' . $action . '-' . date('YmdHis') . '.log';
+                $relativeLogFilename = 'typo3temp/logs/sphinx.' . strtolower($action) . '.' . date('YmdHis') . '.log';
                 $absoluteLogFilename = GeneralUtility::getFileAbsFileName($relativeLogFilename);
                 Setup::dumpLog($absoluteLogFilename);
 
-                $out[] = '<p><a href="../' . $relativeLogFilename . '" target="_blank">Click here</a> to show the complete log.</p>';
-
                 // Reload the list of locally available versions of Sphinx
                 $localVersions = Setup::getSphinxLocalVersions();
+            } else {
+                // Log operation?
+                list($action, $file) = explode('-', $operation, 2);
+                $fileName = PATH_site . 'typo3temp/logs/' . $file;
+
+                if (preg_match('/^sphinx\.[^.]+\.\d+\.log$/', $file) && is_file($fileName)) {
+                    switch ($action) {
+                        case 'SHOWLOG':
+                            $fileContents = file_get_contents($fileName);
+                            $out[] = '<textarea style="width:100%;height:500px">' . htmlspecialchars($fileContents) . '</textarea>';
+                            $out[] = '<p><a href="' . htmlspecialchars(GeneralUtility::linkThisScript()) . '">close</a></p>';
+
+                            return implode(LF, $out);
+                            break;
+                        case 'REMOVELOG':
+                            unlink($fileName);
+                            break;
+                    }
+                }
             }
         }
 
@@ -190,7 +207,7 @@ CSS;
             $out[] = '</style>';
         }
 
-        $out[] = '<form action="' . GeneralUtility::linkThisScript() . '" method="post" class="container-fluid">';
+        $out[] = '<form action="' . htmlspecialchars(GeneralUtility::linkThisScript()) . '" method="post" class="container-fluid">';
         $out[] = '<div class="leftColumn col-md-6">';
         $out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
 
@@ -233,6 +250,35 @@ CSS;
             $changes[$version['key']] = Setup::getChanges($version['key']);
         }
         $out[] = '</table>';
+
+        $logFiles = $this->getLogFiles();
+        if (count($logFiles) > 0) {
+            $out[] = '<p>Available logs:</p>';
+            $out[] = '<table id="sphinx-versions" class="t3-table" style="width:auto">';
+            $out[] = '<tr>';
+            $out[] = '<th>Type</th>';
+            $out[] = '<th>Date</th>';
+            $out[] = '<th>Action</th>';
+            $out[] = '</tr>';
+
+            foreach ($logFiles as $logFile) {
+                $out[] = '<tr>';
+                $out[] = '<td>' . htmlspecialchars($logFile['type']) . '</td>';
+                $out[] = '<td>' . date('d.m.Y H:i:s', $logFile['date']) . '</td>';
+
+                $out[] = '<td>';
+                $out[] = '<button name="operation" value="SHOWLOG-' . htmlspecialchars($logFile['file']) . '">open</button>';
+                $out[] = '<button name="operation" value="REMOVELOG-' . htmlspecialchars($logFile['file']) . '">remove</button>';
+                $out[] = '</td>';
+
+                $out[] = '</tr>';
+            }
+            $out[] = '</table>';
+            $out[] = '<ul>';
+
+            $out[] = '</ul>';
+        }
+
         $out[] = '</div>';    // .leftColumn
         $out[] = '<div id="sphinx-changes" class="rightColumn col-md-6"></div>';
         $out[] = '</form>';
@@ -425,6 +471,33 @@ CSS;
         $output .= '</div>';
 
         return $output;
+    }
+
+    /**
+     * Returns the Sphinx log files.
+     *
+     * @return array
+     */
+    protected function getLogFiles()
+    {
+        $sphinxFiles = array();
+
+        $files = GeneralUtility::getFilesInDir(PATH_site . 'typo3temp/logs/');
+        foreach ($files as $file) {
+            if (preg_match('/^sphinx\.([^.]+)\.(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)\.log$/', $file, $matches)) {
+                $sphinxFile = array(
+                    'file' => $file,
+                    'type' => $matches[1],
+                    'date' => mktime($matches[5], $matches[6], $matches[7], $matches[3], $matches[4], $matches[2]),
+                );
+
+                $key = $sphinxFile['date'] . '-' . $sphinxFile['type'];
+                $sphinxFiles[$key] = $sphinxFile;
+            }
+        }
+
+        krsort($sphinxFiles);
+        return array_values($sphinxFiles);
     }
 
 }
