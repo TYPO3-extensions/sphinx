@@ -71,11 +71,11 @@ project
 	The documented project's name.
 
 copyright
-	A copyright statement in the style ``2015, Author Name``.
+	A copyright statement in the style ``2016, Author Name``.
 
 	.. tip::
-		Within TYPO3 official documentation, we usually only show the year(s) of copyright, e.g., ``2015``
-		or ``2010-2015``.
+		Within TYPO3 official documentation, we usually only show the year(s) of copyright, e.g., ``2016``
+		or ``2010-2016``.
 
 version
 	The major project version, used as the replacement for ``|version|``. For example, for the TYPO3

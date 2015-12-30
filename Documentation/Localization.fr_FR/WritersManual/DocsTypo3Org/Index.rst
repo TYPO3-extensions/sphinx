@@ -74,11 +74,11 @@ project
 	Le nom du projet de documentation.
 
 copyright
-	Une mention de copyright du genre ``2015, Nom de l'auteur``.
+	Une mention de copyright du genre ``2016, Nom de l'auteur``.
 
 	.. tip::
 		Au sein de la documention TYPO3 officielle, nous ne renseignons généralement que l'année ou l'intervalle
-		d'années comme ``2015`` ou ``2010-2015``.
+		d'années comme ``2016`` ou ``2010-2016``.
 
 version
 	La version majeure du projet, utilisé comme remplacement pour ``|version|``. Par exemple, pour la documentation

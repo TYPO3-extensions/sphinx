@@ -33,7 +33,7 @@ Générateur et visionneuse de documentation Sphinx Python
 		reStructuredText, sphinx-doc, LaTeX, documentation
 
 	:Copyright:
-		2013-2015
+		2013-2016
 
 	:Auteur:
 		Xavier Perseguers

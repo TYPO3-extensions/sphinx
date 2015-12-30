@@ -24,7 +24,7 @@ use Causal\Sphinx\Utility\Setup;
  * @package     TYPO3
  * @subpackage  tx_sphinx
  * @author      Xavier Perseguers <xavier@causal.ch>
- * @copyright   2013-2015 Causal Sàrl
+ * @copyright   2013-2016 Causal Sàrl
  * @copyright   Causal Sàrl
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
