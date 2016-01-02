@@ -222,7 +222,7 @@ CSS;
         $changes = array();
 
         foreach ($availableVersions as $version) {
-            $isInstalled = GeneralUtility::inArray($localVersions, $version['key']);
+            $isInstalled = in_array($version['key'], $localVersions);
             $hasSources = Setup::hasSphinxSources($version['key']);
             $hasLibraries = Setup::hasPyYaml()
                 && Setup::hasPygments($version['key'])
