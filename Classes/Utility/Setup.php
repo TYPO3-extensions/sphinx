@@ -1308,7 +1308,7 @@ EOT;
      */
     public static function getChanges($sphinxVersion)
     {
-        $html = MiscUtility::getUrlWithCache('http://sphinx-doc.org/latest/changes.html');
+        $html = MiscUtility::getUrlWithCache('http://www.sphinx-doc.org/en/latest/changes.html');
 
         // Fix name in case the human-readable version is given as parameter
         $sphinxVersion = str_replace(' beta ', 'b', $sphinxVersion);
