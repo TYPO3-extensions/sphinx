@@ -1,4 +1,6 @@
 <?php
+namespace Causal\Sphinx;
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
