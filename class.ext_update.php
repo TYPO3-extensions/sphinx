@@ -223,6 +223,11 @@ CSS;
         $installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
         $changes = array();
 
+        if (version_compare(TYPO3_version, '7.6', '>=')) {
+            /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+            $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
+        }
+
         foreach ($availableVersions as $version) {
             $isInstalled = in_array($version['key'], $localVersions);
             $hasSources = Setup::hasSphinxSources($version['key']);
@@ -236,7 +241,12 @@ CSS;
             }
 
             $out[] = '<tr data-version="' . htmlspecialchars($version['key']) . '">';
-            $out[] = '<td>' . ($isInstalled ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '</td>';
+            if (version_compare(TYPO3_version, '7.6', '>=')) {
+                $iconChecked = $iconFactory->getIcon('status-status-checked', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render();
+            } else {
+                $iconChecked = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked');
+            }
+            $out[] = '<td>' . ($isInstalled ? $iconChecked : '') . '</td>';
             $out[] = '<td>';
             $out[] = 'Sphinx ' . htmlspecialchars($version['name']);
             $out[] = '</td>';
