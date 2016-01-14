@@ -30,10 +30,21 @@ if (TYPO3_MODE === 'BE') {
 		)
 	);
 
-	// Register additional sprite icons
-	// @link http://blog.tolleiv.de/2010/07/typo3-4-4-sprites-in-your-extension/
-	$icons = array(
-		'download'   => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/download.png',
-	);
-	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
+	if (version_compare(TYPO3_version, '7.6', '>=')) {
+		/** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+		$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconRegistry');
+		$iconRegistry->registerIcon('extensions-' . $_EXTKEY . '-download',
+			'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\BitmapIconProvider',
+			array(
+				'source' => 'EXT:' . $_EXTKEY . '/Resources/Public/Images/download.png',
+			)
+		);
+		unset($iconRegistry);
+	} else {
+		$extensionRelativePath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
+		$icons = array(
+			'download'   => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Images/download.png',
+		);
+		\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
+	}
 }
