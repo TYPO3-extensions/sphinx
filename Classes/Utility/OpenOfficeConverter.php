@@ -1051,6 +1051,9 @@ YAML;
      */
     protected function writeChapter(array &$buffer, array &$bottom, $chapterLevel)
     {
+        if ($chapterLevel === null) {
+            $chapterLevel = 1;
+        }
         $contents = <<<REST
 .. ==================================================
 .. FOR YOUR INFORMATION
