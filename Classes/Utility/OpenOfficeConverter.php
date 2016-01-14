@@ -1059,7 +1059,8 @@ YAML;
 
 REST;
 
-        $contents .= LF . '.. include:: ' . str_repeat('../', $chapterLevel - 1) . 'Includes.txt' . LF;
+        $relativePath = $chapterLevel >= 2 ? str_repeat('../', $chapterLevel - 1) : '';
+        $contents .= LF . '.. include:: ' . $relativePath . 'Includes.txt' . LF;
 
         // Merge adjacent code blocks in $buffer
         $numberOfLines = count($buffer);
