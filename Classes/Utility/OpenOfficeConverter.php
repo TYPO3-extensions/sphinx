@@ -1167,7 +1167,7 @@ REST;
 
             $tableOfContents = $this->fixIndent($tableOfContents);
             $fileName = $this->projectPath . $chapter['file'] . '.rst';
-            $contents = file_get_contents($fileName);
+            $contents = file_exists($fileName) ? file_get_contents($fileName) : '';
             $lines = explode(LF, $contents);
 
             if (($index = array_search('.. ' . static::FOOTNOTES_DELIMITER, $lines)) !== false) {
