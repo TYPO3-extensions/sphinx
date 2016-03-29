@@ -14,7 +14,8 @@
     <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
     <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.11.4.custom.min.js')}"></script>
     <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.selectBoxIt.min.js')}"></script>
-    <script type="text/javascript"><![CDATA[
+    <script type="text/javascript">
+    //<![CDATA[
     var myLayout; // a var is required because this page utilizes: myLayout.allowOverflow() method
 
     $(document).ready(function () {
@@ -39,7 +40,8 @@
         var fd = $iframe[0].contentWindow || $iframe[0];
         return fd;
     }
-    ]]></script>
+    //]]>
+    </script>
 
     <style type="text/css">
         /* remove padding & scrolling from panes that are 'containers' for nested layouts */

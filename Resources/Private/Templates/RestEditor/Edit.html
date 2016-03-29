@@ -56,7 +56,8 @@
         CausalSphinxEditor.actions.redirect = "{f:uri.action(action:'render', controller:'InteractiveViewer', arguments:{reference:reference, document:document})}"
         CausalSphinxEditor.actions.references = "{f:uri.action(action:'accordionReferences', arguments:{reference:'REFERENCE', remoteUrl:'URL', usePrefix:'USE_PREFIX'})}";
     </script>
-    <script type="text/javascript"><![CDATA[
+    <script type="text/javascript">
+    //<![CDATA[
     var myLayout; // a var is required because this page utilizes: myLayout.allowOverflow() method
 
     $(document).ready(function () {
@@ -87,7 +88,8 @@
         // Initialize the editor
         CausalSphinxEditor.initialize();
     });
-    ]]></script>
+    //]]>
+    </script>
 </head>
 <body>
 
