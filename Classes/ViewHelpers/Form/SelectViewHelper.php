@@ -138,14 +138,14 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
                             'Resources/Public/Images/default_icon@2x.png';
                     }
                     $isSelected = $this->isSelected($value);
-                    $output .= $this->renderOptionTag($value, $label, $icon, $isSelected) . LF;
+                    $output .= $this->renderCustomOptionTag($value, $label, $icon, $isSelected) . LF;
                 }
                 $output .= '</optgroup>';
             }
         } else {
             foreach ($options as $value => $label) {
                 $isSelected = $this->isSelected($value);
-                $output .= $this->renderOptionTag($value, $label, '', $isSelected) . LF;
+                $output .= $this->renderCustomOptionTag($value, $label, '', $isSelected) . LF;
             }
         }
         return $output;
@@ -160,7 +160,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
      * @param boolean $isSelected specifies wheter or not to add selected attribute
      * @return string the rendered option tag
      */
-    protected function renderOptionTag($value, $label, $icon, $isSelected)
+    protected function renderCustomOptionTag($value, $label, $icon, $isSelected)
     {
         $output = '<option value="' . htmlspecialchars($value) . '"';
         if ($icon) {

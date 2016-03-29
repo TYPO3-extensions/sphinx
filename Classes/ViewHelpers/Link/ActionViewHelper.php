@@ -56,6 +56,7 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
      * @param boolean $absolute If set, the URI of the rendered link is absolute
      * @param boolean $addQueryString If set, the current query parameters will be kept in the URI
      * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = true
+     * @param string $addQueryStringMethod Set which parameters will be kept. Only active if $addQueryString = TRUE
      * @param array $checks
      * @param string $icon
      * @return string Rendered link
@@ -64,7 +65,7 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
                            $pluginName = null, $pageUid = null, $pageType = 0, $noCache = false, $noCacheHash = false,
                            $section = '', $format = '', $linkAccessRestrictedPages = false, array $additionalParams = array(),
                            $absolute = false, $addQueryString = false, array $argumentsToBeExcludedFromQueryString = array(),
-                           array $checks = array(), $icon = null)
+                           $addQueryStringMethod = null, array $checks = array(), $icon = null)
     {
 
         $this->tag->addAttribute('href', '#');
