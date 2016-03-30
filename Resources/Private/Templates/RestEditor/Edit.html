@@ -16,6 +16,9 @@
         </f:else>
     </f:if>
     <link rel="stylesheet" type="text/css" href="sysext/t3skin/stylesheets/sprites/t3skin.css"/>
+    <f:if condition="{typo3_7x}">
+        <link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/backend.css"/>
+    </f:if>
     <link rel="stylesheet" type="text/css"
           href="{f:uri.resource(path:'Css/jquery-ui.smoothness/jquery-ui-1.11.4.custom.min.css')}"/>
     <link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}"/>

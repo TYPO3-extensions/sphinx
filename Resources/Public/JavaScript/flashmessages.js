@@ -36,14 +36,26 @@ CausalSphinx.Flashmessage = function () {
         if (isTYPO3v7) {
             if (severity == 'notice' || severity == 'information') {
                 severity = 'info';
+                faIcon = 'fa-info';
             } else if (severity == 'ok') {
                 severity = 'success';
+                faIcon = 'fa-check';
             } else if (severity == 'error') {
                 severity = 'danger';
+                faIcon = 'fa-times';
             }
             return ['<div class="alert alert-', severity, '">',
-                '<h4>', title, '</h4>',
-                '<div class="alert-body">', message, '</div>'].join('');
+                    '<div class="media">',
+                    '<div class="media-left">',
+                    '<span class="fa-stack fa-lg">',
+                    '<i class="fa fa-circle fa-stack-2x"></i>',
+                    '<i class="fa ' + faIcon + ' fa-stack-1x"></i>',
+                    '</span>',
+                    '</div>',
+                    '<div class="media-body">',
+                    '<h4 class="alert-title">', title, '</h4>',
+                    '<p class="alert-message">', message, '</p>',
+                    '</div>'].join('');
         } else {
             return ['<div class="typo3-message message-', severity, '">',
                 '<div class="t3-icon t3-icon-actions t3-icon-actions-message t3-icon-actions-message-close t3-icon-message-' + severity + '-close"></div>',
