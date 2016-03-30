@@ -1014,7 +1014,7 @@ class RestEditorController extends AbstractActionController
         $buttons[] = $this->createToolbarButton(
             '#',
             $this->translate('toolbar.editor.close'),
-            't3-icon-actions t3-icon-actions-document t3-icon-document-close',
+            'close',
             'getContentIframe().CausalSphinxEditor.closeEditor()'
         );
         $buttons[] = '&nbsp;';
@@ -1022,13 +1022,13 @@ class RestEditorController extends AbstractActionController
         $buttons[] = $this->createToolbarButton(
             '#',
             $this->translate('toolbar.editor.save'),
-            't3-icon-actions t3-icon-actions-document t3-icon-document-save',
+            'save',
             'getContentIframe().CausalSphinxEditor.save()'
         );
         $buttons[] = $this->createToolbarButton(
             '#',
             $this->translate('toolbar.editor.saveclose'),
-            't3-icon-actions t3-icon-actions-document t3-icon-document-save-close',
+            'save-close',
             'getContentIframe().CausalSphinxEditor.saveAndClose()'
         );
 

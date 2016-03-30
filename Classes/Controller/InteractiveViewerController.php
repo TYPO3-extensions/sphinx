@@ -327,14 +327,14 @@ class InteractiveViewerController extends AbstractActionController
             $buttons[] = $this->createToolbarButton(
                 $this->getEditUrl($reference, $document),
                 $this->translate('toolbar.interactive.edit'),
-                't3-icon-actions t3-icon-actions-page t3-icon-page-open'
+                'open'
             );
         }
         if (!empty($warningsFilename)) {
             $buttons[] = $this->createToolbarButton(
                 $warningsFilename,
                 $this->translate('toolbar.interactive.showWarnings'),
-                't3-icon-status t3-icon-status-dialog t3-icon-dialog-warning'
+                'warning'
             );
         }
 

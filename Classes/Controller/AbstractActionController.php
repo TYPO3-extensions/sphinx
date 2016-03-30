@@ -102,14 +102,49 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
      * @param string $onClick
      * @return string
      */
-    protected function createToolbarButton($link, $title, $iconClasses, $onClick = '')
+    protected function createToolbarButton($link, $title, $iconType, $onClick = '')
     {
+        /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+        static $iconFactory = null;
+
+        if (version_compare(TYPO3_version, '8.0', '>=')) {
+            if ($iconFactory === null) {
+                $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
+            }
+        }
+
+        switch ($iconType) {
+            case 'open':
+                $iconClasses = 't3-icon-actions t3-icon-actions-page t3-icon-page-open';
+                $iconIdentifier = 'actions-document-open';
+                break;
+            case 'close':
+                $iconClasses = 't3-icon-actions t3-icon-actions-document t3-icon-document-close';
+                $iconIdentifier = 'actions-document-close';
+                break;
+            case 'save':
+                $iconClasses = 't3-icon-actions t3-icon-actions-document t3-icon-document-save';
+                $iconIdentifier = 'actions-document-save';
+                break;
+            case 'save-close':
+                $iconClasses = 't3-icon-actions t3-icon-actions-document t3-icon-document-save-close';
+                $iconIdentifier = 'actions-document-save-close';
+                break;
+            case 'warning':
+                $iconClasses = 't3-icon-status t3-icon-status-dialog t3-icon-dialog-warning';
+                $iconIdentifier = 'overlay-warning';
+                break;
+        }
+
         $button =
             '<a href="' . htmlspecialchars($link) . '"' .
             ($onClick ? ' onclick="' . $onClick . ';return false;"' : '') .
             ' title="' . htmlspecialchars($title) . '"' .
             ' target="tx-sphinx-documentation-content">' .
-            '<span class="t3-icon ' . $iconClasses . '">&nbsp;</span>' .
+            (version_compare(TYPO3_version, '8.0', '>=')
+                ? str_replace(LF, ' ', $iconFactory->getIcon($iconIdentifier, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render())
+                : '<span class="t3-icon ' . $iconClasses . '">&nbsp;</span>'
+            ) .
             '</a>';
         // Replacement of single quotes to be compatible with the dynamic update of the toolbar
         return str_replace('\'', '\\\'', $button);
