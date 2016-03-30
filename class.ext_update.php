@@ -219,7 +219,7 @@ CSS;
         $out[] = '<div class="leftColumn col-md-6">';
         $out[] = '<p>Following versions of Sphinx may be installed locally:</p>';
 
-        $out[] = '<table id="sphinx-versions" class="t3-table" style="width:auto">';
+        $out[] = '<table id="sphinx-versions" class="t3-table table" style="width:auto">';
         $out[] = '<tr>';
         $out[] = '<th colspan="2">&nbsp;</th>';
         $out[] = '<th>1-click Process</th>';
@@ -276,7 +276,7 @@ CSS;
         $logFiles = $this->getLogFiles();
         if (count($logFiles) > 0) {
             $out[] = '<p>Available logs:</p>';
-            $out[] = '<table id="sphinx-versions" class="t3-table" style="width:auto">';
+            $out[] = '<table id="sphinx-versions" class="t3-table table" style="width:auto">';
             $out[] = '<tr>';
             $out[] = '<th>Type</th>';
             $out[] = '<th>Date</th>';
@@ -448,10 +448,19 @@ CSS;
      */
     protected function formatError($message)
     {
-        $output = '<div class="typo3-message message-error">';
-        //$output .= '<div class="message-header">Message head</div>';
-        $output .= '<div class="message-body">' . nl2br(htmlspecialchars($message)) . '</div>';
-        $output .= '</div>';
+        if (version_compare(TYPO3_branch, '7', '>=')) {
+            $output = '<div class="alert alert-error">';
+            $output .= '<div class="media">';
+            $output .= '<div class="media-body">';
+            //$output .= '<h4 class="alert-title">Message head</h4>';
+            $output .= '<p class="alert-message">' . nl2br(htmlspecialchars($message)) . '</p>';
+            $output .= '</div></div></div>';
+        } else {
+            $output = '<div class="typo3-message message-error">';
+            //$output .= '<div class="message-header">Message head</div>';
+            $output .= '<div class="message-body">' . nl2br(htmlspecialchars($message)) . '</div>';
+            $output .= '</div>';
+        }
 
         return $output;
     }
@@ -465,13 +474,25 @@ CSS;
      */
     protected function formatWarning($message, $hsc = true)
     {
-        $output = '<div class="typo3-message message-warning">';
-        //$output .= '<div class="message-header">Message head</div>';
-        if ($hsc) {
-            $message = nl2br(htmlspecialchars($message));
+        if (version_compare(TYPO3_branch, '7', '>=')) {
+            $output = '<div class="alert alert-warning">';
+            $output .= '<div class="media">';
+            $output .= '<div class="media-body">';
+            //$output .= '<h4 class="alert-title">Message head</h4>';
+            if ($hsc) {
+                $message = nl2br(htmlspecialchars($message));
+            }
+            $output .= '<p class="alert-message">' . $message . '</p>';
+            $output .= '</div></div></div>';
+        } else {
+            $output = '<div class="typo3-message message-warning">';
+            //$output .= '<div class="message-header">Message head</div>';
+            if ($hsc) {
+                $message = nl2br(htmlspecialchars($message));
+            }
+            $output .= '<div class="message-body">' . $message . '</div>';
+            $output .= '</div>';
         }
-        $output .= '<div class="message-body">' . $message . '</div>';
-        $output .= '</div>';
 
         return $output;
     }
@@ -485,13 +506,25 @@ CSS;
      */
     protected function formatInformation($message, $hsc = true)
     {
-        $output = '<div class="typo3-message message-information">';
-        //$output .= '<div class="message-header">Message head</div>';
-        if ($hsc) {
-            $message = nl2br(htmlspecialchars($message));
+        if (version_compare(TYPO3_branch, '7', '>=')) {
+            $output = '<div class="alert alert-info">';
+            $output .= '<div class="media">';
+            $output .= '<div class="media-body">';
+            //$output .= '<h4 class="alert-title">Message head</h4>';
+            if ($hsc) {
+                $message = nl2br(htmlspecialchars($message));
+            }
+            $output .= '<p class="alert-message">' . $message . '</p>';
+            $output .= '</div></div></div>';
+        } else {
+            $output = '<div class="typo3-message message-information">';
+            //$output .= '<div class="message-header">Message head</div>';
+            if ($hsc) {
+                $message = nl2br(htmlspecialchars($message));
+            }
+            $output .= '<div class="message-body">' . $message . '</div>';
+            $output .= '</div>';
         }
-        $output .= '<div class="message-body">' . $message . '</div>';
-        $output .= '</div>';
 
         return $output;
     }
@@ -505,13 +538,25 @@ CSS;
      */
     protected function formatOk($message, $hsc = true)
     {
-        $output = '<div class="typo3-message message-ok">';
-        //$output .= '<div class="message-header">Message head</div>';
-        if ($hsc) {
-            $message = nl2br(htmlspecialchars($message));
+        if (version_compare(TYPO3_branch, '7', '>=')) {
+            $output = '<div class="alert alert-success">';
+            $output .= '<div class="media">';
+            $output .= '<div class="media-body">';
+            //$output .= '<h4 class="alert-title">Message head</h4>';
+            if ($hsc) {
+                $message = nl2br(htmlspecialchars($message));
+            }
+            $output .= '<p class="alert-message">' . $message . '</p>';
+            $output .= '</div></div></div>';
+        } else {
+            $output = '<div class="typo3-message message-ok">';
+            //$output .= '<div class="message-header">Message head</div>';
+            if ($hsc) {
+                $message = nl2br(htmlspecialchars($message));
+            }
+            $output .= '<div class="message-body">' . $message . '</div>';
+            $output .= '</div>';
         }
-        $output .= '<div class="message-body">' . $message . '</div>';
-        $output .= '</div>';
 
         return $output;
     }
