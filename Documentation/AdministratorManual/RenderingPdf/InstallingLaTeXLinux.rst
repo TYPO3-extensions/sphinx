@@ -34,7 +34,7 @@ You can issue following command to install required components:
 
 	$ sudo apt-get install texlive-base texlive-latex-recommended \
 	  texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra \
-	  texlive-latex-base
+	  texlive-latex-base texlive-font-utils
 
 In order to compile as PDF, this extension requires both :program:`pdflatex` (included in
 package ``texlive-latex-extra``) and :program:`make`:
