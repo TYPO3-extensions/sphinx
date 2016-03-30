@@ -37,6 +37,13 @@ use Causal\Sphinx\Utility\MiscUtility;
 class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper
 {
 
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+
+        $this->registerArgument('icon', 'string', 'Specifies the icon of a link');
+    }
+
     /**
      * Renders the sphinx action link.
      *
@@ -58,16 +65,16 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
      * @param array $argumentsToBeExcludedFromQueryString arguments to be removed from the URI. Only active if $addQueryString = true
      * @param string $addQueryStringMethod Set which parameters will be kept. Only active if $addQueryString = TRUE
      * @param array $checks
-     * @param string $icon
      * @return string Rendered link
      */
     public function render($action = null, array $arguments = array(), $controller = null, $extensionName = null,
                            $pluginName = null, $pageUid = null, $pageType = 0, $noCache = false, $noCacheHash = false,
                            $section = '', $format = '', $linkAccessRestrictedPages = false, array $additionalParams = array(),
                            $absolute = false, $addQueryString = false, array $argumentsToBeExcludedFromQueryString = array(),
-                           $addQueryStringMethod = null, array $checks = array(), $icon = null)
+                           $addQueryStringMethod = null, array $checks = array())
     {
 
+        $icon = $this->arguments['icon'];
         $this->tag->addAttribute('href', '#');
         if (!GeneralUtility::isFirstPartOfStr($action, 'javascript')) {
             $uriBuilder = $this->controllerContext->getUriBuilder();
