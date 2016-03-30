@@ -31,9 +31,9 @@
     <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/dashboard.js')}"></script>
     <script type="text/javascript">
         // Initialize the dashboard's actions
-        CausalSphinxDashboard.actions.addCustomProject = "{f:uri.action(controller:'Ajax', action:'addCustomProject')}";
-        CausalSphinxDashboard.actions.editCustomProject = "{f:uri.action(controller:'Ajax', action:'editCustomProject',arguments:{documentationKey:'DOCUMENTATION_KEY'})}";
-        CausalSphinxDashboard.actions.removeCustomProject = "{f:uri.action(controller:'Ajax', action:'removeCustomProject',arguments:{documentationKey:'DOCUMENTATION_KEY'})}";
+        CausalSphinxDashboard.actions.addCustomProject = "{f:uri.action(controller:'Ajax', action:'addCustomProject') -> f:format.raw()}";
+        CausalSphinxDashboard.actions.editCustomProject = "{f:uri.action(controller:'Ajax', action:'editCustomProject',arguments:{documentationKey:'DOCUMENTATION_KEY'}) -> f:format.raw()}";
+        CausalSphinxDashboard.actions.removeCustomProject = "{f:uri.action(controller:'Ajax', action:'removeCustomProject',arguments:{documentationKey:'DOCUMENTATION_KEY'}) -> f:format.raw()}";
     </script>
 </head>
 <body class="margin">
