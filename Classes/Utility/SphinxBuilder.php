@@ -468,8 +468,8 @@ class SphinxBuilder
             $conf = './conf.py';
         }
         $basePath = rtrim($basePath, '/') . '/';
-        $sourceDirectory = rtrim($sourceDirectory);
-        $buildDirectory = rtrim($buildDirectory);
+        $sourceDirectory = rtrim($sourceDirectory, '/');
+        $buildDirectory = rtrim($buildDirectory, '/');
 
         // Compatibility with Windows platform
         $conf = str_replace('/', DIRECTORY_SEPARATOR, $conf);
@@ -487,12 +487,12 @@ class SphinxBuilder
         if (!empty($make)) {
             $cmd = 'cd ' . escapeshellarg($basePath) . ' && ' .
                 MiscUtility::getExportCommand('PATH', '"$PATH' . PATH_SEPARATOR . PathUtility::dirname($pdflatex) . '"') . ' && ' .
-                escapeshellarg($make) . ' -C ' . static::safeEscapeshellarg($buildDirectory . '/latex') . ' clean all-pdf' .
+                escapeshellarg($make) . ' -C ' . static::safeEscapeshellarg($buildPath) . ' clean all-pdf' .
                 ' 2>&1';    // redirect errors to STDOUT
         } else {
             // We are on Windows and "make" is not available,
             // we will thus simulate it
-            $latexPath = $basePath . $buildDirectory . DIRECTORY_SEPARATOR . 'latex' . DIRECTORY_SEPARATOR;
+            $latexPath = $basePath . $buildPath . DIRECTORY_SEPARATOR;
             $files = GeneralUtility::getFilesInDir($latexPath, 'tex');
             $mainFile = current($files);
             $basename = substr($mainFile, 0, -4);    // Remove .tex
