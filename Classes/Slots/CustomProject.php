@@ -275,11 +275,23 @@ HTML;
                     $extensionFileName = '.html';
                     break;
                 default:
-                    $templateContent = '###CONTENT###';
-                    $extensionFileName = '.log';
+                    $templateContent = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Exception</title>
+  </head>
+  <body>
+    <pre>###CONTENT###</pre>
+  </body>
+</html>
+HTML;
+
+                    $extensionFileName = '.html';
                     break;
             }
-            $fileName = 'typo3temp/tx_myext_' . $e->getCode() . $extensionFileName;
+            $fileName = 'typo3temp/tx_sphinx/tx_myext_' . $e->getCode() . $extensionFileName;
             $content = str_replace('###CONTENT###', $e->getMessage(), $templateContent);
             GeneralUtility::writeFile(PATH_site . $fileName, $content);
             $documentationUrl = '../' . $fileName;
