@@ -1305,7 +1305,8 @@ YAML;
         // Known problems when using GeneralUtility::getUrl() with https:// resources
         // E.g., https://bitbucket.org/xperseguers/sphinx-contrib/downloads
         // where text/html is expected
-        if (!GeneralUtility::isFirstPartOfStr($url, 'https://')) {
+        // works again with TYPO3 8.1-dev
+        if (!GeneralUtility::isFirstPartOfStr($url, 'https://') || version_compare(TYPO3_version, '8.1', '>=')) {
             return GeneralUtility::getUrl($url);
         }
 
