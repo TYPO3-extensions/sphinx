@@ -1286,7 +1286,7 @@ EOT;
 
         $versions = array();
         preg_replace_callback(
-            '#<tr class="iterable-item">.*?<td class="name">([^<]*)</td>.*?<a href="([^"]+)">gz</a>#s',
+            '#<tr class="iterable-item">.*?<td class="name">([^<]*)</td>.*?<a class="lfs-warn-link" href="([^"]+)">gz</a>#s',
             function ($matches) use ($baseUrl, &$versions) {
                 if ($matches[1] !== 'tip') {
                     $key = $matches[1];
@@ -1389,9 +1389,13 @@ EOT;
     protected static function getMinimumLibraryVersion($library, $sphinxSourcesPath)
     {
         $version = '0.0';
-        $fileName = rtrim($sphinxSourcesPath, '/') . '/Sphinx.egg-info/requires.txt';
+        $fileName = rtrim($sphinxSourcesPath, '/') . '/test-reqs.txt';
         if (!is_file($fileName)) {
-            return $version;
+            // Legacy requirement file
+            $fileName = rtrim($sphinxSourcesPath, '/') . '/Sphinx.egg-info/requires.txt';
+            if (!is_file($fileName)) {
+                return $version;
+            }
         }
 
         $requirements = file_get_contents($fileName);
