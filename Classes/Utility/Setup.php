@@ -603,6 +603,25 @@ EOT;
                 '',
                 $output
             );
+
+            // On some platforms the library is compiled e.g., within "lib.linux-x86_64-2.7" but some parts of this
+            // extension (like loading the jQuery JS library that comes with the template) expect a "lib" directory.
+            $buildPath = $sphinxSourcesPath . $package . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR;
+            if (!is_dir($buildPath . 'lib')) {
+                $directories = GeneralUtility::get_dirs($buildPath);
+                foreach ($directories as $directory) {
+                    if (GeneralUtility::isFirstPartOfStr($directory, 'lib.')) {
+                        if (TYPO3_OS === 'WIN') {
+                            GeneralUtility::mkdir($buildPath . 'lib');
+                            MiscUtility::recursiveCopy($buildPath . $directory, $buildPath . 'lib');
+                        } else {
+                            chdir($buildPath);
+                            symlink($directory, 'lib');
+                        }
+                        break;
+                    }
+                }
+            }
         } else {
             $success = false;
             $output[] = '[ERROR] Setup file ' . $setupFile . ' was not found.';
