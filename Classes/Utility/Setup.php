@@ -1299,7 +1299,7 @@ EOT;
     protected static function getPygmentsAvailableVersions()
     {
         $baseUrl = 'https://bitbucket.org';
-        $html = MiscUtility::getUrlWithCache($baseUrl . '/birkenfeld/pygments-main/downloads');
+        $html = MiscUtility::getUrlWithCache($baseUrl . '/birkenfeld/pygments-main/downloads?tab=tags');
 
         $tagsHtml = substr($html, strpos($html, ' id="tag-downloads"'));
 
