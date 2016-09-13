@@ -27,6 +27,12 @@ class ObjectsInvBrowserViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 {
 
     /**
+     * Required for TYPO3 v8
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Renders an objects.inv browser.
      *
      * @param string $id

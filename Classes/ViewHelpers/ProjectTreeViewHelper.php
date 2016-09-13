@@ -30,6 +30,12 @@ class ProjectTreeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
 {
 
     /**
+     * Required for TYPO3 v8
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Creates a tree of directories and files for a project.
      *
      * @param string $projectPath The base directory of the project
