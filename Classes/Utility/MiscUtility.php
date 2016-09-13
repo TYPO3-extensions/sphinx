@@ -1379,8 +1379,10 @@ YAML;
     {
         static $availableAndInstalledExtensions = null;
 
-        if (isset($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey])) {
-            return $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['siteRelPath'];
+        if (version_compare(TYPO3_version, '7.99.99', '<=')) {
+            if (isset($GLOBALS['TYPO3_LOADED_EXT'][$extensionKey])) {
+                return $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey]['siteRelPath'];
+            }
         }
         if ($availableAndInstalledExtensions === null) {
             try {
