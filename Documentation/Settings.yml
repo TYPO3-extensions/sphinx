@@ -7,7 +7,7 @@ conf.py:
   copyright: 2013-2016
   project: Sphinx Python Documentation Generator and Viewer
   version: 2.4
-  release: 2.4.0-dev
+  release: 2.4.0
   latex_documents:
   - - Index
     - sphinx.tex
