@@ -126,7 +126,7 @@ class Configuration
             if (preg_match('/^\d+\.\d+$/', $label)) {
                 $label .= '.0';
             }
-            $label = str_replace('b', ' beta ', $label);
+            $label = str_replace(['a', 'b'], [' alpha ', ' beta '], $label);
             $checked = $version === $selectedVersion ? ' checked="checked"' : '';
             $out[] = '<input type="radio" id="sphinx_version_' . $i . '" name="sphinx_version" value="' . $version . '"' . $checked . ' onclick="toggleSphinxVersion();" />';
             $out[] = '<label for="sphinx_version_' . $i . '" style="display:inline">' . $label . '</label>';
@@ -177,8 +177,8 @@ JS;
         //$out[] = '<div class="message-header">Message head</div>';
         $out[] = '<div class="message-body">';
         $sphinxVersion = \Causal\Sphinx\Utility\SphinxBuilder::getSphinxVersion();
-        // Fix parameter value for beta releases
-        $sphinxVersion = str_replace('b', ' beta ', $sphinxVersion);
+        // Fix parameter value for alpha/beta releases
+        $sphinxVersion = str_replace(['a', 'b'], [' alpha ', ' beta '], $sphinxVersion);
         $emLink = \Causal\Sphinx\Utility\MiscUtility::getExtensionManagerLink(
             'sphinx',
             'UpdateScript',

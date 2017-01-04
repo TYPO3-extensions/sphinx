@@ -1274,8 +1274,8 @@ EOT;
                     if (preg_match('/^\d+\.\d+$/', $name)) {
                         $name .= '.0';
                     }
-                    // Fix sorting of beta releases
-                    $name = str_replace('b', ' beta ', $name);
+                    // Fix sorting of alpha/beta releases
+                    $name = str_replace(['a', 'b'], [' alpha ', ' beta '], $name);
 
                     $versions[$name] = array(
                         'key' => $key,
@@ -1339,7 +1339,7 @@ EOT;
         $html = MiscUtility::getUrlWithCache('http://www.sphinx-doc.org/en/latest/changes.html');
 
         // Fix name in case the human-readable version is given as parameter
-        $sphinxVersion = str_replace(' beta ', 'b', $sphinxVersion);
+        $sphinxVersion = str_replace([' alpha ', ' beta '], ['a', 'b'], $sphinxVersion);
         if (strlen($sphinxVersion) > 4 && substr($sphinxVersion, -2) === '.0') {
             $sphinxVersion = substr($sphinxVersion, 0, -2);
         }
