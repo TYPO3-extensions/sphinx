@@ -33,7 +33,7 @@ Sphinx Python Documentation Generator and Viewer
 		reStructuredText, sphinx-doc, LaTeX, documentation
 
 	:Copyright:
-		2013-2016
+		2013-2017
 
 	:Author:
 		Xavier Perseguers
