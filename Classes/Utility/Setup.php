@@ -1159,7 +1159,7 @@ EOT;
         $tempPath = MiscUtility::getTemporaryPath();
         $sphinxSourcesPath = static::getSphinxSourcesPath();
 
-        $url = 'http://rst2pdf.googlecode.com/files/rst2pdf-0.93.tar.gz';
+        $url = 'https://github.com/rst2pdf/rst2pdf/archive/0.93.tar.gz';
         $archiveFilename = $tempPath . 'rst2pdf-0.93.tar.gz';
         $archiveContent = MiscUtility::getUrl($url);
         if ($archiveContent && GeneralUtility::writeFile($archiveFilename, $archiveContent)) {
