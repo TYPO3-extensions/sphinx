@@ -94,7 +94,6 @@ class DocumentationController extends AbstractActionController
             'currentReference' => $currentReference,
             'currentLayout' => $currentLayout,
             'contentActionUrl' => $contentActionUrl,
-            'typo3_7x' => version_compare(TYPO3_branch, '7', '>='),
         ));
     }
 
@@ -114,7 +113,6 @@ class DocumentationController extends AbstractActionController
             'extensionsOpenOffice' => $extensionWithOpenOfficeDocumentation,
             'customProjects' => $customProjects,
             'layout' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('restdoc') ? 'json' : 'html',
-            'typo3_7x' => version_compare(TYPO3_branch, '7', '>='),
         ));
     }
 

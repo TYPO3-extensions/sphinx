@@ -105,13 +105,7 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
     protected function createToolbarButton($link, $title, $iconType, $onClick = '')
     {
         /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
-        static $iconFactory = null;
-
-        if (version_compare(TYPO3_version, '8.0', '>=')) {
-            if ($iconFactory === null) {
-                $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
-            }
-        }
+        $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
 
         switch ($iconType) {
             case 'open':
@@ -141,10 +135,7 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
             ($onClick ? ' onclick="' . $onClick . ';return false;"' : '') .
             ' title="' . htmlspecialchars($title) . '"' .
             ' target="tx-sphinx-documentation-content">' .
-            (version_compare(TYPO3_version, '8.0', '>=')
-                ? str_replace(LF, ' ', $iconFactory->getIcon($iconIdentifier, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render())
-                : '<span class="t3-icon ' . $iconClasses . '">&nbsp;</span>'
-            ) .
+            str_replace(LF, ' ', $iconFactory->getIcon($iconIdentifier, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render()) .
             '</a>';
         // Replacement of single quotes to be compatible with the dynamic update of the toolbar
         return str_replace('\'', '\\\'', $button);

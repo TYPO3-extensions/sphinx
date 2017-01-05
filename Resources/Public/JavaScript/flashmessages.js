@@ -24,53 +24,40 @@ if (typeof CausalSphinx == 'undefined') CausalSphinx = {};
  * @singleton
  *
  * Example (Information message):
- * CausalSphinx.Flashmessage.display(1, 'TYPO3 Backend - Version 4.4', 'Ready for take off', 3);
+ * CausalSphinx.Flashmessage.display(1, 'TYPO3 Backend - Version 4.4', 'Ready for take off');
  */
 CausalSphinx.Flashmessage = function () {
 
     var messageContainer;
     var severities = ['notice', 'information', 'ok', 'warning', 'error', 'raw'];
 
-    function createBox(severity, title, message, isTYPO3v7) {
+    function createBox(severity, title, message) {
         if (severity == 'raw') return message;
-        if (isTYPO3v7) {
-            if (severity == 'notice' || severity == 'information') {
-                severity = 'info';
-                faIcon = 'fa-info';
-            } else if (severity == 'ok') {
-                severity = 'success';
-                faIcon = 'fa-check';
-            } else if (severity == 'error') {
-                severity = 'danger';
-                faIcon = 'fa-times';
-            }
-            return ['<div class="alert alert-', severity, '">',
-                    '<div class="media">',
-                    '<div class="media-left">',
-                    '<span class="fa-stack fa-lg">',
-                    '<i class="fa fa-circle fa-stack-2x"></i>',
-                    '<i class="fa ' + faIcon + ' fa-stack-1x"></i>',
-                    '</span>',
-                    '</div>',
-                    '<div class="media-body">',
-                    '<h4 class="alert-title">', title, '</h4>',
-                    '<p class="alert-message">', message, '</p>',
-                    '</div>'].join('');
-        } else {
-            return ['<div class="typo3-message message-', severity, '">',
-                '<div class="t3-icon t3-icon-actions t3-icon-actions-message t3-icon-actions-message-close t3-icon-message-' + severity + '-close"></div>',
-                '<div class="header-container">',
-                '<div class="message-header">', title, '</div>',
-                '</div>',
-                '<div class="message-body">', message, '</div>',
-                '</div>'].join('');
+        if (severity == 'notice' || severity == 'information') {
+            severity = 'info';
+            faIcon = 'fa-info';
+        } else if (severity == 'ok') {
+            severity = 'success';
+            faIcon = 'fa-check';
+        } else if (severity == 'error') {
+            severity = 'danger';
+            faIcon = 'fa-times';
         }
+        return ['<div class="alert alert-', severity, '">',
+                '<div class="media">',
+                '<div class="media-left">',
+                '<span class="fa-stack fa-lg">',
+                '<i class="fa fa-circle fa-stack-2x"></i>',
+                '<i class="fa ' + faIcon + ' fa-stack-1x"></i>',
+                '</span>',
+                '</div>',
+                '<div class="media-body">',
+                '<h4 class="alert-title">', title, '</h4>',
+                '<p class="alert-message">', message, '</p>',
+                '</div>'].join('');
     }
 
     return {
-
-        isTYPO3v7: false,
-
         /**
          * Shows popup
          * @member CausalSphinx.Flashmessage
@@ -90,7 +77,7 @@ CausalSphinx.Flashmessage = function () {
                 });
             }
 
-            var box = createBox(severities[severity], title, message, CausalSphinx.Flashmessage.isTYPO3v7);
+            var box = createBox(severities[severity], title, message);
             messageContainer.html(box);
             messageContainer.css('top', -messageContainer.outerHeight());
 
