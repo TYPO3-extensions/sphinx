@@ -55,7 +55,7 @@ class InteractiveViewerController extends AbstractActionController
     protected function initializeAction()
     {
         if (ExtensionManagementUtility::isLoaded('restdoc')) {
-            $this->sphinxReader = GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
+            $this->sphinxReader = GeneralUtility::makeInstance(\Causal\Restdoc\Reader\SphinxJson::class);
             $this->sphinxReader
                 ->setKeepPermanentLinks(false)
                 ->setDefaultFile('Index')
@@ -125,7 +125,7 @@ class InteractiveViewerController extends AbstractActionController
         $this->getBackendUser()->pushModuleData('help_documentation/DocumentationController/reference-' . $reference, $document);
 
         /** @var \Causal\Sphinx\Domain\Model\Documentation $documentation */
-        $documentation = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Documentation', $this->sphinxReader);
+        $documentation = GeneralUtility::makeInstance(\Causal\Sphinx\Domain\Model\Documentation::class, $this->sphinxReader);
         $documentation->setCallbackLinks(array($this, 'getLink'));
         $documentation->setCallbackImages(array($this, 'processImage'));
 
@@ -509,7 +509,7 @@ class InteractiveViewerController extends AbstractActionController
         $contents = nl2br($contents);
 
         /** @var \Causal\Sphinx\Controller\RestEditorController $restEditorController */
-        $restEditorController = $this->objectManager->get('Causal\\Sphinx\\Controller\\RestEditorController');
+        $restEditorController = $this->objectManager->get(\Causal\Sphinx\Controller\RestEditorController::class);
         $parts = $restEditorController->parseReferenceDocument($reference, 'Index/');
 
         $basePath = $parts['basePath'] . '/';

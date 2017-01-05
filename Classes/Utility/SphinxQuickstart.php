@@ -156,7 +156,7 @@ class SphinxQuickstart
     protected static function createFromTemplate(array $config)
     {
         /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
-        $contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+        $contentObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 
         // Recursively instantiate template files
         $source = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/Templates/Projects/' . $config['template'] . '/';

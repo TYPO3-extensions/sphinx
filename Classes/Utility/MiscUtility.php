@@ -423,7 +423,7 @@ HTML;
     {
         // No dependency injection needed here
         /** @var \Causal\Sphinx\Domain\Repository\DocumentationRepository $documentationRepository */
-        $documentationRepository = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Repository\\DocumentationRepository');
+        $documentationRepository = GeneralUtility::makeInstance(\Causal\Sphinx\Domain\Repository\DocumentationRepository::class);
         $officialDocuments = $documentationRepository->getOfficialDocuments();
 
         // Not an official "document" but still...
@@ -567,7 +567,7 @@ HTML;
 
         if ($path) {
             /** @var \Causal\Restdoc\Reader\SphinxJson $sphinxReader */
-            $sphinxReader = GeneralUtility::makeInstance('Causal\\Restdoc\\Reader\\SphinxJson');
+            $sphinxReader = GeneralUtility::makeInstance(\Causal\Restdoc\Reader\SphinxJson::class);
             $sphinxReader->setPath($path);
             $references = $sphinxReader->getReferences();
         } else {
@@ -654,7 +654,7 @@ HTML;
             : array();
 
         /** @var \Causal\Sphinx\Utility\RsyncUtility $rsyncUtility */
-        $rsyncUtility = GeneralUtility::makeInstance('Causal\\Sphinx\\Utility\\RsyncUtility');
+        $rsyncUtility = GeneralUtility::makeInstance(\Causal\Sphinx\Utility\RsyncUtility::class);
         $rsyncUtility->setFileExtensions($synchronizeFileExtensions);
 
         if (empty($synchronizeFileExtensions)) {
@@ -1311,7 +1311,7 @@ YAML;
         }
 
         /** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
-        $http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url);
+        $http = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\HttpRequest::class, $url);
         try {
             return $http->send()->getBody();
         } catch (\Exception $e) {
@@ -1361,7 +1361,7 @@ YAML;
     public static function checkUrl($url)
     {
         /** @var $http \TYPO3\CMS\Core\Http\HttpRequest */
-        $http = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url, \TYPO3\CMS\Core\Http\HttpRequest::METHOD_HEAD);
+        $http = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Http\HttpRequest::class, $url, \TYPO3\CMS\Core\Http\HttpRequest::METHOD_HEAD);
         try {
             return count($http->send()->getHeader()) > 0;
         } catch (\Exception $e) {
@@ -1424,8 +1424,8 @@ YAML;
     {
         if (static::$listUtility === null) {
             /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-            $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-            static::$listUtility = $objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility');
+            $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+            static::$listUtility = $objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
         }
         return static::$listUtility;
     }

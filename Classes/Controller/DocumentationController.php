@@ -212,7 +212,7 @@ class DocumentationController extends AbstractActionController
         if (is_file($sxwFilename)) {
             try {
                 /** @var \Causal\Sphinx\Utility\OpenOfficeConverter $openOfficeConverter */
-                $openOfficeConverter = GeneralUtility::makeInstance('Causal\\Sphinx\\Utility\\OpenOfficeConverter');
+                $openOfficeConverter = GeneralUtility::makeInstance(\Causal\Sphinx\Utility\OpenOfficeConverter::class);
                 $openOfficeConverter->convert($sxwFilename, $documentationDirectory, $extensionKey);
                 $reference = 'EXT:' . $extensionKey;
 
@@ -226,7 +226,7 @@ class DocumentationController extends AbstractActionController
             } catch (\RuntimeException $exception) {
                 $this->controllerContext->getFlashMessageQueue()->enqueue(
                     GeneralUtility::makeInstance(
-                        'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                        \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                         $exception->getMessage(),
                         '',
                         \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
@@ -270,7 +270,7 @@ class DocumentationController extends AbstractActionController
         } catch (\RuntimeException $exception) {
             $this->controllerContext->getFlashMessageQueue()->enqueue(
                 GeneralUtility::makeInstance(
-                    'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                    \TYPO3\CMS\Core\Messaging\FlashMessage::class,
                     $exception->getMessage(),
                     '',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,

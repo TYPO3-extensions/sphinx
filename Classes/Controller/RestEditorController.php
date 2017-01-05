@@ -152,7 +152,7 @@ class RestEditorController extends AbstractActionController
                     case 'USER':
                         $outputFilename = null;
                         $this->signalSlotDispatcher->dispatch(
-                            'Causal\\Sphinx\\Controller\\DocumentationController',
+                            \Causal\Sphinx\Controller\DocumentationController::class,
                             'renderUserDocumentation',
                             array(
                                 'identifier' => $parts['identifier'],
@@ -537,7 +537,7 @@ class RestEditorController extends AbstractActionController
 
                 // Initializing:
                 /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $fileProcessor */
-                $fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
+                $fileProcessor = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::class);
                 $fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
                 $fileProcessor->setActionPermissions(array('addFile' => true));
                 $fileProcessor->setExistingFilesConflictMode($overwriteExistingFiles ? 'replace' : 'cancel');
@@ -634,7 +634,7 @@ class RestEditorController extends AbstractActionController
     protected function getFlashMessages()
     {
         /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
-        $flashMessageService = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+        $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
         /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $flashMessages = $defaultFlashMessageQueue->renderFlashMessages();
@@ -701,7 +701,7 @@ class RestEditorController extends AbstractActionController
             case 'USER':
                 $path = '';
                 $this->signalSlotDispatcher->dispatch(
-                    'Causal\\Sphinx\\Controller\\InteractiveViewerController',
+                    \Causal\Sphinx\Controller\InteractiveViewerController::class,
                     'retrieveBasePath',
                     array(
                         'identifier' => $identifier,

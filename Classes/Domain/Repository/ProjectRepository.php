@@ -177,7 +177,7 @@ class ProjectRepository implements \TYPO3\CMS\Core\SingletonInterface
     protected function instantiateProjectFromArray(array $data)
     {
         /** @var \Causal\Sphinx\Domain\Model\Project $project */
-        $project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project', $data['key']);
+        $project = GeneralUtility::makeInstance(\Causal\Sphinx\Domain\Model\Project::class, $data['key']);
         $project->setName($data['name']);
         // "isset" to be removed in version 1.5.0 when it's expected
         // that every project got this new key

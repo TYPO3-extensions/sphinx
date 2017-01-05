@@ -188,7 +188,7 @@ JS;
             // $existingProject must be null otherwise it means we try to reuse an existing project's key
             if ($existingProject === null) {
                 /** @var \Causal\Sphinx\Domain\Model\Project $project */
-                $project = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Project', $documentationKey);
+                $project = GeneralUtility::makeInstance(\Causal\Sphinx\Domain\Model\Project::class, $documentationKey);
                 $project->setName($name);
                 $project->setLanguage($lang);
                 $project->setDescription($description);

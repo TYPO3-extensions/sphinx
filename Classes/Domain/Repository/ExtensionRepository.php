@@ -321,7 +321,7 @@ class ExtensionRepository implements \TYPO3\CMS\Core\SingletonInterface
         $metadata = MiscUtility::getExtensionMetaData($extensionKey);
 
         /** @var \Causal\Sphinx\Domain\Model\Extension $extension */
-        $extension = GeneralUtility::makeInstance('Causal\\Sphinx\\Domain\\Model\\Extension');
+        $extension = GeneralUtility::makeInstance(\Causal\Sphinx\Domain\Model\Extension::class);
         $extension->setExtensionKey($extensionKey);
         $extension->setTitle($metadata['title']);
         $extension->setIcon($metadata['siteRelPath'] . $metadata['ext_icon']);

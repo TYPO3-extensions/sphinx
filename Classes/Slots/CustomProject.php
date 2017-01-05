@@ -114,7 +114,7 @@ class CustomProject
                     GeneralUtility::mkdir($absoluteBasePath . '_make');
 
                     /** @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObj */
-                    $contentObj = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+                    $contentObj = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 
                     $projectName = str_replace(' ', '', $project->getName());
                     $markers = array(
@@ -132,7 +132,6 @@ class CustomProject
                     $confPyTemplate = ExtensionManagementUtility::extPath(static::$extKey) . 'Resources/Private/Templates/Projects/TYPO3DocEmptyProject/_make/conf.py.tmpl';
 
                     $contents = file_get_contents($confPyTemplate);
-                    ('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
                     $contents = $contentObj->substituteMarkerArray($contents, $markers, '###|###');
                     GeneralUtility::writeFile($absoluteBasePath . '_make/conf.py', $contents);
                 }
