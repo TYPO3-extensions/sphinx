@@ -100,14 +100,10 @@ class ActionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelpe
 
         $content = $this->renderChildren();
         if ($icon) {
-            if (version_compare(TYPO3_version, '7.6', '>=')) {
-                /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
-                $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
-                $imgTag = $iconFactory->getIcon($icon, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render();
-                $content = str_replace('<img src=', '<img title="' . htmlspecialchars(trim($content)) . '" src=', $imgTag);
-            } else {
-                $content = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($icon, array('title' => trim($content)));
-            }
+            /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+            $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
+            $imgTag = $iconFactory->getIcon($icon, \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render();
+            $content = str_replace('<img src=', '<img title="' . htmlspecialchars(trim($content)) . '" src=', $imgTag);
         }
 
         foreach ($checks as $check => $value) {

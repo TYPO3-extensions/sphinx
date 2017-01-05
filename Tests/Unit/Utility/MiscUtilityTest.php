@@ -35,7 +35,7 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
         $this->assertSame('Xavier Perseguers (Causal)', $metadata['author']);
         $this->assertSame('Causal Sàrl', $metadata['author_company']);
         $this->assertSame('xavier@causal.ch', $metadata['author_email']);
-        $this->assertSame('6.2.0-7.99.99', $metadata['constraints']['depends']['typo3']);
+        $this->assertSame('7.6.0-8.99.99', $metadata['constraints']['depends']['typo3']);
         $this->assertFalse(empty($metadata['release']));
         $this->assertFalse(empty($metadata['version']));
     }
@@ -100,12 +100,6 @@ class MiscUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function extensionDocumentationHasNoFrenchDocumentation()
     {
-        if (version_compare(TYPO3_version, '6.1.99', '<=')) {
-            $this->markTestIncomplete(
-                'This test can only run with TYPO3 6.2 LTS and above.'
-            );
-        }
-
         $documentationType = MiscUtility::getLocalizedDocumentationType('documentation', 'fr_FR');
         $this->assertSame(MiscUtility::DOCUMENTATION_TYPE_UNKNOWN, $documentationType);
     }

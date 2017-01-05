@@ -540,11 +540,7 @@ class RestEditorController extends AbstractActionController
                 $fileProcessor = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
                 $fileProcessor->init(array(), $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
                 $fileProcessor->setActionPermissions(array('addFile' => true));
-                if (version_compare(TYPO3_version, '6.99.99', '<=')) {
-                    $fileProcessor->dontCheckForUnique = $overwriteExistingFiles ? 1 : 0;
-                } else {
-                    $fileProcessor->setExistingFilesConflictMode($overwriteExistingFiles ? 'replace' : 'cancel');
-                }
+                $fileProcessor->setExistingFilesConflictMode($overwriteExistingFiles ? 'replace' : 'cancel');
 
                 // Actual upload
                 $fileProcessor->start($data);

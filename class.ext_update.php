@@ -181,34 +181,6 @@ HTML;
             }
         }
 
-        if (version_compare(TYPO3_version, '6.99.99', '<=')) {
-            $out[] = '<style type="text/css">';
-            $out[] = <<<CSS
-form { position: relative; }
-
-#typo3-extension-configuration-forms {
-	max-width: inherit;
-	padding: 0;
-}
-
-.leftColumn {
-	width: 45em;
-	margin-bottom: .5em;
-}
-
-@media screen and (min-width: 70em) {
-	.rightColumn {
-		position: absolute;
-		top: 0;
-		left: 46em;
-		width: 44em;
-	}
-}
-CSS;
-
-            $out[] = '</style>';
-        }
-
         $restToolsPath = GeneralUtility::getFileAbsFileName('uploads/tx_sphinx/RestTools');
         if (is_dir($restToolsPath)) {
             $relativePath = \TYPO3\CMS\Core\Utility\PathUtility::stripPathSitePrefix($restToolsPath);
@@ -229,10 +201,8 @@ CSS;
         $installRst2Pdf = TYPO3_OS !== 'WIN' && $this->configuration['install_rst2pdf'] === '1';
         $changes = array();
 
-        if (version_compare(TYPO3_version, '7.6', '>=')) {
-            /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
-            $iconFactory = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\IconFactory');
-        }
+        /** @var \TYPO3\CMS\Core\Imaging\IconFactory $iconFactory */
+        $iconFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class);
 
         foreach ($availableVersions as $version) {
             $isInstalled = in_array($version['key'], $localVersions);
@@ -251,11 +221,7 @@ CSS;
             }
 
             $out[] = '<tr data-version="' . htmlspecialchars($version['key']) . '">';
-            if (version_compare(TYPO3_version, '7.6', '>=')) {
-                $iconChecked = $iconFactory->getIcon('status-status-checked', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render();
-            } else {
-                $iconChecked = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked');
-            }
+            $iconChecked = $iconFactory->getIcon('status-status-checked', \TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL)->render();
             $out[] = '<td>' . ($isInstalled ? $iconChecked : '') . '</td>';
             $out[] = '<td>';
             $out[] = 'Sphinx ' . htmlspecialchars($version['name']);
