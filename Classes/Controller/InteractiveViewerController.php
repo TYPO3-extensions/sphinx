@@ -340,20 +340,17 @@ class InteractiveViewerController extends AbstractActionController
 
         $translations = $this->getTranslations($reference, $document);
         if (count($translations) > 0) {
-            $buttons[] = '<div style="float:right">';
+            $buttons[] = '<div class="right">';
             $numberOfTranslations = count($translations);
             for ($i = 0; $i < $numberOfTranslations; $i++) {
-                if ($i > 0) {
-                    $buttons[] = '|';
-                }
                 if ($translations[$i]['active']) {
                     $buttons[] = sprintf(
-                        '<strong>%s</strong>',
+                        '<a href="#" class="btn btn-primary btn-sm active">%s</a>',
                         htmlspecialchars($translations[$i]['name'])
                     );
                 } else {
                     $buttons[] = sprintf(
-                        '<a href="%s">%s</a>',
+                        '<a class="btn btn-default btn-sm" href="%s">%s</a>',
                         $translations[$i]['link'],
                         htmlspecialchars($translations[$i]['name'])
                     );
