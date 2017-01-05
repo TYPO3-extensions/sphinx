@@ -57,20 +57,21 @@ class RestEditorController extends AbstractActionController
         $parts = $this->parseReferenceDocument($reference, $document);
         $contents = file_get_contents($parts['filename']);
         $readOnly = !(is_writable($parts['filename']) && $this->isEditableFiletype($parts['filename']));
-
-        $this->view->assign('reference', $reference);
-        $this->view->assign('extensionKey', $parts['extensionKey']);
-        $this->view->assign('document', $document);
-        $this->view->assign('contents', $contents);
-        $this->view->assign('startLine', $startLine);
-        $this->view->assign('readOnly', $readOnly ? 'true' : '');
-        $this->view->assign('projectPath', $parts['basePath']);
-        $this->view->assign('filename', str_replace('\\', '/', substr($parts['filename'], strlen($parts['basePath']) + 1)));
-
         $buttons = $this->getButtons();
-        $this->view->assign('buttons', $buttons);
 
-        $this->view->assign('controller', $this);
+        $this->view->assignMultiple([
+            'reference' => $reference,
+            'extensionKey' => $parts['extensionKey'],
+            'document' => $document,
+            'contents' => $contents,
+            'startLine' => $startLine,
+            'readOnly' => $readOnly ? 'true' : '',
+            'projectPath' => $parts['basePath'],
+            'filename' => str_replace('\\', '/', substr($parts['filename'], strlen($parts['basePath']) + 1)),
+            'buttons' => $buttons,
+            'typo3_8x' => version_compare(TYPO3_branch, '8', '>='),
+            'controller' => $this,
+        ]);
     }
 
     // -----------------------------------------------

@@ -4,15 +4,21 @@
 <head>
     <title>{document}</title>
 
-    <link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/backend.css"/>
-    <link rel="stylesheet" type="text/css"
-          href="{f:uri.resource(path:'Css/jquery-ui.smoothness/jquery-ui-1.11.4.custom.min.css')}"/>
+    <f:if condition="{typo3_8x}">
+        <f:then>
+            <link rel="stylesheet" type="text/css" href="sysext/backend/Resources/Public/Css/backend.css"/>
+        </f:then>
+        <f:else>
+            <link rel="stylesheet" type="text/css" href="sysext/t3skin/Resources/Public/Css/backend.css"/>
+        </f:else>
+    </f:if>
+    <link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/jquery-ui-1.12.1.custom.min.css')}"/>
     <link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/main.css')}"/>
     <link rel="stylesheet" type="text/css" href="{f:uri.resource(path:'Css/codemirror.css')}"/>
 
     <script type="text/javascript" src="{sphinx:uri.sphinxResource(path:'t3SphinxThemeRtd/build/lib/t3SphinxThemeRtd/static/jquery.min.js')}"></script>
     <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-migrate-1.2.1.min.js')}"></script>
-    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.11.4.custom.min.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery-ui-1.12.1.custom.min.js')}"></script>
     <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.treetable-3.1.0.min.js')}"></script>
     <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.ui-contextmenu.min.js')}"></script>
     <script type="text/javascript" src="{f:uri.resource(path:'JavaScript/jquery.layout-latest.min.js')}"></script>
