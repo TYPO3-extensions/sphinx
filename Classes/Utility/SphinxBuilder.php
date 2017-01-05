@@ -749,6 +749,7 @@ class SphinxBuilder
         if (static::$htmlConsole) {
             $exports[] = MiscUtility::getExportCommand('COLORTERM', '1');
         }
+        $exports[] = MiscUtility::getExportCommand('LANG', 'en_US.UTF-8');
         $cmd = implode(' && ', $exports) . ' && ' . escapeshellarg($sphinxBuilder);
         if (version_compare($sphinxVersion, '1.2', '>=')) {
             // Speed up the rendering by using "-j" flag:
