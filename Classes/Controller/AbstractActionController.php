@@ -131,7 +131,7 @@ abstract class AbstractActionController extends \TYPO3\CMS\Extbase\Mvc\Controlle
         }
 
         $button =
-            '<a href="' . htmlspecialchars($link) . '"' .
+            '<a class="btn btn-default btn-sm" href="' . htmlspecialchars($link) . '"' .
             ($onClick ? ' onclick="' . $onClick . ';return false;"' : '') .
             ' title="' . htmlspecialchars($title) . '"' .
             ' target="tx-sphinx-documentation-content">' .
