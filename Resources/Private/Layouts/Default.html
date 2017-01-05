@@ -62,16 +62,15 @@
 </head>
 <body>
 
-<div class="outer-center">
-    <f:render section="content-area"/>
+<div class="ui-layout-north layout-child-container" id="tx-sphinx-menu">
+    <f:render partial="Documentation/HeaderTop" arguments="{_all}"/>
+</div>
 
+<div class="outer-center">
     <div class="ui-layout-north layout-child-container" id="tx-sphinx-toolbar">
         <!-- Dynamically updated by "content" controllers -->
     </div>
-</div>
-
-<div class="ui-layout-north layout-child-container" id="tx-sphinx-menu">
-    <f:render partial="Documentation/HeaderTop" arguments="{_all}"/>
+    <f:render section="content-area"/>
 </div>
 
 </body>
