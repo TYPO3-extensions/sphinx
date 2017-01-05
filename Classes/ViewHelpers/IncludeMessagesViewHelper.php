@@ -27,6 +27,12 @@ class IncludeMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstrac
 {
 
     /**
+     * Required for TYPO3 v8
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
      * Renders the JS snippet.
      *
      * @param string $keyPrefix
