@@ -1265,7 +1265,7 @@ EOT;
 
         $versions = array();
         preg_replace_callback(
-            '#<div class="tag-info commit js-details-container">.*?<span class="tag-name">([^<]*)</span>.*?<a href="([^"]+)" rel="nofollow">.*?zip.*?</a>#s',
+            '#<div class="tag-info commit js-details-container Details">.*?<span class="tag-name">([^<]*)</span>.*?<a href="([^"]+)" rel="nofollow">.*?zip.*?</a>#s',
             function ($matches) use (&$versions) {
                 if ($matches[1] !== 'tip' && version_compare($matches[1], '1.1.3', '>=')) {
                     $key = $matches[1];
