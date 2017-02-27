@@ -529,7 +529,7 @@ EOT;
             $success = false;
             $output[] = '[WARNING] Could not find command unzip. 3rd-party libraries were not installed.';
         } else {
-            $url = 'https://bitbucket.org/xperseguers/sphinx-contrib/downloads';
+            $url = 'https://bitbucket.org/xperseguers/sphinx-contrib/downloads/';
             $content = MiscUtility::getUrl($url);
             $content = substr($content, strpos($content, '<dl class="metadata">'));
             // Search for the download link
@@ -1299,7 +1299,7 @@ EOT;
     protected static function getPygmentsAvailableVersions()
     {
         $baseUrl = 'https://bitbucket.org';
-        $html = MiscUtility::getUrlWithCache($baseUrl . '/birkenfeld/pygments-main/downloads?tab=tags');
+        $html = MiscUtility::getUrlWithCache($baseUrl . '/birkenfeld/pygments-main/downloads/?tab=tags');
 
         $tagsHtml = substr($html, strpos($html, ' id="tag-downloads"'));
 
