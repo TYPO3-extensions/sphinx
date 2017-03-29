@@ -3,7 +3,7 @@
       xmlns:sphinx="http://typo3.org/ns/Causal/Sphinx/ViewHelpers"
       data-namespace-typo3-fluid="true">
 
-<sphinx:form action="index" id="tx-sphinx-form-render" class="form-inline">
+<f:form action="index" id="tx-sphinx-form-render" class="form-inline">
     <div class="form-group">
         <label for="reference"><f:translate key="showDocumentation" /></label>
         <sphinx:form.select id="reference" name="reference" groupOptions="1"
@@ -20,7 +20,7 @@
     <div class="right">
         <f:form.submit name="force" value="{f:translate(key:'toolbar.renderAgain')}" class="btn btn-primary"/>
     </div>
-</sphinx:form>
+</f:form>
 
 <script type="text/javascript">
 //<![CDATA[
