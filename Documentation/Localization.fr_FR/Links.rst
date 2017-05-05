@@ -14,6 +14,9 @@ Liens
 :TER:
 	https://typo3.org/extensions/repository/view/sphinx
 
+:Packagist:
+	https://packagist.org/packages/causal/sphinx
+
 :Bug tracker:
 	https://forge.typo3.org/projects/extension-sphinx/issues
 
