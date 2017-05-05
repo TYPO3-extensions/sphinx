@@ -67,8 +67,8 @@ class ProjectTreeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
         $out[] = <<<HTML
 <table id="$pluginId">
     <caption>
-      <a href="#" onclick="jQuery('#$pluginId').treetable('expandAll'); return false;">Expand all</a>
-      <a href="#" onclick="jQuery('#$pluginId').treetable('collapseAll'); return false;">Collapse all</a>
+      <a href="#" onclick="\$('#$pluginId').treetable('expandAll'); return false;">Expand all</a>
+      <a href="#" onclick="\$('#$pluginId').treetable('collapseAll'); return false;">Collapse all</a>
     </caption>
     <tbody>
 HTML;

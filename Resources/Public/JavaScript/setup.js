@@ -10,10 +10,10 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-jQuery(document).ready(function () {
-    jQuery('#sphinx-versions tr').hover(function () {
-        var version = jQuery(this).data('version');
+$(document).ready(function () {
+    $('#sphinx-versions tr').hover(function () {
+        var version = $(this).data('version');
         var changes = sphinxChanges[version];
-        jQuery('#sphinx-changes').html(changes);
+        $('#sphinx-changes').html(changes);
     });
 });
